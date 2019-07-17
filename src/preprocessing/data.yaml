@@ -1,0 +1,19 @@
+device: device
+emission_lambda: '500.0'
+excitation_lambda: '500.0'
+identifier: id
+image_plane_description: test
+image_plane_location: test
+image_plane_name: test
+image_segmentation_description: test
+imaging_rate: '500.0'
+indicator: test
+lab: test
+optical_channel_description: test
+optical_channel_name: test
+processing_module_description: test
+processing_module_name: ophys
+roiresponseseries_name: test
+session_description: test
+session_start_time: 2010-04-17 02:32:03
+timeseries_name: test
