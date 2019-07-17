@@ -14,10 +14,10 @@ from pynwb.device import Device
 
 class Preprocessing(object):
 
-    def add_required_metadata(self,data,key):
+    def add_required_metadata(self, data, key):
         print("Missing required metadata : " + key + "\n")
         metadata_value = input("Type the value (with respect of the type) : ")
-        data[key] = metadata_value
+        data[key] = eval(metadata_value)
         return data
 
     def add_optional_metadata(self,data):
@@ -26,7 +26,7 @@ class Preprocessing(object):
             metadata_key = input("Type the name of the metadata you want to add ? ")
             metadata_key.lower().replace("","_")
             metadata_value = input("Type the value (with respect of the type) : ")
-            data[metadata_key] = metadata_value
+            data[metadata_key] = eval(metadata_value)
             go = input("Continue ? (yes/no)")
             if go.lower() == "no":
                 keyboard_input = True
@@ -78,11 +78,12 @@ class Preprocessing(object):
                                source_script_file_name=data.get("source_script_file_name"),
                                data_collection=data.get("data_collection"), surgery=data.get("surgery"),
                                virus=data.get("virus"), stimulus_notes=data.get("stimulus_notes"), lab=data.get("lab"))
+
         device = Device(name=data.get("device"))
         self.nwbfile.add_device(device)
         optical_channel = OpticalChannel(name=data.get("optical_channel_name"),
                                          description=data.get("optical_channel_description"),
-                                         emission_lambda=float(data.get("emission_lambda")))
+                                         emission_lambda=data.get("emission_lambda"))
         self.mod = self.nwbfile.create_processing_module(name=data.get("processing_module_name"),
                                                          description=data.get("processing_module_description"))
         img_seg = ImageSegmentation()
@@ -91,8 +92,8 @@ class Preprocessing(object):
                                                           optical_channel=optical_channel,
                                                           description=data.get("image_plane_description"),
                                                           device=device,
-                                                          excitation_lambda=float(data.get("excitation_lambda")),
-                                                          imaging_rate=float(data.get("imaging_rate")),
+                                                          excitation_lambda=data.get("excitation_lambda"),
+                                                          imaging_rate=data.get("imaging_rate"),
                                                           indicator=data.get("indicator"),
                                                           location=data.get("image_plane_location"),
                                                           manifold=data.get("manifold"),
