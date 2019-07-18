@@ -5,7 +5,8 @@ from shapely.geometry import MultiPoint, LineString
 import numpy as np
 
 from pynwb import NWBFile
-from pynwb.ophys import TwoPhotonSeries, OpticalChannel, ImageSegmentation, Fluorescence, DfOverF, RoiResponseSeries
+from pynwb.ophys import TwoPhotonSeries, OpticalChannel, ImageSegmentation, PlaneSegmentation, Fluorescence, \
+                        DfOverF, RoiResponseSeries, MotionCorrection, CorrectedImageStack
 from pynwb.device import Device
 from pynwb import NWBHDF5IO
 
@@ -21,7 +22,6 @@ class Preprocessing:
 
         self.device = Device('imaging_device_1')
         self.nwbfile.add_device(self.device)
-
 
     def cicada_create_imaging_plane(self):
 
@@ -97,6 +97,47 @@ class Preprocessing:
 
         self.nwbfile.add_acquisition(self.movie_two_photon)
 
+    def cicada_create_motion_correction(self):
+
+        """  class pynwb.ophys.MotionCorrection(corrected_images_stacks={}, name='MotionCorrection')
+        """
+
+        # Nom du module où récupérer les infos de métadonnée
+        name_module = "motion_correction_"
+
+        # Récupération des données
+
+        corrected_images_stacks = {}
+
+        self.motion_correction = MotionCorrection(corrected_images_stacks=corrected_images_stacks,
+                                                  name=data.get(name_module + "name"))
+
+        self.mod.add_data_interface(self.motion_correction)
+
+    def cicada_add_corrected_image_stack(self):
+
+        """ class pynwb.ophys.CorrectedImageStack(corrected, original, xy_translation, name='CorrectedImageStack')
+        """
+
+        # MotionCorrection où stocker corrected_image_stack
+
+        motion_correction = self.motion_correction
+
+        # Nom du module où récupérer les infos de métadonnée
+        name_module = "corrected_image_stack_"
+
+        # Récupération des données
+
+        corrected = None
+        original = None
+        xy_translation = None
+
+        self.corrected_image_stack = CorrectedImageStack(corrected,
+                                                         original,
+                                                         xy_translation,
+                                                         name=data.get(name_module + "name"))
+
+        self.motion_correction.add_corrected_image_stack(self.corrected_image_stack)
 
     def cicada_add_plane_segmentation(self):
 
@@ -116,12 +157,12 @@ class Preprocessing:
         imaging_plane = self.imaging_plane
 
         self.plane_segmentation = PlaneSegmentation(description=data.get(name_module + "description"),
-                                               imaging_plane=imaging_plane,
-                                               name=data.get(name_module + "name"),
-                                               reference_images=data.get(name_module + "reference_image"),
-                                               id=data.get(name_module + "id"),
-                                               columns=data.get(name_module + "columns"),
-                                               colnames=data.get(name_module + "colnames"))
+                                                    imaging_plane=imaging_plane,
+                                                    name=data.get(name_module + "name"),
+                                                    reference_images=data.get(name_module + "reference_image"),
+                                                    id=data.get(name_module + "id"),
+                                                    columns=data.get(name_module + "columns"),
+                                                    colnames=data.get(name_module + "colnames"))
 
         self.image_segmentation.add_plane_segmentation(self.plane_segmentation)
 
@@ -138,12 +179,10 @@ class Preprocessing:
         # Récupération des données
         # Rien pour l'instant
 
-
         self.plane_segmentation.add_roi(pixel_mask=data.get(name_module + "pixel_mask"),
                                         voxel_mask=data.get(name_module + "voxel_mask"),
                                         image_mask=data.get(name_module + "image_mask"),
                                         id=data.get(name_module + "id"))
-
 
     def cicada_create_roi_table_region_in_plane_segmentation(self):
         """create_roi_table_region(description, region=slice(None, None, None), name='rois')"""
@@ -157,7 +196,6 @@ class Preprocessing:
 
         # Récupération des données
         # Rien pour l'instant
-
 
         self.plane_segmentation.create_roi_table_region(description=data.get(name_module + "description"),
                                                         region=data.get(name_module + "region"),
@@ -180,7 +218,6 @@ class Preprocessing:
 
         self.mod.add_data_interface(self.image_segmentation)
 
-
     def cicada_create_fluorescence(self):
 
         """   class pynwb.ophys.Fluorescence(roi_response_series={}, name='Fluorescence')
@@ -194,10 +231,9 @@ class Preprocessing:
         roi_response_series = {}
 
         self.fluorescence = Fluorescence(roi_response_series=roi_response_series,
-                                                    name=data.get(name_module + "name"))
+                                         name=data.get(name_module + "name"))
 
         self.mod.add_data_interface(self.fluorescence)
-
 
     def cicada_create_DfOverF(self):
 
@@ -215,7 +251,6 @@ class Preprocessing:
                                name=data.get(name_module + "name"))
 
         self.mod.add_data_interface(self.DfOverF)
-
 
     def cicada_add_roi_response_series(self):
 
@@ -253,11 +288,11 @@ class Preprocessing:
 
         module.add_roi_response_series(roi_response_series)
 
-
-    def find_ROI(self):
+    def find_roi(self):
 
         # Chemin du dossier suite2p
-        data_path = "C:/Users/François/Documents/dossier François/Stage INMED/Programmes/Godly Ultimate Interface/NWB/exp2nwb-master/src/suite2p"
+        data_path = "C:/Users/François/Documents/dossier François/Stage INMED/" \
+                    "Programmes/Godly Ultimate Interface/NWB/exp2nwb-master/src/suite2p"
         self.suite2p_data = dict()
 
         # Ouverture des fichiers stat et is_cell
@@ -279,7 +314,7 @@ class Preprocessing:
                 continue
             print(is_cell[cell][0])
             list_points_coord = [(x, y, 1) for x, y in zip(stat[cell]["xpix"], stat[cell]["ypix"])]
-            #coord.append(np.array(list_points_coord).transpose())
+            # coord.append(np.array(list_points_coord).transpose())
 
             # La suite permet d'avoir uniquement les contours (sans les pixels intérieurs)
 
@@ -291,5 +326,5 @@ class Preprocessing:
                 coord_shapely = MultiPoint(list_points_coord).convex_hull.exterior.coords
             coord.append(np.array(coord_shapely).transpose())
 
-
         self.suite2p_data["coord"] = coord  # Contient la liste des pixels inclus dans chaque ROI
+
