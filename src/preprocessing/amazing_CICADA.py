@@ -5,9 +5,11 @@ from shapely.geometry import MultiPoint, LineString
 import numpy as np
 
 from pynwb import NWBFile
-from pynwb.ophys import TwoPhotonSeries, OpticalChannel, ImageSegmentation, Fluorescence
+from pynwb.ophys import TwoPhotonSeries, OpticalChannel, ImageSegmentation, Fluorescence, DfOverF, RoiResponseSeries
 from pynwb.device import Device
 from pynwb import NWBHDF5IO
+
+import data
 
 
 class Preprocessing:
@@ -49,7 +51,7 @@ class Preprocessing:
                                                                unit=data.get(name_module + "unit"),
                                                                reference_frame=data.get(name_module + "reference_frame"))
 
-        self.nwbfile.add_imaging_plane(imaging_plane)
+        self.nwbfile.add_imaging_plane(self.imaging_plane)
 
     def cicada_create_two_photon_series(self):
 
@@ -68,11 +70,11 @@ class Preprocessing:
         name_imaging_plane = "imaging_plane"
         imaging_plane = self.nwbfile.get_imaging_plane(name_imaging_plane)
 
-        two_photon_data = None
+        data_to_store = None
 
         self.movie_two_photon = TwoPhotonSeries(name=data.get(name_module + "name"),
                                                 imaging_plane=imaging_plane,
-                                                data=two_photon_data,
+                                                data=data_to_store,
                                                 unit=data.get(name_module + "unit"),
                                                 format=data.get(name_module + "format"),
                                                 field_of_view=data.get(name_module + "field_of_view"),
@@ -93,7 +95,7 @@ class Preprocessing:
                                                 control_description=data.get(name_module + "control_description"),
                                                 parent=data.get(name_module + "parent"))
 
-        self.nwbfile.add_acquisition(movie_two_photon)
+        self.nwbfile.add_acquisition(self.movie_two_photon)
 
 
     def cicada_add_plane_segmentation(self):
@@ -111,42 +113,145 @@ class Preprocessing:
 
         # Récupération des données
 
-        imaging_plane = self.nwbfile.get_imaging_plane(name_imaging_plane)
+        imaging_plane = self.imaging_plane
 
-        self.plane_segmentation = PlaneSegmentation(description=data.get(name_module + "description")),
+        self.plane_segmentation = PlaneSegmentation(description=data.get(name_module + "description"),
                                                imaging_plane=imaging_plane,
-                                               name=data.get(name_module + "name")),
-                                               reference_images=data.get(name_module + "reference_image")),
-                                               id=data.get(name_module + "id")),
-                                               columns=data.get(name_module + "columns")),
-                                               colnames=data.get(name_module + "colnames")))
+                                               name=data.get(name_module + "name"),
+                                               reference_images=data.get(name_module + "reference_image"),
+                                               id=data.get(name_module + "id"),
+                                               columns=data.get(name_module + "columns"),
+                                               colnames=data.get(name_module + "colnames"))
 
         self.image_segmentation.add_plane_segmentation(self.plane_segmentation)
 
     def cicada_add_roi_in_plane_segmentation(self):
-        ########################################################## PAS FINI !!!!!!!!!! ############################
         """add_roi(pixel_mask=None, voxel_mask=None, image_mask=None, id=None)"""
 
-        # Plane segmentation où stocker la plane segmentation
+        # Image segmentation où stocker la plane segmentation
 
-        image_segmentation = self.image_segmentation
+        plane_segmentation = self.plane_segmentation
 
         # Nom du module où récupérer les infos de métadonnée
-        name_module = "plane_segmentation_"
+        name_module = "ROI_n1_"
+
+        # Récupération des données
+        # Rien pour l'instant
+
+
+        self.plane_segmentation.add_roi(pixel_mask=data.get(name_module + "pixel_mask"),
+                                        voxel_mask=data.get(name_module + "voxel_mask"),
+                                        image_mask=data.get(name_module + "image_mask"),
+                                        id=data.get(name_module + "id"))
+
+
+    def cicada_create_roi_table_region_in_plane_segmentation(self):
+        """create_roi_table_region(description, region=slice(None, None, None), name='rois')"""
+
+        # Image segmentation où stocker la plane segmentation
+
+        plane_segmentation = self.plane_segmentation
+
+        # Nom du module où récupérer les infos de métadonnée
+        name_module = "roi_table_region_"
+
+        # Récupération des données
+        # Rien pour l'instant
+
+
+        self.plane_segmentation.create_roi_table_region(description=data.get(name_module + "description"),
+                                                        region=data.get(name_module + "region"),
+                                                        name=data.get(name_module + "name"))
+
+    def cicada_create_image_segmentation(self):
+
+        """  class pynwb.ophys.ImageSegmentation(plane_segmentations={}, name='ImageSegmentation')
+        """
+
+        # Nom du module où récupérer les infos de métadonnée
+        name_module = "image_segmentation_"
 
         # Récupération des données
 
-        imaging_plane = self.nwbfile.get_imaging_plane(name_imaging_plane)
+        plane_segmentations={}
 
-        self.plane_segmentation = PlaneSegmentation(description=data.get(name_module + "description")),
-        imaging_plane = imaging_plane,
-        name = data.get(name_module + "name")),
-        reference_images = data.get(name_module + "reference_image")),
-        id = data.get(name_module + "id")),
-        columns = data.get(name_module + "columns")),
-        colnames = data.get(name_module + "colnames")))
+        self.image_segmentation = ImageSegmentation(plane_segmentations=plane_segmentations,
+                                                    name=data.get(name_module + "name"))
 
-        self.image_segmentation.add_plane_segmentation(self.plane_segmentation)
+        self.mod.add_data_interface(self.image_segmentation)
+
+
+    def cicada_create_fluorescence(self):
+
+        """   class pynwb.ophys.Fluorescence(roi_response_series={}, name='Fluorescence')
+        """
+
+        # Nom du module où récupérer les infos de métadonnée
+        name_module = "fluorescence_"
+
+        # Récupération des données
+
+        roi_response_series = {}
+
+        self.fluorescence = Fluorescence(roi_response_series=roi_response_series,
+                                                    name=data.get(name_module + "name"))
+
+        self.mod.add_data_interface(self.fluorescence)
+
+
+    def cicada_create_DfOverF(self):
+
+        """   class pynwb.ophys.DfOverF(roi_response_series={}, name='DfOverF')
+        """
+
+        # Nom du module où récupérer les infos de métadonnée
+        name_module = "DfOverF_"
+
+        # Récupération des données
+
+        roi_response_series = {}
+
+        self.DfOverF = DfOverF(roi_response_series=roi_response_series,
+                               name=data.get(name_module + "name"))
+
+        self.mod.add_data_interface(self.DfOverF)
+
+
+    def cicada_add_roi_response_series(self):
+
+        """  class pynwb.ophys.RoiResponseSeries(name, data, unit, rois,
+             resolution=0.0, conversion=1.0, timestamps=None, starting_time=None, rate=None, comments='no comments',
+             description='no description', control=None, control_description=None, parent=None)
+        """
+
+        # Module où stocker roi_response_series
+
+        module = self.fluorescence
+
+        # Nom du module où récupérer les infos de métadonnée
+        name_module = "roi_response_series_"
+
+        # Récupération des données
+
+        data_to_store = None
+        rois = None
+
+        roi_response_series = RoiResponseSeries(name=data.get(name_module + "name"),
+                                                data=data_to_store,
+                                                unit=data.get(name_module + "unit"),
+                                                rois=rois,
+                                                resolution=data.get(name_module + "resolution"),
+                                                conversion=data.get(name_module + "conversion"),
+                                                timestamps=data.get(name_module + "timestamp"),
+                                                starting_time=data.get(name_module + "starting_time"),
+                                                rate=data.get(name_module + "rate"),
+                                                comments=data.get(name_module + "comments"),
+                                                description=data.get(name_module + "description"),
+                                                control=data.get(name_module + "control"),
+                                                control_description=data.get(name_module + "control_description"),
+                                                parent=data.get(name_module + "parent"))
+
+        module.add_roi_response_series(roi_response_series)
 
 
     def find_ROI(self):
