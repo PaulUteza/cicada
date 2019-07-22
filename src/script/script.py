@@ -1,6 +1,7 @@
 import sys
 import os
 import re
+import yaml
 
 def get_subdirs(current_path):
     
@@ -27,6 +28,11 @@ def sort_by_string(current_path, string, base_dir):
 
     subdirs = get_subdirs(current_path)
     subfiles = get_subfiles(current_path)
+    for i in range(len(subfiles)):
+        subfiles[i] = subfiles[i].lower()
+
+    for j in range(len(subdirs)):
+        subdirs[j] = subdirs[j].lower()
 
     # If directory doesn't exist, create it
     if True in [string in subfile for subfile in subfiles] and True not in [string in subdir for subdir in dir_path]:
@@ -51,7 +57,6 @@ def sort_by_string(current_path, string, base_dir):
             sort_by_string(current_path + "\\" + i, string, base_dir)
 
 
-
 # Check if the directory passed as argument exist and ask to create it if it doesn't
 if not os.path.isdir(sys.argv[1]):
     create = input("Folder does not exist, do you want to create it ? (yes/no)")
@@ -68,23 +73,46 @@ dir_path = sys.argv[1]
 folder = os.path.basename(os.path.normpath(dir_path))
 head,tail = os.path.split(os.path.normpath(dir_path))
 
-if folder != "id":
-    os.replace(dir_path,head + "\\id")
-    print("Renamed directory to " + str(head) + "\\id")
-    dir_path = str(head)+"\\id"
+id_code = [subfile for subfile in get_subfiles(dir_path) if "id" in subfile][0]
+id_dir = get_subdirs(dir_path)
 
+if "yaml" in id_code or "yml" in id_code:
+    id_list = []
+    with open(dir_path + "\\" + id_code, 'r') as stream:
+        id_dict = yaml.safe_load(stream)
+        if type(id_dict) == str :
+            id_list = id_dict.split()
+        else:
+            for values in id_dict.values():
+                id_list.append(values)
+                print(values)
+                if len(id_dict) == 1:
+                    id_list = sum((s.split() for s in id_list), [])
 
-region_list = ["a000","a001","a002"]
+elif "txt" in id_code:
+    id_list = []
+    file = open(dir_path + "\\" + id_code,"r")
+    for x in file:
+        id_list.append(x.rstrip())
+        file.close()
+
+for id in id_list:
+    sort_by_string(dir_path,id,id_dir)
+
+region_list = ["a000", "a001", "a002"]
 region_dir = get_subdirs(dir_path)
-
-for region in region_list:
-    sort_by_string(dir_path,region,region_dir)
-
-keyword_data = ["trace","suite2p"]
-data_dir = get_subdirs(dir_path)
 tmp_dir = dir_path
-for dir in region_dir:
+for dir in id_dir:
     dir_path = tmp_dir + "\\" + dir
-    for data in keyword_data:
-        sort_by_string(dir_path,data,data_dir)
+    for region in region_list:
+        sort_by_string(dir_path,region,region_dir)
+
+keyword_data = ["trace", "suite2p"]
+data_dir = get_subdirs(dir_path)
+dir_path = tmp_dir
+for id in id_list:
+    for dir in region_dir:
+        dir_path = tmp_dir + "\\" + id + "\\" + dir
+        for data in keyword_data:
+            sort_by_string(dir_path, data, data_dir)
 
