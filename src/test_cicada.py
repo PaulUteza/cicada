@@ -7,8 +7,9 @@ import matplotlib.pyplot as plt
 import yaml
 import hdf5storage
 import pyabf
+import math
 
-from pynwb import NWBFile
+from pynwb import NWBFile, load_namespaces
 from pynwb.ophys import TwoPhotonSeries, OpticalChannel, ImageSegmentation, Fluorescence, CorrectedImageStack
 from pynwb.device import Device
 from pynwb.base import TimeSeries
@@ -364,6 +365,7 @@ class ConvertAbfToNWB(ConvertToNWB):
 
     def __init__(self, nwb_file):
         super().__init__(nwb_file)
+        self.abf_sampling_rate = None
 
     def convert(self, **kwargs):
         super().convert(**kwargs)
@@ -380,6 +382,37 @@ class ConvertAbfToNWB(ConvertToNWB):
         # yaml_file that will contains the information to read the abf file
         abf_yaml_file_name = kwargs["abf_yaml_file_name"]
 
+        with open(abf_yaml_file_name, 'r') as stream:
+            abf_yaml_data = yaml.safe_load(stream)
+
+        if "frames_channel" in abf_yaml_data:
+            frames_channel = int(abf_yaml_data["frames_channel"])
+        else:
+            raise Exception(f"No 'frames_channel' provided in the yaml file "
+                            f"{abf_yaml_file_name}")
+
+        # channel with the LFP data
+        lfp_channel = abf_yaml_data.get("lfp_channel")
+        # give the sampling rate to use for downsampling the lfp and record
+        # it in the nwb file. If no argument, then the original sampling_rate will be kept
+        lfp_downsampling_hz = abf_yaml_data.get("lfp_downsampling_hz")
+
+        # channel with the run data
+        run_channel = abf_yaml_data.get("run_channel")
+        run_downsampling_hz = abf_yaml_data.get("run_downsampling_hz")
+
+        # channel with the piezzo data (could be more than one channel
+        piezzo_channels = abf_yaml_data.get("piezzo_channels")
+        piezzo_downsampling_hz = abf_yaml_data.get("piezzo_downsampling_hz")
+
+        # if given, indicated an offset to be taken in consideration between the data acquisition
+        # and the frames
+        offset = abf_yaml_data.get("offset")
+
+        if piezzo_channels is not None and isinstance(piezzo_channels, int):
+            # converting int in list
+            piezzo_channels = [piezzo_channels]
+
         abf_file_name = kwargs["abf_file_name"]
 
         try:
@@ -387,8 +420,114 @@ class ConvertAbfToNWB(ConvertToNWB):
         except (FileNotFoundError, OSError) as e:
             raise Exception(f"Abf file not found: {abf_file_name}")
 
+        abf.setSweep(sweepNumber=0, channel=frames_channel)
+        times_in_sec = abf.sweepX
+        frames_data = abf.sweepY
+        original_time_in_sec = times_in_sec
+        original_frames_data = frames_data
+        # first frame corresponding at the first frame recorded in the calcium imaging movie
+        first_frame_index = np.where(frames_data < 0.01)[0][0]
+
+        # looping through the channels
+        # for current_channel in np.arange(1, abf.channelCount):
+        #     times_in_sec = np.copy(original_time_in_sec)
+        #     frames_data = np.copy(original_frames_data)
+
+        if run_channel is not None:
+            self.process_run_data(run_channel=run_channel)
+
+    def detect_run_periods(self, run_data, min_speed):
+        nb_period_by_wheel = 500
+        wheel_diam_cm = 2 * math.pi * 1.75
+        cm_by_period = wheel_diam_cm / nb_period_by_wheel
+        binary_mvt_data = np.zeros(len(run_data), dtype="int8")
+        speed_by_time = np.zeros(len(run_data))
+        is_running = np.zeros(len(run_data), dtype="int8")
+
+        binary_mvt_data[run_data >= 4] = 1
+        d_times = np.diff(binary_mvt_data)
+        pos_times = np.where(d_times == 1)[0] + 1
+        for index, pos in enumerate(pos_times[1:]):
+            run_duration = pos - pos_times[index - 1]
+            run_duration_s = run_duration / self.abf_sampling_rate
+            # in cm/s
+            speed = cm_by_period / run_duration_s
+            # if speed < 1:
+            #     print(f"#### speed_i {index}: {np.round(speed, 3)}")
+            # else:
+            #     print(f"speed_i {index}: {np.round(speed, 3)}")
+            if speed >= min_speed:
+                speed_by_time[pos_times[index - 1]:pos] = speed
+                is_running[pos_times[index - 1]:pos] = 1
+                # print(f"is_running {index}: {pos_times[index-1]} to {pos}")
+
+        #  1024 cycle = 1 tour de roue (= 2 Pi 1.5) -> Vitesse (cm / temps pour 1024 cycles).
+        # the period of time between two 1 represent a run
+        mvt_periods = get_continous_time_periods(is_running)
+        mvt_periods = self.merging_time_periods(time_periods=mvt_periods,
+                                                min_time_between_periods=0.5 * self.abf_sampling_rate)
+        print(f"mvt_periods {mvt_periods}")
+        speed_during_mvt_periods = []
+        for period in mvt_periods:
+            speed_during_mvt_periods.append(speed_by_time[period[0]:period[1] + 1])
+        return mvt_periods, speed_during_mvt_periods, speed_by_time
 
 
+    def process_run_data(self, run_channel, abf, times_in_sec, frames_data, first_frame_index,
+                         abf_sampling_rate):
+        running_data = None
+        times_in_sec = times_in_sec[:-first_frame_index]
+        frames_data = frames_data[first_frame_index:]
+        threshold_value = 0.02
+        if abf_sampling_rate < 50000:
+            # frames_data represent the content of the abf channel that contains the frames
+            # the index stat at the first frame recorded, meaning the first value where the
+            # value is < 0.01
+            mask_frames_data = np.ones(len(frames_data), dtype="bool")
+            # we need to detect the frames manually, but first removing data between movies
+            selection = np.where(frames_data >= threshold_value)[0]
+            mask_selection = np.zeros(len(selection), dtype="bool")
+            pos = np.diff(selection)
+            # looking for continuous data between movies
+            to_keep_for_removing = np.where(pos == 1)[0] + 1
+            mask_selection[to_keep_for_removing] = True
+            selection = selection[mask_selection]
+            # we remove the "selection" from the frames data
+            mask_frames_data[selection] = False
+            frames_data = frames_data[mask_frames_data]
+            # len_frames_data_in_s = np.round(len(frames_data) / self.abf_sampling_rate, 3)
+
+            active_frames = np.linspace(0, len(frames_data), 12500).astype(int)
+            mean_diff_active_frames = np.mean(np.diff(active_frames)) / self.abf_sampling_rate
+            # print(f"mean diff active_frames {np.round(mean_diff_active_frames, 3)}")
+            if mean_diff_active_frames < 0.09:
+                raise Exception("mean_diff_active_frames < 0.09")
+        else:
+            binary_frames_data = np.zeros(len(frames_data), dtype="int8")
+            binary_frames_data[frames_data >= threshold_value] = 1
+            binary_frames_data[frames_data < threshold_value] = 0
+            # +1 due to the shift of diff
+            # contains the index at which each frame from the movie is matching the abf signal
+            # length should be 12500
+            active_frames = np.where(np.diff(binary_frames_data) == 1)[0] + 1
+
+        abf.setSweep(sweepNumber=0, channel=run_channel)
+        run_data = abf.sweepY
+        mvt_periods, speed_during_mvt_periods, speed_by_time = \
+            self.detect_run_periods(run_data=run_data, min_speed=0.5)
+        speed_by_time = speed_by_time[active_frames]
+
+        """
+               Source: https://pynwb.readthedocs.io/en/latest/tutorials/domain/brain_observatory.html#sphx-glr-tutorials-domain-brain-observatory-py
+            
+        """
+        running_speed_time_series = TimeSeries(
+            name='running_speed',
+            data=speed_by_time,
+            timestamps=timestamps,
+            unit='cm/s')
+
+        self.nwbfile.add_acquisition(running_speed_time_series)
 
 
 
