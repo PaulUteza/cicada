@@ -1,0 +1,30 @@
+ConvertCIMovieToNWB :
+  non_motion_corrected_file_name :
+    keyword : ["non_corrected"]
+    keyword_to_exclude : []
+    extension : [".tif"]
+  xy_translation_file_name :
+    keyword : ["shift"]
+    keyword_to_exclude : [""]
+    extension : [".npy"]
+  motion_corrected_file_name :
+    keyword : ["corrected"]
+    keyword_to_exclude : ["non"]
+    extension : [".tif"]
+  yaml_file_name :
+    keyword : ["data"]
+    keyword_to_exclude : [""]
+    extension : [".yaml"]
+  format : ["tiff"]
+
+ConvertSuite2PRoisToNWB:
+  suite2p_dir :
+    keyword : ["suite2p"]
+    keyword_to_exclude : []
+    extension : []
+
+ConvertToNWB :
+  metadata_yaml :
+    keyword : ["data"]
+    keyword_to_exclude : [""]
+    extension : [".yaml", ".yml"]
