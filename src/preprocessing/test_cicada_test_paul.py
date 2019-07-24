@@ -1,25 +1,23 @@
-from pynwb import NWBHDF5IO
-
-from datetime import datetime
-from dateutil.tz import tzlocal
-import numpy as np
-import matplotlib.pyplot as plt
-import yaml
-import hdf5storage
-import pyabf
-
-from pynwb import NWBFile
-from pynwb.ophys import TwoPhotonSeries, OpticalChannel, ImageSegmentation, Fluorescence, CorrectedImageStack
-from pynwb.device import Device
-from pynwb.base import TimeSeries
-from pynwb.file import Subject
 import os
 import time
-from PIL import ImageSequence
-from ScanImageTiffReader import ScanImageTiffReader
+from datetime import datetime
+
 import PIL
 import PIL.Image as pil_image
+import hdf5storage
+import numpy as np
+import pyabf
+import yaml
+import utils
+from PIL import ImageSequence
+from ScanImageTiffReader import ScanImageTiffReader
+from dateutil.tz import tzlocal
+from pynwb import NWBFile
 from pynwb import NWBHDF5IO
+from pynwb.base import TimeSeries
+from pynwb.device import Device
+from pynwb.file import Subject
+from pynwb.ophys import TwoPhotonSeries, OpticalChannel, ImageSegmentation, Fluorescence, CorrectedImageStack
 
 # start_time = datetime(2017, 4, 3, 11, tzinfo=tzlocal())
 # create_date = datetime(2017, 4, 15, 12, tzinfo=tzlocal())
@@ -341,7 +339,7 @@ class ConvertSuite2PRoisToNWB(ConvertToNWB):
         mod.add_data_interface(fl)
 
         rt_region = ps.create_roi_table_region('all cells', region=list(np.arange(n_cells)))
-        if format == "external":
+        if image_series.format == "external":
             if image_series.external_file[0].endswith(".tiff") or \
                     image_series.external_file[0].endswith(".tif"):
                 # TODO: See how to deal if some frames need to be added
@@ -389,20 +387,14 @@ class ConvertAbfToNWB(ConvertToNWB):
 
 
 
-def test():
-    root_path = "H:/Documents/Data/julien/data/p6/"
-    path_data = os.path.join(root_path, "data_cicada_format")
-    session_id = "p6_18_02_07_a001"
-    tiff_file_name = f"{session_id}/{session_id}.tif"
-    yaml_file_name = f"{session_id}/{session_id}.yaml"
+def create_nwb_file(yaml_path):
 
     # Weight SI unit is newton
 
-    yaml_data = None
-    with open(os.path.join(path_data, yaml_file_name), 'r') as stream:
+    with open(yaml_path, 'r') as stream:
         yaml_data = yaml.safe_load(stream)
     if yaml_data is None:
-        raise Exception(f"Issue while reading the file {yaml_file_name}")
+        raise Exception(f"Issue while reading the file {path_leaf(yaml_path)}")
 
     keys_kwargs_subject = ["age", "weight", "genotype", "subject_id", "species", "sex", "date_of_birth"]
     kwargs_subject = dict()
@@ -410,7 +402,7 @@ def test():
         kwargs_subject[key] = yaml_data.get(key)
         if kwargs_subject[key] is not None:
             kwargs_subject[key] = str(kwargs_subject[key])
-    print(f'kwargs_subject {kwargs_subject}')
+    # print(f'kwargs_subject {kwargs_subject}')
     subject = Subject(**kwargs_subject)
 
     #############################
@@ -431,9 +423,9 @@ def test():
         if kwargs_nwb_file[key] is not None:
             kwargs_nwb_file[key] = str(kwargs_nwb_file[key])
     if "session_description" not in kwargs_nwb_file:
-        raise Exception(f"session_description is needed in the file {yaml_file_name}")
+        raise Exception(f"session_description is needed in the file {path_leaf(yaml_path)}")
     if "identifier" not in kwargs_nwb_file:
-        raise Exception(f"identifier is needed in the file {yaml_file_name}")
+        raise Exception(f"identifier is needed in the file {path_leaf(yaml_path)}")
     if "session_start_time" not in kwargs_nwb_file or kwargs_nwb_file["session_start_time"] is None:
         kwargs_nwb_file["session_start_time"] = datetime.now(tzlocal())
     if "session_id" not in kwargs_nwb_file:
@@ -450,12 +442,12 @@ def test():
     kwargs_nwb_file["file_create_date"] = datetime.now(tzlocal())
     # TODO: See how to load invalid_times, from yaml file ?
     # kwargs_nwb_file["invalid_times"] = invalid_times
-    print(f'kwargs_nwb_file {kwargs_nwb_file}')
+    # print(f'kwargs_nwb_file {kwargs_nwb_file}')
     nwb_file = NWBFile(**kwargs_nwb_file)
     return nwb_file
 
 
-def create_nwb_file(format_movie):
+def inutile(format_movie):
     root_path = "H:/Documents/Data/julien/data/p6/"
     path_data = os.path.join(root_path, "data_cicada_format")
     session_id = "p6_18_02_07_a001"
