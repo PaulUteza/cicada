@@ -285,6 +285,85 @@ class ConvertCIMovieToNWB(ConvertToNWB):
                                                         xy_translation=xy_translation_time_series)
 
 
+class ConvertRasterplotToNWB(ConvertToNWB):
+
+    def __init__(self, nwb_file):
+        super().__init__(nwb_file)
+
+    @staticmethod
+    def load_rasterplot_in_memory(rasterplot_file_name, frames_to_add=None):
+        """
+
+        :param rasterplot_file_name:
+        :param frames_to_add: is a dict, with key the frame after which add blank frames
+        and value being the number of frames to add
+        :return:
+        """
+        if rasterplot_file_name is not None:
+            print(f"Loading Rasterplot")
+            raster_data = hdf5storage.loadmat(rasterplot_file_name)
+            raster = raster_data["corrected_rasterdur"]
+            nb_cells, nb_frames = np.array(raster).shape
+            print(f"nb_cells {nb_cells}, nb_frames {nb_frames}")
+
+            if frames_to_add is not None:
+                nb_frames += np.sum(list(frames_to_add.values))
+                raster_modified = np.zeros((nb_frames, nb_cells), dtype="uint16")
+                frame_index = 0
+                # for frame in range(nb_frames):
+                #     raster_modified[frames_index] = np.array(raster[frame_index])
+                #     frame_index += 1
+                #     # adding blank frames
+                #     if frame in frames_to_add:
+                #         frame_index += frames_to_add[frame]
+                return raster_modified
+            else:
+                return raster
+
+    def convert(self, **kwargs):
+        super().convert(**kwargs)
+
+        if "rasterdur_file_name" not in kwargs:
+            raise Exception(f"'rasterdur_file_name' argument should be pass to convert "
+                            f"function in class {self.__class__.__name__}")
+        rasterdur_file_name = kwargs["rasterdur_file_name"]
+
+        # Create or get the processing module 'ophys'
+        try :
+            mod = self.nwb_file.get_processing_module("ophys")
+        except:
+            mod = self.nwb_file.create_processing_module('ophys', 'contains optical physiology processed data')
+
+        # Open YAML file with metadata if existing then dump all data in a dict
+        if ("yaml_file_name" in kwargs) and kwargs["yaml_file_name"] is not None:
+            with open(kwargs["yaml_file_name"], 'r') as stream:
+                yaml_data = yaml.safe_load(stream)
+        else:
+            raise Exception(f"'yaml_file_name' attribute should be pass to convert "
+                            f"function in class {self.__class__.__name__}")
+
+        if "frames_to_add" in yaml_data:
+            """
+            # exemple, give a frame number and how many frames to add after this one
+            # frames added will be blank frames, filled of zeros
+            # this is possible so far only if format is not "external
+            frames_to_add:
+                2499: 50
+                4999: 36
+            """
+            frames_to_add = yaml_data["frames_to_add"]
+        else:
+            frames_to_add = None
+
+        # Add rasterplot in the NWB file
+
+        raster_data = self.load_rasterplot_in_memory(rasterdur_file_name, frames_to_add=frames_to_add)
+        nb_cells, nb_frames = raster_data.shape
+
+        rasterplot = TimeSeries(name='Rasterplot', data=raster_data, timestamps=np.arange(nb_frames),
+                                description='rasterplot')
+
+        mod.add_data_interface(rasterplot)
 
 class ConvertSuite2PRoisToNWB(ConvertToNWB):
 
@@ -300,7 +379,11 @@ class ConvertSuite2PRoisToNWB(ConvertToNWB):
 
         image_series = self.nwb_file.acquisition["motion_corrected_ci_movie"]
 
-        mod = self.nwb_file.create_processing_module('ophys', 'contains optical physiology processed data')
+        try:
+            mod = self.nwb_file.get_processing_module("ophys")
+        except:
+            mod = self.nwb_file.create_processing_module('ophys', 'contains optical physiology processed data')
+
         img_seg = ImageSegmentation()
         mod.add_data_interface(img_seg)
         imaging_plane = self.nwb_file.get_imaging_plane("my_imgpln")

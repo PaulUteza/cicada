@@ -16,6 +16,5 @@ processing_module_name: ophys
 roiresponseseries_name: test
 session_description: test
 timeseries_name: test
-manifold: plante
+frames_to_add :
 
-sex: female

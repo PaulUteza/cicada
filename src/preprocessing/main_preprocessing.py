@@ -22,6 +22,7 @@ if os.path.isfile(dir_path + "\\" + "default.yaml"):
     files.remove("default.yaml")
 else:
     data = None
+
 home_data = dict()
 # Look for another YAML file containing the keywords, extensions and keywords to exclude
 for file in files:
@@ -51,7 +52,7 @@ for i in converttonwb:
     else:
         for extension in converttonwb[i].get("extension"):
             filtered_list.extend([file for file in files if extension in file])
-        print("Filter result : " + str(filtered_list) + " by extension : " + str(converttonwb[i].get("extension")))
+        # print("Filter result : " + str(filtered_list) + " by extension : " + str(converttonwb[i].get("extension")))
     # Conditional loop to remove all files or directories not containing the keywords
     # or containing excluded keywords
     counter = 0
@@ -59,24 +60,33 @@ for i in converttonwb:
         delete = False
         for keyword in converttonwb[i].get("keyword"):
             if keyword not in filtered_list[counter]:
-                print("Keyword not found in : " + str(filtered_list))
+                # print("Keyword not found in : " + str(filtered_list))
                 del filtered_list[counter]
-                print("New list : " + str(filtered_list))
+                # print("New list : " + str(filtered_list))
                 delete = True
         if not delete:
             for keyword_to_exclude in converttonwb[i].get("keyword_to_exclude"):
                 if keyword_to_exclude in filtered_list[counter]:
-                    print("Excluded keyword found in : " + str(filtered_list))
+                    # print("Excluded keyword found in : " + str(filtered_list))
                     del filtered_list[counter]
-                    print("New list : " + str(filtered_list))
+                    # print("New list : " + str(filtered_list))
                     delete = True
         if not delete:
             counter += 1
-    print("Files to pass : " + str(filtered_list))
+    # print("Files to pass : " + str(filtered_list))
     # If files were found respecting every element, add the whole path to pass them as arguments
     yaml_path = os.path.join(dir_path, filtered_list[0])
 
 nwb_file = test_cicada_test_paul.create_nwb_file(yaml_path)
+
+# TODO : Problème d'ordre
+#  solutions possibles : - charger une liste dans le yaml qui définit l'ordre
+#  (i.e [ConvertCIMovieToNWB,ConvertSuite2PRoisToNWB])
+#  puis on fait un while cette liste est non vide et on va chercher dans le dict avec la clé à l'index i
+#  - on crée manuellement cette hiérarchie en faisant comme on fait actuellement pour le nwb file en premier
+#  - on ajoute un chiffre devant chaque classe dans le YAML représentant l'ordre puis
+#  on fait la même chose en loopant dans un sorted(dict)
+
 # Loop through all the classes in the dict to instantiate them
 for i in sorted(home_data):
     # Get classname then instantiate it
@@ -89,7 +99,7 @@ for i in sorted(home_data):
     for j in home_data[i]:
         filtered_list = []
         # If value if found it means the argument is not a file but a string/int/etc
-        if home_data[i][j].get("value"):
+        if home_data[i][j].get("value") and not home_data[i][j].get("extension"):
             arg_dict[j] = home_data[i][j].get("value")[0]
         else:
             # If no extension is provided it means we are looking for a directory, so we filter the list of files and
@@ -100,8 +110,8 @@ for i in sorted(home_data):
             else:
                 for extension in home_data[i][j].get("extension"):
                     filtered_list.extend([file for file in files if extension in file])
-                print("Filter result : " + str(filtered_list) + " by extension : " +
-                      str(home_data[i][j].get("extension")))
+                # print("Filter result : " + str(filtered_list) + " by extension : " +
+                      # str(home_data[i][j].get("extension")))
             # Conditional loop to remove all files or directories not containing the keywords
             # or containing excluded keywords
             counter = 0
@@ -109,20 +119,20 @@ for i in sorted(home_data):
                 delete = False
                 for keyword in home_data[i][j].get("keyword"):
                     if keyword not in filtered_list[counter]:
-                        print("Keyword not found in : " + str(filtered_list))
+                        # print("Keyword not found in : " + str(filtered_list))
                         del filtered_list[counter]
-                        print("New list : " + str(filtered_list))
+                        # print("New list : " + str(filtered_list))
                         delete = True
                 if not delete:
                     for keyword_to_exclude in home_data[i][j].get("keyword_to_exclude"):
                         if keyword_to_exclude in filtered_list[counter]:
-                            print("Excluded keyword found in : " + str(filtered_list))
+                            # print("Excluded keyword found in : " + str(filtered_list))
                             del filtered_list[counter]
-                            print("New list : " + str(filtered_list))
+                            # print("New list : " + str(filtered_list))
                             delete = True
                 if not delete:
                     counter += 1
-            print("Files to pass : " + str(filtered_list))
+            # print("Files to pass : " + str(filtered_list))
             # If files were found respecting every element, add the whole path to pass them as arguments
             if filtered_list:
                 arg_dict[j] = os.path.join(dir_path, filtered_list[0])
@@ -131,11 +141,11 @@ for i in sorted(home_data):
             else:
                 arg_dict[j] = None
 
-    print("Arguments to pass : " + str(arg_dict))
+    # print("Arguments to pass : " + str(arg_dict))
     converter.convert(**arg_dict)
 
 # Create NWB file in the data folder
 with test_cicada_test_paul.NWBHDF5IO(os.path.join(dir_path, 'ophys_example.nwb'), 'w') as io:
     io.write(nwb_file)
 
-print("NWB file created at : " + str(os.path.join(dir_path, 'ophys_example.nwb')))
+# print("NWB file created at : " + str(os.path.join(dir_path, 'ophys_example.nwb')))
