@@ -18,7 +18,7 @@ from pynwb.base import TimeSeries
 from pynwb.device import Device
 from pynwb.file import Subject
 from pynwb.ophys import TwoPhotonSeries, OpticalChannel, ImageSegmentation, Fluorescence, CorrectedImageStack
-
+from pynwb.epoch import TimeIntervals
 # start_time = datetime(2017, 4, 3, 11, tzinfo=tzlocal())
 # create_date = datetime(2017, 4, 15, 12, tzinfo=tzlocal())
 #
@@ -202,7 +202,6 @@ class ConvertCIMovieToNWB(ConvertToNWB):
                 4999: 36 
             """
             frames_to_add = yaml_data["frames_to_add"]
-            print(frames_to_add)
         else:
             frames_to_add = None
 
@@ -415,12 +414,18 @@ def create_nwb_file(yaml_path):
                             "experimenter", "experiment_description", "institution", "keywords",
                             "notes", "pharmacology", "protocol", "related_publications",
                             "source_script", "source_script_file_name", "data_collection", "surgery", "virus",
-                            "stimulus_notes", "lab"
+                            "stimulus_notes", "lab", "invalid_times"
                             ]
     # TODO: for "notes", "pharmacology", "protocol", "related_publications" "data_collection", "surgery", "virus",
     #  "stimulus_notes" see if yaml format is the best option ?
 
     kwargs_nwb_file = dict()
+    if yaml_data.get("invalid_times"):
+        invalid_times = TimeIntervals("invalid_times")
+        for invalid_times_elt in yaml_data.get("invalid_times"):
+            invalid_times.add_interval(float(invalid_times_elt[0]), float(invalid_times_elt[1]))
+    else:
+        invalid_times = None
     for key in keys_kwargs_nwb_file:
         kwargs_nwb_file[key] = yaml_data.get(key)
         if kwargs_nwb_file[key] is not None:
@@ -443,100 +448,12 @@ def create_nwb_file(yaml_path):
 
     kwargs_nwb_file["subject"] = subject
     kwargs_nwb_file["file_create_date"] = datetime.now(tzlocal())
+
     # TODO: See how to load invalid_times, from yaml file ?
-    # kwargs_nwb_file["invalid_times"] = invalid_times
+    kwargs_nwb_file["invalid_times"] = invalid_times
     # print(f'kwargs_nwb_file {kwargs_nwb_file}')
     nwb_file = NWBFile(**kwargs_nwb_file)
     return nwb_file
-
-
-def inutile(format_movie):
-    root_path = "H:/Documents/Data/julien/data/p6/"
-    path_data = os.path.join(root_path, "data_cicada_format")
-    session_id = "p6_18_02_07_a001"
-    tiff_file_name = f"{session_id}/{session_id}.tif"
-    yaml_file_name = f"{session_id}/{session_id}.yaml"
-
-    # Weight SI unit is newton
-
-    yaml_data = None
-    with open(os.path.join(path_data, yaml_file_name), 'r') as stream:
-        yaml_data = yaml.safe_load(stream)
-    if yaml_data is None:
-        raise Exception(f"Issue while reading the file {yaml_file_name}")
-
-    keys_kwargs_subject = ["age", "weight", "genotype", "subject_id", "species", "sex", "date_of_birth"]
-    kwargs_subject = dict()
-    for key in keys_kwargs_subject:
-        kwargs_subject[key] = yaml_data.get(key)
-        if kwargs_subject[key] is not None:
-            kwargs_subject[key] = str(kwargs_subject[key])
-    print(f'kwargs_subject {kwargs_subject}')
-    subject = Subject(**kwargs_subject)
-
-    #############################
-    #   creating the NWB file   #
-    #############################
-    keys_kwargs_nwb_file = ["session_description", "identifier", "session_start_time", "session_id",
-                            "experimenter", "experiment_description", "institution", "keywords",
-                            "notes", "pharmacology", "protocol", "related_publications",
-                            "source_script", "source_script_file_name", "data_collection", "surgery", "virus",
-                            "stimulus_notes", "lab"
-                            ]
-    # TODO: for "notes", "pharmacology", "protocol", "related_publications" "data_collection", "surgery", "virus",
-    #  "stimulus_notes" see if yaml format is the best option ?
-
-    kwargs_nwb_file = dict()
-    for key in keys_kwargs_nwb_file:
-        kwargs_nwb_file[key] = yaml_data.get(key)
-        if kwargs_nwb_file[key] is not None:
-            kwargs_nwb_file[key] = str(kwargs_nwb_file[key])
-    if "session_description" not in kwargs_nwb_file:
-        raise Exception(f"session_description is needed in the file {yaml_file_name}")
-    if "identifier" not in kwargs_nwb_file:
-        raise Exception(f"identifier is needed in the file {yaml_file_name}")
-    if "session_start_time" not in kwargs_nwb_file or kwargs_nwb_file["session_start_time"] is None:
-        kwargs_nwb_file["session_start_time"] = datetime.now(tzlocal())
-    if "session_id" not in kwargs_nwb_file:
-        kwargs_nwb_file["session_id"] = kwargs_nwb_file["identifier"]
-
-    # #### arguments that are not in the yaml file (yet ?)
-    # file_create_date, timestamps_reference_time=None, slices=None, acquisition=None, analysis=None, stimulus=None,
-    # stimulus_template=None, epochs=None, epoch_tags=set(), trials=None, invalid_times=None,
-    # time_intervals=None, units=None, modules=None, lab_meta_data=None, electrodes=None,
-    # electrode_groups=None, ic_electrodes=None, sweep_table=None, imaging_planes=None,
-    # ogen_sites=None, devices=None, subject=None
-
-    kwargs_nwb_file["subject"] = subject
-    kwargs_nwb_file["file_create_date"] = datetime.now(tzlocal())
-    # TODO: See how to load invalid_times, from yaml file ?
-    # kwargs_nwb_file["invalid_times"] = invalid_times
-    print(f'kwargs_nwb_file {kwargs_nwb_file}')
-    nwb_file = NWBFile(**kwargs_nwb_file)
-
-    # TODO: if yaml file stating which file to open with which instance of ConvertToNWB,
-    #  use it, otherwise read a directory and depending on extension of the file and keywords
-    #  using a yaml file that map those to an instance ConvertToNWB. There should be a default
-    #  yaml file for this mapping and user could make its own that will override the default one.
-    #  the yaml file should be associated for each argument of the convert function the keyword +
-    #  extension allowing to find the file_name to give as argument.
-    ci_movie_converter = ConvertCIMovieToNWB(nwb_file)
-    ci_movie_converter.convert(format=format_movie,
-                               motion_corrected_file_name=os.path.join(path_data, tiff_file_name),
-                               non_motion_corrected_file_name=None,
-                               xy_translation_file_name=None,
-                               yaml_file_name=os.path.join(path_data, yaml_file_name))
-
-    suite2p_dir = os.path.join(path_data, "p6_18_02_07_a001", "suite2p")
-    suite2p_rois_converter = ConvertSuite2PRoisToNWB(nwb_file)
-    suite2p_rois_converter.convert(suite2p_dir=suite2p_dir)
-
-    # TODO: use create_time_intervals(name, description='experimental intervals', id=None, columns=None, colnames=None)
-    #  to create time_intervals using npy files or other file in which intervals are contained through a
-    #  an instance of ConvertToNWB and the yaml_file for extension and keywords
-
-    with NWBHDF5IO(os.path.join(path_data, 'ophys_example.nwb'), 'w') as io:
-        io.write(nwb_file)
 
 
 def load_nwb_file():
