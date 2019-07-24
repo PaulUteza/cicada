@@ -22,7 +22,7 @@ if os.path.isfile(dir_path + "\\" + "default.yaml"):
     files.remove("default.yaml")
 else:
     data = None
-
+home_data = dict()
 # Look for another YAML file containing the keywords, extensions and keywords to exclude
 for file in files:
     if "yaml" not in file:
@@ -77,9 +77,8 @@ for i in converttonwb:
     yaml_path = os.path.join(dir_path, filtered_list[0])
 
 nwb_file = test_cicada_test_paul.create_nwb_file(yaml_path)
-
 # Loop through all the classes in the dict to instantiate them
-for i in home_data:
+for i in sorted(home_data):
     # Get classname then instantiate it
     classname = getattr(test_cicada_test_paul, i)
     converter = classname(nwb_file)

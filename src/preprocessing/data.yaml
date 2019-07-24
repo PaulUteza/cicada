@@ -1,4 +1,5 @@
-device: device
+
+device: test
 emission_lambda: 500.0
 excitation_lambda: 500.0
 identifier: id
@@ -8,12 +9,13 @@ image_plane_name: test
 image_segmentation_description: test
 imaging_rate: 500.0
 indicator: test
-lab: inserm
 optical_channel_description: test
 optical_channel_name: test
 processing_module_description: test
 processing_module_name: ophys
 roiresponseseries_name: test
 session_description: test
-session_start_time: 2014-07-14 00:00:00
 timeseries_name: test
+manifold: plante
+
+sex: female
