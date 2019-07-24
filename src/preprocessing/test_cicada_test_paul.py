@@ -89,17 +89,18 @@ class ConvertCIMovieToNWB(ConvertToNWB):
         im = pil_image.open(tif_movie_file_name)
         n_frames = len(list(ImageSequence.Iterator(im)))
         dim_y, dim_x = np.array(im).shape
-        print(f"n_frames {n_frames}, dim_x {dim_x}, dim_y {dim_y}")
         if frames_to_add is not None:
-            n_frames += np.sum(list(frames_to_add.values))
+            n_frames += np.sum(list(frames_to_add.values()))
+        print(f"n_frames {n_frames}, dim_x {dim_x}, dim_y {dim_y}")
         tiff_movie = np.zeros((n_frames, dim_y, dim_x), dtype="uint16")
         frame_index = 0
-        # for frame, page in enumerate(ImageSequence.Iterator(im)):
-        #     tiff_movie[frame_index] = np.array(page)
-        #     frame_index += 1
-        #     # adding blank frames
-        #     if frame in frames_to_add:
-        #         frame_index += frames_to_add[frame]
+        for frame, page in enumerate(ImageSequence.Iterator(im)):
+            tiff_movie[frame_index] = np.array(page)
+            frame_index += 1
+            # adding blank frames
+            if frames_to_add:
+                if frame in frames_to_add:
+                    frame_index += frames_to_add[frame]
         stop_time = time.time()
         print(f"Time for loading movie: "
               f"{np.round(stop_time - start_time, 3)} s")
@@ -200,7 +201,8 @@ class ConvertCIMovieToNWB(ConvertToNWB):
                 2499: 50
                 4999: 36 
             """
-            frames_to_add = yaml_data["image_plane_location"]
+            frames_to_add = yaml_data["frames_to_add"]
+            print(frames_to_add)
         else:
             frames_to_add = None
 
@@ -282,6 +284,7 @@ class ConvertCIMovieToNWB(ConvertToNWB):
             corrected_image_stack = CorrectedImageStack(corrected=motion_corrected_img_series,
                                                         original=original_img_series,
                                                         xy_translation=xy_translation_time_series)
+
 
 
 class ConvertSuite2PRoisToNWB(ConvertToNWB):
