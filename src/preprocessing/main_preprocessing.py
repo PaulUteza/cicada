@@ -22,7 +22,7 @@ if os.path.isfile(dir_path + "\\" + "default.yaml"):
     files.remove("default.yaml")
 else:
     data = None
-
+home_data = dict()
 # Look for another YAML file containing the keywords, extensions and keywords to exclude
 for file in files:
     if "yaml" not in file:
