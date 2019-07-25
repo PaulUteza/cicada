@@ -6,7 +6,12 @@ import utils
 
 
 # Pass path to files when calling the script
-dir_path = sys.argv[1]
+dir_path = os.path.abspath(sys.argv[1])
+
+if len(sys.argv) > 2:
+    # raise Exception("Too much arguments, maybe you have spaces in your path ?")
+    for i in sys.argv:
+        dir_path = dir_path + " " + str(i)
 
 # Get all files and directories present in the path
 files = utils.get_subfiles(dir_path)
@@ -79,14 +84,6 @@ for i in converttonwb:
 
 nwb_file = test_cicada_test_paul.create_nwb_file(yaml_path)
 
-# TODO : Problème d'ordre
-#  solutions possibles : - charger une liste dans le yaml qui définit l'ordre
-#  (i.e [ConvertCIMovieToNWB,ConvertSuite2PRoisToNWB])
-#  puis on fait un while cette liste est non vide et on va chercher dans le dict avec la clé à l'index i
-#  - on crée manuellement cette hiérarchie en faisant comme on fait actuellement pour le nwb file en premier
-#  - on ajoute un chiffre devant chaque classe dans le YAML représentant l'ordre puis
-#  on fait la même chose en loopant dans un sorted(dict)
-
 order_list = []
 if home_data.get("order"):
     order_list = home_data.pop("order")
@@ -144,7 +141,7 @@ while order_list:
             if filtered_list:
                 arg_dict[j] = os.path.join(dir_path, filtered_list[0])
                 if "mat" in home_data[next_class][j].get("extension") and home_data[next_class][j].get("value"):
-                    arg_dict[j] = arg_dict[j].split() + list(home_data[next_class][j].get("value"))
+                    arg_dict[j] = [arg_dict[j]] + list(home_data[next_class][j].get("value"))
 
             # If no file found, put the argument at None
             else:
@@ -206,8 +203,7 @@ for i in home_data:
             if filtered_list:
                 arg_dict[j] = os.path.join(dir_path, filtered_list[0])
                 if "mat" in home_data[i][j].get("extension") and home_data[i][j].get("value"):
-                    arg_dict[j] = arg_dict[j].split() + list(home_data[i][j].get("value"))
-
+                    arg_dict[j] = [arg_dict[j]] + list(home_data[i][j].get("value"))
 
             # If no file found, put the argument at None
             else:
@@ -220,4 +216,4 @@ for i in home_data:
 with test_cicada_test_paul.NWBHDF5IO(os.path.join(dir_path, 'ophys_example.nwb'), 'w') as io:
     io.write(nwb_file)
 
-# print("NWB file created at : " + str(os.path.join(dir_path, 'ophys_example.nwb')))
+print("NWB file created at : " + str(os.path.join(dir_path, 'ophys_example.nwb')))
