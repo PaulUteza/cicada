@@ -25,6 +25,7 @@ ConvertCIMovieToNWB :
     extension : []
     value : ["external"]
 
+
 ConvertSuite2PRoisToNWB:
   suite2p_dir :
     keyword : ["suite2p"]
@@ -38,3 +39,18 @@ ConvertToNWB :
     keyword_to_exclude : []
     extension : ["yaml", "yml"]
     value : []
+
+ConvertRasterplotToNWB :
+  rasterdur_file_name :
+    keyword: ["Raster"]
+    keyword_to_exclude: ["._"]
+    extension: ["mat"]
+    value: ["corrected_rasterdur"]
+  yaml_file_name:
+    keyword: ["data"]
+    keyword_to_exclude: ["default"]
+    extension: ["yaml"]
+    value: []
+
+order :
+  [ConvertCIMovieToNWB, ConvertSuite2PRoisToNWB, ConvertRasterplotToNWB]

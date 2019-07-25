@@ -132,14 +132,14 @@ class ConvertCIMovieToNWB(ConvertToNWB):
         # ### setting parameters ####
         formats_implemented = ["external", "tiff"]
         if "format" not in kwargs:
-            raise Exception(f"'format' argument should be pass to convert function in class {self.__class__.__name__}")
+            raise Exception(f"'format' argument should be passed to convert function in class {self.__class__.__name__}")
         elif kwargs["format"] not in formats_implemented:
             raise Exception(f"'format' argument should have one of these values {formats_implemented} "
                             f"for the convert function in class {self.__class__.__name__}")
         movie_format = kwargs["format"]
 
         if "motion_corrected_file_name" not in kwargs:
-            raise Exception(f"'motion_corrected_file_name' attribute should be pass to convert "
+            raise Exception(f"'motion_corrected_file_name' attribute should be passed to convert "
                             f"function in class {self.__class__.__name__}")
         motion_corrected_file_name = kwargs["motion_corrected_file_name"]
 
@@ -158,7 +158,7 @@ class ConvertCIMovieToNWB(ConvertToNWB):
             with open(kwargs["yaml_file_name"], 'r') as stream:
                 yaml_data = yaml.safe_load(stream)
         else:
-            raise Exception(f"'yaml_file_name' attribute should be pass to convert "
+            raise Exception(f"'yaml_file_name' attribute should be passed to convert "
                             f"function in class {self.__class__.__name__}")
 
         if "imaging_rate" in yaml_data:
@@ -291,7 +291,7 @@ class ConvertRasterplotToNWB(ConvertToNWB):
         super().__init__(nwb_file)
 
     @staticmethod
-    def load_rasterplot_in_memory(rasterplot_file_name, frames_to_add=None):
+    def load_rasterplot_in_memory(rasterplot_file_name, matlab_string, frames_to_add=None):
         """
 
         :param rasterplot_file_name:
@@ -302,34 +302,42 @@ class ConvertRasterplotToNWB(ConvertToNWB):
         if rasterplot_file_name is not None:
             print(f"Loading Rasterplot")
             raster_data = hdf5storage.loadmat(rasterplot_file_name)
-            raster = raster_data["corrected_rasterdur"]
+            raster = raster_data[matlab_string]
             nb_cells, nb_frames = np.array(raster).shape
-            print(f"nb_cells {nb_cells}, nb_frames {nb_frames}")
 
             if frames_to_add is not None:
-                nb_frames += np.sum(list(frames_to_add.values))
-                raster_modified = np.zeros((nb_frames, nb_cells), dtype="uint16")
+                nb_frames += np.sum(list(frames_to_add.values()))
+                print(f"nb_cells {nb_cells}, nb_frames {nb_frames}")
+
+                raster_modified = np.zeros((nb_cells, nb_frames), dtype="uint16")
                 frame_index = 0
-                # for frame in range(nb_frames):
-                #     raster_modified[frames_index] = np.array(raster[frame_index])
-                #     frame_index += 1
-                #     # adding blank frames
-                #     if frame in frames_to_add:
-                #         frame_index += frames_to_add[frame]
+                for frame in range(nb_frames):
+                    # adding blank frames
+                    if frame in frames_to_add:
+                        frame_index += frames_to_add[frame]
+                    frame_index += 1
                 return raster_modified
             else:
+                print(f"nb_cells {nb_cells}, nb_frames {nb_frames}")
+
                 return raster
 
     def convert(self, **kwargs):
         super().convert(**kwargs)
 
-        if "rasterdur_file_name" not in kwargs:
-            raise Exception(f"'rasterdur_file_name' argument should be pass to convert "
+        if "rasterdur_file_name" not in kwargs or not kwargs["rasterdur_file_name"]:
+            raise Exception(f"'rasterdur_file_name' argument should be passed to convert "
                             f"function in class {self.__class__.__name__}")
-        rasterdur_file_name = kwargs["rasterdur_file_name"]
+
+        if type(kwargs["rasterdur_file_name"]) == str and kwargs["rasterdur_file_name"].endswith(".mat"):
+            raise Exception(f"'{utils.path_leaf(kwargs['rasterdur_file_name'])}' is a matlab file "
+                            f"but no key to access data was provided for function in class {self.__class__.__name__}")
+
+        rasterdur_file_name = kwargs["rasterdur_file_name"][0]
+        matlab_string = kwargs["rasterdur_file_name"][1]
 
         # Create or get the processing module 'ophys'
-        try :
+        try:
             mod = self.nwb_file.get_processing_module("ophys")
         except:
             mod = self.nwb_file.create_processing_module('ophys', 'contains optical physiology processed data')
@@ -339,7 +347,7 @@ class ConvertRasterplotToNWB(ConvertToNWB):
             with open(kwargs["yaml_file_name"], 'r') as stream:
                 yaml_data = yaml.safe_load(stream)
         else:
-            raise Exception(f"'yaml_file_name' attribute should be pass to convert "
+            raise Exception(f"'yaml_file_name' attribute should be passed to convert "
                             f"function in class {self.__class__.__name__}")
 
         if "frames_to_add" in yaml_data:
@@ -354,16 +362,18 @@ class ConvertRasterplotToNWB(ConvertToNWB):
             frames_to_add = yaml_data["frames_to_add"]
         else:
             frames_to_add = None
-
+        
+        
         # Add rasterplot in the NWB file
 
-        raster_data = self.load_rasterplot_in_memory(rasterdur_file_name, frames_to_add=frames_to_add)
+        raster_data = self.load_rasterplot_in_memory(rasterdur_file_name, matlab_string, frames_to_add=frames_to_add)
         nb_cells, nb_frames = raster_data.shape
 
         rasterplot = TimeSeries(name='Rasterplot', data=raster_data, timestamps=np.arange(nb_frames),
                                 description='rasterplot')
 
         mod.add_data_interface(rasterplot)
+
 
 class ConvertSuite2PRoisToNWB(ConvertToNWB):
 
@@ -372,8 +382,8 @@ class ConvertSuite2PRoisToNWB(ConvertToNWB):
 
     def convert(self, **kwargs):
         super().convert(**kwargs)
-        if "suite2p_dir" not in kwargs:
-            raise Exception(f"'suite2p_dir' argument should be pass to convert "
+        if "suite2p_dir" not in kwargs or kwargs["suite2p_dir"] is None:
+            raise Exception(f"'suite2p_dir' argument should be passed to convert "
                             f"function in class {self.__class__.__name__}")
         suite2p_dir = kwargs["suite2p_dir"]
 
@@ -453,11 +463,11 @@ class ConvertAbfToNWB(ConvertToNWB):
         # TODO: See to use a default config yaml file and use a specific yaml file,
         #  only if this abf doesn't follow the default configuration.
         if "abf_yaml_file_name" not in kwargs:
-            raise Exception(f"'abf_yaml_file' argument should be pass to convert "
+            raise Exception(f"'abf_yaml_file' argument should be passed to convert "
                             f"function in class {self.__class__.__name__}")
 
         if "abf_file_name" not in kwargs:
-            raise Exception(f"'abf_file_name' argument should be pass to convert "
+            raise Exception(f"'abf_file_name' argument should be passed to convert "
                             f"function in class {self.__class__.__name__}")
 
         # yaml_file that will contains the information to read the abf file
@@ -471,7 +481,6 @@ class ConvertAbfToNWB(ConvertToNWB):
             raise Exception(f"Abf file not found: {abf_file_name}")
 
 
-
 def create_nwb_file(yaml_path):
 
     # Weight SI unit is newton
@@ -479,7 +488,7 @@ def create_nwb_file(yaml_path):
     with open(yaml_path, 'r') as stream:
         yaml_data = yaml.safe_load(stream)
     if yaml_data is None:
-        raise Exception(f"Issue while reading the file {path_leaf(yaml_path)}")
+        raise Exception(f"Issue while reading the file {utils.path_leaf(yaml_path)}")
 
     keys_kwargs_subject = ["age", "weight", "genotype", "subject_id", "species", "sex", "date_of_birth"]
     kwargs_subject = dict()
@@ -514,9 +523,9 @@ def create_nwb_file(yaml_path):
         if kwargs_nwb_file[key] is not None:
             kwargs_nwb_file[key] = str(kwargs_nwb_file[key])
     if "session_description" not in kwargs_nwb_file:
-        raise Exception(f"session_description is needed in the file {path_leaf(yaml_path)}")
+        raise Exception(f"session_description is needed in the file {utils.path_leaf(yaml_path)}")
     if "identifier" not in kwargs_nwb_file:
-        raise Exception(f"identifier is needed in the file {path_leaf(yaml_path)}")
+        raise Exception(f"identifier is needed in the file {utils.path_leaf(yaml_path)}")
     if "session_start_time" not in kwargs_nwb_file or kwargs_nwb_file["session_start_time"] is None:
         kwargs_nwb_file["session_start_time"] = datetime.now(tzlocal())
     if "session_id" not in kwargs_nwb_file:
@@ -532,50 +541,8 @@ def create_nwb_file(yaml_path):
     kwargs_nwb_file["subject"] = subject
     kwargs_nwb_file["file_create_date"] = datetime.now(tzlocal())
 
-    # TODO: See how to load invalid_times, from yaml file ?
     kwargs_nwb_file["invalid_times"] = invalid_times
     # print(f'kwargs_nwb_file {kwargs_nwb_file}')
     nwb_file = NWBFile(**kwargs_nwb_file)
     return nwb_file
 
-
-def load_nwb_file():
-    root_path = "H:/Documents/Data/julien/data/p6/p6_18_02_07_a001"
-    path_data = os.path.join(root_path, "data_cicada_format")
-    io = NWBHDF5IO(os.path.join(path_data, 'ophys_example.nwb'), 'r')
-    nwb_file = io.read()
-
-    # print(f"nwb_file.acquisition {nwb_file.acquisition}")
-    image_series = nwb_file.acquisition["motion_corrected_ci_movie"]
-    if image_series.format == "external":
-        print(f"image_series.external_file[0] {image_series.external_file[0]}")
-    elif image_series.format == "tiff":
-        print(f"image_series.data.shape {image_series.data.shape}")
-        # plt.imshow(image_series.data[0, :])
-        # plt.show()
-    mod = nwb_file.modules['ophys']
-
-    ps = mod['ImageSegmentation'].get_plane_segmentation()
-
-    rrs = mod['Fluorescence'].get_roi_response_series()
-
-    # get the data...
-    rrs_data = rrs.data
-    rrs_timestamps = rrs.timestamps
-    rrs_rois = rrs.rois
-    # and now do something cool!
-
-    print(f"rrs_data.shape {rrs_data.shape}")
-    # plt.plot(rrs_data[0])
-    # plt.show()
-
-
-def test_main():
-    # interesting page: https://nwb-schema.readthedocs.io/en/latest/format.html#sec-labmetadata
-    # IntervalSeries: used for interval periods
-    create_nwb_file(format_movie="tiff")  # "tiff"
-
-    # load_nwb_file()
-
-
-# test_main()
