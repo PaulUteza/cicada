@@ -4,6 +4,13 @@ import sys
 import test_cicada_test_paul
 import utils
 
+"""
+https://stackoverflow.com/questions/8790003/dynamically-import-a-method-in-a-file-from-a-string
+importlib.import_module('abc.def.ghi.jkl.myfile.mymethod')
+
+__import__ et exec sont plutôt pour Python2
+"""
+
 
 def load_nwb_from_data(dir_path):
 
@@ -12,7 +19,6 @@ def load_nwb_from_data(dir_path):
     dirs = utils.get_subdirs(dir_path)
     files = files + dirs
 
-    print(dir_path + "\\" + str([subfile for subfile in files if "default" in subfile][0]))
     # Open YAML file with keywords, extension and keywords to exclude if existing then dump all data in a dict
     if os.path.isfile(dir_path + "\\" + [subfile for subfile in files if "default" in subfile][0]):
         with open(dir_path + "\\" + [subfile for subfile in files if "default" in subfile][0], 'r') as stream:
@@ -72,7 +78,7 @@ def load_nwb_from_data(dir_path):
                         delete = True
             if not delete:
                 counter += 1
-        # print("Files to pass : " + str(filtered_list))
+        print("Files to pass for " + i + ": " + str(filtered_list))
         # If files were found respecting every element, add the whole path to pass them as arguments
         yaml_path = os.path.join(dir_path, filtered_list[0])
 
@@ -130,7 +136,7 @@ def load_nwb_from_data(dir_path):
                                 delete = True
                     if not delete:
                         counter += 1
-                print("Files to pass : " + str(filtered_list))
+                print("Files to pass for " + j + ": " + str(filtered_list))
                 # If files were found respecting every element, add the whole path to pass them as arguments
                 if filtered_list:
                     arg_dict[j] = os.path.join(dir_path, filtered_list[0])
@@ -140,7 +146,7 @@ def load_nwb_from_data(dir_path):
                 # If no file found, put the argument at None
                 else:
                     arg_dict[j] = None
-        print("Arguments to pass : " + str(arg_dict))
+        # print("Arguments to pass : " + str(arg_dict))
         converter.convert(**arg_dict)
         # Delete once it's done
         del home_data[next_class]
@@ -192,7 +198,7 @@ def load_nwb_from_data(dir_path):
                                 delete = True
                     if not delete:
                         counter += 1
-                print("Files to pass : " + str(filtered_list))
+                print("Files to pass for " + j + ": " + str(filtered_list))
                 # If files were found respecting every element, add the whole path to pass them as arguments
                 if filtered_list:
                     arg_dict[j] = os.path.join(dir_path, filtered_list[0])
@@ -203,7 +209,7 @@ def load_nwb_from_data(dir_path):
                 else:
                     arg_dict[j] = None
 
-        print("Arguments to pass : " + str(arg_dict))
+        #print("Arguments to pass : " + str(arg_dict))
         converter.convert(**arg_dict)
 
     # Create NWB file in the data folder

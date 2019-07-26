@@ -16,7 +16,7 @@ import os
 
 if __name__ == '__main__':
     # Parse args
-	parser = argparse.ArgumentParser(description="Run CICADA")
+    parser = argparse.ArgumentParser(description="Run CICADA")
     args = parser.parse_args()
     parser.add_argument('--use_gui')
 
