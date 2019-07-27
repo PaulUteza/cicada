@@ -43,7 +43,6 @@ def load_nwb_from_data(dir_path):
         difference = set(list(data.keys())) - set(list(home_data.keys()))
         for i in list(difference):
             home_data[i] = data[i]
-
     # First we create the nwb file because it will be needed for everything
     converttonwb = home_data.pop("ConvertToNWB")
 
