@@ -21,6 +21,7 @@ from ScanImageTiffReader import ScanImageTiffReader
 import PIL
 import PIL.Image as pil_image
 from pynwb import NWBHDF5IO
+from utils import get_continous_time_periods, merging_time_periods
 
 # start_time = datetime(2017, 4, 3, 11, tzinfo=tzlocal())
 # create_date = datetime(2017, 4, 15, 12, tzinfo=tzlocal())
@@ -365,9 +366,35 @@ class ConvertAbfToNWB(ConvertToNWB):
 
     def __init__(self, nwb_file):
         super().__init__(nwb_file)
-        self.abf_sampling_rate = None
+        self.abf = None
+        self.first_frame_index = 0
+        # list of timestamps representing the time at which the frame has been acquired
+        self.active_frames = None
+        self.frames_data = None
 
     def convert(self, **kwargs):
+        """
+        The goal of this function is to extract from an Axon Binary Format (ABF) file its content
+        and make it accessible through the NWB file.
+        The content can be: LFP signal, piezzo signal, speed of the animal on the treadmill. All, None or a few
+        of these informations could be available.
+        One information always present is the timestamps, at the abf sampling_rate, of the frames acquired
+        by the microscope to create the calcium imaging movie. Such movie could be the concatenation of a few
+        movies, such is the case if the movie need to be saved every x frames for memory issue for ex.
+        If the movie is the concatenation of many, then there is an option to choose to extract the information as
+        if 2 frames concatenate are contiguous in times (such as then LFP signal or piezzo would be match movie),
+        or to add frames in those signals and return the indices and how many frames to add in the movie so it will
+        be synchronize with the rest of the data. Thus an information named frames_to_add will be added in the NWB_file
+        :param kwargs:
+        kwargs is a dictionary, potentials keys and values types are:
+        abf_yaml_file_name: mandatory parameter. The value is a string representing the path
+        and file_name of the yaml file associated to this abf file. In the abf:
+            frames_channel: mandatory parameter. The value is an int representing the channel
+            of the abf in which is the frames timestamps data.
+        abf_file_name: mandatory parameter. The value is a string representing the path
+        and file_name of the abf file.
+        :return:
+        """
         super().convert(**kwargs)
         # TODO: See to use a default config yaml file and use a specific yaml file,
         #  only if this abf doesn't follow the default configuration.
@@ -414,27 +441,125 @@ class ConvertAbfToNWB(ConvertToNWB):
             piezzo_channels = [piezzo_channels]
 
         abf_file_name = kwargs["abf_file_name"]
-
+        """
+        dir(abf):
+        abf ['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', 
+        '__getattribute__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', 
+        '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', 
+        '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_adcSection', '_cacheStimulusFiles', 
+        '_dacSection', '_dataGain', '_dataOffset', '_dtype', '_epochPerDacSection', '_epochSection', 
+        '_fileSize', '_headerV2', '_ide_helper', '_loadAndScaleData', '_makeAdditionalVariables', 
+        '_nDataFormat', '_preLoadData', '_protocolSection', '_readHeadersV1', '_readHeadersV2', 
+        '_sectionMap', '_stringsIndexed', '_stringsSection', '_sweepBaselinePoints', '_tagSection', 
+        'abfDateTime', 'abfDateTimeString', 'abfFileComment', 'abfFilePath', 'abfID', 'abfVersion', 
+        'abfVersionString', 'adcNames', 'adcUnits', 'channelCount', 'channelList', 'creatorVersion', 
+        'creatorVersionString', 'dacNames', 'dacUnits', 'data', 'dataByteStart', 'dataLengthMin', 
+        'dataLengthSec', 'dataPointByteSize', 'dataPointCount', 'dataPointsPerMs', 'dataRate', 
+        'dataSecPerPoint', 'fileGUID', 'headerHTML', 'headerLaunch', 'headerMarkdown', 'headerText', 
+        'holdingCommand', 'launchInClampFit', 'protocol', 'protocolPath', 'saveABF1', 'setSweep', 
+        'stimulusByChannel', 'stimulusFileFolder', 'sweepC', 'sweepChannel', 'sweepCount', 'sweepD', 
+        'sweepEpochs', 'sweepIntervalSec', 'sweepLabelC', 'sweepLabelX', 'sweepLabelY', 'sweepLengthSec', 
+        'sweepList', 'sweepNumber', 'sweepPointCount', 'sweepUnitsC', 'sweepUnitsX', 'sweepUnitsY', 
+        'sweepX', 'sweepY', 'tagComments', 'tagSweeps', 'tagTimesMin', 'tagTimesSec']
+        """
         try:
-            abf = pyabf.ABF(abf_file_name)
+            self.abf = pyabf.ABF(abf_file_name)
         except (FileNotFoundError, OSError) as e:
             raise Exception(f"Abf file not found: {abf_file_name}")
-
+        raise Exception("NOT TODAY")
         abf.setSweep(sweepNumber=0, channel=frames_channel)
         times_in_sec = abf.sweepX
-        frames_data = abf.sweepY
+        self.frames_data = abf.sweepY
         original_time_in_sec = times_in_sec
         original_frames_data = frames_data
         # first frame corresponding at the first frame recorded in the calcium imaging movie
-        first_frame_index = np.where(frames_data < 0.01)[0][0]
+        self.first_frame_index = np.where(frames_data < 0.01)[0][0]
+        self.frames_data = self.frames_data[first_frame_index:]
+        times_in_sec = times_in_sec[:-first_frame_index]
 
-        # looping through the channels
-        # for current_channel in np.arange(1, abf.channelCount):
-        #     times_in_sec = np.copy(original_time_in_sec)
-        #     frames_data = np.copy(original_frames_data)
+        # determining active_frames timestamps
+        self.determine_active_frames()
 
-        if run_channel is not None:
-            self.process_run_data(run_channel=run_channel)
+        for current_channel in np.arange(1, abf.channelCount):
+            if (run_channel is not None) and (run_channel == current_channel):
+                self.process_run_data(run_channel=run_channel)
+                continue
+            if not (((lfp_channel is not None) and (lfp_channel == current_channel)) or
+                    ((piezzo_channels is not None) and (current_channel in piezzo_channels))):
+                continue
+            abf.setSweep(sweepNumber=0, channel=current_channel)
+            # abf_data == mvt_data from the previous version
+            abf_data = abf.sweepY
+            if offset is not None:
+                abf_data = abf_data + offset
+            abf_data = abf_data[first_frame_index:]
+
+            if (lfp_channel is not None) and lfp_channel == current_channel:
+                down_sampling_hz = 1000
+            elif (piezo_channel is not None) and (piezo_channel == current_channel):
+                down_sampling_hz = 50
+            elif current_channel <= 2:
+                down_sampling_hz = 50
+            else:
+                down_sampling_hz = 1000
+            sampling_step = int(self.abf_sampling_rate / down_sampling_hz)
+
+            data_shift = np.zeros(0)
+            for i in np.arange(0, 12500, 2500):
+                last_abf_frame = self.abf_frames[i + 2499]
+                # mvt_data_without_abs represents the piezzo values without taking the absolute value
+                if self.abf_frames[i + 2499] == len(abf_data):
+                    last_abf_frame -= 1
+                # sampling_step is produce according to a down_sampling_hz that changes
+                # according to the channel (lfp, piezzo etc...)
+                new_data = abf_data[np.arange(self.active_frames[i],
+                                              last_abf_frame, sampling_step)]
+                data_shift = np.concatenate((data_shift, new_data,
+                                               np.array([abf_data[last_abf_frame]])))
+            # if current_channel == lfp_channel:
+            #     np.save(self.param.path_data + path_abf_data + self.description +
+            #             f"_abf_lfp_channel_{current_channel}_{down_sampling_hz}hz.npy",
+            #             data_shift)
+            # else:
+            #     np.save(self.param.path_data + path_abf_data + self.description +
+            #             f"_abf_HR_channel_{current_channel}.npy",
+            #             data_shift)
+
+    def determine_active_frames(self):
+        threshold_value = 0.02
+        # TODO: find a way to know how many frames or at least how much times there are
+        #  between 2 concatenated video segment. One way could be if we know how much frames by
+        #  movie, then we just have to divide the time between the first and last frame of concatenanted movie
+        #  to know how many frames to add
+        if self.abf.dataRate < 50000:
+            # frames_data represent the content of the abf channel that contains the frames
+            # the index stat at the first frame recorded, meaning the first value where the
+            # value is < 0.01
+            mask_frames_data = np.ones(len(self.frames_data), dtype="bool")
+            # we need to detect the frames manually, but first removing data between movies
+            selection = np.where(self.frames_data >= threshold_value)[0]
+            mask_selection = np.zeros(len(selection), dtype="bool")
+            pos = np.diff(selection)
+            # looking for continuous data between movies
+            to_keep_for_removing = np.where(pos == 1)[0] + 1
+            mask_selection[to_keep_for_removing] = True
+            selection = selection[mask_selection]
+            # we remove the "selection" from the frames data
+            mask_frames_data[selection] = False
+            frames_data = self.frames_data[mask_frames_data]
+
+            active_frames = np.linspace(0, len(frames_data), 12500).astype(int)
+            mean_diff_active_frames = np.mean(np.diff(active_frames)) / self.abf.dataRate
+            if mean_diff_active_frames < 0.09:
+                raise Exception("mean_diff_active_frames < 0.09")
+        else:
+            binary_frames_data = np.zeros(len(self.frames_data), dtype="int8")
+            binary_frames_data[self.frames_data >= threshold_value] = 1
+            binary_frames_data[self.frames_data < threshold_value] = 0
+            # +1 due to the shift of diff
+            # contains the index at which each frame from the movie is matching the abf signal
+            # length should be 12500
+            self.active_frames = np.where(np.diff(binary_frames_data) == 1)[0] + 1
 
     def detect_run_periods(self, run_data, min_speed):
         nb_period_by_wheel = 500
@@ -449,73 +574,30 @@ class ConvertAbfToNWB(ConvertToNWB):
         pos_times = np.where(d_times == 1)[0] + 1
         for index, pos in enumerate(pos_times[1:]):
             run_duration = pos - pos_times[index - 1]
-            run_duration_s = run_duration / self.abf_sampling_rate
+            run_duration_s = run_duration / self.abf.dataRate
             # in cm/s
             speed = cm_by_period / run_duration_s
-            # if speed < 1:
-            #     print(f"#### speed_i {index}: {np.round(speed, 3)}")
-            # else:
-            #     print(f"speed_i {index}: {np.round(speed, 3)}")
             if speed >= min_speed:
                 speed_by_time[pos_times[index - 1]:pos] = speed
                 is_running[pos_times[index - 1]:pos] = 1
-                # print(f"is_running {index}: {pos_times[index-1]} to {pos}")
 
         #  1024 cycle = 1 tour de roue (= 2 Pi 1.5) -> Vitesse (cm / temps pour 1024 cycles).
         # the period of time between two 1 represent a run
         mvt_periods = get_continous_time_periods(is_running)
-        mvt_periods = self.merging_time_periods(time_periods=mvt_periods,
-                                                min_time_between_periods=0.5 * self.abf_sampling_rate)
-        print(f"mvt_periods {mvt_periods}")
+        mvt_periods = merging_time_periods(time_periods=mvt_periods,
+                                           min_time_between_periods=0.5 * self.abf.dataRate)
+
         speed_during_mvt_periods = []
         for period in mvt_periods:
             speed_during_mvt_periods.append(speed_by_time[period[0]:period[1] + 1])
         return mvt_periods, speed_during_mvt_periods, speed_by_time
 
-
-    def process_run_data(self, run_channel, abf, times_in_sec, frames_data, first_frame_index,
-                         abf_sampling_rate):
-        running_data = None
-        times_in_sec = times_in_sec[:-first_frame_index]
-        frames_data = frames_data[first_frame_index:]
-        threshold_value = 0.02
-        if abf_sampling_rate < 50000:
-            # frames_data represent the content of the abf channel that contains the frames
-            # the index stat at the first frame recorded, meaning the first value where the
-            # value is < 0.01
-            mask_frames_data = np.ones(len(frames_data), dtype="bool")
-            # we need to detect the frames manually, but first removing data between movies
-            selection = np.where(frames_data >= threshold_value)[0]
-            mask_selection = np.zeros(len(selection), dtype="bool")
-            pos = np.diff(selection)
-            # looking for continuous data between movies
-            to_keep_for_removing = np.where(pos == 1)[0] + 1
-            mask_selection[to_keep_for_removing] = True
-            selection = selection[mask_selection]
-            # we remove the "selection" from the frames data
-            mask_frames_data[selection] = False
-            frames_data = frames_data[mask_frames_data]
-            # len_frames_data_in_s = np.round(len(frames_data) / self.abf_sampling_rate, 3)
-
-            active_frames = np.linspace(0, len(frames_data), 12500).astype(int)
-            mean_diff_active_frames = np.mean(np.diff(active_frames)) / self.abf_sampling_rate
-            # print(f"mean diff active_frames {np.round(mean_diff_active_frames, 3)}")
-            if mean_diff_active_frames < 0.09:
-                raise Exception("mean_diff_active_frames < 0.09")
-        else:
-            binary_frames_data = np.zeros(len(frames_data), dtype="int8")
-            binary_frames_data[frames_data >= threshold_value] = 1
-            binary_frames_data[frames_data < threshold_value] = 0
-            # +1 due to the shift of diff
-            # contains the index at which each frame from the movie is matching the abf signal
-            # length should be 12500
-            active_frames = np.where(np.diff(binary_frames_data) == 1)[0] + 1
-
-        abf.setSweep(sweepNumber=0, channel=run_channel)
-        run_data = abf.sweepY
+    def process_run_data(self, run_channel):
+        self.abf.setSweep(sweepNumber=0, channel=run_channel)
+        run_data = self.abf.sweepY
         mvt_periods, speed_during_mvt_periods, speed_by_time = \
             self.detect_run_periods(run_data=run_data, min_speed=0.5)
-        speed_by_time = speed_by_time[active_frames]
+        speed_by_time = speed_by_time[self.active_frames]
 
         """
                Source: https://pynwb.readthedocs.io/en/latest/tutorials/domain/brain_observatory.html#sphx-glr-tutorials-domain-brain-observatory-py
@@ -528,7 +610,6 @@ class ConvertAbfToNWB(ConvertToNWB):
             unit='cm/s')
 
         self.nwbfile.add_acquisition(running_speed_time_series)
-
 
 
 def create_nwb_file(format_movie):
@@ -595,6 +676,10 @@ def create_nwb_file(format_movie):
     print(f'kwargs_nwb_file {kwargs_nwb_file}')
     nwb_file = NWBFile(**kwargs_nwb_file)
 
+    abf_converter = ConvertAbfToNWB(nwb_file)
+    abf_file_name = os.path.join(path_data, "p6_18_02_07_a001", "p6_18_02_07_001.abf")
+    abf_yaml_file_name = os.path.join(path_data, "p6_18_02_07_a001", "p6_18_02_07_a001_abf.yaml")
+    abf_converter.convert(abf_file_name=abf_file_name, abf_yaml_file_name=abf_yaml_file_name)
     # TODO: if yaml file stating which file to open with which instance of ConvertToNWB,
     #  use it, otherwise read a directory and depending on extension of the file and keywords
     #  using a yaml file that map those to an instance ConvertToNWB. There should be a default
@@ -611,7 +696,6 @@ def create_nwb_file(format_movie):
     suite2p_dir = os.path.join(path_data, "p6_18_02_07_a001", "suite2p")
     suite2p_rois_converter = ConvertSuite2PRoisToNWB(nwb_file)
     suite2p_rois_converter.convert(suite2p_dir=suite2p_dir)
-
 
     # TODO: use create_time_intervals(name, description='experimental intervals', id=None, columns=None, colnames=None)
     #  to create time_intervals using npy files or other file in which intervals are contained through a
