@@ -23,7 +23,10 @@ ConvertCIMovieToNWB :
     keyword : []
     keyword_to_exclude : []
     extension : []
-    value : ["external"]
+    value : ["tiff"]
+  ci_sampling_rate:
+    from_other_converter: ConvertAbfToNWB
+    value: ["sampling_rate_calcium_imaging"]
 
 
 ConvertSuite2PRoisToNWB:
@@ -36,21 +39,21 @@ ConvertSuite2PRoisToNWB:
 ConvertToNWB :
   metadata_yaml :
     keyword : ["data"]
-    keyword_to_exclude : []
+    keyword_to_exclude : ["abf"]
     extension : ["yaml", "yml"]
     value : []
 
-ConvertRasterplotToNWB :
-  rasterdur_file_name :
-    keyword: ["Raster"]
-    keyword_to_exclude: ["._"]
-    extension: ["mat"]
-    value: ["corrected_rasterdur"]
-  yaml_file_name:
-    keyword: ["data"]
-    keyword_to_exclude: ["default"]
-    extension: ["yaml"]
+ConvertAbfToNWB:
+  abf_yaml_file_name:
+    keyword: ["abf"]
+    keyword_to_exclude: []
+    extension: ["yaml", "yml"]
+    value: []
+  abf_file_name:
+    keyword: [""]
+    keyword_to_exclude: []
+    extension: ["abf"]
     value: []
 
 order :
-  [ConvertCIMovieToNWB, ConvertSuite2PRoisToNWB, ConvertRasterplotToNWB]
+  [ConvertAbfToNWB, ConvertCIMovieToNWB, ConvertSuite2PRoisToNWB]

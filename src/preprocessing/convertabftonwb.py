@@ -286,7 +286,7 @@ class ConvertAbfToNWB(ConvertToNWB):
             #       f"{1 / (median_bw_two_frames / self.abf.dataRate)} Hz")
             self.gap_indices = np.where(diff_active_frames > frames_gap_threshold)[0]
             # first we calculate the sampling rate of the movie
-            print(f"self.ci_frames_indices[0] {self.ci_frames_indices[0]}")
+            # print(f"self.ci_frames_indices[0] {self.ci_frames_indices[0]}")
             if len(self.gap_indices) == 0:
                 self.sampling_rate_calcium_imaging = ((self.timestamps_in_ms[self.ci_frames_indices[-1]] - \
                                                        self.timestamps_in_ms[self.ci_frames_indices[0]]) / 1000) / len(
@@ -333,7 +333,7 @@ class ConvertAbfToNWB(ConvertToNWB):
                                                                      'recorded after the pause, during calcium imaging'
                                                                      'recording. ')
                     for i, gap_index in enumerate(self.gap_indices):
-                        print(f"gap_index {gap_index}")
+                        # print(f"gap_index {gap_index}")
                         # gap_in_ms = self.timestamps_in_ms[self.ci_frames_indices[gap_index + 1]] - \
                         #              self.timestamps_in_ms[self.ci_frames_indices[gap_index]]
                         # gap_in_frames = (gap_in_ms / 1000) * self.sampling_rate_calcium_imaging

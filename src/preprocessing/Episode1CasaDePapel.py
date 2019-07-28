@@ -120,7 +120,7 @@ class Episode1CasaDePapel:
 
         self.check_data() # On vérifie qu'on peut appliquer la fonction
         self.get_all_data_from_nwb() # On récupère les données
-
+        # TODO: Francois the comments should be in english ;)
         # On met les données sous la forme (ms_to_analyse, param) pour pouvoir réutiliser
         # les fonctions de main_hippocampal ...
         # Par contre ce sont des dictionnaires et non des classes => remplacement des truc.machin par truc["machin"]

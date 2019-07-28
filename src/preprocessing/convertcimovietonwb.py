@@ -14,9 +14,9 @@ from pynwb.device import Device
 
 class ConvertCIMovieToNWB(ConvertToNWB):
 
-    def __init__(self, nwb_file, ci_sampling_rate):
+    def __init__(self, nwb_file):
         super().__init__(nwb_file)
-        self.ci_sampling_rate = ci_sampling_rate
+        self.ci_sampling_rate = None
         # dict with key an int representing the frame index after which add frames.
         # the value is the number of frames to add (integer)
         self.frames_to_add = dict()
@@ -71,14 +71,14 @@ class ConvertCIMovieToNWB(ConvertToNWB):
 
         # ### setting parameters ####
         formats_implemented = ["external", "tiff"]
-        if "format" not in kwargs:
+        if not kwargs.get("format"):
             raise Exception(f"'format' argument should be pass to convert function in class {self.__class__.__name__}")
         elif kwargs["format"] not in formats_implemented:
             raise Exception(f"'format' argument should have one of these values {formats_implemented} "
                             f"for the convert function in class {self.__class__.__name__}")
         movie_format = kwargs["format"]
 
-        if "motion_corrected_file_name" not in kwargs:
+        if not kwargs.get("motion_corrected_file_name"):
             raise Exception(f"'motion_corrected_file_name' attribute should be pass to convert "
                             f"function in class {self.__class__.__name__}")
         motion_corrected_file_name = kwargs["motion_corrected_file_name"]
@@ -101,11 +101,16 @@ class ConvertCIMovieToNWB(ConvertToNWB):
             raise Exception(f"'yaml_file_name' attribute should be pass to convert "
                             f"function in class {self.__class__.__name__}")
 
+        # a calcium imaging rate has to be given, either trought the yaml file, either as argument
+        # self.ci_sampling_rate can be obtained by the abf_converter
         if "imaging_rate" in yaml_data:
-            imaging_rate = yaml_data["imaging_rate"]
+            self.ci_sampling_rate = yaml_data["c"]
+        elif "ci_sampling_rate" in kwargs:
+            self.ci_sampling_rate = kwargs["ci_sampling_rate"]
         else:
             raise Exception(f"No 'imaging_rate' provided for movie {motion_corrected_file_name} in the yaml file "
-                            f"{kwargs['yaml_file_name']}")
+                            f"{kwargs['yaml_file_name']} or throught argument 'ci_sampling_rate' to function convert() "
+                            f"of the class {self.__class__.__name__}")
 
         if "indicator" in yaml_data:
             indicator = yaml_data["indicator"]
@@ -160,7 +165,7 @@ class ConvertCIMovieToNWB(ConvertToNWB):
                                                            description='a very interesting part of the brain',
                                                            device=device,
                                                            excitation_lambda=excitation_lambda,
-                                                           imaging_rate=imaging_rate,
+                                                           imaging_rate=self.ci_sampling_rate,
                                                            indicator=indicator,
                                                            location=image_plane_location)
 
@@ -171,7 +176,8 @@ class ConvertCIMovieToNWB(ConvertToNWB):
             motion_corrected_img_series = TwoPhotonSeries(name='motion_corrected_ci_movie', dimension=[dim_x, dim_y],
                                                           data=tiff_movie,
                                                           imaging_plane=imaging_plane,
-                                                          starting_frame=[0], format=movie_format, rate=imaging_rate)
+                                                          starting_frame=[0], format=movie_format,
+                                                          rate=self.ci_sampling_rate)
             if original_movie_file_name is not None:
                 original_tiff_movie = self.load_tiff_movie_in_memory(original_movie_file_name)
                 dim_y, dim_x = original_tiff_movie.shape[1:]
@@ -179,7 +185,7 @@ class ConvertCIMovieToNWB(ConvertToNWB):
                                                       data=original_tiff_movie,
                                                       imaging_plane=imaging_plane,
                                                       starting_frame=[0], format=movie_format,
-                                                      rate=imaging_rate)
+                                                      rate=self.ci_sampling_rate)
         else:
             im = PIL.Image.open(motion_corrected_file_name)
             n_frames = len(list(ImageSequence.Iterator(im)))
@@ -187,7 +193,8 @@ class ConvertCIMovieToNWB(ConvertToNWB):
             motion_corrected_img_series = TwoPhotonSeries(name='motion_corrected_ci_movie', dimension=[dim_x, dim_y],
                                                           external_file=[motion_corrected_file_name],
                                                           imaging_plane=imaging_plane,
-                                                          starting_frame=[0], format=movie_format, rate=imaging_rate)
+                                                          starting_frame=[0], format=movie_format,
+                                                          rate=self.ci_sampling_rate)
             if original_movie_file_name is not None:
                 im = PIL.Image.open(original_movie_file_name)
                 dim_y, dim_x = np.array(im).shape
@@ -196,7 +203,7 @@ class ConvertCIMovieToNWB(ConvertToNWB):
                                                       external_file=[original_movie_file_name],
                                                       imaging_plane=imaging_plane,
                                                       starting_frame=[0], format=movie_format,
-                                                      rate=imaging_rate)
+                                                      rate=self.ci_sampling_rate)
 
         self.nwb_file.add_acquisition(motion_corrected_img_series)
         if original_movie_file_name is not None:

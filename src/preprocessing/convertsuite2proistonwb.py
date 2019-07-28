@@ -65,6 +65,10 @@ class ConvertSuite2PRoisToNWB(ConvertToNWB):
         if format == "external":
             if image_series.external_file[0].endswith(".tiff") or \
                     image_series.external_file[0].endswith(".tif"):
+                # TODO: fix this bug, so far external loading, taking in consideration frames_to_add is not possible
+                #  either copy the code from ConvertCiMovieToNWB reconstructing frames_to_add from intervals
+                #  or find another solution. Another solution would be to put on the yaml as argument
+                #  frames_to_add but using the attribute from the ConvertMovie instance. s
                 ci_movie = ConvertCIMovieToNWB.load_tiff_movie_in_memory(image_series.external_file[0])
             else:
                 raise Exception(f"Calcium imaging format not supported yet {image_series.external_file[0]}")

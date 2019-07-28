@@ -4,6 +4,9 @@ import cicada_data_to_nwb
 import utils
 import pathlib
 
+"""
+To excecute CICADA preprocessing module from command line
+"""
 
 if len(sys.argv) == 1:
     raise Exception("Please provide path to a directory containing sessions or to all paths leading "
