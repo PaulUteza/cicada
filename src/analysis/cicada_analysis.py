@@ -17,6 +17,7 @@ class CicadaAnalysis:
             data_to_analyse = [data_to_analyse]
         self.data_to_analyse = data_to_analyse
         self.data_format = data_format
+        # construct AnalysisTree instead
         self.family_id = family_id
 
     def check_data(self):

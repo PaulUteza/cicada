@@ -266,7 +266,8 @@ def load_nwb_from_data(dir_path, default_convert_to_nwb_yml_file):
                 # If files were found respecting every element, add the whole path to pass them as arguments
                 if filtered_list:
                     arg_dict[arg] = os.path.join(dir_path, filtered_list[0])
-                    if "mat" in home_data[class_name][arg].get("extension") and home_data[class_name][arg].get("value"):
+                    if home_data[class_name][arg].get("extension") in ["mat", "npz"] and \
+                            home_data[class_name][arg].get("value"):
                         arg_dict[arg] = [arg_dict[arg]] + list(home_data[class_name][arg].get("value"))
 
                 # If no file found, put the argument at None
