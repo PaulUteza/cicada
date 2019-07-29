@@ -1,4 +1,4 @@
-ConvertCIMovieToNWB :
+ConvertCiMovieToNWB :
   non_motion_corrected_file_name :
     keyword : ["non_corrected"]
     keyword_to_exclude : []
@@ -12,7 +12,7 @@ ConvertCIMovieToNWB :
   motion_corrected_file_name :
     keyword : ["corrected"]
     keyword_to_exclude : ["non"]
-    extension : ["tif"]
+    extension : ["tif", "tiff"]
     value : []
   yaml_file_name :
     keyword : ["data"]
@@ -29,7 +29,7 @@ ConvertCIMovieToNWB :
     value: ["sampling_rate_calcium_imaging"]
 
 
-ConvertSuite2PRoisToNWB:
+ConvertSuite2pRoisToNWB:
   suite2p_dir :
     keyword : ["suite2p"]
     keyword_to_exclude : []
@@ -56,4 +56,4 @@ ConvertAbfToNWB:
     value: []
 
 order :
-  [ConvertAbfToNWB, ConvertCIMovieToNWB, ConvertSuite2PRoisToNWB]
+  [ConvertAbfToNWB, ConvertCiMovieToNWB, ConvertSuite2pRoisToNWB]

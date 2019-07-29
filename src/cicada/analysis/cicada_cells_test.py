@@ -1,8 +1,8 @@
-from cicada_analysis import CicadaAnalysis
+from cicada.analysis.cicada_analysis import CicadaAnalysis
 
 
 class CicadaCellsTest(CicadaAnalysis):
-    def __init__(self, data_to_analyse, family_id=None, data_format="NWB"):
+    def __init__(self):
         """
         A list of
         :param data_to_analyse: list of data_structure
@@ -10,7 +10,7 @@ class CicadaCellsTest(CicadaAnalysis):
         the analysis is a family in its own.
         :param data_format: indicate the type of data structure. for NWB, NIX
         """
-        super().__init__(data_to_analyse=data_to_analyse, family_id=family_id, data_format=data_format)
+        super().__init__(name="print_n_cells", short_description="print the number of cells")
 
     def check_data(self):
         """

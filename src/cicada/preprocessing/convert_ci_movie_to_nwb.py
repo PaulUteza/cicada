@@ -12,7 +12,7 @@ import hdf5storage
 from pynwb.base import TimeSeries
 from pynwb.device import Device
 
-class ConvertCIMovieToNWB(ConvertToNWB):
+class ConvertCiMovieToNWB(ConvertToNWB):
 
     def __init__(self, nwb_file):
         super().__init__(nwb_file)
@@ -104,7 +104,7 @@ class ConvertCIMovieToNWB(ConvertToNWB):
         # a calcium imaging rate has to be given, either trought the yaml file, either as argument
         # self.ci_sampling_rate can be obtained by the abf_converter
         if "imaging_rate" in yaml_data:
-            self.ci_sampling_rate = yaml_data["c"]
+            self.ci_sampling_rate = yaml_data["imaging_rate"]
         elif "ci_sampling_rate" in kwargs:
             self.ci_sampling_rate = kwargs["ci_sampling_rate"]
         else:

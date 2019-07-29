@@ -155,7 +155,34 @@ def create_nwb_file(yaml_path):
     #  to create time_intervals using npy files or other file in which intervals are contained through a
     #  an instance of ConvertToNWB and the yaml_file for extension and keywords
 
+def class_name_to_file_name(class_name):
+    """
+    Transform the string representing a class_name, by removing the upper case letters, and inserting
+    before them an underscore if 2 upper case letters don't follow. Underscore are also inserted before numbers
+    ex: ConvertAbfToNWB -> convert_abf_to_nwb
+    :param class_name: string
+    :return:
+    """
 
+    if len(class_name) == 1:
+        return class_name.lower()
+
+    new_class_name = class_name[0]
+    for index in range(1, len(class_name)):
+        letter = class_name[index]
+        if letter.isdigit():
+            new_class_name = new_class_name + "_" + letter
+            continue
+        if not letter.isupper():
+            new_class_name = new_class_name + letter
+            continue
+        # first we check if the previous letter was not upper
+        if class_name[index - 1].isupper():
+            new_class_name = new_class_name + letter
+            continue
+        new_class_name = new_class_name + "_" + letter
+
+    return new_class_name.lower()
 
 def load_nwb_from_data(dir_path, default_convert_to_nwb_yml_file):
 
@@ -216,10 +243,8 @@ def load_nwb_from_data(dir_path, default_convert_to_nwb_yml_file):
             # in a class in order would not have been added to the yaml file
             continue
         # Get classname then instantiate it
-        # TODO: make a function that a class name and return the file name
-        #  transforming upper letters to lower and adding an underscore before upper letters if not 2 upper letters
-        #  in a row, that way the file name will be more readable.
-        module_imported = importlib.import_module(class_name.lower())
+        module_name = class_name_to_file_name(class_name=class_name)
+        module_imported = importlib.import_module(module_name)
         class_instance = getattr(module_imported, class_name)
         # class_instance = getattr(test_cicada_test_paul, class_name)
         converter = class_instance(nwb_file)
@@ -277,7 +302,8 @@ def load_nwb_from_data(dir_path, default_convert_to_nwb_yml_file):
         converter.convert(**arg_dict)
 
     # Create NWB file in the data folder
-    nwb_files_dir = "/Users/pappyhammer/Documents/academique/these_inmed/robin_michel_data/data/nwb_files/"
+    # nwb_files_dir = "/Users/pappyhammer/Documents/academique/these_inmed/robin_michel_data/data/nwb_files/"
+    nwb_files_dir = "/media/julien/Not_today/hne_not_today/data/nwb_files/"
     nwb_name = utils.path_leaf(dir_path) + ".nwb"
     print(f"Before NWBHDF5IO write: nwb_file.epoch_tags {nwb_file.epoch_tags}")
     with NWBHDF5IO(os.path.join(nwb_files_dir, nwb_name), 'w') as io:

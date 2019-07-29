@@ -1,9 +1,6 @@
 import os
 import pathlib
 from pynwb import NWBHDF5IO
-from convertcimovietonwb import ConvertCIMovieToNWB
-from convertsuite2proistonwb import ConvertSuite2PRoisToNWB
-from convertabftonwb import ConvertAbfToNWB
 from cicada_data_to_nwb import load_nwb_from_data
 import utils
 
@@ -31,8 +28,8 @@ https://stackoverflow.com/questions/9806963/how-to-use-pythons-import-function-p
 
 
 def load_nwb_file():
-    root_path = "/Users/pappyhammer/Documents/academique/these_inmed/robin_michel_data/"
-    # root_path = "/media/julien/Not_today/hne_not_today/"
+    # root_path = "/Users/pappyhammer/Documents/academique/these_inmed/robin_michel_data/"
+    root_path = "/media/julien/Not_today/hne_not_today/"
     path_data = os.path.join(root_path, "data/nwb_files/")
     io = NWBHDF5IO(os.path.join(path_data, 'p6_18_02_07_a001.nwb'), 'r')
     nwb_file = io.read()
@@ -87,15 +84,15 @@ def load_nwb_file():
 def cicada_pre_processing_main():
     # interesting page: https://nwb-schema.readthedocs.io/en/latest/format.html#sec-labmetadata
     # IntervalSeries: used for interval periods
-    test_paul_code = False
+    test_paul_code = True
 
     if not test_paul_code:
         # create_nwb_file(format_movie="tiff")  # "tiff"
 
         load_nwb_file()
     else:
-        # root_path = "/media/julien/Not_today/hne_not_today/"
-        root_path = "/Users/pappyhammer/Documents/academique/these_inmed/robin_michel_data/"
+        root_path = "/media/julien/Not_today/hne_not_today/"
+        # root_path = "/Users/pappyhammer/Documents/academique/these_inmed/robin_michel_data/"
         path_data = os.path.join(root_path, "data_cicada_format")
         default_convert_to_nwb_yml_file = "default.yaml"
         p = pathlib.Path(path_data)

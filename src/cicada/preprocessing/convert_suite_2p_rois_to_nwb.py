@@ -5,9 +5,9 @@ from PIL import ImageSequence
 import PIL
 import PIL.Image as pil_image
 import os
-from convertcimovietonwb import ConvertCIMovieToNWB
+from convert_ci_movie_to_nwb import ConvertCiMovieToNWB
 
-class ConvertSuite2PRoisToNWB(ConvertToNWB):
+class ConvertSuite2pRoisToNWB(ConvertToNWB):
 
     def __init__(self, nwb_file):
         super().__init__(nwb_file)
@@ -69,7 +69,7 @@ class ConvertSuite2PRoisToNWB(ConvertToNWB):
                 #  either copy the code from ConvertCiMovieToNWB reconstructing frames_to_add from intervals
                 #  or find another solution. Another solution would be to put on the yaml as argument
                 #  frames_to_add but using the attribute from the ConvertMovie instance. s
-                ci_movie = ConvertCIMovieToNWB.load_tiff_movie_in_memory(image_series.external_file[0])
+                ci_movie = ConvertCiMovieToNWB.load_tiff_movie_in_memory(image_series.external_file[0])
             else:
                 raise Exception(f"Calcium imaging format not supported yet {image_series.external_file[0]}")
         else:

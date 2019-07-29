@@ -1,25 +1,51 @@
-class CicadaAnalysis:
+from abc import ABC, abstractmethod, abstractproperty
+
+
+class CicadaAnalysis(ABC):
     """
-    A generic class that should be inherit in order to create a specific analyse
+    An abstract class that should be inherit in order to create a specific analyse
 
     """
-    def __init__(self, data_to_analyse, family_id=None, data_format="NWB"):
+    def __init__(self, name, short_description, family_id=None, long_description=None):
         """
         A list of
-        :param data_to_analyse: list of data_structure
+        :param name:
+        :param short_description: short string that describe what the analysis is about
+        used to be displayed in the GUI among other things
         :param family_id: family_id indicated to which family of analysis this class belongs. If None, then
         the analysis is a family in its own.
-        :param data_format: indicate the type of data structure. for NWB, NIX
+        :param long_description: string
         """
+        super().__init__()
         # TODO: when the exploratory GUI will be built, think about passing in argument some sort of connector
         #  to the GUI in order to communicate with it and get the results displayed if needed
+        self.short_description = short_description
+        self.long_description = long_description
+        self.family_id = family_id
+        self.name = name
+        # self.data_to_analyse = None
+        # self.data_format = None
+
+    # @abstractproperty
+    # def data_to_analyse(self):
+    #     pass
+    #
+    # @abstractproperty
+    # def data_format(self):
+    #     pass
+
+    def set_data(self, data_to_analyse, data_format="NWB"):
+        """
+                A list of
+                :param data_to_analyse: list of data_structure
+                :param data_format: indicate the type of data structure. for NWB, NIX
+        """
         if not isinstance(data_to_analyse, list):
             data_to_analyse = [data_to_analyse]
         self.data_to_analyse = data_to_analyse
         self.data_format = data_format
-        # construct AnalysisTree instead
-        self.family_id = family_id
 
+    @abstractmethod
     def check_data(self):
         """
         Check the data given one initiating the class and return True if the data given allows the analysis
@@ -43,6 +69,7 @@ class CicadaAnalysis:
         """
         pass
 
+    @abstractmethod
     def run_analysis(self, **kwargs):
         """
         Run the analysis
