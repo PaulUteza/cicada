@@ -1,10 +1,10 @@
 from gui.cicada_analysis_tree_gui_test import AnalysisTreeApp
 import sys
-from qtpy.QtWidgets import QApplication
+# from qtpy.QtWidgets import QApplication
 from qtpy.QtWidgets import *
-from qtpy.QtCore import QAbstractItemModel, QModelIndex, Qt
-from qtpy.QtGui import QPalette, QColor
-import qdarkstyle
+# from qtpy.QtCore import QAbstractItemModel, QModelIndex, Qt
+# from qtpy.QtGui import QPalette, QColor
+# import qdarkstyle
 import os
 
 if __name__ == '__main__':
@@ -42,33 +42,7 @@ if __name__ == '__main__':
     with open(file_name, "r", encoding='UTF-8') as file:
         dark_style_cicada_style_sheet = file.read()
 
-#     tree_view_branch_style = """
-#
-# QTreeView::branch::closed::has-children {
-#     image: url(cicada/gui/icons/svg/cicada_closed.svg);
-# }
-#
-# QTreeView::branch::open::has-children {
-#     image: url(cicada/gui/icons/svg/cicada_open.svg);
-# }
-#
-#         """
-#     dark_style_style_sheet = tree_view_branch_style + dark_style_style_sheet
     app.setStyleSheet(dark_style_cicada_style_sheet)
-    # print(dark_style_cicada_style_sheet)
-    # https://doc.qt.io/archives/qt-4.8/stylesheet-examples.html#customizing-qtreeview
-    #
-    # app.setStyleSheet("""
-    #
-    #         QTreeView::branch::closed::has-children {
-    #             image: url(cicada/gui/icons/cicada_closed.svg);
-    #         }
-    #
-    #         QTreeView::branch::open::has-children {
-    #             image: url(cicada/gui/icons/cicada.svg);
-    #         }
-    #
-    #     """)
 
     ex = AnalysisTreeApp()
     sys.exit(app.exec_())
