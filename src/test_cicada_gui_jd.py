@@ -1,8 +1,74 @@
 from gui.cicada_analysis_tree_gui_test import AnalysisTreeApp
 import sys
 from qtpy.QtWidgets import QApplication
+from qtpy.QtWidgets import *
+from qtpy.QtCore import QAbstractItemModel, QModelIndex, Qt
+from qtpy.QtGui import QPalette, QColor
+import qdarkstyle
+import os
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+
+    # set the environment variable to use a specific wrapper
+    # it can be set to PyQt, PyQt5, PySide or PySide2 (not implemented yet)
+    os.environ['PYQTGRAPH_QT_LIB'] = 'PyQt5'
+
+    # from https://gist.github.com/mstuttgart/37c0e6d8f67a0611674e08294f3daef7
+    # dark_palette = QPalette()
+    #
+    # dark_palette.setColor(QPalette.Window, QColor(53, 53, 53))
+    # dark_palette.setColor(QPalette.WindowText, Qt.white)
+    # dark_palette.setColor(QPalette.Base, QColor(25, 25, 25))
+    # dark_palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
+    # dark_palette.setColor(QPalette.ToolTipBase, Qt.white)
+    # dark_palette.setColor(QPalette.ToolTipText, Qt.white)
+    # dark_palette.setColor(QPalette.Text, Qt.white)
+    # dark_palette.setColor(QPalette.Button, QColor(53, 53, 53))
+    # dark_palette.setColor(QPalette.ButtonText, Qt.white)
+    # dark_palette.setColor(QPalette.BrightText, Qt.red)
+    # dark_palette.setColor(QPalette.Link, QColor(42, 130, 218))
+    # dark_palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
+    # dark_palette.setColor(QPalette.HighlightedText, Qt.black)
+    #
+    # app.setPalette(dark_palette)
+    #
+    # app.setStyleSheet("QToolTip { color: #ffffff; background-color: #2a82da; border: 1px solid white; }")
+
+    # dark_style_style_sheet = qdarkstyle.load_stylesheet_from_environment(is_pyqtgraph=True)
+    file_name = os.path.join(f"cicada/gui/cicada_qdarkstyle.css")
+    # with open(file_name, "w", encoding='UTF-8') as file:
+    #     file.write(dark_style_style_sheet)
+    with open(file_name, "r", encoding='UTF-8') as file:
+        dark_style_cicada_style_sheet = file.read()
+
+#     tree_view_branch_style = """
+#
+# QTreeView::branch::closed::has-children {
+#     image: url(cicada/gui/icons/svg/cicada_closed.svg);
+# }
+#
+# QTreeView::branch::open::has-children {
+#     image: url(cicada/gui/icons/svg/cicada_open.svg);
+# }
+#
+#         """
+#     dark_style_style_sheet = tree_view_branch_style + dark_style_style_sheet
+    app.setStyleSheet(dark_style_cicada_style_sheet)
+    # print(dark_style_cicada_style_sheet)
+    # https://doc.qt.io/archives/qt-4.8/stylesheet-examples.html#customizing-qtreeview
+    #
+    # app.setStyleSheet("""
+    #
+    #         QTreeView::branch::closed::has-children {
+    #             image: url(cicada/gui/icons/cicada_closed.svg);
+    #         }
+    #
+    #         QTreeView::branch::open::has-children {
+    #             image: url(cicada/gui/icons/cicada.svg);
+    #         }
+    #
+    #     """)
+
     ex = AnalysisTreeApp()
     sys.exit(app.exec_())

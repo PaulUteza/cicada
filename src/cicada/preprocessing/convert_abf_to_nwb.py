@@ -3,7 +3,7 @@ import numpy as np
 import yaml
 import pyabf
 from pynwb.base import TimeSeries
-from utils import get_continous_time_periods, merging_time_periods
+from cicada.preprocessing.utils import get_continous_time_periods, merging_time_periods, class_name_to_file_name
 
 class ConvertAbfToNWB(ConvertToNWB):
 

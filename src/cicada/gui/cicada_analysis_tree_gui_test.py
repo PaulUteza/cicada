@@ -1,23 +1,66 @@
 from qtpy.QtWidgets import *
 from qtpy.QtCore import QAbstractItemModel, QModelIndex, Qt
-# from qtpy import QtCore, QtGui
-from cicada.analysis.cicada_cells_test import CicadaCellsTest
+from qtpy import QtCore, QtGui
+from sortedcontainers import SortedDict
+from cicada.preprocessing.utils import class_name_to_file_name
+import importlib
 
+
+"""
+Interesting exemples:
+https://www.programcreek.com/python/example/101690/PyQt5.QtCore.Qt.CustomContextMenu
+https://github.com/EternityForest/mdNotes/blob/master/pyscrapbook/__main__.py
+https://stackoverflow.com/questions/45035515/qtreeview-change-icon-on-row-icon-click
+
+"""
 
 class TreeItem(object):
     # TODO: add a function that allows to update all analyses function contained in the tree
     #  given them the new data and data_format, and using check_data deactivate the a given analysis
-    def __init__(self, cicada_analysis=None, parent=None):
+    def __init__(self, family_section=None, cicada_analysis=None, parent=None):
         self.parent_item = parent
-        self.item_analysis = cicada_analysis
-        if self.item_analysis is None:
-            # then we define the header
-            self.item_data = ("Analysis", "Description")
+        self.cicada_analysis = cicada_analysis
+        self.family_section = family_section
+        if self.cicada_analysis is None:
+            if family_section is None:
+                # then we define the header
+                self.item_data = ("Analysis", "Description")
+            else:
+                self.item_data = (family_section, "")
         else:
-            self.item_data = (self.item_analysis.name, self.item_analysis.short_description)
+            self.item_data = (self.cicada_analysis.name, self.cicada_analysis.short_description)
         self.child_items = []
+        self.data_valid = False
+
+    def set_data(self, data_to_analyse, data_format):
+        for child_item in self.child_items:
+            child_item.set_data(self, data_to_analyse, data_format)
+        self.check_data()
+
+    def check_data(self):
+        '''
+        Check if the data to analyse if valid for a given analysis
+        :param data_to_check:
+        :param format_data:
+        :return:
+        '''
+        # check if data is valid for at least one child
+        one_child_ok = False
+        for child_item in self.child_items:
+            child_item.check_data()
+            if child_item.data_valid:
+                one_child_ok = True
+
+        if self.cicada_analysis is None:
+            if one_child_ok:
+                self.data_valid = True
+            else:
+                self.data_valid = False
+        else:
+            self.data_valid = self.cicada_analysis.check_data()
 
     def append_child(self, item):
+        # print("append_child")
         self.child_items.append(item)
 
     def child(self, row):
@@ -31,6 +74,18 @@ class TreeItem(object):
 
     def data(self, column):
         try:
+            # code that can be used to produce an icon
+            # then a list should be return with icon and text
+            # and then should be handled by the fct data() in QAnalysisTreeModel
+            # item = QtGui.QStandardItem()
+            # item.setData("titi", role=QtCore.Qt.UserRole)
+            # icon_path = "cicada/gui/icons/like.svg"
+            # # if os.path.isdir(path):
+            # #     icon_path = DIR_ICON_PATH
+            # icon = QtGui.QIcon(icon_path)
+            # item.setText("toto")
+            # item.setIcon(icon)
+            # return icon
             return self.item_data[column]
         except IndexError:
             return None
@@ -46,8 +101,77 @@ class TreeItem(object):
 
 
 class QAnalysisTreeView(QTreeView):
-    def __init__(self, parent = None):
+    def __init__(self, tree_item, parent = None):
         QTreeView.__init__(self)
+        # in case we want to hide the header
+        # self.setHeaderHidden(True)
+        # same height for all the rows
+        self.setUniformRowHeights(True)
+        # not editable
+        self.setEditTriggers(QAbstractItemView.NoEditTriggers)
+
+        self.tree_item = tree_item
+        self.setAutoFillBackground(True)
+        # palette = self.palette()
+        # palette.setColor(self.backgroundRole(), Qt.black)
+        # self.setPalette(palette)
+
+        # w = QtGui.QLineEdit()
+        # one way of changing the font
+        # palette = self.palette()
+        # palette.setColor(QtGui.QPalette.Text, QtCore.Qt.red)
+        # self.setPalette(palette)
+        # font = QtGui.QFont("Times", 15, QtGui.QFont.Bold)
+        # self.setFont(font)
+
+        # in case to change the arrow
+        # theItem.setChildIndicatorPolicy(QTreeWidgetItem.ShowIndicator)
+
+    # used to draw the branches on the first column
+
+    # def mouseDoubleClickEvent(self, event):
+    #     # QMouseEvent
+    #     print(f'mouseDoubleClickEvent {event}')
+
+    def drawBranches(self, painter, rect, index):
+        QTreeView.drawBranches(self, painter, rect, index)
+        # # print(f"drawBranches index {index.row()}")
+        # print(f"internalPointer {index.internalPointer()}")
+        # # instance of TreeItem
+        # tree_item = index.internalPointer()
+        # tree_model = index.model()
+        #
+        # if index.row() == 0:
+        #     painter.fillRect(rect, Qt.black)
+        # else:
+        #     painter.fillRect(rect, Qt.black)
+        # if tree_item.family_section is not None:
+        #     icon_path = "cicada/gui/icons/like.svg"
+        #     # icon = QtGui.QIcon(icon_path)
+        #     pixmap = QtGui.QPixmap(icon_path)
+        #     painter.drawPixmap(rect, pixmap) #, sourceRect=rect)
+        # # else
+        # #     painter->fillRect(rect, Qt.green)
+        #
+        # QTreeView.drawBranches(self, painter, rect, index)
+
+    def isIndexHidden(self, q_model_index):
+        """
+        Avoid to select the line that display the family name
+        :param q_model_index:
+        :return:
+        """
+
+        # return QTreeView.isIndexHidden(self, q_model_index)
+        tree_item = q_model_index.internalPointer()
+        if tree_item.family_section is None:
+            return not tree_item.data_valid
+        else:
+            return False
+
+    # def setSelection(self, rect, command):
+    #     print(f"command {command}")
+    #     return
 
 
 class QAnalysisTreeModel(QAbstractItemModel):
@@ -63,13 +187,63 @@ class QAnalysisTreeModel(QAbstractItemModel):
             return self.rootItem.column_count()
 
     def data(self, index, role):
+        """
+
+        :param index:
+        :param role:
+        :return:
+        """
+        """
+        Different roles:
+        The general purpose roles (and the associated types) are:
+
+        Constant	Value	Description
+        Qt::DisplayRole	0	The key data to be rendered in the form of text. (QString)
+        Qt::DecorationRole	1	The data to be rendered as a decoration in the form of an icon. (QColor, QIcon or QPixmap)
+        Qt::EditRole	2	The data in a form suitable for editing in an editor. (QString)
+        Qt::ToolTipRole	3	The data displayed in the item's tooltip. (QString)
+        Qt::StatusTipRole	4	The data displayed in the status bar. (QString)
+        Qt::WhatsThisRole	5	The data displayed for the item in "What's This?" mode. (QString)
+        Qt::SizeHintRole	13	The size hint for the item that will be supplied to views. (QSize)
+        Roles describing appearance and meta data (with associated types):
+        
+        Constant	Value	Description
+        Qt::FontRole	6	The font used for items rendered with the default delegate. (QFont)
+        Qt::TextAlignmentRole	7	The alignment of the text for items rendered with the default delegate. (Qt::AlignmentFlag)
+        Qt::BackgroundRole	8	The background brush used for items rendered with the default delegate. (QBrush)
+        Qt::BackgroundColorRole	8	This role is obsolete. Use BackgroundRole instead.
+        Qt::ForegroundRole	9	The foreground brush (text color, typically) used for items rendered with the default delegate. (QBrush)
+        Qt::TextColorRole	9	This role is obsolete. Use ForegroundRole instead.
+        Qt::CheckStateRole	10	This role is used to obtain the checked state of an item. (Qt::CheckState)
+        Qt::InitialSortOrderRole	14	This role is used to obtain the initial sort order of a header view section. (Qt::SortOrder). This role was introduced in Qt 4.8.
+        Accessibility roles (with associated types):
+        
+        Constant	Value	Description
+        Qt::AccessibleTextRole	11	The text to be used by accessibility extensions and plugins, such as screen readers. (QString)
+        Qt::AccessibleDescriptionRole	12	A description of the item for accessibility purposes. (QString)
+        User roles:
+        
+        Constant	Value	Description
+        Qt::UserRole	32	The first role that can be used for application-specific purposes.
+        """
         if not index.isValid():
             return None
+        # print(f"role {role}")
+        # print(f"Qt.UserRole {Qt.UserRole}")
+        if role == Qt.DecorationRole:
+            item = index.internalPointer()
+            return item.data(index.column())
 
+        item = index.internalPointer()
+
+        if (role == Qt.ForegroundRole) and (not item.data_valid):
+            color = QtGui.QColor()
+            color.setRgb(54, 54, 54)
+            return QtGui.QBrush(color)
         if role != Qt.DisplayRole:
             return None
 
-        item = index.internalPointer()
+        # print(f"role {role} {Qt.DecorationRole}")
 
         return item.data(index.column())
 
@@ -123,42 +297,6 @@ class QAnalysisTreeModel(QAbstractItemModel):
 
         return parent_item.child_count()
 
-    def setupModelData(self, lines, parent):
-        parents = [parent]
-        indentations = [0]
-
-        number = 0
-
-        while number < len(lines):
-            position = 0
-            while position < len(lines[number]):
-                if lines[number][position] != ' ':
-                    break
-                position += 1
-
-            lineData = lines[number][position:].trimmed()
-
-            if lineData:
-                # Read the column data from the rest of the line.
-                columnData = [s for s in lineData.split('\t') if s]
-
-                if position > indentations[-1]:
-                    # The last child of the current parent is now the new
-                    # parent unless the current parent has no children.
-
-                    if parents[-1].childCount() > 0:
-                        parents.append(parents[-1].child(parents[-1].childCount() - 1))
-                        indentations.append(position)
-
-                else:
-                    while position < indentations[-1] and len(parents) > 0:
-                        parents.pop()
-                        indentations.pop()
-
-                # Append a new item to the current parent's list of children.
-                parents[-1].appendChild(TreeItem(columnData, parents[-1]))
-
-            number += 1
 
 class AnalysisTreeApp(QWidget):
     def __init__(self):
@@ -166,60 +304,178 @@ class AnalysisTreeApp(QWidget):
         self.title = 'analysis tree test'
         self.left = 10
         self.top = 10
-        self.width = 640
+        self.width = 600
         self.height = 240
         self.dataGroupBox = None
         self.dataView = None
 
         self.init_ui()
+        # self.setStyleSheet("QLineEdit { background-color: yellow }")
+
+    def doubleClickedItem(self, idx):
+        if not idx.isValid():
+            return
+        # idx instance of PyQt5.QtCore.QModelIndex
+
+        # getting the TreeItem that has been double-clicked
+        tree_item = idx.internalPointer()
+        if tree_item.family_section is not None:
+            # means the user clicked on the family name
+            return
+
+        if tree_item.cicada_analysis is not None and tree_item.data_valid:
+            # TODO: send the analysis instance to the 3rd part of the GUI, GO Francois !!
+            print(f"2x click on {tree_item.cicada_analysis.name}")
+
+
 
     def init_ui(self):
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
 
-        self.dataGroupBox = QGroupBox("Analysis")
-        self.dataView = QAnalysisTreeView()
+        self.dataGroupBox = QGroupBox("")
+
+        model = self.create_tree_model(self)
+
+        self.dataView = QAnalysisTreeView(tree_item = model.rootItem)
         # self.dataView.setRootIsDecorated(False)
         self.dataView.setAlternatingRowColors(True)
+        self.dataView.doubleClicked.connect(self.doubleClickedItem)
 
         dataLayout = QHBoxLayout()
         dataLayout.addWidget(self.dataView)
         self.dataGroupBox.setLayout(dataLayout)
 
-        model = self.create_model(self)
         self.dataView.setModel(model)
-        # self.add_analysis(model, "sequences", 'Find sequences')
-        # self.add_analysis(model, 'assemblies', 'Find assemblies')
-        # self.add_analysis(model, 'ISI', 'Interval spikes interval')
+
+        # work to add icon # TODO: find a way to do it with QAnalysisTreeModel QAbstractItemModel
+        # source_model = QtGui.QStandardItemModel()
+        # self.dataView.setModel(source_model)
+        #
+        # item = QtGui.QStandardItem()
+        # item.setData("titi", role=QtCore.Qt.UserRole)
+        # icon_path = "cicada/gui/icons/like.svg"
+        # # if os.path.isdir(path):
+        # #     icon_path = DIR_ICON_PATH
+        # icon = QtGui.QIcon(icon_path)
+        # # item.setText("toto")
+        # item.setIcon(icon)
+        # source_model.appendRow(item)
+
+        # we expand all by default
+        self.dataView.expandAll()
+        # put the right size for the first column (Analysis)
+        self.dataView.resizeColumnToContents(0)
+        # resize the column when expending
+        self.dataView.expanded.connect(lambda x: self.dataView.resizeColumnToContents(0))
+        self.dataView.clicked.connect(lambda x: self.dataView.resizeColumnToContents(0))
+
+        # opacity_effect = QGraphicsOpacityEffect()
+        # opacity_effect.setOpacity(0.1)
+        # self.setGraphicsEffect(opacity_effect)
+
+        self.setAutoFillBackground(True)
+
+        # palette = self.palette()
+        # palette.setColor(self.backgroundRole(), Qt.black)
+        # self.setPalette(palette)
+
 
         mainLayout = QVBoxLayout()
         mainLayout.addWidget(self.dataGroupBox)
         self.setLayout(mainLayout)
 
-        self.dataView.expandAll()
         self.show()
 
-    def create_model(self, parent):
+    def create_tree_model(self, parent):
         # TODO: a system that list the Analysis Function available in the pipeline
         #  + a system that either read a yaml file or a dir and load automatically analysis function
 
-        # TODO: build a function that takes a list of instance of analysis, and construct the tree according
-        #  to their family name
+        analysis_class_names = ["CicadaCellsCount", "CicadaFramesCount",
+                                "CicadaHubsAnalysis", "CicadaConnectivityGraph",
+                                "CicadaPsthAnalysis"]
+        analysis_instances = []
+        for class_name in analysis_class_names:
+            module_name = class_name_to_file_name(class_name=class_name)
+            module_imported = importlib.import_module("cicada.analysis." + module_name)
+            class_instance = getattr(module_imported, class_name)
+            # class_instance = getattr(test_cicada_test_paul, class_name)
+            analysis_instances.append(class_instance())
 
-        # TODO: the tree could contain either analysis instance either the name of the Family
-        #  and keep count for each family of the number of analysis available
+        # it's a dict that contains other dicts.
+        # dict key represents the name of the family. Instances in the dict with "zzz" are the ones
+        # with no family
+        # dict values is a list containing either dict (new family) or instances of CicadaAnalysis
+        tree_family_dict = SortedDict()
+        for analysis_instance in analysis_instances:
+            family_ids = analysis_instance.family_id
+            if family_ids is None:
+                # "zzz" represents the instances without family
+                if "zzz" not in tree_family_dict:
+                    tree_family_dict["zzz"] = []
+                tree_family_dict["zzz"].append(analysis_instance)
+                continue
 
-        cells_analysis = CicadaCellsTest()
+            if isinstance(family_ids, str):
+                if family_ids not in tree_family_dict:
+                    tree_family_dict[family_ids] = []
+                tree_family_dict[family_ids].append(analysis_instance)
+                continue
+
+            # otherwise it's a list representing the a hierarchy
+            dict_to_fill = tree_family_dict
+            for index, family_id in enumerate(family_ids):
+                if family_id not in dict_to_fill:
+                    dict_to_fill[family_id] = []
+                if index == len(family_ids) - 1:
+                    dict_to_fill[family_id].append(analysis_instance)
+                else:
+                    # first we search if there is not already a dict with next family_id on it
+                    for element in dict_to_fill[family_id]:
+                        if isinstance(element, dict):
+                            if family_ids[index + 1] in element:
+                                dict_to_fill = element
+                                continue
+                    new_dict = dict()
+                    dict_to_fill[family_id].append(new_dict)
+                    dict_to_fill = new_dict
+
         root_tree = TreeItem()
-        cells_analysis_tree = TreeItem(cicada_analysis=cells_analysis, parent=root_tree)
-        cells_analysis = CicadaCellsTest()
-        cells_analysis.name = "test_"
-        tree_bis = TreeItem(cicada_analysis=cells_analysis, parent=cells_analysis_tree)
-        cells_analysis_tree.append_child(tree_bis)
-        root_tree.append_child(cells_analysis_tree)
+        fill_tree_item_with_dict(root_tree, tree_family_dict)
+        # temporary, will be called by set_data one the first part of GUI will be ready
+        root_tree.check_data()
 
         model = QAnalysisTreeModel(tree_item=root_tree)
         return model
+
+def fill_tree_item_with_dict(root_tree, instances_dict):
+    """
+
+    :param root_tree:
+    :param instances_dict:
+    :return:
+    """
+    for key, value in instances_dict.items():
+        if key == "zzz":
+            # value is a list of CicadaAnalysis instance
+            for analysis_instance in value:
+                analysis_tree = TreeItem(cicada_analysis=analysis_instance, parent=root_tree)
+                root_tree.append_child(analysis_tree)
+            continue
+        family_title_tree = TreeItem(family_section=key, parent=root_tree)
+        root_tree.append_child(family_title_tree)
+        # value is a list of dict or instance of CicadaAnalysis
+        analysis_to_add = []
+        for element in value:
+            if isinstance(element, dict):
+                fill_tree_item_with_dict(family_title_tree, element)
+            else:
+                analysis_to_add.append(element)
+
+        for analysis_instance in analysis_to_add:
+            analysis_tree = TreeItem(cicada_analysis=analysis_instance, parent=family_title_tree)
+            family_title_tree.append_child(analysis_tree)
+
     #
     # def add_analysis(self, model, analysis, description):
     #     model.insertRow(0)

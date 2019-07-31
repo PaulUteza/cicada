@@ -1,7 +1,7 @@
 from cicada.analysis.cicada_analysis import CicadaAnalysis
 
 
-class CicadaCellsTest(CicadaAnalysis):
+class CicadaCellsCount(CicadaAnalysis):
     def __init__(self):
         """
         A list of
@@ -10,7 +10,8 @@ class CicadaCellsTest(CicadaAnalysis):
         the analysis is a family in its own.
         :param data_format: indicate the type of data structure. for NWB, NIX
         """
-        super().__init__(name="print_n_cells", short_description="print the number of cells")
+        super().__init__(name="count cells", family_id="counter",
+                         short_description="Count the number of cells")
 
     def check_data(self):
         """
@@ -18,6 +19,8 @@ class CicadaCellsTest(CicadaAnalysis):
         implemented, False otherwise.
         :return: a boolean
         """
+        # temporary
+        return True
         if format != "NWB":
             # non NWB format compatibility not yet implemented
             return False

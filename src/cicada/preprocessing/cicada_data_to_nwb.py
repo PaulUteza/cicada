@@ -1,6 +1,7 @@
 import yaml
 import os
 import utils
+from utils import class_name_to_file_name
 import importlib
 from pynwb import NWBHDF5IO
 from pynwb import NWBFile
@@ -154,35 +155,6 @@ def create_nwb_file(yaml_path):
     # TODO: use create_time_intervals(name, description='experimental intervals', id=None, columns=None, colnames=None)
     #  to create time_intervals using npy files or other file in which intervals are contained through a
     #  an instance of ConvertToNWB and the yaml_file for extension and keywords
-
-def class_name_to_file_name(class_name):
-    """
-    Transform the string representing a class_name, by removing the upper case letters, and inserting
-    before them an underscore if 2 upper case letters don't follow. Underscore are also inserted before numbers
-    ex: ConvertAbfToNWB -> convert_abf_to_nwb
-    :param class_name: string
-    :return:
-    """
-
-    if len(class_name) == 1:
-        return class_name.lower()
-
-    new_class_name = class_name[0]
-    for index in range(1, len(class_name)):
-        letter = class_name[index]
-        if letter.isdigit():
-            new_class_name = new_class_name + "_" + letter
-            continue
-        if not letter.isupper():
-            new_class_name = new_class_name + letter
-            continue
-        # first we check if the previous letter was not upper
-        if class_name[index - 1].isupper():
-            new_class_name = new_class_name + letter
-            continue
-        new_class_name = new_class_name + "_" + letter
-
-    return new_class_name.lower()
 
 def load_nwb_from_data(dir_path, default_convert_to_nwb_yml_file):
 
