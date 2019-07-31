@@ -11,6 +11,7 @@ import random
 
 import datetime
 
+# input_test contains different types of parameters, just to check if it works
 class InputParam:
 
     def __init__(self):
@@ -22,9 +23,13 @@ class InputParam:
                            {'name': 'analyses to do', 'type': str, 'choices': ['rasterplot', 'fluorescence', 'eye_tracking', 'bonus'], 'multiple_choices': True, 'doc': 'a unique identifier for the subject', 'default': None},
                            {'name': 'weight', 'type': float, 'doc': 'the weight of the subject', 'default': None},
                            {'name': 'date_of_birth', 'type': datetime, 'default': None,
-                            'doc': 'datetime of date of birth. May be supplied instead of age.'}]
+                            'doc': 'datetime of date of birth. May be supplied instead of age.'},
+                           {'name': 'is_alive', 'type': bool, 'doc': 'if the subject is alive', 'default': None},
+                           {'name': 'is_grey', 'type': bool, 'doc': 'if the subject is grey', 'default': None},
+                           {'name': 'nwb_already_exist', 'type': bool, 'doc': 'if a nwb file already exists', 'default': None}]
 
 
+# Not really usefull here, just for test
 class MainWindow(QMainWindow):
     def __init__(self):
         super(QMainWindow, self).__init__()
@@ -49,20 +54,35 @@ class MainWindow(QMainWindow):
 
         exitAction.triggered.connect(QApplication.instance().quit)
 
+
+# Here is the interesting part !
 class ParamSection(QWidget):
 
     def __init__(self, parent=None):
         super(ParamSection, self).__init__(parent)
 
-        tesuto = InputParam()
-        test_param = tesuto.input_test
+        # Got input paramers
+        input_example = InputParam()
+        test_param = input_example.input_test
 
+        # To add widgets vertically
         self.layout = QVBoxLayout()
+        self.layout.addWidget(QLabel("Parameters :"))
 
+
+        # =================== Output ================
+        # A dictionnary which contains all values of parameters from the GUI !
+        self.output = {}
+        # ===========================================
+
+        # The goal here is to determine the best type of widget to add corresponding to each parameter.
+        # Then it add the good widget with parameter options
         for param in test_param:
 
+            # Function to find the best type of widget
             widget_type = self.get_widget_type(param)
 
+            # Widget construction
             if widget_type == "SpinBox":
                 widget_to_add = self.create_spinbox(param)
             elif widget_type == "LineEdit":
@@ -77,12 +97,17 @@ class ParamSection(QWidget):
                 widget_to_add = self.create_datetimeedit(param)
             elif widget_type == "Slider":
                 widget_to_add = self.create_slider(param)
+            elif widget_type == "CheckBox":
+                widget_to_add = self.create_checkbox(param)
             else:
                 widget_to_add = self.create_textedit(param)
 
-            self.layout.addWidget(QLabel(param['name']))
+            # Add widget and label (description)
+            if param['type'] != bool:
+                self.layout.addWidget(QLabel(param['name']))
             self.layout.addWidget(widget_to_add)
 
+        # Button to continue / cancel, not ready for the moment
         self.button1 = QPushButton("大丈夫")
         self.button2 = QPushButton(" キャンセル ")
 
@@ -94,7 +119,14 @@ class ParamSection(QWidget):
         self.button1.clicked.connect(self.load_parameters)
         self.button2.clicked.connect(QApplication.instance().quit)
 
+    # This function is needed to connect each widget to the corresponding parameter.
+    # It just change the parameter value to the one given in the GUI
+    def change_param(self, name, bidule):
+        self.output[name] = bidule
+        print(self.output[name])
 
+    # Function to find the best type of widget
+    # All could be done with only LineEdit widget but this is not beautiful and not convenient ...
     def get_widget_type(self, param):
 
         param_keys = param.keys()
@@ -107,8 +139,10 @@ class ParamSection(QWidget):
         if param_type == str:
             if "choices" in param_keys and "multiple_choices" in param_keys:
                 if param["multiple_choices"] == True:
+                    # You can select multiple options
                     return "GroupBox"
                 else:
+                    # You can select only one option
                     return "ComboBox"
             else:
                 return "LineEdit"
@@ -127,10 +161,14 @@ class ParamSection(QWidget):
             return "LineEdit"
         elif param_type == datetime:
             return "DateTimeEdit"
+        elif param_type == bool:
+            return 'CheckBox'
         else:
             return "LineEdit"
 
 
+    # One function for each type of widget to create ! (with parameter options)
+    # It also connects the created widget to the output parameter
     def create_spinbox(self, param):
         min = param["range"][0]
         max = param["range"][1]
@@ -142,22 +180,45 @@ class ParamSection(QWidget):
         spinBox.setValue(default)
         spinBox.setRange(min, max)
 
+        self.output.update({param['name']: param['default']})
+        spinBox.valueChanged.connect(lambda value: self.change_param(param['name'], value))
+
         return(spinBox)
 
     def create_lineedit(self, param):
+        group = QWidget()
+
         default = ""
         if "default" in param.keys():
             if param["default"] != None:
                 default = str(param["default"])
-        return QLineEdit(default)
+
+        widget = QLineEdit(default)
+        hbox = QHBoxLayout()
+        hbox.addWidget(widget)
+        hbox.addWidget(QLabel("(" + str(param['type']).split("'")[1] + ")"))
+        hbox.addStretch(1)
+        group.setLayout(hbox)
+
+        self.output.update({param['name']: param['default']})
+        widget.textChanged.connect(lambda value: self.change_param(param['name'], value))
+
+        return group
 
     def create_combobox(self, param):
         combobox = QComboBox()
         for choice in param["choices"]:
             combobox.addItem(str(choice))
+
+        self.output.update({param['name']: param['default']})
+        combobox.currentTextChanged.connect(lambda value: self.change_param(param['name'], value))
+
         return combobox
 
     def create_groupbox(self, param):
+
+        # TODO : get data from groupbox !
+
         groupBox = QGroupBox()
         groupBox.setFlat(True)
         vbox = QVBoxLayout()
@@ -170,8 +231,13 @@ class ParamSection(QWidget):
         return groupBox
 
     def create_datetimeedit(self, param):
-        return QLineEdit("datetime.datetime(YYYY, MM, DD)")
 
+        widget = QLineEdit("datetime.datetime(YYYY, MM, DD)")
+
+        self.output.update({param['name']: param['default']})
+        widget.textChanged.connect(lambda value: self.change_param(param['name'], value))
+
+        return widget
 
     def create_slider(self, param):
         min = param["range"][0]
@@ -202,8 +268,21 @@ class ParamSection(QWidget):
         hbox.addStretch(1)
         sliderGroup.setLayout(hbox)
 
+        self.output.update({param['name']: param['default']})
+        valueSpinBox.valueChanged.connect(lambda value: self.change_param(param['name'], value))
+
         return sliderGroup
 
+    def create_checkbox(self, param):
+
+        widget = QCheckBox("&" + param["name"])
+
+        self.output.update({param['name']: param['default']})
+        widget.stateChanged.connect(lambda value: self.change_param(param['name'], value))
+
+        return widget
+
+    # Will be used at the end to start the analysis, but not done yet !
     def load_parameters(self):
         ret = QMessageBox.warning(self, "蝉 : パラメータ",
                                   "蝉は一般的に茶色で、\n"
