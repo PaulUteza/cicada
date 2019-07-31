@@ -104,3 +104,37 @@ def merging_time_periods(time_periods, min_time_between_periods):
             merged_time_periods.append([time_period[0], time_period[1]])
         index += 1
     return merged_time_periods
+
+
+def class_name_to_file_name(class_name):
+    """
+    Transform the string representing a class_name, by removing the upper case letters, and inserting
+    before them an underscore if 2 upper case letters don't follow. Underscore are also inserted before numbers
+    ex: ConvertAbfToNWB -> convert_abf_to_nwb
+    :param class_name: string
+    :return:
+    """
+
+    if len(class_name) == 1:
+        return class_name.lower()
+
+    new_class_name = class_name[0]
+    for index in range(1, len(class_name)):
+        letter = class_name[index]
+        if letter.isdigit():
+            # first we check if the previous letter was not a digit
+            if class_name[index - 1].isupper():
+                new_class_name = new_class_name + letter
+                continue
+            new_class_name = new_class_name + "_" + letter
+            continue
+        if not letter.isupper():
+            new_class_name = new_class_name + letter
+            continue
+        # first we check if the previous letter was not upper
+        if class_name[index - 1].isupper():
+            new_class_name = new_class_name + letter
+            continue
+        new_class_name = new_class_name + "_" + letter
+
+    return new_class_name.lower()
