@@ -21,11 +21,11 @@ class CicadaConnectivityGraph(CicadaAnalysis):
         """
         # temporary
         return False
-        if format != "NWB":
+        if self._data_format != "nwb":
             # non NWB format compatibility not yet implemented
             return False
 
-        for data in self.data_to_analyse:
+        for data in self._data_to_analyse:
             # check is there is at least one processing module
             if len(data.processing) == 0:
                 return False
@@ -33,14 +33,7 @@ class CicadaConnectivityGraph(CicadaAnalysis):
             # in our case, we will use 'ophys' module
             if "ophys" not in data.processing:
                 return False
-
-    @property
-    def data_to_analyse(self):
-        """
-
-        :return: a list of the data to analyse
-        """
-        return self.data_to_analyse
+        return True
 
     def update_original_data(self):
         """
@@ -56,5 +49,5 @@ class CicadaConnectivityGraph(CicadaAnalysis):
         :return:
         """
 
-        for data in self.data_to_analyse:
+        for data in self._data_to_analyse:
             print(f"Connectivity ----- {data.identifier}")

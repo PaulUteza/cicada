@@ -4,6 +4,7 @@ from qtpy import QtCore, QtGui
 from sortedcontainers import SortedDict
 from cicada.preprocessing.utils import class_name_to_file_name
 import importlib
+from random import randint
 
 
 """
@@ -33,8 +34,16 @@ class TreeItem(object):
         self.data_valid = False
 
     def set_data(self, data_to_analyse, data_format):
+        """
+        Set the data to analysis and filter the analysis that are possible on those data
+        :param data_to_analyse:
+        :param data_format:
+        :return:
+        """
         for child_item in self.child_items:
-            child_item.set_data(self, data_to_analyse, data_format)
+            child_item.set_data(data_to_analyse, data_format)
+        if self.cicada_analysis is not None:
+            self.cicada_analysis.set_data(data_to_analyse, data_format)
         self.check_data()
 
     def check_data(self):
@@ -111,7 +120,10 @@ class QAnalysisTreeView(QTreeView):
         self.setEditTriggers(QAbstractItemView.NoEditTriggers)
 
         self.tree_item = tree_item
-        self.setAutoFillBackground(True)
+        self.special_background_on = False
+        # self.setAutoFillBackground(True)
+        # self.setStyleSheet(
+        #     "background-image:url(\"cicada/gui/icons/rc/sky_night.jpeg\"); background-position: center;")
         # palette = self.palette()
         # palette.setColor(self.backgroundRole(), Qt.black)
         # self.setPalette(palette)
@@ -132,6 +144,23 @@ class QAnalysisTreeView(QTreeView):
     # def mouseDoubleClickEvent(self, event):
     #     # QMouseEvent
     #     print(f'mouseDoubleClickEvent {event}')
+
+    def keyPressEvent(self, event):
+        available_background = ["emily.jpg", "emily_face.png", "emily_wg.jpg"]
+        if event.key() == QtCore.Qt.Key_E:
+            if self.special_background_on:
+                self.setStyleSheet(
+                    "background-image:url(\"\"); background-position: center;")
+                self.special_background_on = False
+            else:
+                pic_index = randint(0, len(available_background) - 1)
+                self.setStyleSheet(
+                    f"background-image:url(\"cicada/gui/icons/rc/{available_background[pic_index]}\"); "
+                    f"background-position: center; "
+                    f"background-repeat:no-repeat;")
+                self.special_background_on = True
+    # def mouseMoveEvent(self, event):
+    #     print("mouse")
 
     def drawBranches(self, painter, rect, index):
         QTreeView.drawBranches(self, painter, rect, index)
@@ -308,9 +337,13 @@ class AnalysisTreeApp(QWidget):
         self.height = 240
         self.dataGroupBox = None
         self.dataView = None
+        self.analysis_tree_model = None
 
         self.init_ui()
         # self.setStyleSheet("QLineEdit { background-color: yellow }")
+
+    def set_data(self, data_to_analyse, data_format):
+        self.analysis_tree_model.rootItem.set_data(data_to_analyse, data_format)
 
     def doubleClickedItem(self, idx):
         if not idx.isValid():
@@ -328,25 +361,25 @@ class AnalysisTreeApp(QWidget):
             print(f"2x click on {tree_item.cicada_analysis.name}")
 
 
-
     def init_ui(self):
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
 
-        self.dataGroupBox = QGroupBox("")
+        # self.dataGroupBox = QGroupBox("")
 
-        model = self.create_tree_model(self)
+        self.analysis_tree_model = self.create_tree_model()
 
-        self.dataView = QAnalysisTreeView(tree_item = model.rootItem)
+        self.dataView = QAnalysisTreeView(tree_item = self.analysis_tree_model.rootItem)
         # self.dataView.setRootIsDecorated(False)
-        self.dataView.setAlternatingRowColors(True)
+        self.dataView.setAlternatingRowColors(False)
         self.dataView.doubleClicked.connect(self.doubleClickedItem)
 
-        dataLayout = QHBoxLayout()
-        dataLayout.addWidget(self.dataView)
-        self.dataGroupBox.setLayout(dataLayout)
+        # dataLayout = QHBoxLayout()
+        mainLayout = QVBoxLayout()
+        mainLayout.addWidget(self.dataView)
+        # self.dataGroupBox.setLayout(dataLayout)
 
-        self.dataView.setModel(model)
+        self.dataView.setModel(self.analysis_tree_model)
 
         # work to add icon # TODO: find a way to do it with QAnalysisTreeModel QAbstractItemModel
         # source_model = QtGui.QStandardItemModel()
@@ -374,20 +407,24 @@ class AnalysisTreeApp(QWidget):
         # opacity_effect.setOpacity(0.1)
         # self.setGraphicsEffect(opacity_effect)
 
-        self.setAutoFillBackground(True)
+        # self.setAutoFillBackground(True)
+        # self.setStyleSheet(
+        #     "background-image:url(\"cicada/gui/icons/rc/sky_night.jpeg\"); background-position: center;")
+        # self.setStyleSheet(
+        #     "background-image:url(\"\"); background-position: center;")
 
         # palette = self.palette()
         # palette.setColor(self.backgroundRole(), Qt.black)
         # self.setPalette(palette)
 
 
-        mainLayout = QVBoxLayout()
-        mainLayout.addWidget(self.dataGroupBox)
+
+        # mainLayout.addWidget(self.dataGroupBox)
         self.setLayout(mainLayout)
 
         self.show()
 
-    def create_tree_model(self, parent):
+    def create_tree_model(self):
         # TODO: a system that list the Analysis Function available in the pipeline
         #  + a system that either read a yaml file or a dir and load automatically analysis function
 
@@ -443,7 +480,7 @@ class AnalysisTreeApp(QWidget):
         root_tree = TreeItem()
         fill_tree_item_with_dict(root_tree, tree_family_dict)
         # temporary, will be called by set_data one the first part of GUI will be ready
-        root_tree.check_data()
+        # root_tree.check_data()
 
         model = QAnalysisTreeModel(tree_item=root_tree)
         return model

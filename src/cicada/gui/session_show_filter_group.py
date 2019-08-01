@@ -10,7 +10,8 @@ import cicada.preprocessing.utils as utils
 import yaml
 import datetime
 from itertools import islice
-from cicada.gui.cicada_analysis_tree_gui_test import AnalysisTreeApp
+from cicada.gui.cicada_analysis_tree_gui import AnalysisTreeApp
+from random import randint
 
 
 # TODO : Quand des éléments à sort ont des None, les griser
@@ -22,38 +23,84 @@ class MainWindow(QMainWindow):
         self.createMenus()
         self.labels = []
         self.setWindowTitle("CICADA")
-        self.resize(1440, 900)
-        self.button = QPushButton('TEST',self)
-        self.button.move(500,500)
-        self.button.clicked.connect(self.openWindow)
+        screenGeometry = QApplication.desktop().screenGeometry()
+        # making sure the window is not bigger than the dimension of the screen
+        width_window = min(959, screenGeometry.width())
+        height_window = min(650, screenGeometry.height())
+        self.resize(width_window, height_window)
         self.param_list = []
         self.param_group_list = []
         self.grouped = False
         self.sorted = False
+        # contains the data, if nwb format will contains instance of Nwb class
+        # the key is the identifier of the data file, value is the instance
+        self.data_dict = dict()
+        # self.setStyleSheet(
+        #     "#menuWidget { "
+        #     " border-image: url(\"cicada/gui/icons/rc/cicada_background.jpg\") 0 0 0 0 stretch stretch;"
+        #     "}")
+        # self.setStyleSheet(
+        #     "#menuWidget { "
+        #     " background-image: url(\"cicada/gui/icons/rc/cicada_background.jpg\"); background-position: center;"
+        #     "}")
+        self.menuWidget().setStyleSheet(
+            "background-image:url(\"cicada/gui/icons/rc/sky_night.jpeg\"); background-position: center;")
+        # first we check if there is a last known location opened, then we load those files again:
+        #TODO: in the future, save the data displayed in the gui, that might come from different dir
+        # self.yaml_path = os.path.join(dir_name, file_name)
+        # with open(os.path.join(dir_name, file_name), 'r') as stream:
+        #     self.data = yaml.safe_load(stream)
+
+        self.openWindow()
+        self.load_data_from_config()
+
+
+    def load_data_from_config(self):
+        """
+        Check if the last dir opened is saved in config and load it automatically
+        :return:
+        """
+        config_file_name = "cicada/config/config.yaml"
+        if os.path.isfile(config_file_name):
+            with open(config_file_name, 'r') as stream:
+                config_dict = yaml.safe_load(stream)
+        if (config_dict is not None) and config_dict.get("dir_name"):
+            self.load_data_from_dir(dir_name=config_dict["dir_name"])
 
     def open(self):
         self.labels = []
         self.grouped_labels = []
         options = QFileDialog.Options()
-        dirName = QFileDialog.getExistingDirectory(self, "Select Directory")
-        data_files = []
+        dir_name = QFileDialog.getExistingDirectory(self, "Select Directory")
+        self.load_data_from_dir(dir_name=dir_name)
+
+    def load_data_from_dir(self, dir_name):
+        """
+        Load data from a dir
+        :param dir_name:
+        :return:
+        """
+        # TODO: deal with the different format
+        # TODO: decide if we should add those nwb to the ones already opened (if that's the case)
+        #  or erase the ones present and replace them by the new one.
+        #  probably best to have 2 options on the menu open new, and something like add data
         self.labels = []
         file_names = []
         self.nwb_path_list = []
         # look for filenames in the first directory, if we don't break, it will go through all directories
-        for (dirpath, dirnames, local_filenames) in os.walk(dirName):
+        for (dirpath, dirnames, local_filenames) in os.walk(dir_name):
             file_names.extend(local_filenames)
             break
         for file_name in file_names:
             if file_name.endswith(".nwb"):
-                self.nwb_path_list.append(os.path.join(dirName, file_name))
-                io = NWBHDF5IO(os.path.join(dirName, file_name), 'r')
+                self.nwb_path_list.append(os.path.join(dir_name, file_name))
+                io = NWBHDF5IO(os.path.join(dir_name, file_name), 'r')
                 nwb_file = io.read()
-                data_files.append(nwb_file)
+                self.data_dict[nwb_file.identifier] = nwb_file
                 self.labels.append(nwb_file.identifier)
-            if file_name.endswith(".yaml") or file_name.endswith(".yml"):
-                self.yaml_path = os.path.join(dirName, file_name)
-                with open(os.path.join(dirName, file_name), 'r') as stream:
+            elif file_name.endswith(".yaml") or file_name.endswith(".yml"):
+                self.yaml_path = os.path.join(dir_name, file_name)
+                with open(os.path.join(dir_name, file_name), 'r') as stream:
                     self.data = yaml.safe_load(stream)
                 self.grouped = True
                 self.grouped_labels = []
@@ -61,14 +108,35 @@ class MainWindow(QMainWindow):
                     nwb_file_list = []
                     for file in value:
                         print(self.nwb_path_list)
-                        self.nwb_path_list.append(os.path.join(dirName, file))
-                        io = NWBHDF5IO(os.path.join(dirName, file), 'r')
+                        self.nwb_path_list.append(os.path.join(dir_name, file))
+                        io = NWBHDF5IO(os.path.join(dir_name, file), 'r')
                         nwb_file = io.read()
+                        self.data_dict[nwb_file.identifier] = nwb_file
                         nwb_file_list.append(nwb_file.identifier)
                     self.grouped_labels.append(nwb_file_list)
                 self.showGroupMenu.setEnabled(True)
                 self.populate_menu()
-        self.openWindow()
+        # self.openWindow()
+        # checking there is at least one data file loaded
+        if len(self.data_dict) > 0:
+            self.musketeers_widget.session_widget.populate(self.labels)
+            self.sortMenu.setEnabled(True)
+            self.groupMenu.setEnabled(True)
+            # then we save the last location opened in the yaml file in config
+            self.save_last_data_location(dir_name=dir_name)
+
+    def save_last_data_location(self, dir_name):
+        # TODO think about where to keep the config yaml file
+        config_file_name = "cicada/config/config.yaml"
+        config_dict = None
+        if os.path.isfile(config_file_name):
+            with open(config_file_name, 'r') as stream:
+                config_dict = yaml.load(stream, Loader=yaml.FullLoader)
+        if config_dict is None:
+            config_dict = dict()
+        config_dict["dir_name"] = dir_name
+        with open(config_file_name, 'w') as outfile:
+            yaml.dump(config_dict, outfile, default_flow_style=False)
 
     def populate_menu(self):
         counter =0
@@ -92,9 +160,9 @@ class MainWindow(QMainWindow):
             io = NWBHDF5IO(path, 'r')
             nwb_file = io.read()
             self.labels.append(nwb_file.identifier)
-        if self.widget.exists:
+        if self.session_widget.exists:
             print("ok")
-            self.widget.populate(self.labels)
+            self.session_widget.populate(self.labels)
         else:
             self.openWindow()
 
@@ -103,7 +171,7 @@ class MainWindow(QMainWindow):
         self.fileMenu = QMenu("&File", self)
         self.fileMenu.addAction(self.openAct)
         self.fileMenu.addSeparator()
-        self.fileMenu.addAction(self.showSessionAct)
+        # self.fileMenu.addAction(self.showSessionAct)
         self.fileMenu.addAction(self.exitAct)
 
         self.helpMenu = QMenu("&Help", self)
@@ -247,7 +315,7 @@ class MainWindow(QMainWindow):
         self.exitAct = QAction("E&xit", self, shortcut="Ctrl+Q", triggered=self.close)
         self.aboutAct = QAction("&About", self, triggered=self.about)
         self.aboutQtAct = QAction("About &Qt", self, triggered=qApp.aboutQt)
-        self.showSessionAct = QAction("&Show session", self, triggered=self.openWindow)
+        # self.showSessionAct = QAction("&Show session", self, triggered=self.openWindow)
         self.showGroupAct = QAction("&Show all groups", self)
 
 
@@ -291,7 +359,7 @@ class MainWindow(QMainWindow):
         for i in range(len(self.grouped_labels)):
             self.dict_group.update({param_group_list[i]: self.grouped_labels[i]})
         self.grouped = True
-        self.musketeers_widget.widget.form_group(self.grouped_labels, param_group_list)
+        self.musketeers_widget.session_widget.form_group(self.grouped_labels, param_group_list)
 
     def on_sort(self, param, state):
         if state > 0:
@@ -307,30 +375,49 @@ class MainWindow(QMainWindow):
                     self.param_list.remove(param)
         self.sorted_labels = utils.sort_by_param(self.nwb_path_list, self.param_list)
         self.sorted = True
-        self.musketeers_widget.widget.populate(self.sorted_labels)
+        self.musketeers_widget.session_widget.populate(self.sorted_labels)
 
     def about(self):
         QMessageBox.about(self, "About CICADA","Lorem Ipsum")
 
 
     def openWindow(self):
-        self.showSessionAct.setEnabled(False)
-        self.sortMenu.setEnabled(True)
-        self.groupMenu.setEnabled(True)
+        # self.showSessionAct.setEnabled(False)
         self.musketeers_widget = MusketeersWidget(parent=self)
         self.setCentralWidget(self.musketeers_widget)
 
+class SessionsListWidget(QListWidget):
 
-class MyWidget(QWidget):
+    def __init__(self):
+        QListWidget.__init__(self)
+        self.special_background_on = False
+
+    def keyPressEvent(self, event):
+        available_background = ["michou_BG.jpg", "michou_BG2.jpg"]
+        if event.key() == QtCore.Qt.Key_M:
+            if self.special_background_on:
+                self.setStyleSheet(
+                    "background-image:url(\"\"); background-position: center;")
+                self.special_background_on = False
+            else:
+                pic_index = randint(0, len(available_background) - 1)
+                self.setStyleSheet(
+                    f"background-image:url(\"cicada/gui/icons/rc/{available_background[pic_index]}\"); "
+                    f"background-position: center; "
+                    f"background-repeat:no-repeat;")
+                self.special_background_on = True
+
+
+class SessionsWidget(QWidget):
 
     def __init__(self, parent=None):
         super().__init__()
         self.exists = True
         self.setWindowTitle('Sessions :')
-        self.resize(500,500)
+        self.resize(500, 500)
         self.setAttribute(Qt.WA_DeleteOnClose)
         self.layout = QVBoxLayout()
-        self.q_list = QListWidget()
+        self.q_list = SessionsListWidget()
         self.parent = parent
         self.q_list.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.layout.addWidget(self.q_list)
@@ -345,17 +432,22 @@ class MyWidget(QWidget):
         self.create_group = QPushButton("Create groups", self)
         self.create_group.clicked.connect(self.save_group)
         self.run_analysis_button = QPushButton("Push me and then just touch me", self)
-        self.run_analysis_button.clicked.connect(self.get_items)
+        self.run_analysis_button.clicked.connect(self.send_data_to_analysis_tree)
         self.layout.addWidget(self.run_analysis_button)
         self.layout.addWidget(self.create_group)
         self.setLayout(self.layout)
-
+        self.analysis_tree = None
 
     def on_change(self):
         self.items = [item.text() for item in self.q_list.selectedItems()]
 
     def get_items(self):
-        return self.items
+        return [data for key, data in self.parent.data_dict.items() if key in self.items]
+
+    def send_data_to_analysis_tree(self):
+        data_to_analyse = self.get_items()
+        # TODO: deal with the fact the data might not be in nwb format
+        self.analysis_tree.set_data(data_to_analyse=data_to_analyse, data_format="nwb")
 
     def populate(self, labels):
         self.q_list.clear()
@@ -379,7 +471,6 @@ class MyWidget(QWidget):
                 item.setText(str(file))
                 item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
                 self.q_list.addItem(item)
-
 
     def save_group(self):
         self.nameBox = QDialog(self)
@@ -449,15 +540,19 @@ class MyWidget(QWidget):
 
 
 class MusketeersWidget(QWidget):
+    """
+    Gather in a layout the 3 main sub-windows composing the gui: displaying the subject sessions,
+    the analysis tree and the parameters for the analysis.
+    """
     def __init__(self, parent=None):
         QWidget.__init__(self, parent=parent)
         self.layout = QHBoxLayout()
-        self.widget = MyWidget(parent)
-        self.layout.addWidget(self.widget)
+        self.session_widget = SessionsWidget(parent)
+        self.layout.addWidget(self.session_widget)
         analysis_tree_app = AnalysisTreeApp()
+        self.session_widget.analysis_tree = analysis_tree_app
         self.layout.addWidget(analysis_tree_app)
         self.setLayout(self.layout)
-        # self.widget.show()
 
 if __name__ == "__main__":
 

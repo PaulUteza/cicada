@@ -6,7 +6,8 @@ class CicadaAnalysis(ABC):
     An abstract class that should be inherit in order to create a specific analyse
 
     """
-    def __init__(self, name, short_description, family_id=None, long_description=None):
+    def __init__(self, name, short_description, family_id=None, long_description=None,
+                 data_to_analyse=None, data_format=None):
         """
         A list of
         :param name:
@@ -23,8 +24,8 @@ class CicadaAnalysis(ABC):
         self.long_description = long_description
         self.family_id = family_id
         self.name = name
-        # self.data_to_analyse = None
-        # self.data_format = None
+        self._data_to_analyse = data_to_analyse
+        self._data_format = data_format
 
     # @abstractproperty
     # def data_to_analyse(self):
@@ -34,7 +35,7 @@ class CicadaAnalysis(ABC):
     # def data_format(self):
     #     pass
 
-    def set_data(self, data_to_analyse, data_format="NWB"):
+    def set_data(self, data_to_analyse, data_format="nwb"):
         """
                 A list of
                 :param data_to_analyse: list of data_structure
@@ -42,8 +43,8 @@ class CicadaAnalysis(ABC):
         """
         if not isinstance(data_to_analyse, list):
             data_to_analyse = [data_to_analyse]
-        self.data_to_analyse = data_to_analyse
-        self.data_format = data_format
+        self._data_to_analyse = data_to_analyse
+        self._data_format = data_format
 
     @abstractmethod
     def check_data(self):
@@ -60,7 +61,7 @@ class CicadaAnalysis(ABC):
 
         :return: a list of the data to analyse
         """
-        return self.data_to_analyse
+        return self._data_to_analyse
 
     def update_original_data(self):
         """
