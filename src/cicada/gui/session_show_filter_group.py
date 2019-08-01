@@ -58,6 +58,8 @@ class MainWindow(QMainWindow):
                 for value in self.data.values():
                     nwb_file_list = []
                     for file in value:
+                        print(self.nwb_path_list)
+                        self.nwb_path_list.append(os.path.join(dirName, file))
                         io = NWBHDF5IO(os.path.join(dirName, file), 'r')
                         nwb_file = io.read()
                         nwb_file_list.append(nwb_file.identifier)

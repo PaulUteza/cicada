@@ -154,6 +154,7 @@ def group_by_param(nwb_path_list, param_list):
 
     Returns:
         grouped_list (list): List of NWB files grouped
+        param_value_list (list) : List of values of the parameter that decided each group
 
     """
 
@@ -198,12 +199,12 @@ def group_by_param(nwb_path_list, param_list):
         io.close()
         result.append(nwb_result)
     grouped_list = []
+    param_value_list = []
     sorted_list = sorted(result, key=lambda x: (x is None, x))
     for k, g in groupby(sorted_list, itemgetter(0)):
         t = list(zip(*g))
-        print(t)
+        param_value_list.append(t[0][0])
         grouped_list.append(list(t[len(t)-1]))
-    param_value_list = [nwb[0] for nwb in sorted_list]
     return grouped_list, param_value_list
 
 
