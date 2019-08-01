@@ -4,6 +4,7 @@ from qtpy.QtWidgets import (QApplication, QCheckBox, QComboBox, QHBoxLayout, QLa
                             QMessageBox, QPushButton, QScrollArea, QSlider, QSpinBox, QVBoxLayout, QWidget)
 
 import datetime
+from abc import ABC, abstractmethod
 
 
 # input_test contains different types of parameters, just to check if it works
@@ -29,33 +30,35 @@ class InputParam:
 
 
 # Mother Class
-class WidgetForParam:
+class WidgetForParam(ABC):
 
+    # It is used to be sure that a parameter won't be loaded by two different widgets
     param_already_got = []
+    all_params = InputParam().input_test  # list of all params
 
     def __init__(self):
-        self.all_params = InputParam().input_test
         self.param_inputs = []
         self.param_output = {'name': '', 'type': None, 'value': None}
 
-        self.keys_to_check = ['name', 'type', 'default']
-        self.conditions = []
+        self.keys_to_check = ['name', 'type', 'default']  # mandatory fields !
+        self.conditions = []  # all conditions required by the widget to get a parameter
+        # Example :
+        # self.conditions = [lambda param : param['type'] == int,
+        #                    lambda param : param['max'] - param['min'] <= 20]
 
         self.param = None
         self.widget = None
         self.widget_group = None
         self.default = None
 
-        # Example :
-        # self.conditions = [lambda param : param['type'] == int,
-        #                    lambda param : param['max'] - param['min'] <= 20]
-
+    # To set the parameter associated to the widget, and build the corresponding param_output
     def set_param(self, param):
         self.param = param
         if 'name' in param.keys() and 'type' in param.keys():
             self.param_output['name'] = self.param['name']
             self.param_output['type'] = str(self.param['type']).split("'")[1]
 
+    # Check if a parameter has all the required fields (keys), can assert an error or not
     def check_param(self, param, assert_error=False):
         for key in self.keys_to_check:
             if key not in param.keys():
@@ -64,30 +67,28 @@ class WidgetForParam:
                 return False
         return True
 
+    # Check if a parameter is corresponding to the widget
     def check_conditions(self, param):
         for cond in self.conditions:
             if not cond(param):
                 return False
         return True
 
+    # Get all parameters which corresponds to the widget. Don't get them already got by other widgets
     def get_param_input(self):
-        for param in self.all_params:
+        for param in WidgetForParam.all_params:
             if self.check_param(param) and param not in WidgetForParam.param_already_got:
                 if self.check_conditions(param):
                     self.param_inputs.append(param)
                     WidgetForParam.param_already_got.append(param)
         return self.param_inputs
 
+    # Make output value corresponding to what the user have done in the GUI
     def change_param(self, value):
         self.param_output['value'] = value
         print(self.param_output)
 
-    def create_widget(self):
-        pass
-
-    def connect_widget(self):
-        pass
-
+    #  Add widget to the GUI
     def add_widget_to_layout(self, layout):
         if self.param['type'] != bool:
             layout.addWidget(QLabel(self.param['name'] + " :"))
@@ -95,6 +96,14 @@ class WidgetForParam:
             layout.addWidget(self.widget_group)
         else:
             layout.addWidget(self.widget)
+
+    @abstractmethod
+    def create_widget(self):
+        pass
+
+    @abstractmethod
+    def connect_widget(self):
+        pass
 
 
 class ParamSpinBox(WidgetForParam):
@@ -237,8 +246,7 @@ class MainWindow(QMainWindow):
 
         self.param_section = ParamSection()
 
-        self.setWindowTitle("蝉 : パラメータ")
-        # QMainWindow.setWindowState(self, Qt.WindowMaximized)
+        self.setWindowTitle("CICADA Parameters")
         self.resize(300, 500)
         self.setup_menus()
 
@@ -257,6 +265,8 @@ class ParamSection(QWidget):
     def __init__(self, parent=None):
         super(ParamSection, self).__init__(parent)
 
+        # Add the scroll bar
+        # ==============================
         self.main_layout = QVBoxLayout()
         self.scrollArea = QScrollArea()
         self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
@@ -268,6 +278,7 @@ class ParamSection(QWidget):
         self.scrollAreaWidgetContents.resize(300, 500)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.layout = QVBoxLayout(self.scrollAreaWidgetContents)
+        # ==============================
 
         self.layout.addWidget(QLabel("Parameters :"))
 
@@ -301,11 +312,34 @@ class ParamSection(QWidget):
 
     # Will be used at the end to start the analysis, but not done yet !
     def load_parameters(self):
-        QMessageBox.warning(self, "蝉 : パラメータ",
-                            "蝉は一般的に茶色で、\n"
-                            "体の長さは5〜9センチです。\n"
-                            "非常に緑の植物に定住すること\n"
-                            "を好む緑のセミもあります。",
+        QMessageBox.warning(self, "Proverbe du jour :",
+                            "しかし、あなたが知っている、私は良いまたは悪い状況があるとは思わないが、\n"
+                            "私はあなたと今日の私の人生を要約するとした場合、私はそれが私に手を差し伸べ\n"
+                            "る最初と何よりも私ができなかった時、私は一人で家にいた時、そして事故に遭遇し\n"
+                            "たということは運命を偽造すると言うのはむしろ好奇心が強いです。あなたが物の味を\n"
+                            "持っているとき、あなたは物事の味を持っているとき、美しいジェスチャー、\n"
+                            "時には私たちは反対の人を見つけられない、私は言うだろう、あなたが前進する\n"
+                            "のに役立ちます鏡。私がそこに言ったように、私はそうではありません、私は逆に、\n"
+                            "私は可能であり、私はあなたに人生に感謝すると言うので、私はあなたに感謝すると言\n"
+                            "います。今日の多くの人が私に言っています、「しかし、どうやってこの人間性を持って\n"
+                            "いるのですか」、私は彼らに非常に簡単に答えます、それが愛のこの味なのです。機械的な\n"
+                            "構造を始めるために、しかし明日、知っている、多分私達をコミュニティの奉仕に置くために、\n"
+                            "贈り物をするために、自分自身の贈り物を…,\n\n"
+                            "Mais, vous savez, moi je ne crois pas qu'il y ait de bonne ou de mauvaise situation.\n"
+                            " Moi, si je devais résumer ma vie aujourd'hui avec vous, je dirais que c'est d'abord\n"
+                            " des rencontres, des gens qui m'ont tendu la main, peut-être à un moment où je ne\n"
+                            " pouvais pas, où j'étais seul chez moi. Et c'est assez curieux de se dire que les \n"
+                            "hasards, les rencontres forgent une destinée... Parce que quand on a le goût de la\n"
+                            " chose, quand on a le goût de la chose bien faite, le beau geste, parfois\n"
+                            " on ne trouve pas l'interlocuteur en face, je dirais, le miroir qui vous aide\n"
+                            " à avancer. Alors ce n'est pas mon cas, comme je le disais là, puisque moi\n"
+                            " au contraire, j'ai pu ; et je dis merci à la vie, je lui dis merci,\n"
+                            " je chante la vie, je danse la vie... Je ne suis qu'amour ! Et finalement, \n"
+                            " quand beaucoup de gens aujourd'hui me disent : Mais comment fais-tu pour avoir \n"
+                            " cette humanité ?, eh ben je leur réponds très simplement, je leur dis que c'est \n"
+                            " ce goût de l'amour, ce goût donc qui m'a poussé aujourd'hui à entreprendre une\n"
+                            " construction mécanique, mais demain, qui sait, peut-être seulement à me mettre\n"
+                            " au service de la communauté, à faire le don, le don de soi...",
                             QMessageBox.Cancel)
         QApplication.instance().quit()
 
