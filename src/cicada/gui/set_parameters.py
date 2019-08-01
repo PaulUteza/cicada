@@ -1,35 +1,236 @@
 
-from qtpy.QtCore import QDateTime, Qt, QTimer
-from qtpy.QtWidgets import (QApplication, QCheckBox, QComboBox, QDateEdit, QDateTimeEdit,
-        QDial, QDialog, QGridLayout, QGroupBox, QHBoxLayout, QLabel, QLineEdit,
-        QMainWindow, QMessageBox, QProgressBar, QPushButton, QRadioButton, QScrollBar, QSizePolicy,
-        QSlider, QSpinBox, QStyleFactory, QTableWidget, QTabWidget, QTextEdit,
-        QVBoxLayout, QWidget)
-
-
-import random
+from qtpy.QtCore import Qt
+from qtpy.QtWidgets import (QApplication, QCheckBox, QComboBox, QHBoxLayout, QLabel, QLineEdit, QMainWindow,
+                            QMessageBox, QPushButton, QScrollArea, QSlider, QSpinBox, QVBoxLayout, QWidget)
 
 import datetime
+
 
 # input_test contains different types of parameters, just to check if it works
 class InputParam:
 
     def __init__(self):
 
-        self.input_test = [{'name': 'age', 'type': int, 'range': [0, 100], 'doc': 'the age of the subject', 'default': 0},
-                           {'name': 'description', 'type': str, 'doc': 'a description of the subject', 'default': None},
-                           {'name': 'brothers and sisters', 'type': int, 'range': [0, 5], 'doc': 'size of mouse brotherhood', 'default': None},
-                           {'name': 'sex', 'type': str, 'choices': ['M', 'F'], 'multiple_choices': False, 'doc': 'the sex of the subject', 'default': None},
-                           {'name': 'analyses to do', 'type': str, 'choices': ['rasterplot', 'fluorescence', 'eye_tracking', 'bonus'], 'multiple_choices': True, 'doc': 'a unique identifier for the subject', 'default': None},
+        self.input_test = [{'name': 'age', 'type': int, 'range': [0, 100], 'doc': 'the age of the subject',
+                            'default': 0},
+                           {'name': 'description', 'type': str, 'doc': 'a description of the subject',
+                            'default': None},
+                           {'name': 'brothers and sisters', 'type': int, 'range': [0, 5],
+                            'doc': 'size of mouse brotherhood', 'default': None},
+                           {'name': 'sex', 'type': str, 'choices': ['M', 'F'], 'multiple_choices': False,
+                            'doc': 'the sex of the subject', 'default': None},
                            {'name': 'weight', 'type': float, 'doc': 'the weight of the subject', 'default': None},
                            {'name': 'date_of_birth', 'type': datetime, 'default': None,
                             'doc': 'datetime of date of birth. May be supplied instead of age.'},
                            {'name': 'is_alive', 'type': bool, 'doc': 'if the subject is alive', 'default': None},
                            {'name': 'is_grey', 'type': bool, 'doc': 'if the subject is grey', 'default': None},
-                           {'name': 'nwb_already_exist', 'type': bool, 'doc': 'if a nwb file already exists', 'default': None}]
+                           {'name': 'nwb_already_exist', 'type': bool, 'doc': 'if a nwb file already exists',
+                            'default': None}]
 
 
-# Not really usefull here, just for test
+# Mother Class
+class WidgetForParam:
+
+    param_already_got = []
+
+    def __init__(self):
+        self.all_params = InputParam().input_test
+        self.param_inputs = []
+        self.param_output = {'name': '', 'type': None, 'value': None}
+
+        self.keys_to_check = ['name', 'type', 'default']
+        self.conditions = []
+
+        self.param = None
+        self.widget = None
+        self.widget_group = None
+        self.default = None
+
+        # Example :
+        # self.conditions = [lambda param : param['type'] == int,
+        #                    lambda param : param['max'] - param['min'] <= 20]
+
+    def set_param(self, param):
+        self.param = param
+        if 'name' in param.keys() and 'type' in param.keys():
+            self.param_output['name'] = self.param['name']
+            self.param_output['type'] = str(self.param['type']).split("'")[1]
+
+    def check_param(self, param, assert_error=False):
+        for key in self.keys_to_check:
+            if key not in param.keys():
+                if assert_error:
+                    raise KeyError(f"key not found : {key} !")
+                return False
+        return True
+
+    def check_conditions(self, param):
+        for cond in self.conditions:
+            if not cond(param):
+                return False
+        return True
+
+    def get_param_input(self):
+        for param in self.all_params:
+            if self.check_param(param) and param not in WidgetForParam.param_already_got:
+                if self.check_conditions(param):
+                    self.param_inputs.append(param)
+                    WidgetForParam.param_already_got.append(param)
+        return self.param_inputs
+
+    def change_param(self, value):
+        self.param_output['value'] = value
+        print(self.param_output)
+
+    def create_widget(self):
+        pass
+
+    def connect_widget(self):
+        pass
+
+    def add_widget_to_layout(self, layout):
+        if self.param['type'] != bool:
+            layout.addWidget(QLabel(self.param['name'] + " :"))
+        if self.widget_group:
+            layout.addWidget(self.widget_group)
+        else:
+            layout.addWidget(self.widget)
+
+
+class ParamSpinBox(WidgetForParam):
+
+    def __init__(self):
+        super().__init__()
+        self.keys_to_check.extend(['range'])
+        self.conditions.extend([lambda param_x: param_x['type'] == int,
+                                lambda param_x: param_x["range"][1] - param_x["range"][0] > 20])
+
+    def create_widget(self):
+        self.check_param(self.param, assert_error=True)
+
+        self.default = self.param['range'][0]
+        if not self.param['default']:
+            self.default = self.param['default']
+
+        self.widget = QSpinBox()
+        self.widget.setValue(self.default)
+        self.widget.setRange(self.param['range'][0], self.param['range'][1])
+
+    def connect_widget(self):
+        self.widget.valueChanged.connect(lambda value: self.change_param(value))
+
+
+class ParamLineEdit(WidgetForParam):
+    def __init__(self):
+        super().__init__()
+
+    def create_widget(self):
+        self.check_param(self.param, assert_error=True)
+
+        self.default = ""
+        if self.param['default']:
+            self.default = str(self.param["default"])
+
+        self.widget_group = QWidget()
+
+        self.widget = QLineEdit(self.default)
+        h_box = QHBoxLayout()
+        h_box.addWidget(self.widget)
+        h_box.addWidget(QLabel("(" + str(self.param['type']).split("'")[1] + ")"))
+        h_box.addStretch(1)
+        self.widget_group.setLayout(h_box)
+
+    def connect_widget(self):
+        self.widget.textChanged.connect(lambda value: self.change_param(value))
+
+
+class ParamComboBox(WidgetForParam):
+
+    def __init__(self):
+        super().__init__()
+
+        self.keys_to_check.extend(['choices'])
+        self.conditions.extend([lambda param_x: param_x['type'] == str])
+
+    def create_widget(self):
+        self.check_param(self.param, assert_error=True)
+        self.widget = QComboBox()
+        for choice in self.param["choices"]:
+            self.widget.addItem(str(choice))
+
+    def connect_widget(self):
+        self.widget.currentTextChanged.connect(lambda value: self.change_param(value))
+
+
+class ParamDateTime(WidgetForParam):
+
+    def __init__(self):
+        super().__init__()
+
+        self.conditions.extend([lambda param_x: param_x['type'] == datetime])
+
+    def create_widget(self):
+        self.check_param(self.param, assert_error=True)
+        self.widget = QLineEdit("datetime.datetime(YYYY, MM, DD)")
+
+    def connect_widget(self):
+        self.widget.textChanged.connect(lambda value: self.change_param(value))
+
+
+class ParamSlider(WidgetForParam):
+
+    def __init__(self):
+        super().__init__()
+
+        self.keys_to_check.extend(['range'])
+        self.conditions.extend([lambda param_x: param_x['type'] == int,
+                                lambda param_x: param_x["range"][1] - param_x["range"][0] <= 20])
+
+    def create_widget(self):
+        self.check_param(self.param, assert_error=True)
+
+        self.default = self.param['range'][0]
+        if self.param['default']:
+            self.default = self.param['default']
+        self.widget_group = QWidget()
+        slider = QSlider(Qt.Horizontal)
+
+        slider.setValue(self.default)
+        slider.setRange(self.param['range'][0], self.param['range'][1])
+
+        self.widget = QSpinBox()
+        self.widget.setValue(self.default)
+        self.widget.setRange(self.param['range'][0], self.param['range'][1])
+
+        self.widget.valueChanged.connect(slider.setValue)
+        slider.valueChanged.connect(self.widget.setValue)
+
+        h_box = QHBoxLayout()
+        h_box.addWidget(slider)
+        h_box.addWidget(self.widget)
+        h_box.addStretch(1)
+        self.widget_group.setLayout(h_box)
+
+    def connect_widget(self):
+        self.widget.valueChanged.connect(lambda value: self.change_param(value))
+
+
+class ParamCheckBox(WidgetForParam):
+
+    def __init__(self):
+        super().__init__()
+
+        self.conditions.extend([lambda param_x: param_x['type'] == bool])
+
+    def create_widget(self):
+        self.check_param(self.param, assert_error=True)
+        self.widget = QCheckBox("&" + self.param["name"])
+
+    def connect_widget(self):
+        self.widget.stateChanged.connect(lambda value: self.change_param(value))
+
+
+# Not really useful here, just for test
 class MainWindow(QMainWindow):
     def __init__(self):
         super(QMainWindow, self).__init__()
@@ -37,22 +238,17 @@ class MainWindow(QMainWindow):
         self.param_section = ParamSection()
 
         self.setWindowTitle("蝉 : パラメータ")
-        #QMainWindow.setWindowState(self, Qt.WindowMaximized)
-        self.resize(300, 400)
-        self.setupMenus()
+        # QMainWindow.setWindowState(self, Qt.WindowMaximized)
+        self.resize(300, 500)
+        self.setup_menus()
 
         self.setCentralWidget(self.param_section)
 
-    def setupMenus(self):
-        fileMenu = self.menuBar().addMenu("&File")
+    def setup_menus(self):
+        file_menu = self.menuBar().addMenu("&File")
+        exit_action = file_menu.addAction("E&xit")
 
-        openAction = fileMenu.addAction("&Open...")
-        openAction.setShortcut("Ctrl+O")
-
-        exitAction = fileMenu.addAction("E&xit")
-        exitAction.setShortcut("Ctrl+Q")
-
-        exitAction.triggered.connect(QApplication.instance().quit)
+        exit_action.triggered.connect(QApplication.instance().quit)
 
 
 # Here is the interesting part !
@@ -61,51 +257,35 @@ class ParamSection(QWidget):
     def __init__(self, parent=None):
         super(ParamSection, self).__init__(parent)
 
-        # Got input paramers
-        input_example = InputParam()
-        test_param = input_example.input_test
+        self.main_layout = QVBoxLayout()
+        self.scrollArea = QScrollArea()
+        self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.scrollArea.setWidgetResizable(True)
+        self.main_layout.addWidget(self.scrollArea)
 
-        # To add widgets vertically
-        self.layout = QVBoxLayout()
+        self.scrollAreaWidgetContents = QWidget()
+        self.scrollAreaWidgetContents.resize(300, 500)
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+        self.layout = QVBoxLayout(self.scrollAreaWidgetContents)
+
         self.layout.addWidget(QLabel("Parameters :"))
 
+        # Be careful of the order of classes : put more selective classes at first !
+        all_widgets_type = [ParamSpinBox(), ParamComboBox(), ParamCheckBox(), ParamSlider(),
+                            ParamDateTime(), ParamLineEdit()]
+        param_input_by_type = [WidgetType.get_param_input() for WidgetType in all_widgets_type]
 
-        # =================== Output ================
-        # A dictionnary which contains all values of parameters from the GUI !
-        self.output = {}
-        # ===========================================
+        all_widgets = []
 
-        # The goal here is to determine the best type of widget to add corresponding to each parameter.
-        # Then it add the good widget with parameter options
-        for param in test_param:
-
-            # Function to find the best type of widget
-            widget_type = self.get_widget_type(param)
-
-            # Widget construction
-            if widget_type == "SpinBox":
-                widget_to_add = self.create_spinbox(param)
-            elif widget_type == "LineEdit":
-                widget_to_add = self.create_lineedit(param)
-            elif widget_type == "ComboBox":
-                widget_to_add = self.create_combobox(param)
-            elif widget_type == "GroupBox":
-                widget_to_add = self.create_groupbox(param)
-            elif widget_type == "RadioButton":
-                widget_to_add = self.create_radiobutton(param)
-            elif widget_type == "DateTimeEdit":
-                widget_to_add = self.create_datetimeedit(param)
-            elif widget_type == "Slider":
-                widget_to_add = self.create_slider(param)
-            elif widget_type == "CheckBox":
-                widget_to_add = self.create_checkbox(param)
-            else:
-                widget_to_add = self.create_textedit(param)
-
-            # Add widget and label (description)
-            if param['type'] != bool:
-                self.layout.addWidget(QLabel(param['name']))
-            self.layout.addWidget(widget_to_add)
+        for idx_widget_type, widget_type in enumerate(param_input_by_type):
+            for param in widget_type:
+                widget = all_widgets_type[idx_widget_type]
+                widget.set_param(param)
+                widget.create_widget()
+                widget.connect_widget()
+                widget.add_widget_to_layout(self.layout)
+                all_widgets.append(widget)
 
         # Button to continue / cancel, not ready for the moment
         self.button1 = QPushButton("大丈夫")
@@ -114,183 +294,20 @@ class ParamSection(QWidget):
         self.layout.addWidget(self.button1)
         self.layout.addWidget(self.button2)
         self.layout.addStretch(1)
-        self.setLayout(self.layout)
+        self.setLayout(self.main_layout)
 
         self.button1.clicked.connect(self.load_parameters)
         self.button2.clicked.connect(QApplication.instance().quit)
 
-    # This function is needed to connect each widget to the corresponding parameter.
-    # It just change the parameter value to the one given in the GUI
-    def change_param(self, name, bidule):
-        self.output[name] = bidule
-        print(self.output[name])
-
-    # Function to find the best type of widget
-    # All could be done with only LineEdit widget but this is not beautiful and not convenient ...
-    def get_widget_type(self, param):
-
-        param_keys = param.keys()
-
-        if 'type' not in param_keys:
-            raise KeyError("'type' not defined for this parameter !")
-
-        param_type = param["type"]
-
-        if param_type == str:
-            if "choices" in param_keys and "multiple_choices" in param_keys:
-                if param["multiple_choices"] == True:
-                    # You can select multiple options
-                    return "GroupBox"
-                else:
-                    # You can select only one option
-                    return "ComboBox"
-            else:
-                return "LineEdit"
-
-        elif param_type == int:
-            if "range" in param_keys:
-                if param["range"][1] - param["range"][0] <= 20:
-                    # Work well with integer when there is not to much value choices
-                    return "Slider"
-                else:
-                    return "SpinBox"
-            else:
-                return "LineEdit"
-
-        elif param_type == float:
-            return "LineEdit"
-        elif param_type == datetime:
-            return "DateTimeEdit"
-        elif param_type == bool:
-            return 'CheckBox'
-        else:
-            return "LineEdit"
-
-
-    # One function for each type of widget to create ! (with parameter options)
-    # It also connects the created widget to the output parameter
-    def create_spinbox(self, param):
-        min = param["range"][0]
-        max = param["range"][1]
-        default = round((max-min)/2)
-        if "default" in param.keys():
-            if param["default"] != None:
-                default = int(param["default"])
-        spinBox = QSpinBox()
-        spinBox.setValue(default)
-        spinBox.setRange(min, max)
-
-        self.output.update({param['name']: param['default']})
-        spinBox.valueChanged.connect(lambda value: self.change_param(param['name'], value))
-
-        return(spinBox)
-
-    def create_lineedit(self, param):
-        group = QWidget()
-
-        default = ""
-        if "default" in param.keys():
-            if param["default"] != None:
-                default = str(param["default"])
-
-        widget = QLineEdit(default)
-        hbox = QHBoxLayout()
-        hbox.addWidget(widget)
-        hbox.addWidget(QLabel("(" + str(param['type']).split("'")[1] + ")"))
-        hbox.addStretch(1)
-        group.setLayout(hbox)
-
-        self.output.update({param['name']: param['default']})
-        widget.textChanged.connect(lambda value: self.change_param(param['name'], value))
-
-        return group
-
-    def create_combobox(self, param):
-        combobox = QComboBox()
-        for choice in param["choices"]:
-            combobox.addItem(str(choice))
-
-        self.output.update({param['name']: param['default']})
-        combobox.currentTextChanged.connect(lambda value: self.change_param(param['name'], value))
-
-        return combobox
-
-    def create_groupbox(self, param):
-
-        # TODO : get data from groupbox !
-
-        groupBox = QGroupBox()
-        groupBox.setFlat(True)
-        vbox = QVBoxLayout()
-        for choice in param["choices"]:
-            checkBox = QCheckBox("&" + str(choice))
-            vbox.addWidget(checkBox)
-        vbox.addStretch(1)
-        groupBox.setLayout(vbox)
-
-        return groupBox
-
-    def create_datetimeedit(self, param):
-
-        widget = QLineEdit("datetime.datetime(YYYY, MM, DD)")
-
-        self.output.update({param['name']: param['default']})
-        widget.textChanged.connect(lambda value: self.change_param(param['name'], value))
-
-        return widget
-
-    def create_slider(self, param):
-        min = param["range"][0]
-        max = param["range"][1]
-
-        default = round((max - min) / 2)
-        if "default" in param.keys():
-            if param["default"] != None:
-                default = int(param["default"])
-
-        sliderGroup = QWidget()
-
-        slider = QSlider(Qt.Horizontal)
-        slider.setFocusPolicy(Qt.StrongFocus)
-        slider.setRange(min, max)
-        slider.setValue(default)
-
-        valueSpinBox = QSpinBox()
-        valueSpinBox.setValue(default)
-        valueSpinBox.setRange(min, max)
-
-        valueSpinBox.valueChanged.connect(slider.setValue)
-        slider.valueChanged.connect(valueSpinBox.setValue)
-
-        hbox = QHBoxLayout()
-        hbox.addWidget(slider)
-        hbox.addWidget(valueSpinBox)
-        hbox.addStretch(1)
-        sliderGroup.setLayout(hbox)
-
-        self.output.update({param['name']: param['default']})
-        valueSpinBox.valueChanged.connect(lambda value: self.change_param(param['name'], value))
-
-        return sliderGroup
-
-    def create_checkbox(self, param):
-
-        widget = QCheckBox("&" + param["name"])
-
-        self.output.update({param['name']: param['default']})
-        widget.stateChanged.connect(lambda value: self.change_param(param['name'], value))
-
-        return widget
-
     # Will be used at the end to start the analysis, but not done yet !
     def load_parameters(self):
-        ret = QMessageBox.warning(self, "蝉 : パラメータ",
-                                  "蝉は一般的に茶色で、\n"
-                                  "体の長さは5〜9センチです。\n"
-                                  "非常に緑の植物に定住すること\n"
-                                  "を好む緑のセミもあります。",
-                                  QMessageBox.Cancel)
-        QApplication.instance().quit
+        QMessageBox.warning(self, "蝉 : パラメータ",
+                            "蝉は一般的に茶色で、\n"
+                            "体の長さは5〜9センチです。\n"
+                            "非常に緑の植物に定住すること\n"
+                            "を好む緑のセミもあります。",
+                            QMessageBox.Cancel)
+        QApplication.instance().quit()
 
 
 if __name__ == '__main__':
