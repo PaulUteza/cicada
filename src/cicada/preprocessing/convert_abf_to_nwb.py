@@ -2,11 +2,12 @@ from converttonwb import ConvertToNWB
 import numpy as np
 import yaml
 import pyabf
+import math
 from pynwb.base import TimeSeries
 from cicada.preprocessing.utils import get_continous_time_periods, merging_time_periods, class_name_to_file_name
 
 class ConvertAbfToNWB(ConvertToNWB):
-
+    """Class to convert ABF data to NWB """
     def __init__(self, nwb_file):
         super().__init__(nwb_file)
         self.abf = None
@@ -39,15 +40,16 @@ class ConvertAbfToNWB(ConvertToNWB):
         if 2 frames concatenate are contiguous in times (such as then LFP signal or piezzo would be match movie),
         or to add frames in those signals and return the indices and how many frames to add in the movie so it will
         be synchronize with the rest of the data. Thus an information named frames_to_add will be added in the NWB_file
-        :param kwargs:
-        kwargs is a dictionary, potentials keys and values types are:
-        abf_yaml_file_name: mandatory parameter. The value is a string representing the path
-        and file_name of the yaml file associated to this abf file. In the abf:
+
+        Args:
+            **kwargs (dict) : kwargs is a dictionary, potentials keys and values types are:
+            abf_yaml_file_name: mandatory parameter. The value is a string representing the path
+            and file_name of the yaml file associated to this abf file. In the abf:
             frames_channel: mandatory parameter. The value is an int representing the channel
             of the abf in which is the frames timestamps data.
-        abf_file_name: mandatory parameter. The value is a string representing the path
-        and file_name of the abf file.
-        :return:
+            abf_file_name: mandatory parameter. The value is a string representing the path
+            and file_name of the abf file.
+
         """
         super().convert(**kwargs)
         # TODO: See to use a default config yaml file and use a specific yaml file,
@@ -243,7 +245,7 @@ class ConvertAbfToNWB(ConvertToNWB):
         there is an option to either skip those non registered frames that will be skept in all other data (lfp, piezzo,
         ...) or to determine how many frames to add in the movie and where so it matches the other data recording in
         the abf file
-        :return:
+
         """
         threshold_value = 0.02
         if self.abf.dataRate < 50000:
@@ -364,9 +366,16 @@ class ConvertAbfToNWB(ConvertToNWB):
         """
         Using the data from the abf regarding the speed of the animal on the treadmill, return the speed in cm/s
         at each timestamps as well as period when the animal is moving (using min_speed threshold)
-        :param run_data:
-        :param min_speed:
-        :return:
+
+        Args:
+            run_data (list): Data from the subject run
+            min_speed (int): Minimum speed
+
+        Returns:
+            mvt_periods (list): List of movements periods
+            speed_during_movement_periods (list) : List of subject speed during movements
+            speed_by_time (list) : List of subject speed by time
+
         """
         nb_period_by_wheel = 500
         wheel_diam_cm = 2 * math.pi * 1.75
@@ -402,8 +411,10 @@ class ConvertAbfToNWB(ConvertToNWB):
         """
         Using the information in run_channel, will add to the nwb_file the speed of the subject at each acquisition
         frame of the movie in cm/s
-        :param run_channel:
-        :return:
+
+        Args:
+            run_channel (int) : Run channel
+
         """
         self.abf.setSweep(sweepNumber=0, channel=run_channel)
         run_data = self.abf.sweepY
