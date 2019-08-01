@@ -10,21 +10,25 @@ from datetime import datetime
 from dateutil.tz import tzlocal
 
 """
-Almost the same version as Paul.
-A few details changed. 
-using os.path.join to build the path, as anti-slash is not compatible with linux or mac
-using endswith and startswith for extension of beginning of the file filter. 
-A bit of factoring creating filter_list_of_files() and filter_list_according_to_keywords()
-CHanging variable name like i and j by more meaningful ones
+Load data files and create the NWB file
 """
 
 def filter_list_of_files(files, extensions):
     """
     Take a list of file names and either no extensions (empty list or None) and remove the directory that starts by
     "." or a list of extension and remove the files that are not with this extension. It returns a new list
-    :param files:
-    :param extensions:
-    :return:
+
+    Args:
+        files (list): List of files to be filtered
+        extensions (str) : File extension to use as a filter
+
+    Exemples:
+        >>> print(filter_list_of_files(["file1.py", "file2.c", "file3.h"],"py"))
+        ["file1.py"]
+    """
+    """
+    Args:
+        test (int) : Ok
     """
     filtered_list = []
     if not extensions:
@@ -39,10 +43,15 @@ def filter_list_according_to_keywords(list_to_filter, keywords, keywords_to_excl
     """
     Conditional loop to remove all files or directories not containing the keywords
     # or containing excluded keywords. Inplace list modification
-    :param list_to_filter:
-    :param keywords:
-    :param keywords_to_exclude:
-    :return:
+
+    Args:
+        list_to_filter (list): List containing all files/directories to be filtered
+        keywords (str): If the list doesn't contain the keyword, remove it from list
+        keywords_to_exclude (str): If the list contains the keyword, remove it from list
+
+    Exemples:
+        >>> print(filter_list_of_files(["file1.py", "file2.c", "file2.h"],"2","h"))
+        ["file2.c"]
     """
     counter = 0
     while counter < len(list_to_filter):
@@ -65,15 +74,15 @@ def filter_list_according_to_keywords(list_to_filter, keywords, keywords_to_excl
 
 
 def create_nwb_file(yaml_path):
-    # root_path = "/Users/pappyhammer/Documents/academique/these_inmed/robin_michel_data/"
-    # root_path = "/media/julien/Not_today/hne_not_today/"
-    # path_data = os.path.join(root_path, "data_cicada_format")
-    # session_id = "p6_18_02_07_a001"
-    # tiff_file_name = f"{session_id}/{session_id}.tif"
-    # yaml_file_name = f"{session_id}/{session_id}.yaml"
+    """
+    Create an NWB file object using all metadata containing in YAML file
+
+    Args:
+        yaml_path (str): Absolute path to YAML file
+
+    """
 
     # Weight SI unit is newton
-
     yaml_data = None
     with open(yaml_path, 'r') as stream:
         yaml_data = yaml.safe_load(stream)
@@ -156,8 +165,16 @@ def create_nwb_file(yaml_path):
     #  to create time_intervals using npy files or other file in which intervals are contained through a
     #  an instance of ConvertToNWB and the yaml_file for extension and keywords
 
-def load_nwb_from_data(dir_path, default_convert_to_nwb_yml_file):
 
+def load_nwb_from_data(dir_path, default_convert_to_nwb_yml_file):
+    """
+    Convert all data and put it in NWB format then create the file
+
+    Args:
+        dir_path (str): Absolute path to the directory containing all data
+        default_convert_to_nwb_yml_file (str): Absolute path to the default YAML file to convert an NWB file
+
+    """
     # Get all files and directories present in the path
     files = utils.get_subfiles(dir_path)
     dirs = utils.get_subdirs(dir_path)
@@ -172,7 +189,6 @@ def load_nwb_from_data(dir_path, default_convert_to_nwb_yml_file):
     for file in files:
         if not(file.endswith(".yaml") or file.endswith(".yml")):
             continue
-        # p is a placeholder until we know every yaml file name
         if "convert_to_nwb" in file:
             with open(os.path.join(dir_path, file, 'r')) as stream:
                 home_data = yaml.safe_load(stream)
@@ -218,7 +234,6 @@ def load_nwb_from_data(dir_path, default_convert_to_nwb_yml_file):
         module_name = class_name_to_file_name(class_name=class_name)
         module_imported = importlib.import_module(module_name)
         class_instance = getattr(module_imported, class_name)
-        # class_instance = getattr(test_cicada_test_paul, class_name)
         converter = class_instance(nwb_file)
         converter_dict[class_name] = converter
         # Initialize a dict to contain the arguments to call convert

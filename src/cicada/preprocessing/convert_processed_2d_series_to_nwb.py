@@ -25,19 +25,24 @@ ConvertRasterplotToNWB :
     value: []
 """
 
-class ConvertProcessed2dSeriesToBNWB(ConvertToNWB):
-
+class ConvertProcessed2dSeriesToNWB(ConvertToNWB):
+    """Class to convert 2D series to NWB """
     def __init__(self, nwb_file):
         super().__init__(nwb_file)
 
     @staticmethod
     def load_rasterplot_in_memory(rasterplot_file_name, matlab_string, frames_to_add=None):
         """
+        Get 2D series data from file
 
-        :param rasterplot_file_name:
-        :param frames_to_add: is a dict, with key the frame after which add blank frames
-        and value being the number of frames to add
-        :return:
+        Args:
+            rasterplot_file_name (str) : Absolute path to file containing 2D series
+            matlab_string (str) : Key to the data from matlab and npz files
+            frames_to_add (dict) : Key is the frame where you add blank frames and value is the number of frames to add
+            Default is None.
+
+        Returns:
+            raster (np.array) : Raster data as a 2d array
         """
         if rasterplot_file_name is not None:
             print(f"Loading Rasterplot")
@@ -63,6 +68,11 @@ class ConvertProcessed2dSeriesToBNWB(ConvertToNWB):
                 return raster
 
     def convert(self, **kwargs):
+        """Convert the data and add to the nwb_file
+
+        Args:
+            **kwargs: arbitrary arguments
+        """
         super().convert(**kwargs)
 
         if "rasterdur_file_name" not in kwargs or not kwargs["rasterdur_file_name"]:

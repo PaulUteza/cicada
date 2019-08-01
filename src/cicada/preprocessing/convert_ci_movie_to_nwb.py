@@ -13,19 +13,29 @@ from pynwb.base import TimeSeries
 from pynwb.device import Device
 
 class ConvertCiMovieToNWB(ConvertToNWB):
-
+    """Class to convert Calcium Imaging movies to NWB"""
     def __init__(self, nwb_file):
+        """
+        Initialize some parameters
+        Args:
+             nwb_file (NWB.File) : NWB file object
+        """
         super().__init__(nwb_file)
         self.ci_sampling_rate = None
         # dict with key an int representing the frame index after which add frames.
         # the value is the number of frames to add (integer)
         self.frames_to_add = dict()
 
+
     def load_tiff_movie_in_memory_using_pil(self, tif_movie_file_name):
         """
+            Load tiff movie from filename using PIL library
 
-        :param tif_movie_file_name:
-        :return:
+            Args:
+                tif_movie_file_name (str) : Absolute path to tiff movie
+
+            Returns:
+                tiff_movie (array) : Tiff movie as 3D-array
         """
         start_time_timer = time.time()
         im = pil_image.open(tif_movie_file_name)
@@ -48,8 +58,16 @@ class ConvertCiMovieToNWB(ConvertToNWB):
               f"{np.round(stop_time_timer - start_time_timer, 3)} s")
         return tiff_movie
 
-
     def load_tiff_movie_in_memory(self, tif_movie_file_name):
+        """
+            Load tiff movie from filename using Scan Image Tiff
+
+            Args:
+                tif_movie_file_name (str) : Absolute path to tiff movie
+
+            Returns:
+                tiff_movie (array) : Tiff movie as 3D-array
+        """
         if tif_movie_file_name is not None:
             print(f"Loading movie")
             if 'ci_recording_on_pause' in self.nwb_file.intervals:
@@ -67,6 +85,11 @@ class ConvertCiMovieToNWB(ConvertToNWB):
             return tiff_movie
 
     def convert(self, **kwargs):
+        """Convert the data and add to the nwb_file
+
+        Args:
+            **kwargs: arbitrary arguments
+        """
         super().convert(**kwargs)
 
         # ### setting parameters ####

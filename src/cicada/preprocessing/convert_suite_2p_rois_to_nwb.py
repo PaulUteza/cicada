@@ -8,11 +8,18 @@ import os
 from convert_ci_movie_to_nwb import ConvertCiMovieToNWB
 
 class ConvertSuite2pRoisToNWB(ConvertToNWB):
+    """Class to convert data from Suite2P ROIs to NWB"""
 
     def __init__(self, nwb_file):
         super().__init__(nwb_file)
 
     def convert(self, **kwargs):
+        """Convert the data and add to the nwb_file
+
+        Args:
+            **kwargs: arbitrary arguments
+        """
+
         super().convert(**kwargs)
         if "suite2p_dir" not in kwargs:
             raise Exception(f"'suite2p_dir' argument should be pass to convert "
