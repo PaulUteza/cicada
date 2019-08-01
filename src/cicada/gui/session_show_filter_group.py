@@ -5,10 +5,12 @@ from qtpy.QtCore import Qt
 import os
 from pynwb import NWBHDF5IO
 from functools import partial
-cicada.preprocessing.utils import sort_by_param, group_by_param
+from cicada.preprocessing.utils import sort_by_param, group_by_param
+import cicada.preprocessing.utils as utils
 import yaml
 import datetime
 from itertools import islice
+from cicada.gui.cicada_analysis_tree_gui_test import AnalysisTreeApp
 
 
 # TODO : Quand des éléments à sort ont des None, les griser
@@ -289,10 +291,7 @@ class MainWindow(QMainWindow):
         for i in range(len(self.grouped_labels)):
             self.dict_group.update({param_group_list[i]: self.grouped_labels[i]})
         self.grouped = True
-        if self.widget:
-            self.widget.form_group(self.grouped_labels, param_group_list)
-        else:
-            self.openWindow()
+        self.musketeers_widget.widget.form_group(self.grouped_labels, param_group_list)
 
     def on_sort(self, param, state):
         if state > 0:
@@ -308,10 +307,7 @@ class MainWindow(QMainWindow):
                     self.param_list.remove(param)
         self.sorted_labels = utils.sort_by_param(self.nwb_path_list, self.param_list)
         self.sorted = True
-        if self.widget:
-            self.widget.populate(self.sorted_labels)
-        else:
-            self.openWindow()
+        self.musketeers_widget.widget.populate(self.sorted_labels)
 
     def about(self):
         QMessageBox.about(self, "About CICADA","Lorem Ipsum")
@@ -321,14 +317,14 @@ class MainWindow(QMainWindow):
         self.showSessionAct.setEnabled(False)
         self.sortMenu.setEnabled(True)
         self.groupMenu.setEnabled(True)
-        self.widget = MyWidget(self)
-        self.widget.show()
+        self.musketeers_widget = MusketeersWidget(parent=self)
+        self.setCentralWidget(self.musketeers_widget)
 
 
-class MyWidget(QDialog):
+class MyWidget(QWidget):
 
     def __init__(self, parent=None):
-        QDialog.__init__(self, parent)
+        super().__init__()
         self.exists = True
         self.setWindowTitle('Sessions :')
         self.resize(500,500)
@@ -353,7 +349,6 @@ class MyWidget(QDialog):
         self.layout.addWidget(self.run_analysis_button)
         self.layout.addWidget(self.create_group)
         self.setLayout(self.layout)
-
 
 
     def on_change(self):
@@ -452,6 +447,17 @@ class MyWidget(QDialog):
         self.parent.sortMenu.setEnabled(False)
         self.parent.groupMenu.setEnabled(False)
 
+
+class MusketeersWidget(QWidget):
+    def __init__(self, parent=None):
+        QWidget.__init__(self, parent=parent)
+        self.layout = QHBoxLayout()
+        self.widget = MyWidget(parent)
+        self.layout.addWidget(self.widget)
+        analysis_tree_app = AnalysisTreeApp()
+        self.layout.addWidget(analysis_tree_app)
+        self.setLayout(self.layout)
+        # self.widget.show()
 
 if __name__ == "__main__":
 

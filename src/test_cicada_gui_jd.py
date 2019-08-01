@@ -1,4 +1,5 @@
-from gui.cicada_analysis_tree_gui_test import AnalysisTreeApp
+from cicada.gui.cicada_analysis_tree_gui_test import AnalysisTreeApp
+from cicada.gui.session_show_filter_group import MainWindow
 import sys
 # from qtpy.QtWidgets import QApplication
 from qtpy.QtWidgets import *
@@ -12,7 +13,7 @@ if __name__ == '__main__':
 
     # set the environment variable to use a specific wrapper
     # it can be set to PyQt, PyQt5, PySide or PySide2 (not implemented yet)
-    os.environ['PYQTGRAPH_QT_LIB'] = 'PyQt5'
+    # os.environ['PYQTGRAPH_QT_LIB'] = 'PyQt5'
 
     # from https://gist.github.com/mstuttgart/37c0e6d8f67a0611674e08294f3daef7
     # dark_palette = QPalette()
@@ -44,5 +45,7 @@ if __name__ == '__main__':
 
     app.setStyleSheet(dark_style_cicada_style_sheet)
 
-    ex = AnalysisTreeApp()
+    cicada = MainWindow()
+    cicada.show()
+
     sys.exit(app.exec_())
