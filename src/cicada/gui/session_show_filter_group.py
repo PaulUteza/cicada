@@ -85,7 +85,6 @@ class SessionsWidget(QWidget):
         self.q_list.insertItems(0, labels)
 
     def form_group(self, labels, param=["-"]):
-        print(labels)
         self.q_list.clear()
         while len(param) < len(labels):
             param.append("-")
@@ -174,6 +173,6 @@ class SessionsWidget(QWidget):
 if __name__ == "__main__":
 
     app = QApplication(sys.argv)
-    cicada = MainWindow()
+    cicada = CicadaMainWindow()
     cicada.show()
     sys.exit(app.exec_())

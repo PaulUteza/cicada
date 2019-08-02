@@ -1,6 +1,7 @@
 from qtpy.QtWidgets import *
 import os
 from pynwb import NWBHDF5IO
+import sys
 from functools import partial
 import cicada.preprocessing.utils as utils
 import yaml
@@ -69,10 +70,14 @@ class CicadaMainWindow(QMainWindow):
 
     def load_data_from_dir(self, dir_name):
         """
-        Load data from a dir
-        :param dir_name:
-        :return:
+
+        Args:
+            dir_name:
+
+        Returns:
+
         """
+
         # TODO: deal with the different format
         # TODO: decide if we should add those nwb to the ones already opened (if that's the case)
         #  or erase the ones present and replace them by the new one.
@@ -100,8 +105,6 @@ class CicadaMainWindow(QMainWindow):
                 for value in self.data.values():
                     nwb_file_list = []
                     for file in value:
-                        print(self.nwb_path_list)
-                        self.nwb_path_list.append(os.path.join(dir_name, file))
                         io = NWBHDF5IO(os.path.join(dir_name, file), 'r')
                         nwb_file = io.read()
                         self.data_dict[nwb_file.identifier] = nwb_file
@@ -153,11 +156,8 @@ class CicadaMainWindow(QMainWindow):
             io = NWBHDF5IO(path, 'r')
             nwb_file = io.read()
             self.labels.append(nwb_file.identifier)
-        if self.session_widget.exists:
-            print("ok")
-            self.session_widget.populate(self.labels)
-        else:
-            self.openWindow()
+        self.musketeers_widget.session_widget.populate(self.labels)
+
 
     def createMenus(self):
 
