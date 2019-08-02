@@ -41,6 +41,10 @@ class CicadaCellsCount(CicadaAnalysis):
         """
         pass
 
+    def get_params_for_gui(self):
+        return [
+            {'name': 'cells_alive', 'type': bool, 'doc': 'only count the cells that spikes', 'default': False}]
+
     def run_analysis(self, **kwargs):
         """
         Run the analysis: just printing the number of cells in each session

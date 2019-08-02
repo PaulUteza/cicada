@@ -1,7 +1,7 @@
 import os
 import pathlib
 from pynwb import NWBHDF5IO
-from cicada_data_to_nwb import load_nwb_from_data
+from cicada_data_to_nwb import convert_data_to_nwb
 import utils
 
 """
@@ -106,7 +106,7 @@ def cicada_pre_processing_main():
             # In case one of the directory is not complete/right we don't want the whole thing to stop
             # try:
             print(f"Loading data for {os.path.split(subject_dir)[1]}")
-            load_nwb_from_data(subject_dir,
+            convert_data_to_nwb(subject_dir,
                                                      default_convert_to_nwb_yml_file=default_convert_to_nwb_yml_file)
             # except:
             #     print(f"Error while loading {utils.path_leaf(dir)}")

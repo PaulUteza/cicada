@@ -19,8 +19,8 @@ class CicadaConnectivityGraph(CicadaAnalysis):
         implemented, False otherwise.
         :return: a boolean
         """
-        # temporary
-        return False
+        # # temporary
+        # return False
         if self._data_format != "nwb":
             # non NWB format compatibility not yet implemented
             return False
@@ -34,6 +34,10 @@ class CicadaConnectivityGraph(CicadaAnalysis):
             if "ophys" not in data.processing:
                 return False
         return True
+
+    def get_params_for_gui(self):
+        return [{'name': 'range (ms)', 'type': int, 'range': [100, 1500], 'doc': 'Range for connectivity', 'default': 0},
+            {'name': 'with graph', 'type': bool, 'doc': 'only count the cells that spikes', 'default': True}]
 
     def update_original_data(self):
         """

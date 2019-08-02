@@ -1,5 +1,5 @@
 from cicada.gui.cicada_analysis_tree_gui import AnalysisTreeApp
-from cicada.gui.session_show_filter_group import MainWindow
+from cicada.gui.cicada_main_window import CicadaMainWindow
 import sys
 # from qtpy.QtWidgets import QApplication
 from qtpy.QtWidgets import *
@@ -45,7 +45,7 @@ if __name__ == '__main__':
 
     app.setStyleSheet(dark_style_cicada_style_sheet)
 
-    cicada_main_window = MainWindow()
+    cicada_main_window = CicadaMainWindow()
     # putting the window at the center of the screen
     # screenGeometry is an instance of Qrect
     screenGeometry = QApplication.desktop().screenGeometry()

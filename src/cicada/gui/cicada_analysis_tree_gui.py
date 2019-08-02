@@ -146,7 +146,7 @@ class QAnalysisTreeView(QTreeView):
     #     print(f'mouseDoubleClickEvent {event}')
 
     def keyPressEvent(self, event):
-        available_background = ["emily.jpg", "emily_face.png", "emily_wg.jpg"]
+        available_background = ["emily.jpg", "emily_face.png", "emily_wg.jpg", "tokyo.png"]
         if event.key() == QtCore.Qt.Key_E:
             if self.special_background_on:
                 self.setStyleSheet(
@@ -331,13 +331,15 @@ class AnalysisTreeApp(QWidget):
     def __init__(self):
         super().__init__()
         self.title = 'analysis tree test'
-        self.left = 10
-        self.top = 10
-        self.width = 600
-        self.height = 240
-        self.dataGroupBox = None
+        # self.left = 10
+        # self.top = 10
+        # self.width = 600
+        # self.height = 240
+        # self.dataGroupBox = None
         self.dataView = None
         self.analysis_tree_model = None
+        # will be initialize when the param section will have been created
+        self.param_section_widget = None
 
         self.init_ui()
         # self.setStyleSheet("QLineEdit { background-color: yellow }")
@@ -358,12 +360,13 @@ class AnalysisTreeApp(QWidget):
 
         if tree_item.cicada_analysis is not None and tree_item.data_valid:
             # TODO: send the analysis instance to the 3rd part of the GUI, GO Francois !!
-            print(f"2x click on {tree_item.cicada_analysis.name}")
+            # print(f"2x click on {tree_item.cicada_analysis.name}")
+            self.param_section_widget.create_widgets(cicada_analysis=tree_item.cicada_analysis)
 
 
     def init_ui(self):
         self.setWindowTitle(self.title)
-        self.setGeometry(self.left, self.top, self.width, self.height)
+        # self.setGeometry(self.left, self.top, self.width, self.height)
 
         # self.dataGroupBox = QGroupBox("")
 
@@ -427,7 +430,7 @@ class AnalysisTreeApp(QWidget):
     def create_tree_model(self):
         # TODO: a system that list the Analysis Function available in the pipeline
         #  + a system that either read a yaml file or a dir and load automatically analysis function
-
+        # TODO: don't load classed if the method get_params_for_gui return None ?
         analysis_class_names = ["CicadaCellsCount", "CicadaFramesCount",
                                 "CicadaHubsAnalysis", "CicadaConnectivityGraph",
                                 "CicadaPsthAnalysis"]

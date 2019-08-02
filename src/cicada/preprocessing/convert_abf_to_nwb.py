@@ -69,7 +69,8 @@ class ConvertAbfToNWB(ConvertToNWB):
 
         # yaml_file that will contains the information to read the abf file
         abf_yaml_file_name = kwargs["abf_yaml_file_name"]
-
+        if abf_yaml_file_name is None:
+            return
         with open(abf_yaml_file_name, 'r') as stream:
             abf_yaml_data = yaml.safe_load(stream)
 

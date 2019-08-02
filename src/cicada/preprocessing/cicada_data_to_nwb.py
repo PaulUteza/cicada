@@ -166,7 +166,7 @@ def create_nwb_file(yaml_path):
     #  an instance of ConvertToNWB and the yaml_file for extension and keywords
 
 
-def load_nwb_from_data(dir_path, default_convert_to_nwb_yml_file):
+def convert_data_to_nwb(dir_path, default_convert_to_nwb_yml_file):
     """
     Convert all data and put it in NWB format then create the file
 

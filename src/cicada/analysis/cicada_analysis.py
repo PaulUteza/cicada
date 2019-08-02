@@ -55,6 +55,13 @@ class CicadaAnalysis(ABC):
         """
         pass
 
+    def get_params_for_gui(self):
+        """
+        Need to be implemented in order to be used through the graphical interface.
+        :return: a list of dict
+        """
+        return None
+
     @property
     def data_to_analyse(self):
         """

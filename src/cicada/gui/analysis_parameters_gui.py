@@ -2,9 +2,11 @@
 from qtpy.QtCore import Qt
 from qtpy.QtWidgets import (QApplication, QCheckBox, QComboBox, QHBoxLayout, QLabel, QLineEdit, QMainWindow,
                             QMessageBox, QPushButton, QScrollArea, QSlider, QSpinBox, QVBoxLayout, QWidget)
+from qtpy import QtCore
 
 import datetime
 from abc import ABC, abstractmethod
+from random import randint
 
 
 # input_test contains different types of parameters, just to check if it works
@@ -34,7 +36,7 @@ class WidgetForParam(ABC):
 
     # It is used to be sure that a parameter won't be loaded by two different widgets
     param_already_got = []
-    all_params = InputParam().input_test  # list of all params
+    # ALL_PARAMS = InputParam().input_test  # list of all params
 
     def __init__(self):
         self.param_inputs = []
@@ -75,8 +77,14 @@ class WidgetForParam(ABC):
         return True
 
     # Get all parameters which corresponds to the widget. Don't get them already got by other widgets
-    def get_param_input(self):
-        for param in WidgetForParam.all_params:
+    def get_param_input(self, all_params):
+        """
+
+        :param all_params: list of dict
+        :return:
+        """
+
+        for param in all_params:
             if self.check_param(param) and param not in WidgetForParam.param_already_got:
                 if self.check_conditions(param):
                     self.param_inputs.append(param)
@@ -91,7 +99,10 @@ class WidgetForParam(ABC):
     #  Add widget to the GUI
     def add_widget_to_layout(self, layout):
         if self.param['type'] != bool:
-            layout.addWidget(QLabel(self.param['name'] + " :"))
+            q_label = QLabel(self.param['name'] + " :")
+            q_label.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+            q_label.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+            layout.addWidget(q_label)
         if self.widget_group:
             layout.addWidget(self.widget_group)
         else:
@@ -265,6 +276,9 @@ class ParamSection(QWidget):
     def __init__(self, parent=None):
         super(ParamSection, self).__init__(parent)
 
+        self.special_background_on = False
+        self.cicada_analysis = None
+
         # Add the scroll bar
         # ==============================
         self.main_layout = QVBoxLayout()
@@ -275,40 +289,116 @@ class ParamSection(QWidget):
         self.main_layout.addWidget(self.scrollArea)
 
         self.scrollAreaWidgetContents = QWidget()
-        self.scrollAreaWidgetContents.resize(300, 500)
+        # self.scrollAreaWidgetContents.resize(300, 500)
         self.scrollArea.setWidget(self.scrollAreaWidgetContents)
         self.layout = QVBoxLayout(self.scrollAreaWidgetContents)
         # ==============================
 
-        self.layout.addWidget(QLabel("Parameters :"))
+        # self.layout.addWidget(QLabel("Parameters :"))
+        #
+        # # Be careful of the order of classes : put more selective classes at first !
+        # all_widgets_type = [ParamSpinBox(), ParamComboBox(), ParamCheckBox(), ParamSlider(),
+        #                     ParamDateTime(), ParamLineEdit()]
+        # param_input_by_type = [WidgetType.get_param_input() for WidgetType in all_widgets_type]
+        #
+        # all_widgets = []
+        #
+        # for idx_widget_type, widget_type in enumerate(param_input_by_type):
+        #     for param in widget_type:
+        #         widget = all_widgets_type[idx_widget_type]
+        #         widget.set_param(param)
+        #         widget.create_widget()
+        #         widget.connect_widget()
+        #         widget.add_widget_to_layout(self.layout)
+        #         all_widgets.append(widget)
+        #
+        # # Button to continue / cancel, not ready for the moment
+        # self.button1 = QPushButton("大丈夫")
+        # self.button2 = QPushButton(" キャンセル ")
+        #
+        # self.layout.addWidget(self.button1)
+        # self.layout.addWidget(self.button2)
+        # self.layout.addStretch(1)
+        self.setLayout(self.main_layout)
+
+        # self.button1.clicked.connect(self.load_parameters)
+        # self.button2.clicked.connect(QApplication.instance().quit)
+
+    def create_widgets(self, cicada_analysis):
+        """
+
+        :param all_params: list of dict
+        :return:
+        """
+        self.cicada_analysis = cicada_analysis
+        all_params = cicada_analysis.get_params_for_gui()
+        if all_params is None:
+            all_params = []
+
+        self.scrollAreaWidgetContents = QWidget()
+        # self.scrollAreaWidgetContents.resize(300, 500)
+        self.scrollArea.setWidget(self.scrollAreaWidgetContents)
+        self.layout = QVBoxLayout(self.scrollAreaWidgetContents)
+        # ==============================
+
+        label_param = QLabel("Parameters :")
+        label_param.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        label_param.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+        self.layout.addWidget(label_param)
 
         # Be careful of the order of classes : put more selective classes at first !
         all_widgets_type = [ParamSpinBox(), ParamComboBox(), ParamCheckBox(), ParamSlider(),
                             ParamDateTime(), ParamLineEdit()]
-        param_input_by_type = [WidgetType.get_param_input() for WidgetType in all_widgets_type]
+        param_input_by_type = [WidgetType.get_param_input(all_params=all_params) for WidgetType in all_widgets_type]
 
         all_widgets = []
 
         for idx_widget_type, widget_type in enumerate(param_input_by_type):
             for param in widget_type:
                 widget = all_widgets_type[idx_widget_type]
+                # if hasattr(widget, "setWindowFlags"):
                 widget.set_param(param)
                 widget.create_widget()
                 widget.connect_widget()
                 widget.add_widget_to_layout(self.layout)
+                widget.widget.setStyleSheet(
+                    "background-color:transparent")
+                # widget.widget.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+                # widget.widget.setAttribute(QtCore.Qt.WA_TranslucentBackground)
                 all_widgets.append(widget)
 
-        # Button to continue / cancel, not ready for the moment
+        # # Button to continue / cancel, not ready for the moment
         self.button1 = QPushButton("大丈夫")
-        self.button2 = QPushButton(" キャンセル ")
-
+        self.button1.setStyleSheet(
+            "background-color:transparent")
+        self.button1.clicked.connect(self.launch_analysis)
         self.layout.addWidget(self.button1)
-        self.layout.addWidget(self.button2)
+        # self.layout.addWidget(self.button2)
         self.layout.addStretch(1)
-        self.setLayout(self.main_layout)
 
-        self.button1.clicked.connect(self.load_parameters)
-        self.button2.clicked.connect(QApplication.instance().quit)
+    def launch_analysis(self):
+        """
+        Launch analysis, passing the right parameters to the function analysis
+        :return:
+        """
+        # TODO: Add params to the run_analysis
+        kwargs = dict()
+        self.cicada_analysis.run_analysis(**kwargs)
+
+    def keyPressEvent(self, event):
+        available_background = ["black_widow.png", "captain_marvel.png", "iron_man.png", "hulk.png"]
+        if event.key() == QtCore.Qt.Key_A:
+            if self.special_background_on:
+                self.scrollAreaWidgetContents.setStyleSheet(
+                    ".QWidget{background-image:url(\"\"); background-position: center;}")
+                self.special_background_on = False
+            else:
+                pic_index = randint(0, len(available_background) - 1)
+                # we add .QWidget so the background is specific to this widget and is not applied by other widgets
+                self.scrollAreaWidgetContents.setStyleSheet(
+                    ".QWidget{background-image:url(\"cicada/gui/icons/rc/" + available_background[pic_index] +
+                    "\"); background-position: center; background-repeat:no-repeat;}")
+                self.special_background_on = True
 
     # Will be used at the end to start the analysis, but not done yet !
     def load_parameters(self):

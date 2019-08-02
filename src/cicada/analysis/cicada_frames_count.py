@@ -19,6 +19,8 @@ class CicadaFramesCount(CicadaAnalysis):
         implemented, False otherwise.
         :return: a boolean
         """
+        # temporary
+        return False
         if self._data_format != "nwb":
             # non NWB format compatibility not yet implemented
             return False
