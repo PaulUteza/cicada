@@ -117,18 +117,20 @@ class SessionsWidget(QWidget):
         self.saveButton.clicked.connect(self.nameBox.close)
 
     def save_group_names(self):
+        group_yaml_file = "cicada/config/group.yaml"
         name = self.save_name.text()
         group_to_save = []
         if self.q_list.selectedItems():
-            print("Selected")
             for item in self.get_items():
                 for path in self.parent.nwb_path_list:
                     if path.endswith(item + ".nwb"):
                         group_to_save.append(path)
-            self.parent.data.update({name: group_to_save})
+            if self.parent.group_data:
+                self.parent.group_data.update({name: group_to_save})
+            else:
+                self.parent.group_data = {name: group_to_save}
         elif self.parent.grouped:
             counter = 0
-            print("Grouped :", self.parent.grouped_labels)
             for group in self.parent.grouped_labels:
                 counter +=1
 
@@ -148,19 +150,24 @@ class SessionsWidget(QWidget):
                             else:
                                 id_group = str(counter)
                 except AttributeError:
-                    print("Except")
                     id_group = str(counter)
                 print(name,id_group)
-                self.parent.data.update({str(name + '_' + id_group): group_to_save})
+                if self.parent.group_data:
+                    self.parent.group_data.update({str(name + '_' + id_group): group_to_save})
+                else:
+                    self.parent.group_data = {str(name + '_' + id_group): group_to_save}
         else:
-            print("Sorted")
             for item in self.parent.labels:
                 for path in self.parent.nwb_path_list:
                     if path.endswith(item + ".nwb"):
                         group_to_save.append(path)
-            self.parent.data.update({name: group_to_save})
-        with open(self.parent.yaml_path, 'w') as stream:
-            yaml.dump(self.parent.data, stream, default_flow_style=True)
+            if self.parent.group_data:
+                self.parent.group_data.update({name: group_to_save})
+            else:
+                self.parent.group_data = {name: group_to_save}
+        with open(group_yaml_file, 'w') as stream:
+            yaml.dump(self.parent.group_data, stream, default_flow_style=False)
+        self.parent.load_group_from_config()
 
 
 

@@ -47,7 +47,30 @@ class CicadaMainWindow(QMainWindow):
         #     self.data = yaml.safe_load(stream)
 
         self.openWindow()
+        self.load_group_from_config()
         self.load_data_from_config()
+
+
+    def load_group_from_config(self):
+        group_file_name = "cicada/config/group.yaml"
+        if os.path.isfile(group_file_name):
+            self.group_data = dict()
+            with open(group_file_name, 'r') as stream:
+                self.group_data = yaml.safe_load(stream)
+            self.grouped_labels = []
+            if self.group_data:
+                self.grouped = True
+                for value in self.group_data.values():
+                    nwb_file_list = []
+                    for file in value:
+                        io = NWBHDF5IO(file, 'r')
+                        nwb_file = io.read()
+                        self.data_dict[nwb_file.identifier] = nwb_file
+                        nwb_file_list.append(nwb_file.identifier)
+                    self.grouped_labels.append(nwb_file_list)
+                self.showGroupMenu.setEnabled(True)
+                self.populate_menu()
+
 
     def load_data_from_config(self):
         """
@@ -55,12 +78,14 @@ class CicadaMainWindow(QMainWindow):
         :return:
         """
         config_file_name = "cicada/config/config.yaml"
-        config_dict =None
+        config_dict = None
+
         if os.path.isfile(config_file_name):
             with open(config_file_name, 'r') as stream:
                 config_dict = yaml.safe_load(stream)
         if (config_dict is not None) and config_dict.get("dir_name"):
             self.load_data_from_dir(dir_name=config_dict["dir_name"])
+
 
     def open(self):
         self.labels = []
@@ -97,22 +122,6 @@ class CicadaMainWindow(QMainWindow):
                 nwb_file = io.read()
                 self.data_dict[nwb_file.identifier] = nwb_file
                 self.labels.append(nwb_file.identifier)
-            elif file_name.endswith(".yaml") or file_name.endswith(".yml"):
-                self.yaml_path = os.path.join(dir_name, file_name)
-                with open(os.path.join(dir_name, file_name), 'r') as stream:
-                    self.data = yaml.safe_load(stream)
-                self.grouped = True
-                self.grouped_labels = []
-                for value in self.data.values():
-                    nwb_file_list = []
-                    for file in value:
-                        io = NWBHDF5IO(os.path.join(dir_name, file), 'r')
-                        nwb_file = io.read()
-                        self.data_dict[nwb_file.identifier] = nwb_file
-                        nwb_file_list.append(nwb_file.identifier)
-                    self.grouped_labels.append(nwb_file_list)
-                self.showGroupMenu.setEnabled(True)
-                self.populate_menu()
         # self.openWindow()
         # checking there is at least one data file loaded
         if len(self.data_dict) > 0:
@@ -138,10 +147,10 @@ class CicadaMainWindow(QMainWindow):
     def populate_menu(self):
         self.showGroupMenu.clear()
         counter =0
-        if len(self.data.keys()) > 10:
-            populate_data_keys = list(islice(self.data, 10))
+        if len(self.group_data.keys()) > 10:
+            populate_data_keys = list(islice(self.group_data, 10))
         else:
-            populate_data_keys = list(self.data)
+            populate_data_keys = list(self.group_data)
         for group_name in populate_data_keys:
             print(group_name)
             counter +=1
@@ -153,7 +162,7 @@ class CicadaMainWindow(QMainWindow):
     def load_group(self, group_name):
         self.sorted = False
         self.grouped = False
-        self.nwb_path_list = self.data.get(group_name)
+        self.nwb_path_list = self.group_data.get(group_name)
         self.labels = []
         for path in self.nwb_path_list:
             io = NWBHDF5IO(path, 'r')
@@ -408,7 +417,7 @@ def catch_exceptions(t, val, tb):
     Args:
         t: Exception type
         val: Exception value
-        tb: 
+        tb:
 
     Returns:
 
