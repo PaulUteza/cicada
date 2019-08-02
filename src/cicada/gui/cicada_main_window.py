@@ -55,6 +55,7 @@ class CicadaMainWindow(QMainWindow):
         :return:
         """
         config_file_name = "cicada/config/config.yaml"
+        config_dict =None
         if os.path.isfile(config_file_name):
             with open(config_file_name, 'r') as stream:
                 config_dict = yaml.safe_load(stream)
@@ -135,6 +136,7 @@ class CicadaMainWindow(QMainWindow):
             yaml.dump(config_dict, outfile, default_flow_style=False)
 
     def populate_menu(self):
+        self.showGroupMenu.clear()
         counter =0
         if len(self.data.keys()) > 10:
             populate_data_keys = list(islice(self.data, 10))
@@ -146,6 +148,7 @@ class CicadaMainWindow(QMainWindow):
             exec('self.groupAct' + str(counter) + ' = QAction("' + group_name+'", self)')
             eval('self.groupAct' + str(counter) + '.triggered.connect(partial(self.load_group, group_name))')
             self.showGroupMenu.addAction(eval('self.groupAct' + str(counter)))
+
 
     def load_group(self, group_name):
         self.sorted = False
@@ -397,3 +400,30 @@ class MusketeersWidget(QWidget):
         self.layout.addWidget(param_section_widget)
         analysis_tree_app.param_section_widget = param_section_widget
         self.setLayout(self.layout)
+
+
+def catch_exceptions(t, val, tb):
+    """
+    Catch errors and show them in a QMessageBox without making all crash
+    Args:
+        t: Exception type
+        val: Exception value
+        tb: 
+
+    Returns:
+
+    """
+    QMessageBox.critical(None,
+                              "An exception was raised",
+                              "Exception type: {} \n Value: {}".format(t,val))
+    old_hook(t, val, tb)
+
+old_hook = sys.excepthook
+sys.excepthook = catch_exceptions
+
+if __name__ == "__main__":
+
+    app = QApplication(sys.argv)
+    cicada = CicadaMainWindow()
+    cicada.show()
+    sys.exit(app.exec_())

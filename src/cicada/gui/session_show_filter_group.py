@@ -162,17 +162,5 @@ class SessionsWidget(QWidget):
         with open(self.parent.yaml_path, 'w') as stream:
             yaml.dump(self.parent.data, stream, default_flow_style=True)
 
-    def closeEvent(self, QCloseEvent):
-        self.exists = False
-        self.parent.showSessionAct.setEnabled(True)
-        self.parent.sortMenu.setEnabled(False)
-        self.parent.groupMenu.setEnabled(False)
 
 
-
-if __name__ == "__main__":
-
-    app = QApplication(sys.argv)
-    cicada = CicadaMainWindow()
-    cicada.show()
-    sys.exit(app.exec_())
