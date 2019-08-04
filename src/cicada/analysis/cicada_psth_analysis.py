@@ -34,6 +34,16 @@ class CicadaPsthAnalysis(CicadaAnalysis):
                 return False
         return True
 
+    def set_arguments_for_gui(self):
+        """
+
+        Returns:
+
+        """
+        range_arg = {"arg_name": "psth_range", "value_type": "int", "min_value": 50, "max_value": 2000,
+                     "default_value": 500, "description": "range of the PSTH"}
+        self.add_argument_for_gui(**range_arg)
+
     def update_original_data(self):
         """
         To be called if the data to analyse should be updated after the analysis has been run.
@@ -49,4 +59,4 @@ class CicadaPsthAnalysis(CicadaAnalysis):
         """
 
         for data in self._data_to_analyse:
-            print(f"PSTH ----- {data.identifier}")
+            print(f"PSTH ----- {data.identifier} on range {kwargs['psth_range']}")

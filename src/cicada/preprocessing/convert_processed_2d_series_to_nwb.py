@@ -1,4 +1,4 @@
-from converttonwb import ConvertToNWB
+from convert_to_nwb import ConvertToNWB
 import yaml
 import numpy as np
 import hdf5storage
@@ -11,7 +11,7 @@ from pynwb.base import TimeSeries
 #  train it should be passed
 
 """
-use to be in the default.yaml
+use to be in the pre_processing_default.yaml
 ConvertRasterplotToNWB :
   rasterdur_file_name :
     keyword: ["Raster"]

@@ -1,4 +1,4 @@
-from converttonwb import ConvertToNWB
+from convert_to_nwb import ConvertToNWB
 from PIL import ImageSequence
 from ScanImageTiffReader import ScanImageTiffReader
 import PIL

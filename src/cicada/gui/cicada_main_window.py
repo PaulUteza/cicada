@@ -7,7 +7,8 @@ import cicada.preprocessing.utils as utils
 import yaml
 from itertools import islice
 from cicada.gui.cicada_analysis_tree_gui import AnalysisTreeApp
-from cicada.gui.analysis_parameters_gui import ParamSection
+# from cicada.gui.analysis_parameters_gui import ParamSection
+from cicada.gui.cicada_analysis_parameters_gui import AnalysisParametersApp
 from cicada.gui.session_show_filter_group import SessionsWidget
 
 
@@ -36,7 +37,7 @@ class CicadaMainWindow(QMainWindow):
         #     "}")
         # self.setStyleSheet(
         #     "#menuWidget { "
-        #     " background-image: url(\"cicada/gui/icons/rc/cicada_background.jpg\"); background-position: center;"
+        #     " background-image: url(\"cicada/gui/icons/rc/neurons_stock_footage.jpg\"); background-position: center;"
         #     "}")
         self.menuWidget().setStyleSheet(
             "background-image:url(\"cicada/gui/icons/rc/sky_night.jpeg\"); background-position: center;")
@@ -83,6 +84,7 @@ class CicadaMainWindow(QMainWindow):
         if os.path.isfile(config_file_name):
             with open(config_file_name, 'r') as stream:
                 config_dict = yaml.safe_load(stream)
+                print(f"config_dict {config_dict}")
         if (config_dict is not None) and config_dict.get("dir_name"):
             self.load_data_from_dir(dir_name=config_dict["dir_name"])
 
@@ -137,7 +139,7 @@ class CicadaMainWindow(QMainWindow):
         config_dict = None
         if os.path.isfile(config_file_name):
             with open(config_file_name, 'r') as stream:
-                config_dict = yaml.load(stream, Loader=yaml.FullLoader)
+                config_dict = yaml.safe_load(stream)
         if config_dict is None:
             config_dict = dict()
         config_dict["dir_name"] = dir_name
@@ -405,30 +407,32 @@ class MusketeersWidget(QWidget):
         analysis_tree_app = AnalysisTreeApp()
         self.session_widget.analysis_tree = analysis_tree_app
         self.layout.addWidget(analysis_tree_app)
-        param_section_widget = ParamSection()
-        self.layout.addWidget(param_section_widget)
-        analysis_tree_app.param_section_widget = param_section_widget
+        analysis_param_widget = AnalysisParametersApp(parent)
+        self.layout.addWidget(analysis_param_widget)
+        analysis_tree_app.arguments_section_widget = analysis_param_widget
         self.setLayout(self.layout)
+#
+#
+# def catch_exceptions(t, val, tb):
+#     """
+#     Catch errors and show them in a QMessageBox without making all crash
+#     Args:
+#         t: Exception type
+#         val: Exception value
+#         tb:
+#
+#     Returns:
+#
+#     """
+#     QMessageBox.critical(None,
+#                               "An exception was raised",
+#                               "Exception type: {} \n Value: {}".format(t,val))
+#     old_hook(t, val, tb)
 
-
-def catch_exceptions(t, val, tb):
-    """
-    Catch errors and show them in a QMessageBox without making all crash
-    Args:
-        t: Exception type
-        val: Exception value
-        tb:
-
-    Returns:
-
-    """
-    QMessageBox.critical(None,
-                              "An exception was raised",
-                              "Exception type: {} \n Value: {}".format(t,val))
-    old_hook(t, val, tb)
-
-old_hook = sys.excepthook
-sys.excepthook = catch_exceptions
+# Removing it for now
+# old_hook = sys.excepthook
+#
+# sys.excepthook = catch_exceptions
 
 if __name__ == "__main__":
 

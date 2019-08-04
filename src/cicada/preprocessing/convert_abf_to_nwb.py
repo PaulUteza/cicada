@@ -1,4 +1,4 @@
-from converttonwb import ConvertToNWB
+from convert_to_nwb import ConvertToNWB
 import numpy as np
 import yaml
 import pyabf

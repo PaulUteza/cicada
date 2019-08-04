@@ -1,4 +1,4 @@
-from converttonwb import ConvertToNWB
+from convert_to_nwb import ConvertToNWB
 from pynwb.ophys import ImageSegmentation, Fluorescence
 import numpy as np
 from PIL import ImageSequence
@@ -7,8 +7,13 @@ import PIL.Image as pil_image
 import os
 from convert_ci_movie_to_nwb import ConvertCiMovieToNWB
 
+
 class ConvertSuite2pRoisToNWB(ConvertToNWB):
-    """Class to convert data from Suite2P ROIs to NWB"""
+    """Class to convert ROIs data from Suite2P to NWB
+       if raw_traces from Suite2p are available they are loaded.
+       Otherwise if the movie is available, build the raw_traces.
+       create_roi_response_series
+    """
 
     def __init__(self, nwb_file):
         super().__init__(nwb_file)
@@ -26,19 +31,25 @@ class ConvertSuite2pRoisToNWB(ConvertToNWB):
                             f"function in class {self.__class__.__name__}")
         suite2p_dir = kwargs["suite2p_dir"]
 
-        image_series = self.nwb_file.acquisition["motion_corrected_ci_movie"]
+        # looking for the motion_corrected_ci_movie, return None if it doesn't exists
+        # TODO: take in consideration the movie is not available
+        #  then don't construct image mask and don't build raw-traces, use F.npy is available
+        image_series = self.nwb_file.acquisition.get("motion_corrected_ci_movie")
 
         mod = self.nwb_file.create_processing_module('ophys', 'contains optical physiology processed data')
-        img_seg = ImageSegmentation()
+        img_seg = ImageSegmentation(name="segmentation_suite2p")
         mod.add_data_interface(img_seg)
         imaging_plane = self.nwb_file.get_imaging_plane("my_imgpln")
-        ps = img_seg.create_plane_segmentation('output from segmenting my favorite imaging plane',
-                                               imaging_plane, 'my_planeseg', image_series)
+        # description, imaging_plane, name=None
+        ps = img_seg.create_plane_segmentation(description='output from segmenting',
+                                               imaging_plane=imaging_plane, name='my_plane_seg',
+                                               reference_images=image_series)
 
         stat = np.load(os.path.join(suite2p_dir, "stat.npy"),
                        allow_pickle=True)
         is_cell = np.load(os.path.join(suite2p_dir, "iscell.npy"),
                           allow_pickle=True)
+        # TODO: load f.npy for raw_traces if available
 
         if image_series.format == "tiff":
             dim_y, dim_x = image_series.data.shape[1:]
@@ -65,7 +76,7 @@ class ConvertSuite2pRoisToNWB(ConvertToNWB):
             # we can id to identify the cell (int) otherwise it will be incremented at each step
             ps.add_roi(pixel_mask=pix_mask, image_mask=image_mask)
 
-        fl = Fluorescence()
+        fl = Fluorescence(name="fluorescence_suite2p")
         mod.add_data_interface(fl)
 
         rt_region = ps.create_roi_table_region('all cells', region=list(np.arange(n_cells)))
@@ -86,6 +97,6 @@ class ConvertSuite2pRoisToNWB(ConvertToNWB):
             img_mask = ps['image_mask'][cell]
             img_mask = img_mask.astype(bool)
             raw_traces[cell, :] = np.mean(ci_movie[:, img_mask], axis=1)
-        rrs = fl.create_roi_response_series(name='my_rrs', data=raw_traces, unit='lumens',
+        rrs = fl.create_roi_response_series(name='raw_traces', data=raw_traces, unit='lumens',
                                             rois=rt_region, timestamps=np.arange(n_frames),
                                             description="raw traces")

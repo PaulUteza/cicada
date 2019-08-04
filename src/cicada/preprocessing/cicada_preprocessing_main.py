@@ -66,9 +66,9 @@ def load_nwb_file():
         pause_intervals = nwb_file.intervals['ci_recording_on_pause']
         print(f"data_frame: {pause_intervals.to_dataframe()}")
 
-    ps = mod['ImageSegmentation'].get_plane_segmentation()
+    ps = mod['segmentation_suite2p'].get_plane_segmentation('my_plane_seg')
 
-    rrs = mod['Fluorescence'].get_roi_response_series()
+    rrs = mod['fluorescence_suite2p'].get_roi_response_series()
 
     # get the data...
     rrs_data = rrs.data
@@ -91,10 +91,10 @@ def cicada_pre_processing_main():
 
         load_nwb_file()
     else:
-        root_path = "/media/julien/Not_today/hne_not_today/"
-        # root_path = "/Users/pappyhammer/Documents/academique/these_inmed/robin_michel_data/"
+        # root_path = "/media/julien/Not_today/hne_not_today/"
+        root_path = "/Users/pappyhammer/Documents/academique/these_inmed/robin_michel_data/"
         path_data = os.path.join(root_path, "data_cicada_format")
-        default_convert_to_nwb_yml_file = "default.yaml"
+        default_convert_to_nwb_yml_file = "pre_processing_default.yaml"
         p = pathlib.Path(path_data)
         # subject_dirs = []
         # for (dirpath, dirnames, local_filenames) in os.walk(path_data):

@@ -16,9 +16,10 @@ from random import randint
 
 class SessionsListWidget(QListWidget):
 
-    def __init__(self):
+    def __init__(self, session_widget):
         QListWidget.__init__(self)
         self.special_background_on = False
+        self.session_widget = session_widget
 
     def keyPressEvent(self, event):
         available_background = ["michou_BG.jpg", "michou_BG2.jpg"]
@@ -34,6 +35,9 @@ class SessionsListWidget(QListWidget):
                     f"background-position: center; "
                     f"background-repeat:no-repeat;")
                 self.special_background_on = True
+        elif event.key() == QtCore.Qt.Key_Return:
+            data_to_analyse = self.session_widget.get_data_to_analyse()
+            self.session_widget.analysis_tree.set_data(data_to_analyse=data_to_analyse, data_format="nwb")
 
 
 class SessionsWidget(QWidget):
@@ -41,11 +45,11 @@ class SessionsWidget(QWidget):
     def __init__(self, parent=None):
         super().__init__()
         self.exists = True
-        self.setWindowTitle('Sessions :')
+        # self.setWindowTitle('Sessions :')
         self.resize(500, 500)
         self.setAttribute(Qt.WA_DeleteOnClose)
         self.layout = QVBoxLayout()
-        self.q_list = SessionsListWidget()
+        self.q_list = SessionsListWidget(session_widget=self)
         self.parent = parent
         self.q_list.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.layout.addWidget(self.q_list)

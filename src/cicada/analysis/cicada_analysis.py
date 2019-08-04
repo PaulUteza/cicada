@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod, abstractproperty
+from cicada.analysis.cicada_analysis_arguments_for_gui import AnalysisArgumentsHandler
 
 
 class CicadaAnalysis(ABC):
@@ -26,6 +27,9 @@ class CicadaAnalysis(ABC):
         self.name = name
         self._data_to_analyse = data_to_analyse
         self._data_format = data_format
+        self.analysis_arguments_handler = AnalysisArgumentsHandler()
+
+        self.set_arguments_for_gui()
 
     # @abstractproperty
     # def data_to_analyse(self):
@@ -55,10 +59,13 @@ class CicadaAnalysis(ABC):
         """
         pass
 
-    def get_params_for_gui(self):
+    def add_argument_for_gui(self, **kwargs):
+        self.analysis_arguments_handler.add_argument(**kwargs)
+
+    def set_arguments_for_gui(self):
         """
         Need to be implemented in order to be used through the graphical interface.
-        :return: a list of dict
+        :return: None
         """
         return None
 

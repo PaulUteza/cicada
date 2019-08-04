@@ -28,6 +28,21 @@ ConvertCiMovieToNWB :
     from_other_converter: ConvertAbfToNWB
     value: ["sampling_rate_calcium_imaging"]
 
+ConvertNeuralActivityToNWB:
+  1:
+    predictions:
+      keyword : ["GT_epoch_11"]
+      dir : ["predictions"]
+      extension : ["npy", "mat"]
+    threshold_predictions :
+      value : 0.5
+    segmentation_tool:
+      value : "suite2p"
+#  raster_dur:
+#    keyword : ["raster_dur"]
+#    extension : ["npy", "mat", "npz"]
+#    value : ["raster_dur"]
+
 
 ConvertSuite2pRoisToNWB:
   suite2p_dir :
@@ -56,4 +71,4 @@ ConvertAbfToNWB:
     value: []
 
 order :
-  [ConvertAbfToNWB, ConvertCiMovieToNWB, ConvertSuite2pRoisToNWB]
+  [ConvertAbfToNWB, ConvertCiMovieToNWB, ConvertSuite2pRoisToNWB, ConvertNeuralActivityToNWB]

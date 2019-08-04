@@ -147,13 +147,16 @@ class QAnalysisTreeView(QTreeView):
 
     def keyPressEvent(self, event):
         available_background = ["emily.jpg", "emily_face.png", "emily_wg.jpg", "tokyo.png"]
-        if event.key() == QtCore.Qt.Key_E:
+        if (event.key() == QtCore.Qt.Key_E) or (event.key() == QtCore.Qt.Key_T):
             if self.special_background_on:
                 self.setStyleSheet(
                     "background-image:url(\"\"); background-position: center;")
                 self.special_background_on = False
             else:
-                pic_index = randint(0, len(available_background) - 1)
+                if event.key() == QtCore.Qt.Key_E:
+                    pic_index = randint(0, len(available_background) - 2)
+                else:
+                    pic_index = len(available_background) - 1
                 self.setStyleSheet(
                     f"background-image:url(\"cicada/gui/icons/rc/{available_background[pic_index]}\"); "
                     f"background-position: center; "
@@ -330,7 +333,6 @@ class QAnalysisTreeModel(QAbstractItemModel):
 class AnalysisTreeApp(QWidget):
     def __init__(self):
         super().__init__()
-        self.title = 'analysis tree test'
         # self.left = 10
         # self.top = 10
         # self.width = 600
@@ -339,7 +341,7 @@ class AnalysisTreeApp(QWidget):
         self.dataView = None
         self.analysis_tree_model = None
         # will be initialize when the param section will have been created
-        self.param_section_widget = None
+        self.arguments_section_widget = None
 
         self.init_ui()
         # self.setStyleSheet("QLineEdit { background-color: yellow }")
@@ -359,13 +361,12 @@ class AnalysisTreeApp(QWidget):
             return
 
         if tree_item.cicada_analysis is not None and tree_item.data_valid:
-            # TODO: send the analysis instance to the 3rd part of the GUI, GO Francois !!
-            # print(f"2x click on {tree_item.cicada_analysis.name}")
-            self.param_section_widget.create_widgets(cicada_analysis=tree_item.cicada_analysis)
+            print(f"2x click on {tree_item.cicada_analysis.name}")
+            self.arguments_section_widget.create_widgets(cicada_analysis=tree_item.cicada_analysis)
 
 
     def init_ui(self):
-        self.setWindowTitle(self.title)
+        # self.setWindowTitle(self.title)
         # self.setGeometry(self.left, self.top, self.width, self.height)
 
         # self.dataGroupBox = QGroupBox("")
