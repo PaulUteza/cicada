@@ -1,6 +1,7 @@
 import os
 import sys
 import ntpath
+import numpy as np
 from itertools import groupby
 from operator import itemgetter
 from pynwb import NWBHDF5IO
@@ -168,7 +169,7 @@ def group_by_param(nwb_path_list, param_list):
                  "protocol": "nwb_file", "related_pulication": "nwb_file",
                  "surgery": "", "virus": "nwb_file", "lab": "nwb_file"}
 
-    data_map = {"fluorescence": "nwb_file.modules['ophys']['Fluorescence']",
+    data_map = {"fluorescence": "nwb_file.modules['ophys']['fluorescence_suite2p']",
                 "imagesegmentation": "nwb_file.modules['ophys']['ImageSegmentation']",
                 "rasterplot": "nwb_file.modules['ophys']['Rasterplot']"
                 }
@@ -233,7 +234,7 @@ def sort_by_param(nwb_path_list, param_list):
                  "protocol": "nwb_file", "related_pulication": "nwb_file",
                  "surgery": "", "virus": "nwb_file", "lab": "nwb_file"}
 
-    data_map = {"fluorescence": "nwb_file.modules['ophys']['Fluorescence']",
+    data_map = {"fluorescence": "nwb_file.modules['ophys']['fluorescence_suite2p']",
                 "imagesegmentation": "nwb_file.modules['ophys']['ImageSegmentation']",
                 "rasterplot": "nwb_file.modules['ophys']['Rasterplot']"
                 }

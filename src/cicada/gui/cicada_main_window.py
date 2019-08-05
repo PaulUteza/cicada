@@ -171,6 +171,7 @@ class CicadaMainWindow(QMainWindow):
             nwb_file = io.read()
             self.labels.append(nwb_file.identifier)
         self.musketeers_widget.session_widget.populate(self.labels)
+        self.musketeers_widget.session_widget.update_text_filter()
 
 
     def createMenus(self):
@@ -188,7 +189,8 @@ class CicadaMainWindow(QMainWindow):
         self.viewMenu = QMenu("&View", self)
 
 
-        self.sortMenu = QMenu("Sort by",self.viewMenu, enabled=False)
+
+        self.sortMenu = QMenu("Sort by", self.viewMenu, enabled=False)
         self.groupMenu = QMenu("Group by", self.viewMenu, enabled=False)
 
         self.showGroupMenu = QMenu("Load Group", self.fileMenu, enabled=False)
@@ -197,124 +199,135 @@ class CicadaMainWindow(QMainWindow):
         self.viewMenu.addMenu(self.sortMenu)
 
         # Add filters to "Sort by"
+        self.create_sort_menu()
+        self.sortMenu.addAction(self.ageSortAct)
+        self.sortMenu.addAction(self.sexSortAct)
+        self.sortMenu.addAction(self.genotypeSortAct)
+        self.sortMenu.addAction(self.speciesSortAct)
+        self.sortMenu.addAction(self.subjectIDSortAct)
+        self.sortMenu.addAction(self.weightSortAct)
+        self.sortMenu.addAction(self.birthSortAct)
+        self.sortMenu.addSeparator()
+
+        self.sortMenu.addAction(self.fluorescenceSortAct)
+        self.sortMenu.addAction(self.imagesegSortAct)
+        self.sortMenu.addAction(self.rasterSortAct)
+
+        # Add filters to "Group by"
+        self.create_group_menu()
+        self.groupMenu.addAction(self.ageGroupAct)
+        self.groupMenu.addAction(self.sexGroupAct)
+        self.groupMenu.addAction(self.genotypeGroupAct)
+        self.groupMenu.addAction(self.speciesGroupAct)
+        self.groupMenu.addAction(self.subjectIDGroupAct)
+        self.groupMenu.addAction(self.weightGroupAct)
+        self.groupMenu.addAction(self.birthGroupAct)
+
+        self.groupMenu.addSeparator()
+
+        self.groupMenu.addAction(self.fluorescenceGroupAct)
+        self.groupMenu.addAction(self.imagesegGroupAct)
+        self.groupMenu.addAction(self.rasterGroupAct)
+
+        self.menuBar().addMenu(self.fileMenu)
+        self.menuBar().addMenu(self.viewMenu)
+        self.menuBar().addMenu(self.helpMenu)
+
+    def create_group_menu(self):
+        self.ageGroupAct = QAction("Age", self, checkable=True)
+        self.ageGroupAct.triggered.connect(partial(self.uncheck_all_group, "age"))
+        self.ageGroupAct.triggered.connect(partial(self.on_group, "age"))
+
+        self.sexGroupAct = QAction("Sex", self, checkable=True)
+        self.sexGroupAct.triggered.connect(partial(self.uncheck_all_group, "sex"))
+        self.sexGroupAct.triggered.connect(partial(self.on_group, "sex"))
+
+        self.genotypeGroupAct = QAction("Genotype", self, checkable=True)
+        self.genotypeGroupAct.triggered.connect(partial(self.uncheck_all_group, "genotype"))
+        self.genotypeGroupAct.triggered.connect(partial(self.on_group, "genotype"))
+
+        self.speciesGroupAct = QAction("Species", self, checkable=True)
+        self.speciesGroupAct.triggered.connect(partial(self.uncheck_all_group, "species"))
+        self.speciesGroupAct.triggered.connect(partial(self.on_group, "species"))
+
+        self.subjectIDGroupAct = QAction("Subject ID", self, checkable=True)
+        self.subjectIDGroupAct.triggered.connect(partial(self.uncheck_all_group, "subjectID"))
+        self.subjectIDGroupAct.triggered.connect(partial(self.on_group, "subject_id"))
+
+        self.weightGroupAct = QAction("Weight", self, checkable=True)
+        self.weightGroupAct.triggered.connect(partial(self.uncheck_all_group, "weight"))
+        self.weightGroupAct.triggered.connect(partial(self.on_group, "weight"))
+
+        self.birthGroupAct = QAction("Birth", self, checkable=True)
+        self.birthGroupAct.triggered.connect(partial(self.uncheck_all_group, "birth"))
+        self.birthGroupAct.triggered.connect(partial(self.on_group, "birth"))
+
+        self.fluorescenceGroupAct = QAction("Has fluorescence", self, checkable=True)
+        self.fluorescenceGroupAct.triggered.connect(partial(self.uncheck_all_group, "fluorescence"))
+        self.fluorescenceGroupAct.triggered.connect(partial(self.on_group, "fluorescence"))
+
+        self.imagesegGroupAct = QAction("Has image segmentation", self, checkable=True)
+        self.imagesegGroupAct.triggered.connect(partial(self.uncheck_all_group, "imageseg"))
+        self.imagesegGroupAct.triggered.connect(partial(self.on_group, "imagesegmentation"))
+
+        self.rasterGroupAct = QAction("Has raster", self, checkable=True)
+        self.rasterGroupAct.triggered.connect(partial(self.uncheck_all_group, "raster"))
+        self.rasterGroupAct.triggered.connect(partial(self.on_group, "raster"))
+
+
+    def create_sort_menu(self):
+
         self.ageSort = QCheckBox("&Age", self.sortMenu)
         self.ageSortAct = QWidgetAction(self.sortMenu)
         self.ageSortAct.setDefaultWidget(self.ageSort)
-        self.sortMenu.addAction(self.ageSortAct)
         self.ageSort.stateChanged.connect(partial(self.on_sort,"age"))
 
         self.sexSort = QCheckBox("&Sex", self.sortMenu)
         self.sexSortAct = QWidgetAction(self.sortMenu)
         self.sexSortAct.setDefaultWidget(self.sexSort)
-        self.sortMenu.addAction(self.sexSortAct)
         self.sexSort.stateChanged.connect(partial(self.on_sort,"sex"))
 
         self.genotypeSort = QCheckBox("&Genotype", self.sortMenu)
         self.genotypeSortAct = QWidgetAction(self.sortMenu)
         self.genotypeSortAct.setDefaultWidget(self.genotypeSort)
-        self.sortMenu.addAction(self.genotypeSortAct)
         self.genotypeSort.stateChanged.connect(partial(self.on_sort,"genotype"))
 
         self.speciesSort = QCheckBox("&Species", self.sortMenu)
         self.speciesSortAct = QWidgetAction(self.sortMenu)
         self.speciesSortAct.setDefaultWidget(self.speciesSort)
-        self.sortMenu.addAction(self.speciesSortAct)
         self.speciesSort.stateChanged.connect(partial(self.on_sort,"species"))
 
         self.subjectIDSort = QCheckBox("&Subject ID", self.sortMenu)
         self.subjectIDSortAct = QWidgetAction(self.sortMenu)
         self.subjectIDSortAct.setDefaultWidget(self.subjectIDSort)
-        self.sortMenu.addAction(self.subjectIDSortAct)
         self.subjectIDSort.stateChanged.connect(partial(self.on_sort,"subject_id"))
 
         self.weightSort = QCheckBox("&Weight", self.sortMenu)
         self.weightSortAct = QWidgetAction(self.sortMenu)
         self.weightSortAct.setDefaultWidget(self.weightSort)
-        self.sortMenu.addAction(self.weightSortAct)
         self.weightSort.stateChanged.connect(partial(self.on_sort,"weight"))
 
         self.birthSort = QCheckBox("&Birth", self.sortMenu)
         self.birthSortAct = QWidgetAction(self.sortMenu)
         self.birthSortAct.setDefaultWidget(self.birthSort)
-        self.sortMenu.addAction(self.birthSortAct)
         self.birthSort.stateChanged.connect(partial(self.on_sort,"birth"))
 
-        self.sortMenu.addSeparator()
 
         self.fluorescenceSort = QCheckBox("&Has fluorescence", self.sortMenu)
         self.fluorescenceSortAct = QWidgetAction(self.sortMenu)
         self.fluorescenceSortAct.setDefaultWidget(self.fluorescenceSort)
-        self.sortMenu.addAction(self.fluorescenceSortAct)
         self.fluorescenceSort.stateChanged.connect(partial(self.on_sort,"fluorescence"))
 
         self.imagesegSort = QCheckBox("&Has image segmentation", self.sortMenu)
         self.imagesegSortAct = QWidgetAction(self.sortMenu)
         self.imagesegSortAct.setDefaultWidget(self.imagesegSort)
-        self.sortMenu.addAction(self.imagesegSortAct)
         self.imagesegSort.stateChanged.connect(partial(self.on_sort,"imagesegmentation"))
 
         self.rasterSort = QCheckBox("&Has rasterplot", self.sortMenu)
         self.rasterSortAct = QWidgetAction(self.sortMenu)
         self.rasterSortAct.setDefaultWidget(self.rasterSort)
-        self.sortMenu.addAction(self.rasterSortAct)
         self.rasterSort.stateChanged.connect(partial(self.on_sort,"raster"))
 
-        # Add filters to "Group by"
-        self.ageGroupAct = QAction("Age", self, checkable=True)
-        self.groupMenu.addAction(self.ageGroupAct)
-        self.ageGroupAct.triggered.connect(partial(self.uncheck_all_group, "age"))
-        self.ageGroupAct.triggered.connect(partial(self.on_group, "age"))
-
-        self.sexGroupAct = QAction("Sex", self, checkable=True)
-        self.groupMenu.addAction(self.sexGroupAct)
-        self.sexGroupAct.triggered.connect(partial(self.uncheck_all_group, "sex"))
-        self.sexGroupAct.triggered.connect(partial(self.on_group, "sex"))
-
-        self.genotypeGroupAct = QAction("Genotype", self, checkable=True)
-        self.groupMenu.addAction(self.genotypeGroupAct)
-        self.genotypeGroupAct.triggered.connect(partial(self.uncheck_all_group, "genotype"))
-        self.genotypeGroupAct.triggered.connect(partial(self.on_group, "genotype"))
-
-        self.speciesGroupAct = QAction("Species", self, checkable=True)
-        self.groupMenu.addAction(self.speciesGroupAct)
-        self.speciesGroupAct.triggered.connect(partial(self.uncheck_all_group, "species"))
-        self.speciesGroupAct.triggered.connect(partial(self.on_group, "species"))
-
-        self.subjectIDGroupAct = QAction("Subject ID", self, checkable=True)
-        self.groupMenu.addAction(self.subjectIDGroupAct)
-        self.subjectIDGroupAct.triggered.connect(partial(self.uncheck_all_group, "subjectID"))
-        self.subjectIDGroupAct.triggered.connect(partial(self.on_group, "subject_id"))
-
-        self.weightGroupAct = QAction("Weight", self, checkable=True)
-        self.groupMenu.addAction(self.weightGroupAct)
-        self.weightGroupAct.triggered.connect(partial(self.uncheck_all_group, "weight"))
-        self.weightGroupAct.triggered.connect(partial(self.on_group, "weight"))
-
-        self.birthGroupAct = QAction("Birth", self, checkable=True)
-        self.groupMenu.addAction(self.birthGroupAct)
-        self.birthGroupAct.triggered.connect(partial(self.uncheck_all_group, "birth"))
-        self.birthGroupAct.triggered.connect(partial(self.on_group, "birth"))
-
-        self.groupMenu.addSeparator()
-
-        self.fluorescenceGroupAct = QAction("Has fluorescence", self, checkable=True)
-        self.groupMenu.addAction(self.fluorescenceGroupAct)
-        self.fluorescenceGroupAct.triggered.connect(partial(self.uncheck_all_group, "fluorescence"))
-        self.fluorescenceGroupAct.triggered.connect(partial(self.on_group, "fluorescence"))
-
-        self.imagesegGroupAct = QAction("Has image segmentation", self, checkable=True)
-        self.groupMenu.addAction(self.imagesegGroupAct)
-        self.imagesegGroupAct.triggered.connect(partial(self.uncheck_all_group, "imageseg"))
-        self.imagesegGroupAct.triggered.connect(partial(self.on_group, "imagesegmentation"))
-
-        self.rasterGroupAct = QAction("Has raster", self, checkable=True)
-        self.groupMenu.addAction(self.rasterGroupAct)
-        self.rasterGroupAct.triggered.connect(partial(self.uncheck_all_group, "raster"))
-        self.rasterGroupAct.triggered.connect(partial(self.on_group, "raster"))
-
-        self.menuBar().addMenu(self.fileMenu)
-        self.menuBar().addMenu(self.viewMenu)
-        self.menuBar().addMenu(self.helpMenu)
 
     def createActions(self):
 
@@ -367,6 +380,7 @@ class CicadaMainWindow(QMainWindow):
             self.dict_group.update({param_group_list[i]: self.grouped_labels[i]})
         self.grouped = True
         self.musketeers_widget.session_widget.form_group(self.grouped_labels, param_group_list)
+        self.musketeers_widget.session_widget.update_text_filter(param)
 
     def on_sort(self, param, state):
         if state > 0:
@@ -383,6 +397,7 @@ class CicadaMainWindow(QMainWindow):
         self.sorted_labels = utils.sort_by_param(self.nwb_path_list, self.param_list)
         self.sorted = True
         self.musketeers_widget.session_widget.populate(self.sorted_labels)
+        self.musketeers_widget.session_widget.update_text_filter()
 
     def about(self):
         QMessageBox.about(self, "About CICADA","Lorem Ipsum")

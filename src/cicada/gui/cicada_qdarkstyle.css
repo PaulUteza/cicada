@@ -836,7 +836,7 @@ QLabel {
 }
 
 QLabel::hover {
-  color: #148CD2;
+  disabled;
 }
 
 QLabel::disabled {
@@ -1034,7 +1034,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qtoolbutton
 --------------------------------------------------------------------------- */
 QToolButton {
   background-color: transparent;
-  border-radius: 4px;
+  border: none;
   margin: 0px;
   padding: 2px;
   /* The subcontrols below are used only in the MenuButtonPopup mode */
@@ -1106,11 +1106,11 @@ QToolButton::menu-button:checked:hover {
 
 QToolButton::menu-indicator {
   image: url("cicada/gui/icons/rc/arrow_down.png");
-  height: 12px;
-  width: 12px;
+  height: 13px;
+  width: 13px;
   top: -8px;
   /* Shift it a bit */
-  left: -4px;
+  left: 1px;
   /* Shift it a bit */
 }
 

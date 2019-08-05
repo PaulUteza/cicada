@@ -70,9 +70,10 @@ class ConvertCiMovieToNWB(ConvertToNWB):
         """
         if tif_movie_file_name is not None:
             print(f"Loading movie")
-            if 'ci_recording_on_pause' in self.nwb_file.intervals:
-                return self.load_tiff_movie_in_memory_using_pil(tif_movie_file_name)
-            else:
+            try:
+                if 'ci_recording_on_pause' in self.nwb_file.intervals:
+                    return self.load_tiff_movie_in_memory_using_pil(tif_movie_file_name)
+            except AttributeError:
                 try:
                     start_time = time.time()
                     tiff_movie = ScanImageTiffReader(tif_movie_file_name).data()
@@ -159,24 +160,25 @@ class ConvertCiMovieToNWB(ConvertToNWB):
             raise Exception(
                 f"No 'image_plane_location' provided for movie {motion_corrected_file_name} in the yaml file "
                 f"{kwargs['yaml_file_name']}")
+        try :
+            if 'ci_recording_on_pause' in self.nwb_file.intervals:
+                pause_intervals = self.nwb_file.intervals['ci_recording_on_pause']
+                pause_intervals_df = pause_intervals.to_dataframe()
+                start_times = pause_intervals_df.loc[:, "start_time"]
+                stop_times = pause_intervals_df.loc[:, "stop_time"]
 
-        if 'ci_recording_on_pause' in self.nwb_file.intervals:
-            pause_intervals = self.nwb_file.intervals['ci_recording_on_pause']
-            pause_intervals_df = pause_intervals.to_dataframe()
-            start_times = pause_intervals_df.loc[:, "start_time"]
-            stop_times = pause_intervals_df.loc[:, "stop_time"]
-
-            try:
-                ci_frames_time_series = self.nwb_file.get_acquisition("ci_frames")
-                ci_frames = np.where(ci_frames_time_series.data)[0]
-                ci_frames_timestamps = ci_frames_time_series.timestamps[ci_frames]
-                for i, start_time in enumerate(start_times):
-                    frame_index = np.searchsorted(a=ci_frames_timestamps, v=start_time)
-                    n_frames_to_add = (stop_times[i] - start_time) * self.ci_sampling_rate
-                    self.frames_to_add[frame_index] = int(n_frames_to_add)
-            except KeyError:
-                pass
-
+                try:
+                    ci_frames_time_series = self.nwb_file.get_acquisition("ci_frames")
+                    ci_frames = np.where(ci_frames_time_series.data)[0]
+                    ci_frames_timestamps = ci_frames_time_series.timestamps[ci_frames]
+                    for i, start_time in enumerate(start_times):
+                        frame_index = np.searchsorted(a=ci_frames_timestamps, v=start_time)
+                        n_frames_to_add = (stop_times[i] - start_time) * self.ci_sampling_rate
+                        self.frames_to_add[frame_index] = int(n_frames_to_add)
+                except KeyError:
+                    pass
+        except AttributeError:
+            pass
         # ### end setting parameters ####
 
         device = Device('2P_device')

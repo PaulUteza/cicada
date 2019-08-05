@@ -258,6 +258,7 @@ def convert_data_to_nwb(dir_path, default_convert_to_nwb_yml_file):
 
     # Create NWB file in the data folder
     nwb_files_dir = "/Users/pappyhammer/Documents/academique/these_inmed/robin_michel_data/data/nwb_files/"
+    # nwb_files_dir = "H:/Documents/Data/julien/data/nwb_files"
     # nwb_files_dir = "/media/julien/Not_today/hne_not_today/data/nwb_files/"
     nwb_name = utils.path_leaf(dir_path) + ".nwb"
     print(f"Before NWBHDF5IO write: nwb_file.epoch_tags {nwb_file.epoch_tags}")
