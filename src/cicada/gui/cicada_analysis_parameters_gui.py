@@ -86,6 +86,130 @@ class FileDialogWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
         # # fileDialog.setOption(QtWidgets.QFileDialog.DontResolveSymlinks)
 
 
+class LineEditWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
+
+    def __init__(self, analysis_arg, parent=None):
+        """
+
+        Args:
+            analysis_arg: instance of AnalysisArgument
+        """
+        QWidget.__init__(self, parent=parent)
+        ParameterWidgetModel.__init__(self)
+
+        self.analysis_arg = analysis_arg
+
+        self.line_edit = QLineEdit()
+
+        if self.analysis_arg.get_default_value():
+            self.line_edit.setText(self.analysis_arg.get_default_value())
+
+        v_box = QVBoxLayout()
+        description = self.analysis_arg.get_description()
+        if description:
+            q_label = QLabel(description)
+            q_label.setAlignment(Qt.AlignCenter)
+            q_label.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+            q_label.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+            v_box.addWidget(q_label)
+
+        h_box = QHBoxLayout()
+        h_box.addWidget(self.line_edit)
+        v_box.addLayout(h_box)
+        # h_box.addStretch(1)
+        self.setLayout(v_box)
+
+        is_mandatory = self.analysis_arg.is_mandatory()
+        self.setProperty("is_mandatory", str(is_mandatory))
+
+    def get_value(self):
+        return self.line_edit.text()
+
+
+class ComboBoxWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
+
+    def __init__(self, analysis_arg, parent=None):
+        """
+
+        Args:
+            analysis_arg: instance of AnalysisArgument
+        """
+        QWidget.__init__(self, parent=parent)
+        ParameterWidgetModel.__init__(self)
+
+        self.analysis_arg = analysis_arg
+        self.combo_box = QComboBox()
+
+        if self.analysis_arg.choices is not None:
+            for choice in self.analysis_arg.choices:
+                self.widget.addItem(str(choice))
+
+        v_box = QVBoxLayout()
+        description = self.analysis_arg.get_description()
+        if description:
+            q_label = QLabel(description)
+            q_label.setAlignment(Qt.AlignCenter)
+            q_label.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+            q_label.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+            v_box.addWidget(q_label)
+
+        h_box = QHBoxLayout()
+        h_box.addWidget(self.combo_box)
+        v_box.addLayout(h_box)
+        # h_box.addStretch(1)
+        self.setLayout(v_box)
+
+        is_mandatory = self.analysis_arg.is_mandatory()
+        self.setProperty("is_mandatory", str(is_mandatory))
+
+    def get_value(self):
+        return self.combo_box.currentText()
+
+
+class CheckBoxWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
+
+    def __init__(self, analysis_arg, parent=None):
+        """
+
+        Args:
+            analysis_arg: instance of AnalysisArgument
+        """
+        QWidget.__init__(self, parent=parent)
+        ParameterWidgetModel.__init__(self)
+
+        self.analysis_arg = analysis_arg
+        self.slider = QSlider(Qt.Horizontal)
+
+        self.check_box = QCheckBox()
+
+        if self.analysis_arg.get_default_value():
+            self.check_box.setCheckState(self.analysis_arg.get_default_value())
+        # The idea is to put the name of the argument beside the Check box
+        if self.analysis_arg.get_attr("name", None) is not None:
+            self.check_box.setText(self.analysis_arg.name)
+
+        v_box = QVBoxLayout()
+        description = self.analysis_arg.get_description()
+        if description:
+            q_label = QLabel(description)
+            q_label.setAlignment(Qt.AlignCenter)
+            q_label.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+            q_label.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+            v_box.addWidget(q_label)
+
+        h_box = QHBoxLayout()
+        h_box.addWidget(self.check_box)
+        v_box.addLayout(h_box)
+        # h_box.addStretch(1)
+        self.setLayout(v_box)
+
+        is_mandatory = self.analysis_arg.is_mandatory()
+        self.setProperty("is_mandatory", str(is_mandatory))
+
+    def get_value(self):
+        return self.check_box.checkState()
+
+
 class SliderWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
 
     def __init__(self, analysis_arg, parent=None):
@@ -131,7 +255,6 @@ class SliderWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
 
         is_mandatory = self.analysis_arg.is_mandatory()
         self.setProperty("is_mandatory", str(is_mandatory))
-
 
     def slider_value_changed(self, value):
         self.spin_box.setValue(value)

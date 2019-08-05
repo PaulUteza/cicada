@@ -37,6 +37,16 @@ class AnalysisArgument:
             if hasattr(self, "min_value") and hasattr(self, "max_value"):
                 self.widget = SliderWidget(analysis_arg=self)
                 return self.widget
+        elif getattr(self, "value_type", None) == "str":
+            if hasattr(self, "choices"):
+                self.widget = ComboBoxWidget(analysis_arg=self)
+                return self.widget
+        elif getattr(self, "value_type", None) == "bool":
+            self.widget = CheckBoxWidget(analysis_arg=self)
+            return self.widget
+        else:
+            self.widget = LineEditWidget(analysis_arg=self)
+            return self.widget
 
     def set_argument_value(self, value):
         self.final_value = value
