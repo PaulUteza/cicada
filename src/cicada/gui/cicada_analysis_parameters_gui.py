@@ -5,9 +5,6 @@ from qtpy import QtCore
 from random import randint
 from abc import ABC, abstractmethod
 
-
-# TODO: Class that represent a widget for a given parameter
-
 class ParameterWidgetModel(ABC):
     def __init__(self):
         self.mandatory = False
@@ -21,6 +18,8 @@ class ParameterWidgetModel(ABC):
         """
         return None
 
+    # TODO: add set_value, allow to load params from a file for ex, though AnalysisArgumentHandler
+
 
 # to resolve: TypeError: metaclass conflict: the metaclass of a derived class
 # must be a (non-strict) subclass of the metaclasses of all its bases
@@ -30,6 +29,10 @@ class ParameterWidgetModel(ABC):
 class FinalMeta(type(ParameterWidgetModel), type(QWidget)):
     pass
 
+# TODO: some of the widgets to add
+#  - choose directory
+#  - choose a color
+#  -
 
 class FileDialogWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
     """
@@ -142,7 +145,17 @@ class ComboBoxWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
 
         if self.analysis_arg.choices is not None:
             for choice in self.analysis_arg.choices:
-                self.widget.addItem(str(choice))
+                # need to put 2 arguments, in order to be able to find it using findData
+                self.combo_box.addItem(str(choice), str(choice))
+
+        # setting it to default if it exists
+        if self.analysis_arg.get_default_value():
+            print(f"default combo: {self.analysis_arg.get_default_value()}")
+            index = self.combo_box.findData(self.analysis_arg.get_default_value())
+            print(f"default combo: {index}")
+            if index >= 0:
+                self.combo_box.setCurrentIndex(index)
+
 
         v_box = QVBoxLayout()
         description = self.analysis_arg.get_description()
@@ -182,20 +195,26 @@ class CheckBoxWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
 
         self.check_box = QCheckBox()
 
-        if self.analysis_arg.get_default_value():
-            self.check_box.setCheckState(self.analysis_arg.get_default_value())
-        # The idea is to put the name of the argument beside the Check box
-        if self.analysis_arg.get_attr("name", None) is not None:
-            self.check_box.setText(self.analysis_arg.name)
+        if getattr(self.check_box, "default_value", False):
+            self.check_box.setChecked(True)
 
-        v_box = QVBoxLayout()
+        # False by default otherwise
+        if self.analysis_arg.get_default_value():
+            # using setCheckState make it a triState checkbox
+            self.check_box.setChecked(self.analysis_arg.get_default_value())
+
         description = self.analysis_arg.get_description()
         if description:
-            q_label = QLabel(description)
-            q_label.setAlignment(Qt.AlignCenter)
-            q_label.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-            q_label.setAttribute(QtCore.Qt.WA_TranslucentBackground)
-            v_box.addWidget(q_label)
+            self.check_box.setText(description)
+        #
+        v_box = QVBoxLayout()
+        # description = self.analysis_arg.get_description()
+        # if description:
+        #     q_label = QLabel(description)
+        #     q_label.setAlignment(Qt.AlignCenter)
+        #     q_label.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        #     q_label.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+        #     v_box.addWidget(q_label)
 
         h_box = QHBoxLayout()
         h_box.addWidget(self.check_box)
