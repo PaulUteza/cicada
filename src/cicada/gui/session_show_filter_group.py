@@ -134,22 +134,32 @@ class SessionsWidget(QWidget):
         selected_items = self.q_list.selectedItems()
         for item in selected_items:
             item = item.text()
-            for file in self.parent.nwb_path_list:
-                print(file)
-                if item in file:
-                    self.parent.nwb_path_list.remove(file)
             if self.parent.grouped:
                 for label in self.parent.grouped_labels:
                     if item in label:
                         self.parent.grouped_labels.remove(label)
+                        item_to_remove = self.q_list.findItems(item, Qt.MatchExactly)
+                        try:
+                            self.q_list.takeItem(self.q_list.row(item_to_remove[0]))
+                        except IndexError:
+                            pass
             if self.parent.sorted:
                 for label in self.parent.sorted_labels:
                     if item in label:
                         self.parent.sorted_labels.remove(label)
+                        item_to_remove = self.q_list.findItems(item, Qt.MatchExactly)
+                        try:
+                            self.q_list.takeItem(self.q_list.row(item_to_remove[0]))
+                        except IndexError:
+                            pass
             for label in self.parent.labels:
                 if item in label:
                     self.parent.labels.remove(label)
-        self.populate(self.parent.labels)
+                    item_to_remove = self.q_list.findItems(str(label), Qt.MatchContains)
+                    try:
+                        self.q_list.takeItem(self.q_list.row(item_to_remove[0]))
+                    except IndexError:
+                        pass
         if not self.parent.labels:
             self.parent.groupMenu.setEnabled(False)
             self.parent.sortMenu.setEnabled(False)
@@ -197,6 +207,7 @@ class SessionsWidget(QWidget):
 
     def populate(self, labels):
         self.q_list.clear()
+        print(labels)
         for file in labels:
             item = QListWidgetItem()
             item.setCheckState(QtCore.Qt.Checked)
@@ -262,13 +273,11 @@ class SessionsWidget(QWidget):
             counter = 0
             for group in self.parent.grouped_labels:
                 counter +=1
-
                 group_to_save = []
                 for item in group:
                     for path in self.parent.nwb_path_list:
                         if path.endswith(item + ".nwb"):
                             group_to_save.append(path)
-
                 try:
                     print('try ',self.parent.dict_group)
                     for key, value in self.parent.dict_group.items():
@@ -287,7 +296,9 @@ class SessionsWidget(QWidget):
                     self.parent.group_data = {str(name + '_' + id_group): group_to_save}
         else:
             for item in self.parent.labels:
+                print(self.parent.nwb_path_list)
                 for path in self.parent.nwb_path_list:
+                    print(path)
                     if path.endswith(item + ".nwb"):
                         group_to_save.append(path)
             if self.parent.group_data:
