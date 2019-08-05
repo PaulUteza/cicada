@@ -1,6 +1,6 @@
 import os
 import sys
-import cicada_data_to_nwb
+from cicada_data_to_nwb import convert_data_to_nwb
 import utils
 import pathlib
 
@@ -13,6 +13,7 @@ if len(sys.argv) == 1:
                     "to sessions")
 
 else:
+    default_convert_to_nwb_yml_file = "pre_processing_default.yaml"
     for current_path in sys.argv[1:]:
         subfiles = []
         # Get all files in directories and subdirectories with their absolute path
@@ -30,7 +31,7 @@ else:
             # In case one of the directory is not complete/right we don't want the whole thing to stop
             try:
                 print(f"Loading data for {utils.path_leaf(dir)}")
-                cicada_data_to_nwb.load_nwb_from_data(dir)
+                convert_data_to_nwb(dir, default_convert_to_nwb_yml_file=default_convert_to_nwb_yml_file)
             except:
                 print(f"Error while loading {utils.path_leaf(dir)}")
                 continue

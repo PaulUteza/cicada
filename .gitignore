@@ -1,2 +1,14 @@
 
 \.idea/
+
+src/cicada/analysis/__pycache__/
+
+build/
+
+src/cicada/config/
+
+src/__pycache__/
+
+src/cicada/preprocessing/__pycache__/
+
+src/cicada/gui/__pycache__/
