@@ -41,7 +41,7 @@ class CicadaPsthAnalysis(CicadaAnalysis):
 
         """
         range_arg = {"arg_name": "psth_range", "value_type": "int", "min_value": 50, "max_value": 2000,
-                     "default_value": 500, "description": "range of the PSTH"}
+                     "default_value": 500, "description": "Range of the PSTH (ms)", "mandatory": True}
         self.add_argument_for_gui(**range_arg)
 
     def update_original_data(self):
@@ -57,6 +57,5 @@ class CicadaPsthAnalysis(CicadaAnalysis):
         :param kwargs:
         :return:
         """
-
         for data in self._data_to_analyse:
             print(f"PSTH ----- {data.identifier} on range {kwargs['psth_range']}")

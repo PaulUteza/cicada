@@ -835,11 +835,17 @@ QLabel {
   color: #F0F0F0;
 }
 
+QLabel::hover {
+  color: #148CD2;
+}
+
 QLabel::disabled {
   background-color: #19232D;
   border: 0px solid #32414B;
   color: #787878;
 }
+
+*[is_mandatory="True"] { border: 1px solid white; }
 
 /* QTextBrowser -----------------------------------------------------------
 
@@ -1956,6 +1962,17 @@ QToolBox QScrollArea QWidget QWidget {
 https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qframe
 
 --------------------------------------------------------------------------- */
+
+QFrame::hover {
+  background-color: #19232D;
+  border: 1px solid #148CD2;
+}
+
+QFrame {
+  background-color: #19232D;
+  border: 1px solid #32414B;
+}
+
 .QFrame {
   border-radius: 4px;
   border: 1px solid #32414B;
@@ -1965,6 +1982,7 @@ https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qframe
   border-radius: 4px;
   border: 1px transparent #32414B;
 }
+
 
 .QFrame[height="3"], .QFrame[width="3"] {
   background-color: #19232D;

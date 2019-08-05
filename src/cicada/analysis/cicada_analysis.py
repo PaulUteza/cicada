@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod, abstractproperty
-from cicada.analysis.cicada_analysis_arguments_for_gui import AnalysisArgumentsHandler
+from cicada.analysis.cicada_analysis_arguments_handler import AnalysisArgumentsHandler
 
 
 class CicadaAnalysis(ABC):
@@ -27,7 +27,7 @@ class CicadaAnalysis(ABC):
         self.name = name
         self._data_to_analyse = data_to_analyse
         self._data_format = data_format
-        self.analysis_arguments_handler = AnalysisArgumentsHandler()
+        self.analysis_arguments_handler = AnalysisArgumentsHandler(cicada_analysis=self)
 
         self.set_arguments_for_gui()
 

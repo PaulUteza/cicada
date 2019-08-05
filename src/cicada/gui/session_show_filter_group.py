@@ -63,9 +63,9 @@ class SessionsWidget(QWidget):
         self.q_list.itemSelectionChanged.connect(self.on_change)
         self.create_group = QPushButton("Create groups", self)
         self.create_group.clicked.connect(self.save_group)
-        self.run_analysis_button = QPushButton("Push me and then just touch me", self)
-        self.run_analysis_button.clicked.connect(self.send_data_to_analysis_tree)
-        self.layout.addWidget(self.run_analysis_button)
+        # self.run_analysis_button = QPushButton("Push me and then just touch me", self)
+        # self.run_analysis_button.clicked.connect(self.send_data_to_analysis_tree)
+        # self.layout.addWidget(self.run_analysis_button)
         self.layout.addWidget(self.create_group)
         self.setLayout(self.layout)
         self.analysis_tree = None
