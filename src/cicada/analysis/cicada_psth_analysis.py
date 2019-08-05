@@ -41,8 +41,18 @@ class CicadaPsthAnalysis(CicadaAnalysis):
 
         """
         range_arg = {"arg_name": "psth_range", "value_type": "int", "min_value": 50, "max_value": 2000,
-                     "default_value": 500, "description": "Range of the PSTH (ms)", "mandatory": True}
+                     "default_value": 500, "description": "Range of the PSTH (ms)"}
         self.add_argument_for_gui(**range_arg)
+        stim_arg = {"arg_name": "stimulus name", "value_type": "str",
+                     "default_value": "stim", "description": "Name of the stimulus"}
+        self.add_argument_for_gui(**stim_arg)
+        plot_arg = {"arg_name": "plot_options", "choices": ["lines", "bars"],
+                    "default_value": "bars", "description": "Options to display the PSTH"}
+        self.add_argument_for_gui(**plot_arg)
+        avg_arg = {"arg_name": "average_fig", "value_type": "bool",
+                   "default_value": True, "description": "Add a figure that average all sessions"}
+
+        self.add_argument_for_gui(**avg_arg)
 
     def update_original_data(self):
         """

@@ -187,6 +187,10 @@ QCheckBox::indicator {
   width: 16px;
 }
 
+QCheckBox:hover {
+    color: #148CD2;
+}
+
 QCheckBox::indicator:unchecked {
   image: url("cicada/gui/icons/rc/checkbox_unchecked.png");
 }

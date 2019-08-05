@@ -24,6 +24,7 @@ class CicadaHubsAnalysis(CicadaAnalysis):
             return False
 
         for data in self._data_to_analyse:
+            print(f'hubs nwb dir() {dir(data)}')
             # check is there is at least one processing module
             if len(data.processing) == 0:
                 return False
