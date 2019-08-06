@@ -97,7 +97,7 @@ class CicadaMainWindow(QMainWindow):
 
         self.labels = []
         self.grouped_labels = []
-        options = QFileDialog.Options()
+        QFileDialog.Options()
         dir_name = QFileDialog.getExistingDirectory(self, "Select Directory")
         self.load_data_from_dir(dir_name=dir_name)
 
@@ -428,9 +428,9 @@ class CicadaMainWindow(QMainWindow):
         """
         self.grouped = True
         if state > 0:  # From unchecked to checked
-            self.musketeers_widget.session_widget.update_text_filter(param)
-            self.uncheck_all_sort()
             self.sorted = False
+            self.uncheck_all_sort()
+            self.musketeers_widget.session_widget.update_text_filter(param)
             if param not in self.param_group_list:
                 self.param_group_list.append(param)
             self.grouped_labels, param_group_list = utils.group_by_param(self.nwb_path_list, self.param_group_list)
@@ -469,13 +469,16 @@ class CicadaMainWindow(QMainWindow):
                 else:
                     self.param_list.remove(param)
         self.sorted_labels = utils.sort_by_param(self.nwb_path_list, self.param_list)
-        self.sorted = True
-        self.musketeers_widget.session_widget.populate(self.sorted_labels)
+        if self.param_list:
+            self.sorted = True
+        else:
+            self.sorted = False
         self.musketeers_widget.session_widget.update_text_filter()
+        self.musketeers_widget.session_widget.populate(self.sorted_labels)
 
     def about(self):
         """Small about QMessageBox for the project"""
-        QMessageBox.about(self, "About CICADA","Lorem Ipsum")
+        QMessageBox.about(self, "About CICADA", "Always compassionately illuminate the one yogi.")
 
 
     def openWindow(self):

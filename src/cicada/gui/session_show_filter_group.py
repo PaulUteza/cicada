@@ -135,7 +135,6 @@ class SessionsWidget(QWidget):
 
         self.otherActionsButton = QToolButton()
         self.otherActionsButton.setIcon(QtGui.QIcon('cicada/gui/icons/svg/more2.svg'))
-        self.otherActionsButton.setStyleSheet('QToolButton::menu-indicator { width: 0px; height: 0px;};')
         self.otherActionsButton.setStyleSheet('border: none;')
         self.otherActionsButton.setPopupMode(QToolButton.InstantPopup)
         self.otherActionsMenu = QMenu()
@@ -309,10 +308,10 @@ class SessionsWidget(QWidget):
         for group in labels:
             item = QListWidgetItem()  # delimiter
             if param[0] is None:
-                param[0] = "-"
+                param[0] = "None"
             item.setText('--------------------------' + str(param.pop(0)) + '---------------------------')
             item.setFlags(QtCore.Qt.ItemIsEnabled)
-            item.setFlags(item.flags() & ~QtCore.Qt.ItemIsSelectable)# item should not be selectable
+            item.setFlags(item.flags() & ~QtCore.Qt.ItemIsSelectable)  # item should not be selectable
             self.q_list.addItem(item)
             for file in group:
                 print(file)
@@ -343,11 +342,10 @@ class SessionsWidget(QWidget):
 
         self.nameBox = QDialog(self)
         self.nameBoxLayout = QVBoxLayout(self.nameBox)
-        # self.nameBox.resize(50,200)
         self.nameBox.setWindowTitle("Save your group as")
         self.save_name = QLineEdit(self.nameBox)
         self.save_name.setText("Group_" + str(datetime.date.today()))
-        self.saveButton = QPushButton('Save')
+        self.saveButton = QPushButton('Save as')
         self.nameBoxLayout.addWidget(self.save_name)
         self.nameBoxLayout.addWidget(self.saveButton)
         self.nameBox.show()
