@@ -58,6 +58,7 @@ class SessionsWidget(QWidget):
         self.more_menu()
 
         self.q_list = SessionsListWidget(session_widget=self)
+        self.q_list.doubleClicked.connect(self.double_click_event)
         self.q_list.setSelectionMode(QAbstractItemView.ExtendedSelection)
 
         # connecting the button that will fill the analysis tree
@@ -77,6 +78,28 @@ class SessionsWidget(QWidget):
         self.hlayout2.addLayout(self.layout)
         self.setLayout(self.hlayout2)
         self.analysis_tree = None
+
+    def double_click_event(self, clicked_item):
+        flags = clicked_item.flags()
+        if flags & 1:
+            if self.q_list.item(clicked_item.row()).checkState():
+                self.q_list.item(clicked_item.row()).setCheckState(QtCore.Qt.Unchecked)
+            else:
+                self.q_list.item(clicked_item.row()).setCheckState(QtCore.Qt.Checked)
+        else:
+            row_index = clicked_item.row() + 1
+            item_is_selectable = True
+            while item_is_selectable:
+                if self.q_list.item(row_index).checkState():
+                    self.q_list.item(row_index).setCheckState(QtCore.Qt.Unchecked)
+                else:
+                    self.q_list.item(row_index).setCheckState(QtCore.Qt.Checked)
+                try:
+                    if not self.q_list.item(row_index + 1).flags() & 1:
+                        item_is_selectable = False
+                    row_index +=1
+                except AttributeError:
+                    item_is_selectable = False
 
     def sort_menu(self):
         self.sortButton = QToolButton()
@@ -231,12 +254,13 @@ class SessionsWidget(QWidget):
             if param[0] is None:
                 param[0] = "-"
             item.setText('--------------------------' + str(param.pop(0)) + '---------------------------')
-            item.setFlags(QtCore.Qt.NoItemFlags)  # item should not be selectable
+            item.setFlags(QtCore.Qt.ItemIsEnabled)
+            item.setFlags(item.flags() & ~QtCore.Qt.ItemIsSelectable)# item should not be selectable
             self.q_list.addItem(item)
             for file in group:
                 print(file)
                 item = QListWidgetItem()
-                item.setCheckState(QtCore.Qt.Checked)
+                item.setCheckState(QtCore.Qt.Unchecked)
                 item.setText(str(file))
                 item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsUserCheckable)
                 self.q_list.addItem(item)
