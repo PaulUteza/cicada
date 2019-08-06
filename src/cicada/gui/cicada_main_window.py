@@ -56,6 +56,7 @@ class CicadaMainWindow(QMainWindow):
 
     def load_group_from_config(self):
         """Load groups from a YAML file in the config folder"""
+
         group_file_name = "cicada/config/group.yaml"
         if os.path.isfile(group_file_name):
             self.group_data = dict()
@@ -79,6 +80,7 @@ class CicadaMainWindow(QMainWindow):
 
     def load_data_from_config(self):
         """Check if the last dir opened is saved in config and load it automatically"""
+
         config_file_name = "cicada/config/config.yaml"
         config_dict = None
 
@@ -92,6 +94,7 @@ class CicadaMainWindow(QMainWindow):
 
     def open(self):
         """Open a directory"""
+
         self.labels = []
         self.grouped_labels = []
         options = QFileDialog.Options()
@@ -104,8 +107,6 @@ class CicadaMainWindow(QMainWindow):
 
         Args:
             dir_name (str): Path to data
-
-        Returns:
 
         """
 
@@ -143,8 +144,6 @@ class CicadaMainWindow(QMainWindow):
         Args:
             dir_name (str): Path to data to be saved
 
-        Returns:
-
         """
         # TODO think about where to keep the config yaml file
         config_file_name = "cicada/config/config.yaml"
@@ -160,6 +159,7 @@ class CicadaMainWindow(QMainWindow):
 
     def populate_menu(self):
         """Populate the menu to load groups"""
+
         self.showGroupMenu.clear()
         self.addGroupDataMenu.clear()
         counter =0
@@ -217,6 +217,7 @@ class CicadaMainWindow(QMainWindow):
 
 
     def createMenus(self):
+        """Create menu bar and put some menu in it"""
 
         self.fileMenu = QMenu("&File", self)
         self.fileMenu.addAction(self.openAct)
@@ -276,48 +277,51 @@ class CicadaMainWindow(QMainWindow):
         self.menuBar().addMenu(self.helpMenu)
 
     def create_group_menu(self):
+        """Create group menu"""
+
         self.ageGroupAct = QAction("Age", self, checkable=True)
-        self.ageGroupAct.triggered.connect(partial(self.uncheck_all_group, "age"))
+        self.ageGroupAct.triggered.connect(partial(self.uncheck_group, "age"))
         self.ageGroupAct.triggered.connect(partial(self.on_group, "age"))
 
         self.sexGroupAct = QAction("Sex", self, checkable=True)
-        self.sexGroupAct.triggered.connect(partial(self.uncheck_all_group, "sex"))
+        self.sexGroupAct.triggered.connect(partial(self.uncheck_group, "sex"))
         self.sexGroupAct.triggered.connect(partial(self.on_group, "sex"))
 
         self.genotypeGroupAct = QAction("Genotype", self, checkable=True)
-        self.genotypeGroupAct.triggered.connect(partial(self.uncheck_all_group, "genotype"))
+        self.genotypeGroupAct.triggered.connect(partial(self.uncheck_group, "genotype"))
         self.genotypeGroupAct.triggered.connect(partial(self.on_group, "genotype"))
 
         self.speciesGroupAct = QAction("Species", self, checkable=True)
-        self.speciesGroupAct.triggered.connect(partial(self.uncheck_all_group, "species"))
+        self.speciesGroupAct.triggered.connect(partial(self.uncheck_group, "species"))
         self.speciesGroupAct.triggered.connect(partial(self.on_group, "species"))
 
         self.subjectIDGroupAct = QAction("Subject ID", self, checkable=True)
-        self.subjectIDGroupAct.triggered.connect(partial(self.uncheck_all_group, "subjectID"))
+        self.subjectIDGroupAct.triggered.connect(partial(self.uncheck_group, "subjectID"))
         self.subjectIDGroupAct.triggered.connect(partial(self.on_group, "subject_id"))
 
         self.weightGroupAct = QAction("Weight", self, checkable=True)
-        self.weightGroupAct.triggered.connect(partial(self.uncheck_all_group, "weight"))
+        self.weightGroupAct.triggered.connect(partial(self.uncheck_group, "weight"))
         self.weightGroupAct.triggered.connect(partial(self.on_group, "weight"))
 
         self.birthGroupAct = QAction("Birth", self, checkable=True)
-        self.birthGroupAct.triggered.connect(partial(self.uncheck_all_group, "birth"))
+        self.birthGroupAct.triggered.connect(partial(self.uncheck_group, "birth"))
         self.birthGroupAct.triggered.connect(partial(self.on_group, "birth"))
 
         self.fluorescenceGroupAct = QAction("Has fluorescence", self, checkable=True)
-        self.fluorescenceGroupAct.triggered.connect(partial(self.uncheck_all_group, "fluorescence"))
+        self.fluorescenceGroupAct.triggered.connect(partial(self.uncheck_group, "fluorescence"))
         self.fluorescenceGroupAct.triggered.connect(partial(self.on_group, "fluorescence"))
 
         self.imagesegGroupAct = QAction("Has image segmentation", self, checkable=True)
-        self.imagesegGroupAct.triggered.connect(partial(self.uncheck_all_group, "imageseg"))
+        self.imagesegGroupAct.triggered.connect(partial(self.uncheck_group, "imageseg"))
         self.imagesegGroupAct.triggered.connect(partial(self.on_group, "imagesegmentation"))
 
         self.rasterGroupAct = QAction("Has raster", self, checkable=True)
-        self.rasterGroupAct.triggered.connect(partial(self.uncheck_all_group, "raster"))
+        self.rasterGroupAct.triggered.connect(partial(self.uncheck_group, "raster"))
         self.rasterGroupAct.triggered.connect(partial(self.on_group, "raster"))
 
 
     def create_sort_menu(self):
+        """Create sort menu"""
 
         self.ageSort = QCheckBox("&Age", self.sortMenu)
         self.ageSortAct = QWidgetAction(self.sortMenu)
@@ -372,6 +376,7 @@ class CicadaMainWindow(QMainWindow):
 
 
     def createActions(self):
+        """Create some QAction"""
 
         self.openAct = QAction("&Open...", self, shortcut="Ctrl+O", triggered=self.open)
         self.exitAct = QAction("E&xit", self, shortcut="Ctrl+Q", triggered=self.close)
@@ -382,6 +387,8 @@ class CicadaMainWindow(QMainWindow):
 
 
     def uncheck_all_sort(self):
+        """Uncheck all checkboxes in sort menu"""
+
         self.param_list = []
         self.ageSort.setChecked(False)
         self.sexSort.setChecked(False)
@@ -394,7 +401,14 @@ class CicadaMainWindow(QMainWindow):
         self.imagesegSort.setChecked(False)
         self.rasterSort.setChecked(False)
 
-    def uncheck_all_group(self, param=''):
+    def uncheck_group(self, param=''):
+        """
+        Uncheck group menu parameter
+
+        Args:
+            param (str): Parameter name to uncheck
+
+        """
         self.param_group_list = []
         param_value_list = ['age', 'sex', 'species', 'raster', 'genotype', 'subjectID', 'weight', 'birth', 'fluorescence',
                 'imageseg', 'raster']
@@ -404,8 +418,16 @@ class CicadaMainWindow(QMainWindow):
 
 
     def on_group(self, param, state):
+        """
+        Give group list and parameters value to populate QListWidget
+
+        Args:
+            param (str): Parameter to group by
+            state (int): State of the checkbox
+
+        """
         self.grouped = True
-        if state > 0:
+        if state > 0:  # From unchecked to checked
             self.musketeers_widget.session_widget.update_text_filter(param)
             self.uncheck_all_sort()
             self.sorted = False
@@ -417,7 +439,7 @@ class CicadaMainWindow(QMainWindow):
             for i in range(len(self.grouped_labels)):
                 self.dict_group.update({param_group_list[i]: self.grouped_labels[i]})
             self.musketeers_widget.session_widget.form_group(self.grouped_labels, param_group_list)
-        else:
+        else:  # From checked to unchecked
             if param in self.param_group_list:
                 if len(self.param_group_list) == 1:
                     self.param_group_list = []
@@ -428,12 +450,19 @@ class CicadaMainWindow(QMainWindow):
             self.musketeers_widget.session_widget.populate(self.labels)
 
     def on_sort(self, param, state):
-        if state > 0:
+        """
+        Give sorted list to populate QListWidget
+        Args:
+            param (str): Parameter to sort by
+            state (int): State of the checkbox
+
+        """
+        if state > 0:  # From unchecked to checked
             self.grouped = False
-            self.uncheck_all_group()
+            self.uncheck_group()
             if param not in self.param_list:
                 self.param_list.append(param)
-        else:
+        else:  # From checked to unchecked
             if param in self.param_list:
                 if len(self.param_list) == 1:
                     self.param_list = []
@@ -445,10 +474,12 @@ class CicadaMainWindow(QMainWindow):
         self.musketeers_widget.session_widget.update_text_filter()
 
     def about(self):
+        """Small about QMessageBox for the project"""
         QMessageBox.about(self, "About CICADA","Lorem Ipsum")
 
 
     def openWindow(self):
+        """Open all widgets in a CentralWidget and call some menus that needed those widgets"""
         # self.showSessionAct.setEnabled(False)
         self.musketeers_widget = MusketeersWidget(parent=self)
         self.setCentralWidget(self.musketeers_widget)

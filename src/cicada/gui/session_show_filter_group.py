@@ -44,6 +44,7 @@ class SessionsListWidget(QListWidget):
 class SessionsWidget(QWidget):
 
     def __init__(self, parent=None, to_analysis_button=None):
+
         super().__init__()
         self.parent = parent
 
@@ -80,13 +81,23 @@ class SessionsWidget(QWidget):
         self.analysis_tree = None
 
     def double_click_event(self, clicked_item):
+        """
+        Handle double click on item in QListWidget.
+        Check or uncheck an item or a group on double click.
+
+        Args:
+            clicked_item: Double clicked item
+
+        Returns:
+
+        """
         flags = clicked_item.flags()
-        if flags & 1:
+        if flags & 1:  # Item is selectable, meaning it is a session
             if self.q_list.item(clicked_item.row()).checkState():
                 self.q_list.item(clicked_item.row()).setCheckState(QtCore.Qt.Unchecked)
             else:
                 self.q_list.item(clicked_item.row()).setCheckState(QtCore.Qt.Checked)
-        else:
+        else:  # Item is not selectable, meaning it is a separator
             row_index = clicked_item.row() + 1
             item_is_selectable = True
             while item_is_selectable:
@@ -97,11 +108,13 @@ class SessionsWidget(QWidget):
                 try:
                     if not self.q_list.item(row_index + 1).flags() & 1:
                         item_is_selectable = False
-                    row_index +=1
+                    row_index += 1
                 except AttributeError:
                     item_is_selectable = False
 
     def sort_menu(self):
+        """Create sort menu"""
+
         self.sortButton = QToolButton()
         self.sortButton.setIcon(QtGui.QIcon('cicada/gui/icons/svg/sort.svg'))
         self.sortButton.setPopupMode(QToolButton.InstantPopup)
@@ -109,6 +122,8 @@ class SessionsWidget(QWidget):
         self.hlayout.addWidget(self.sortButton)
 
     def group_menu(self):
+        """Create group menu"""
+
         self.groupButton = QToolButton()
         self.groupButton.setIcon(QtGui.QIcon('cicada/gui/icons/svg/group.svg'))
         self.groupButton.setPopupMode(QToolButton.InstantPopup)
@@ -116,6 +131,8 @@ class SessionsWidget(QWidget):
         self.hlayout.addWidget(self.groupButton)
 
     def more_menu(self):
+        """Create more menu"""
+
         self.otherActionsButton = QToolButton()
         self.otherActionsButton.setIcon(QtGui.QIcon('cicada/gui/icons/svg/more2.svg'))
         self.otherActionsButton.setStyleSheet('QToolButton::menu-indicator { width: 0px; height: 0px;};')
@@ -134,6 +151,7 @@ class SessionsWidget(QWidget):
         self.hlayout2 = QHBoxLayout()
 
     def check_menu(self):
+        """Create menu to check or uncheck all/none/selected items"""
 
         self.selectButton = QToolButton()
         self.selectButton.setIcon(QtGui.QIcon('cicada/gui/icons/svg/checkbox.svg'))
@@ -142,13 +160,13 @@ class SessionsWidget(QWidget):
         self.selectMenu = QMenu()
         self.selectButton.setMenu(self.selectMenu)
         self.selectAllAct = QAction('All')
-        self.selectAllAct.triggered.connect(self.select_all)
+        self.selectAllAct.triggered.connect(self.check_all)
         self.unselectAllAct = QAction('None')
-        self.unselectAllAct.triggered.connect(self.unselect_all)
+        self.unselectAllAct.triggered.connect(self.uncheck_all)
         self.unselectSelectedAct = QAction('Uncheck selected')
-        self.unselectSelectedAct.triggered.connect(self.unselect_selected)
+        self.unselectSelectedAct.triggered.connect(self.uncheck_selected)
         self.selectSelectedAct = QAction('Check selected')
-        self.selectSelectedAct.triggered.connect(self.select_selected)
+        self.selectSelectedAct.triggered.connect(self.check_selected)
         self.selectMenu.addAction(self.selectAllAct)
         self.selectMenu.addAction(self.unselectAllAct)
         self.selectMenu.addAction(self.unselectSelectedAct)
@@ -156,6 +174,8 @@ class SessionsWidget(QWidget):
         self.hlayout.addWidget(self.selectButton)
 
     def remove_data(self):
+        """Remove selected item(s) from QListWidget"""
+
         selected_items = self.q_list.selectedItems()
         for item in selected_items:
             item = item.text()
@@ -192,33 +212,52 @@ class SessionsWidget(QWidget):
             self.parent.groupMenu.setEnabled(False)
             self.parent.sortMenu.setEnabled(False)
 
-    def unselect_all(self):
+    def uncheck_all(self):
+        """Uncheck all items"""
+
         for idx in range(self.q_list.count()):
             self.q_list.item(idx).setCheckState(QtCore.Qt.Unchecked)
 
-    def unselect_selected(self):
+    def uncheck_selected(self):
+        """Uncheck selected item(s)"""
+
         for idx in range(self.q_list.count()):
             for item in self.items:
                 if self.q_list.item(idx).text() == item:
                     self.q_list.item(idx).setCheckState(QtCore.Qt.Unchecked)
 
-    def select_all(self):
+    def check_all(self):
+        """Check all items"""
+
         for idx in range(self.q_list.count()):
             self.q_list.item(idx).setCheckState(QtCore.Qt.Checked)
 
-    def select_selected(self):
+    def check_selected(self):
+        """Check selected item(s)"""
+
         for idx in range(self.q_list.count()):
             for item in self.items:
                 if self.q_list.item(idx).text() == item:
                     self.q_list.item(idx).setCheckState(QtCore.Qt.Checked)
 
     def on_change(self):
+        """Handle change in selection"""
+
         self.items = [item.text() for item in self.q_list.selectedItems()]
 
     def get_items(self):
+        """
+        Returns list of items
+        Returns:
+            list of items
+
+        """
+
         return [item for item in self.items]
 
     def get_data_to_analyse(self):
+        """Get data to analyse"""
+
         checked_items = []
         for index in range(self.q_list.count()):
             if self.q_list.item(index).checkState() == 2:
@@ -226,6 +265,7 @@ class SessionsWidget(QWidget):
         return [data for key, data in self.parent.data_dict.items() if key in checked_items]
 
     def send_data_to_analysis_tree(self):
+        """Send data to the analysis tree function"""
         # we erase the widgets in the parameters section
         self.arguments_section_widget.tabula_rasa()
         data_to_analyse = self.get_data_to_analyse()
@@ -235,6 +275,14 @@ class SessionsWidget(QWidget):
 
 
     def populate(self, labels, method='clear'):
+        """
+        Populate the QListWidget with sessions labels
+
+        Args:
+            labels (list): Sessions identifiers
+            method (str): In case we don't want to clear the QListWidget
+
+        """
         if method == 'clear':
             self.q_list.clear()
         for file in labels:
@@ -246,6 +294,15 @@ class SessionsWidget(QWidget):
         # self.q_list.insertItems(0, labels)
 
     def form_group(self, labels, param=["-"]):
+        """
+        Form group of items and display their group name
+
+        Args:
+            labels (list): Session identifiers
+            param (str): Parameter used to create the groups
+
+        """
+
         self.q_list.clear()
         while len(param) < len(labels):
             param.append("-")
@@ -266,6 +323,13 @@ class SessionsWidget(QWidget):
                 self.q_list.addItem(item)
 
     def update_text_filter(self, param_group=''):
+        """
+        Update the QLabel to display the sort/group state
+
+        Args:
+            param_group: Parameter used to form group
+
+        """
         if self.parent.grouped:
             self.textLabel.setText(f'Grouped by : {param_group}')
         elif self.parent.sorted:
@@ -275,6 +339,8 @@ class SessionsWidget(QWidget):
             self.textLabel.setText('')
 
     def save_group(self):
+        """Save sessions in a group"""
+
         self.nameBox = QDialog(self)
         self.nameBoxLayout = QVBoxLayout(self.nameBox)
         # self.nameBox.resize(50,200)
@@ -289,6 +355,8 @@ class SessionsWidget(QWidget):
         self.saveButton.clicked.connect(self.nameBox.close)
 
     def save_group_names(self):
+        """Save group in a YAML with a certain name"""
+
         group_yaml_file = "cicada/config/group.yaml"
         name = self.save_name.text()
         group_to_save = []
