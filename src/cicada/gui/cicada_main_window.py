@@ -55,6 +55,7 @@ class CicadaMainWindow(QMainWindow):
 
 
     def load_group_from_config(self):
+        """Load groups from a YAML file in the config folder"""
         group_file_name = "cicada/config/group.yaml"
         if os.path.isfile(group_file_name):
             self.group_data = dict()
@@ -72,14 +73,12 @@ class CicadaMainWindow(QMainWindow):
                         nwb_file_list.append(nwb_file.identifier)
                     self.grouped_labels.append(nwb_file_list)
                 self.showGroupMenu.setEnabled(True)
+                self.addGroupDataMenu.setEnabled(True)
                 self.populate_menu()
 
 
     def load_data_from_config(self):
-        """
-        Check if the last dir opened is saved in config and load it automatically
-        :return:
-        """
+        """Check if the last dir opened is saved in config and load it automatically"""
         config_file_name = "cicada/config/config.yaml"
         config_dict = None
 
@@ -92,6 +91,7 @@ class CicadaMainWindow(QMainWindow):
 
 
     def open(self):
+        """Open a directory"""
         self.labels = []
         self.grouped_labels = []
         options = QFileDialog.Options()
@@ -100,9 +100,10 @@ class CicadaMainWindow(QMainWindow):
 
     def load_data_from_dir(self, dir_name):
         """
+        Load data (currently only NWB) from selected directory
 
         Args:
-            dir_name:
+            dir_name (str): Path to data
 
         Returns:
 
@@ -136,6 +137,15 @@ class CicadaMainWindow(QMainWindow):
             self.save_last_data_location(dir_name=dir_name)
 
     def save_last_data_location(self, dir_name):
+        """
+        Keep path to last data directory selected in a YAML in config
+
+        Args:
+            dir_name (str): Path to data to be saved
+
+        Returns:
+
+        """
         # TODO think about where to keep the config yaml file
         config_file_name = "cicada/config/config.yaml"
         config_dict = None
@@ -149,7 +159,9 @@ class CicadaMainWindow(QMainWindow):
             yaml.dump(config_dict, outfile, default_flow_style=False)
 
     def populate_menu(self):
+        """Populate the menu to load groups"""
         self.showGroupMenu.clear()
+        self.addGroupDataMenu.clear()
         counter =0
         if len(self.group_data.keys()) > 10:
             populate_data_keys = list(islice(self.group_data, 10))
@@ -160,10 +172,19 @@ class CicadaMainWindow(QMainWindow):
             counter +=1
             exec('self.groupAct' + str(counter) + ' = QAction("' + group_name+'", self)')
             eval('self.groupAct' + str(counter) + '.triggered.connect(partial(self.load_group, group_name))')
+            exec('self.groupAddAct' + str(counter) + ' = QAction("' + group_name+'", self)')
+            eval('self.groupAddAct' + str(counter) + '.triggered.connect(partial(self.add_group_data, group_name))')
             self.showGroupMenu.addAction(eval('self.groupAct' + str(counter)))
-
+            self.addGroupDataMenu.addAction(eval('self.groupAddAct' + str(counter)))
 
     def load_group(self, group_name):
+        """
+        Load a group of saved sessions
+
+        Args:
+            group_name (str) : Name of the group saved in YAML
+
+        """
         self.sorted = False
         self.grouped = False
         self.nwb_path_list = self.group_data.get(group_name)
@@ -173,6 +194,25 @@ class CicadaMainWindow(QMainWindow):
             nwb_file = io.read()
             self.labels.append(nwb_file.identifier)
         self.musketeers_widget.session_widget.populate(self.labels)
+        self.musketeers_widget.session_widget.update_text_filter()
+
+    def add_group_data(self, group_name):
+        """
+        Add a group of saved sessions to the current list of session
+
+        Args:
+            group_name (str) : Name of the group saved in YAML
+
+        """
+        self.sorted = False
+        self.grouped = False
+        self.nwb_path_list = self.group_data.get(group_name)
+        self.labels = []
+        for path in self.nwb_path_list:
+            io = NWBHDF5IO(path, 'r')
+            nwb_file = io.read()
+            self.labels.append(nwb_file.identifier)
+        self.musketeers_widget.session_widget.populate(self.labels, 'add')
         self.musketeers_widget.session_widget.update_text_filter()
 
 
@@ -194,7 +234,9 @@ class CicadaMainWindow(QMainWindow):
         self.groupMenu = QMenu("Group by", self.viewMenu, enabled=False)
 
         self.showGroupMenu = QMenu("Load Group", self.fileMenu, enabled=False)
+        self.addGroupDataMenu = QMenu('Add Group', self.fileMenu, enabled=False)
         self.fileMenu.addMenu(self.showGroupMenu)
+        self.fileMenu.addMenu(self.addGroupDataMenu)
         self.viewMenu.addMenu(self.groupMenu)
         self.viewMenu.addMenu(self.sortMenu)
 
@@ -362,25 +404,28 @@ class CicadaMainWindow(QMainWindow):
 
 
     def on_group(self, param, state):
+        self.grouped = True
         if state > 0:
+            self.musketeers_widget.session_widget.update_text_filter(param)
             self.uncheck_all_sort()
             self.sorted = False
             if param not in self.param_group_list:
                 self.param_group_list.append(param)
+            self.grouped_labels, param_group_list = utils.group_by_param(self.nwb_path_list, self.param_group_list)
+            print(self.grouped_labels)
+            self.dict_group = dict()
+            for i in range(len(self.grouped_labels)):
+                self.dict_group.update({param_group_list[i]: self.grouped_labels[i]})
+            self.musketeers_widget.session_widget.form_group(self.grouped_labels, param_group_list)
         else:
             if param in self.param_group_list:
                 if len(self.param_group_list) == 1:
                     self.param_group_list = []
                 else:
                     self.param_group_list.remove(param)
-        self.grouped_labels, param_group_list = utils.group_by_param(self.nwb_path_list, self.param_group_list)
-        print(self.grouped_labels)
-        self.dict_group = dict()
-        for i in range(len(self.grouped_labels)):
-            self.dict_group.update({param_group_list[i]: self.grouped_labels[i]})
-        self.grouped = True
-        self.musketeers_widget.session_widget.form_group(self.grouped_labels, param_group_list)
-        self.musketeers_widget.session_widget.update_text_filter(param)
+            self.grouped = False
+            self.musketeers_widget.session_widget.update_text_filter()
+            self.musketeers_widget.session_widget.populate(self.labels)
 
     def on_sort(self, param, state):
         if state > 0:
@@ -407,7 +452,9 @@ class CicadaMainWindow(QMainWindow):
         # self.showSessionAct.setEnabled(False)
         self.musketeers_widget = MusketeersWidget(parent=self)
         self.setCentralWidget(self.musketeers_widget)
-
+        self.saveGroupMenu = QAction('Save Group', self.fileMenu)
+        self.fileMenu.addAction(self.saveGroupMenu)
+        self.saveGroupMenu.triggered.connect(self.musketeers_widget.session_widget.save_group)
 
 class MusketeersWidget(QWidget):
     """

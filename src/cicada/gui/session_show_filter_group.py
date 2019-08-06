@@ -100,7 +100,7 @@ class SessionsWidget(QWidget):
         self.otherActionsButton.setPopupMode(QToolButton.InstantPopup)
         self.otherActionsMenu = QMenu()
         self.otherActionsButton.setMenu(self.otherActionsMenu)
-        self.removeAct = QAction('Remove selected')
+        self.removeAct = QAction('Remove selected', shortcut='Delete')
         self.removeAct.triggered.connect(self.remove_data)
         self.createGroupAct = QAction("Create groups")
         self.createGroupAct.triggered.connect(self.save_group)
@@ -140,26 +140,29 @@ class SessionsWidget(QWidget):
                 for label in self.parent.grouped_labels:
                     if item in label:
                         self.parent.grouped_labels.remove(label)
-                        item_to_remove = self.q_list.findItems(item, Qt.MatchExactly)
+                        list_item_to_remove = self.q_list.findItems(item, Qt.MatchExactly)
                         try:
-                            self.q_list.takeItem(self.q_list.row(item_to_remove[0]))
+                            for item_to_remove in list_item_to_remove:
+                                self.q_list.takeItem(self.q_list.row(item_to_remove))
                         except IndexError:
                             pass
             if self.parent.sorted:
                 for label in self.parent.sorted_labels:
                     if item in label:
                         self.parent.sorted_labels.remove(label)
-                        item_to_remove = self.q_list.findItems(item, Qt.MatchExactly)
+                        list_item_to_remove = self.q_list.findItems(item, Qt.MatchExactly)
                         try:
-                            self.q_list.takeItem(self.q_list.row(item_to_remove[0]))
+                            for item_to_remove in list_item_to_remove:
+                                self.q_list.takeItem(self.q_list.row(item_to_remove))
                         except IndexError:
                             pass
             for label in self.parent.labels:
                 if item in label:
                     self.parent.labels.remove(label)
-                    item_to_remove = self.q_list.findItems(str(label), Qt.MatchContains)
+                    list_item_to_remove = self.q_list.findItems(item, Qt.MatchExactly)
                     try:
-                        self.q_list.takeItem(self.q_list.row(item_to_remove[0]))
+                        for item_to_remove in list_item_to_remove:
+                            self.q_list.takeItem(self.q_list.row(item_to_remove))
                     except IndexError:
                         pass
         if not self.parent.labels:
@@ -208,9 +211,9 @@ class SessionsWidget(QWidget):
             self.analysis_tree.set_data(data_to_analyse=data_to_analyse, data_format="nwb")
 
 
-    def populate(self, labels):
-        self.q_list.clear()
-        print(labels)
+    def populate(self, labels, method='clear'):
+        if method == 'clear':
+            self.q_list.clear()
         for file in labels:
             item = QListWidgetItem()
             item.setCheckState(QtCore.Qt.Unchecked)
@@ -244,6 +247,8 @@ class SessionsWidget(QWidget):
         elif self.parent.sorted:
             param_list = ', '.join(self.parent.param_list)
             self.textLabel.setText(f'Sorted by : {param_list}')
+        else:
+            self.textLabel.setText('')
 
     def save_group(self):
         self.nameBox = QDialog(self)
@@ -282,7 +287,6 @@ class SessionsWidget(QWidget):
                         if path.endswith(item + ".nwb"):
                             group_to_save.append(path)
                 try:
-                    print('try ',self.parent.dict_group)
                     for key, value in self.parent.dict_group.items():
                         print(value,group)
                         if value == group:
@@ -292,16 +296,13 @@ class SessionsWidget(QWidget):
                                 id_group = str(counter)
                 except AttributeError:
                     id_group = str(counter)
-                print(name,id_group)
                 if self.parent.group_data:
                     self.parent.group_data.update({str(name + '_' + id_group): group_to_save})
                 else:
                     self.parent.group_data = {str(name + '_' + id_group): group_to_save}
         else:
             for item in self.parent.labels:
-                print(self.parent.nwb_path_list)
                 for path in self.parent.nwb_path_list:
-                    print(path)
                     if path.endswith(item + ".nwb"):
                         group_to_save.append(path)
             if self.parent.group_data:

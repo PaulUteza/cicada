@@ -54,16 +54,16 @@ class AnalysisArgument:
             self.widget = CheckBoxWidget(analysis_arg=self)
             return self.widget
 
-        if hasattr(self, "choices"):
+        elif hasattr(self, "choices"):
             if getattr(self, "multiple_choices", False):
                 self.widget = ListCheckboxWidget(analysis_arg=self, choices_attr_name="choices")
             else:
                 self.widget = ComboBoxWidget(analysis_arg=self)
             return self.widget
 
-        # else:
-        #     self.widget = LineEditWidget(analysis_arg=self)
-        #     return self.widget
+        else:
+            self.widget = LineEditWidget(analysis_arg=self)
+            return self.widget
 
     def set_argument_value(self, value):
         self.final_value = value
