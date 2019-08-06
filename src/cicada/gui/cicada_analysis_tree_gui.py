@@ -331,7 +331,7 @@ class QAnalysisTreeModel(QAbstractItemModel):
 
 
 class AnalysisTreeApp(QWidget):
-    def __init__(self):
+    def __init__(self, to_parameters_button=None):
         super().__init__()
         # self.left = 10
         # self.top = 10
@@ -344,6 +344,7 @@ class AnalysisTreeApp(QWidget):
         self.arguments_section_widget = None
 
         self.init_ui()
+        to_parameters_button.clicked.connect(self.load_arguments_parameters_section)
         # self.setStyleSheet("QLineEdit { background-color: yellow }")
 
     def set_data(self, data_to_analyse, data_format):
@@ -361,9 +362,11 @@ class AnalysisTreeApp(QWidget):
             return
 
         if tree_item.cicada_analysis is not None and tree_item.data_valid:
-            print(f"2x click on {tree_item.cicada_analysis.name}")
             self.arguments_section_widget.create_widgets(cicada_analysis=tree_item.cicada_analysis)
 
+    def load_arguments_parameters_section(self):
+       q_model_index = self.dataView.currentIndex()
+       self.doubleClickedItem(q_model_index)
 
     def init_ui(self):
         # self.setWindowTitle(self.title)

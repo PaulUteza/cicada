@@ -45,7 +45,6 @@ if __name__ == '__main__':
 
     app.setStyleSheet(dark_style_cicada_style_sheet)
 
-
     cicada_main_window = CicadaMainWindow()
 
     # putting the window at the center of the screen

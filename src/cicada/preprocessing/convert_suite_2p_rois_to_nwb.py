@@ -92,11 +92,13 @@ class ConvertSuite2pRoisToNWB(ConvertToNWB):
                 raise Exception(f"Calcium imaging format not supported yet {image_series.external_file[0]}")
         else:
             ci_movie = image_series.data
-        raw_traces = np.zeros((n_cells, ci_movie.shape[0]))
-        for cell in np.arange(n_cells):
-            img_mask = ps['image_mask'][cell]
-            img_mask = img_mask.astype(bool)
-            raw_traces[cell, :] = np.mean(ci_movie[:, img_mask], axis=1)
-        rrs = fl.create_roi_response_series(name='raw_traces', data=raw_traces, unit='lumens',
-                                            rois=rt_region, timestamps=np.arange(n_frames),
-                                            description="raw traces")
+        # TODO: if movie is external, see to load it
+        if ci_movie:
+            raw_traces = np.zeros((n_cells, ci_movie.shape[0]))
+            for cell in np.arange(n_cells):
+                img_mask = ps['image_mask'][cell]
+                img_mask = img_mask.astype(bool)
+                raw_traces[cell, :] = np.mean(ci_movie[:, img_mask], axis=1)
+            rrs = fl.create_roi_response_series(name='raw_traces', data=raw_traces, unit='lumens',
+                                                rois=rt_region, timestamps=np.arange(n_frames),
+                                                description="raw traces")

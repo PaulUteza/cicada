@@ -190,7 +190,7 @@ class ConvertCiMovieToNWB(ConvertToNWB):
                                                            description='a very interesting part of the brain',
                                                            device=device,
                                                            excitation_lambda=excitation_lambda,
-                                                           imaging_rate=self.ci_sampling_rate,
+                                                           imaging_rate=float(self.ci_sampling_rate),
                                                            indicator=indicator,
                                                            location=image_plane_location)
 
@@ -210,7 +210,7 @@ class ConvertCiMovieToNWB(ConvertToNWB):
                                                       data=original_tiff_movie,
                                                       imaging_plane=imaging_plane,
                                                       starting_frame=[0], format=movie_format,
-                                                      rate=self.ci_sampling_rate)
+                                                      rate=float(self.ci_sampling_rate))
         else:
             im = PIL.Image.open(motion_corrected_file_name)
             n_frames = len(list(ImageSequence.Iterator(im)))
@@ -219,7 +219,7 @@ class ConvertCiMovieToNWB(ConvertToNWB):
                                                           external_file=[motion_corrected_file_name],
                                                           imaging_plane=imaging_plane,
                                                           starting_frame=[0], format=movie_format,
-                                                          rate=self.ci_sampling_rate)
+                                                          rate=float(self.ci_sampling_rate))
             if original_movie_file_name is not None:
                 im = PIL.Image.open(original_movie_file_name)
                 dim_y, dim_x = np.array(im).shape
@@ -228,7 +228,7 @@ class ConvertCiMovieToNWB(ConvertToNWB):
                                                       external_file=[original_movie_file_name],
                                                       imaging_plane=imaging_plane,
                                                       starting_frame=[0], format=movie_format,
-                                                      rate=self.ci_sampling_rate)
+                                                      rate=float(self.ci_sampling_rate))
 
         self.nwb_file.add_acquisition(motion_corrected_img_series)
         if original_movie_file_name is not None:

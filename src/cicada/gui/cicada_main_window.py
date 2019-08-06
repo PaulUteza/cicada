@@ -1,4 +1,5 @@
 from qtpy.QtWidgets import *
+from qtpy import QtGui
 import os
 from pynwb import NWBHDF5IO
 import sys
@@ -19,10 +20,11 @@ class CicadaMainWindow(QMainWindow):
         self.createMenus()
         self.labels = []
         self.setWindowTitle("CICADA")
+
         screenGeometry = QApplication.desktop().screenGeometry()
         # making sure the window is not bigger than the dimension of the screen
-        width_window = min(1200, screenGeometry.width())
-        height_window = min(670, screenGeometry.height())
+        width_window = min(1400, screenGeometry.width())
+        height_window = min(640, screenGeometry.height())
         self.resize(width_window, height_window)
         self.param_list = []
         self.param_group_list = []
@@ -187,8 +189,6 @@ class CicadaMainWindow(QMainWindow):
         self.helpMenu.addAction(self.aboutQtAct)
 
         self.viewMenu = QMenu("&View", self)
-
-
 
         self.sortMenu = QMenu("Sort by", self.viewMenu, enabled=False)
         self.groupMenu = QMenu("Group by", self.viewMenu, enabled=False)
@@ -412,19 +412,34 @@ class CicadaMainWindow(QMainWindow):
 class MusketeersWidget(QWidget):
     """
     Gather in a layout the 3 main sub-windows composing the gui: displaying the subject sessions,
-    the analysis tree and the parameters for the analysis.
+    the analysis tree and the parameters for the analysis. + buttons
     """
     def __init__(self, parent=None):
         QWidget.__init__(self, parent=parent)
         self.layout = QHBoxLayout()
-        self.session_widget = SessionsWidget(parent)
+
+        to_analysis_button = QPushButton()
+        to_analysis_button.setProperty("cicada", "True")
+
+        self.session_widget = SessionsWidget(parent=parent, to_analysis_button=to_analysis_button)
         self.layout.addWidget(self.session_widget)
-        analysis_tree_app = AnalysisTreeApp()
+
+        self.layout.addWidget(to_analysis_button)
+
+        to_parameters_button = QPushButton()
+        to_parameters_button.setProperty("cicada", "True")
+
+        analysis_tree_app = AnalysisTreeApp(to_parameters_button=to_parameters_button)
         self.session_widget.analysis_tree = analysis_tree_app
         self.layout.addWidget(analysis_tree_app)
+
+        self.layout.addWidget(to_parameters_button)
+
         analysis_param_widget = AnalysisParametersApp(parent)
         self.layout.addWidget(analysis_param_widget)
         analysis_tree_app.arguments_section_widget = analysis_param_widget
+        # useful to empty the arguments section when we click on the to_analysis_button
+        self.session_widget.arguments_section_widget = analysis_param_widget
         self.setLayout(self.layout)
 #
 #

@@ -140,8 +140,9 @@ class ConvertAbfToNWB(ConvertToNWB):
         """
         try:
             self.abf = pyabf.ABF(abf_file_name)
-        except (FileNotFoundError, OSError) as e:
-            raise Exception(f"Abf file not found: {abf_file_name}")
+        except (FileNotFoundError, OSError, TypeError) as e:
+            print(f"Abf file not found: {abf_file_name}")
+            return
         # raise Exception("NOT TODAY")
         self.abf.setSweep(sweepNumber=0, channel=frames_channel)
         timestamps_in_sec = self.abf.sweepX

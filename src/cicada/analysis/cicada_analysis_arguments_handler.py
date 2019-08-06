@@ -30,29 +30,184 @@ class AnalysisArgument:
         self.final_value = None
 
     def get_gui_widget(self):
-        if self.widget:
-            return self.widget
+        """
+
+        Returns:
+
+        """
+
+        # make it crash
+        # if self.widget:
+        #     return self.widget
+        """
+                create_widgets
+                self.layout.addWidget(gui_widget)
+                RuntimeError: wrapped C/C++ object of type SliderWidget has been deleted
+
+        """
 
         if getattr(self, "value_type", None) == "int":
             if hasattr(self, "min_value") and hasattr(self, "max_value"):
                 self.widget = SliderWidget(analysis_arg=self)
                 return self.widget
-        elif getattr(self, "value_type", None) == "str":
-            if hasattr(self, "choices"):
-                self.widget = ComboBoxWidget(analysis_arg=self)
-                return self.widget
         elif getattr(self, "value_type", None) == "bool":
             self.widget = CheckBoxWidget(analysis_arg=self)
             return self.widget
-        else:
-            self.widget = LineEditWidget(analysis_arg=self)
+
+        if hasattr(self, "choices"):
+            if getattr(self, "multiple_choices", False):
+                self.widget = ListCheckboxWidget(analysis_arg=self, choices_attr_name="choices")
+            else:
+                self.widget = ComboBoxWidget(analysis_arg=self)
             return self.widget
+
+        # else:
+        #     self.widget = LineEditWidget(analysis_arg=self)
+        #     return self.widget
 
     def set_argument_value(self, value):
         self.final_value = value
 
     def is_mandatory(self):
-        return getattr(self, "mandatory", False)
+        """
+
+        Returns: boolean, True means the argument is mandatory, so need to have a value
+
+        """
+        if hasattr(self, "mandatory"):
+            return getattr(self, "mandatory")
+
+        # else if there is a default_value, it means it's not mandatory
+        return not hasattr(self, "default_value")
+
+    def __eq__(self, other):
+        """
+        self == other
+        Args:
+            other:
+
+        Returns:
+
+        """
+        return ((self.is_mandatory(), getattr(self, "order_index", None)) ==
+                (other.is_mandatory(), getattr(other, "order_index", None)))
+
+    def __ne__(self, other):
+        """
+        self != other
+        Args:
+            other:
+
+        Returns:
+
+        """
+        return ((self.is_mandatory(), getattr(self, "order_index", None)) !=
+                (other.is_mandatory(), getattr(other, "order_index", None)))
+
+    def __lt__(self, other):
+        """
+        self < other
+        Args:
+            other:
+
+        Returns:
+
+        """
+        if self.is_mandatory() and (not other.is_mandatory()):
+            return True
+        if (not self.is_mandatory()) and other.is_mandatory():
+            return False
+
+        self_order_index = getattr(self, "order_index", None)
+        other_order_index = getattr(other, "order_index", None)
+        if (other_order_index is not None) and (self_order_index is None):
+            return False
+        if (other_order_index is None) and (self_order_index is not None):
+            return True
+        if (other_order_index is None) and (self_order_index is None):
+            # then there equals
+            return False
+
+        return self_order_index < other_order_index
+
+    def __le__(self, other):
+        """
+        self <= other
+        Args:
+            other:
+
+        Returns:
+
+        """
+        if self.is_mandatory() and (not other.is_mandatory()):
+            return True
+        if (not self.is_mandatory()) and other.is_mandatory():
+            return False
+
+        self_order_index = getattr(self, "order_index", None)
+        other_order_index = getattr(other, "order_index", None)
+
+        if (other_order_index is not None) and (self_order_index is None):
+            return False
+        if (other_order_index is None) and (self_order_index is not None):
+            return True
+        if (other_order_index is None) and (self_order_index is None):
+            # then there equals
+            return True
+
+        return self_order_index <= other_order_index
+
+    def __gt__(self, other):
+        """
+        self > other
+        Args:
+            other:
+
+        Returns:
+
+        """
+        if self.is_mandatory() and (not other.is_mandatory()):
+            return False
+        if (not self.is_mandatory()) and other.is_mandatory():
+            return True
+
+        self_order_index = getattr(self, "order_index", None)
+        other_order_index = getattr(other, "order_index", None)
+        if (other_order_index is not None) and (self_order_index is None):
+            return True
+        if (other_order_index is None) and (self_order_index is not None):
+            return False
+        if (other_order_index is None) and (self_order_index is None):
+            # then there equals
+            return False
+
+        return self_order_index > other_order_index
+
+    def __ge__(self, other):
+        """
+        self >= other
+        Args:
+            other:
+
+        Returns:
+
+        """
+        if self.is_mandatory() and (not other.is_mandatory()):
+            return False
+        if (not self.is_mandatory()) and other.is_mandatory():
+            return True
+
+        self_order_index = getattr(self, "order_index", None)
+        other_order_index = getattr(other, "order_index", None)
+        if (other_order_index is not None) and (self_order_index is None):
+            return True
+        if (other_order_index is None) and (self_order_index is not None):
+            return False
+        if (other_order_index is None) and (self_order_index is None):
+            # then there equals
+            return True
+
+        return self_order_index >= other_order_index
 
     # TODO: implement __eq__ etc.. in order to sort AnalysisArgument, mandatory first... and then use order_index
     #  to sort among mandatory and among non-mandatory arguments
@@ -77,20 +232,20 @@ class AnalysisArgumentsHandler:
 
     def __init__(self, cicada_analysis):
         self.args_dict = dict()
-        self.order_index = 0
         self.cicada_analysis = cicada_analysis
 
     def add_argument(self, **kwargs):
-        arg_analysis = AnalysisArgument(**kwargs, order_index=self.order_index)
-        self.order_index += 1
+        arg_analysis = AnalysisArgument(**kwargs)
         self.args_dict[arg_analysis.arg_name] = arg_analysis
 
     def get_analysis_argument(self, arg_name):
         self.args_dict.get(arg_name)
 
-    def get_analysis_arguments(self, ordered=False):
-        # TODO: implement sorting of the args
-        return list(self.args_dict.values())
+    def get_analysis_arguments(self, sorted=False):
+        analysis_arguments = list(self.args_dict.values())
+        if sorted:
+            analysis_arguments.sort()
+        return analysis_arguments
 
     def set_argument_value(self, arg_name, **kwargs):
         """
@@ -111,7 +266,7 @@ class AnalysisArgumentsHandler:
 
         """
         gui_widgets = []
-        analysis_arguments = self.get_analysis_arguments()
+        analysis_arguments = self.get_analysis_arguments(sorted=True)
         for analysis_argument in analysis_arguments:
             widget = analysis_argument.get_gui_widget()
             if widget:
@@ -131,3 +286,11 @@ class AnalysisArgumentsHandler:
         for arg_name, analysis_argument in self.args_dict.items():
             kwargs[arg_name] = analysis_argument.get_argument_value()
         self.cicada_analysis.run_analysis(**kwargs)
+
+    # TODO: function that save arguments to a yaml file and a function to load them
+
+    def save_analysis_arguments(self):
+        pass
+
+    def load_analysis_arguments(self):
+        pass

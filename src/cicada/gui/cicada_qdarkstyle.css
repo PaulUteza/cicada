@@ -839,8 +839,9 @@ QLabel {
   color: #F0F0F0;
 }
 
+/* Add by JD */
 QLabel::hover {
-  disabled;
+  color: #148CD2;
 }
 
 QLabel::disabled {
@@ -960,7 +961,7 @@ QProgressBar::chunk:disabled {
 /* QPushButton ------------------------------------------------------------
 
 https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qpushbutton
-
+background-color: #505F69;
 --------------------------------------------------------------------------- */
 QPushButton {
   background-color: #505F69;
@@ -970,6 +971,24 @@ QPushButton {
   padding: 3px;
   outline: none;
 }
+
+
+QPushButton[cicada="True"] {
+  background-color: #505F69;
+  image: url("cicada/gui/icons/rc/cicada_open_white_horizontal.png");
+  border: 1px solid #505F69;
+  color: #F0F0F0;
+  border-radius: 4px;
+  padding: 3px;
+  outline: none;
+}
+
+QPushButton[cicada="True"]:pressed {
+  background-color: #19232D;
+  image: url("cicada/gui/icons/rc/cicada_closed_white_horizontal.png");
+  border: 1px solid #19232D;
+}
+
 
 QPushButton:disabled {
   background-color: #32414B;
@@ -1765,6 +1784,14 @@ QColumnView {
   border-radius: 4px;
 }
 
+QListView[param="True"]{
+  background-color: Transparent;
+  border: None;
+  color: #F0F0F0;
+  gridline-color: #32414B;
+  border-radius: 4px;
+}
+
 QTreeView:disabled,
 QListView:disabled,
 QTableView:disabled,
@@ -1781,6 +1808,11 @@ QColumnView:selected {
   color: #32414B;
 }
 
+QListView[param="True"]:selected{
+  background-color: Transparent;
+  color: #32414B;
+}
+
 QTreeView::hover,
 QListView::hover,
 QTableView::hover,
@@ -1789,11 +1821,21 @@ QColumnView::hover {
   border: 1px solid #148CD2;
 }
 
+QListView[param="True"]:hover{
+  background-color: Transparent;
+  border: None;
+  color: #148CD2;
+}
+
 QTreeView::item:pressed,
 QListView::item:pressed,
 QTableView::item:pressed,
 QColumnView::item:pressed {
   background-color: #1464A0;
+}
+
+QListView[param="True"]::item:pressed{
+  background-color: Transparent;
 }
 
 QTreeView::item:selected:hover,
@@ -1804,11 +1846,21 @@ QColumnView::item:selected:hover {
   color: #19232D;
 }
 
+QListView[param="True"]::item:selected:hover{
+  background-color: Transparent;
+  color: #148CD2;
+}
+
 QTreeView::item:selected:active,
 QListView::item:selected:active,
 QTableView::item:selected:active,
 QColumnView::item:selected:active {
   background-color: #1464A0;
+}
+
+QListView[param="True"]::item:selected:active{
+  background-color: Transparent;
+  color: #F0F0F0;
 }
 
 QTreeView::item:!selected:hover,
@@ -1818,6 +1870,11 @@ QColumnView::item:!selected:hover {
   outline: 0;
   color: #148CD2;
   background-color: #32414B;
+}
+
+QListView[param="True"]::item:!selected:hover{
+  background-color: Transparent;
+  color: #148CD2;
 }
 
 QTableCornerButton::section {

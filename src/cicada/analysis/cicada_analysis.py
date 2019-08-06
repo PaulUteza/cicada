@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod, abstractproperty
 from cicada.analysis.cicada_analysis_arguments_handler import AnalysisArgumentsHandler
+from cicada.analysis.cicada_analysis_nwb_wrapper import CicadaAnalysisNwbWrapper
 
 
 class CicadaAnalysis(ABC):
@@ -25,11 +26,16 @@ class CicadaAnalysis(ABC):
         self.long_description = long_description
         self.family_id = family_id
         self.name = name
+        self.current_order_index = 0
         self._data_to_analyse = data_to_analyse
         self._data_format = data_format
         self.analysis_arguments_handler = AnalysisArgumentsHandler(cicada_analysis=self)
 
-        self.set_arguments_for_gui()
+        # dict containing instances of CicadaAnalysisFormatWrapper, for each format supported
+        self.analysis_formats_wrapper = None
+        self.initiate_analysis_formats_wrapper(data_format=data_format)
+        if self._data_to_analyse:
+            self.set_arguments_for_gui()
 
     # @abstractproperty
     # def data_to_analyse(self):
@@ -39,16 +45,24 @@ class CicadaAnalysis(ABC):
     # def data_format(self):
     #     pass
 
+    def initiate_analysis_formats_wrapper(self, data_format):
+        if data_format == "nwb":
+            self.analysis_formats_wrapper = CicadaAnalysisNwbWrapper(self._data_to_analyse)
+
+
     def set_data(self, data_to_analyse, data_format="nwb"):
         """
                 A list of
                 :param data_to_analyse: list of data_structure
                 :param data_format: indicate the type of data structure. for NWB, NIX
         """
+        self.initiate_analysis_formats_wrapper(data_format=data_format)
         if not isinstance(data_to_analyse, list):
             data_to_analyse = [data_to_analyse]
+        self.analysis_formats_wrapper.set_data(data_to_analyse)
         self._data_to_analyse = data_to_analyse
         self._data_format = data_format
+        self.set_arguments_for_gui()
 
     @abstractmethod
     def check_data(self):
@@ -59,7 +73,20 @@ class CicadaAnalysis(ABC):
         """
         pass
 
-    def add_argument_for_gui(self, **kwargs):
+    def add_argument_for_gui(self, with_incremental_order=True, **kwargs):
+        """
+
+        Args:
+            **kwargs:
+            with_incremental_order: boolean, if True means the order of the argument will be the same as when added
+
+        Returns:
+
+        """
+        if with_incremental_order:
+            kwargs.update({"order_index": self.current_order_index})
+            self.current_order_index += 1
+
         self.analysis_arguments_handler.add_argument(**kwargs)
 
     def set_arguments_for_gui(self):
@@ -67,6 +94,8 @@ class CicadaAnalysis(ABC):
         Need to be implemented in order to be used through the graphical interface.
         :return: None
         """
+        # creating a new AnalysisArgumentsHandler instance
+        self.analysis_arguments_handler = AnalysisArgumentsHandler(cicada_analysis=self)
         return None
 
     @property

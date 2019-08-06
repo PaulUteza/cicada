@@ -5,6 +5,7 @@ from qtpy import QtCore
 from random import randint
 from abc import ABC, abstractmethod
 
+
 class ParameterWidgetModel(ABC):
     def __init__(self):
         self.mandatory = False
@@ -20,6 +21,29 @@ class ParameterWidgetModel(ABC):
 
     # TODO: add set_value, allow to load params from a file for ex, though AnalysisArgumentHandler
 
+
+class MyQFrame(QFrame):
+
+    def __init__(self, analysis_arg, parent=None):
+        QFrame.__init__(self, parent=parent)
+        self.analysis_arg = analysis_arg
+
+        self.v_box = QVBoxLayout()
+        description = self.analysis_arg.get_description()
+        if description:
+            q_label = QLabel(description)
+            q_label.setAlignment(Qt.AlignCenter)
+            q_label.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+            q_label.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+            self.v_box.addWidget(q_label)
+
+        self.setLayout(self.v_box)
+
+        is_mandatory = self.analysis_arg.is_mandatory()
+        self.setProperty("is_mandatory", str(is_mandatory))
+
+    def get_layout(self):
+        return self.v_box
 
 # to resolve: TypeError: metaclass conflict: the metaclass of a derived class
 # must be a (non-strict) subclass of the metaclasses of all its bases
@@ -41,7 +65,7 @@ class FileDialogWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
     """
 
     def __init__(self, analysis_arg, save_file_dialog, directory_only, parent=None):
-        QWidget.__init__(self, parent=parent)
+        QFrame.__init__(self, parent=parent)
         ParameterWidgetModel.__init__(self)
 
         self.analysis_arg = analysis_arg
@@ -87,6 +111,55 @@ class FileDialogWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
         # # DontResolveSymlinks seemingly recommended by http://doc.qt.io/qt-5/qfiledialog.html#getExistingDirectory
         # # but I found it didn't make any difference (symlinks resolved anyway)
         # # fileDialog.setOption(QtWidgets.QFileDialog.DontResolveSymlinks)
+
+
+class ListCheckboxWidget(MyQFrame, ParameterWidgetModel, metaclass=FinalMeta):
+    """
+       Allows multiple choices
+       """
+
+    def __init__(self, analysis_arg, choices_attr_name, parent=None):
+        MyQFrame.__init__(self, analysis_arg, parent=parent)
+        ParameterWidgetModel.__init__(self)
+
+        self.list_widget = QListWidget()
+        # property is used to have a specificy stylesheet for this QList
+        self.list_widget.setProperty("param", "True")
+
+        h_box = QHBoxLayout()
+        h_box.addWidget(self.list_widget)
+        self.v_box.addLayout(h_box)
+        # self.v_box.addStretch(1)
+
+        choices = getattr(self.analysis_arg, choices_attr_name, None)
+        default_value = self.analysis_arg.get_default_value()
+        if choices:
+            for choice in choices:
+                item = QListWidgetItem()
+                item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable |
+                              QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+                if default_value and (choice == default_value):
+                    item.setCheckState(QtCore.Qt.Checked)
+                else:
+                    item.setCheckState(QtCore.Qt.Unchecked)
+
+                item.setText(str(choice))
+                self.list_widget.addItem(item)
+
+        # self.list_widget.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        self.list_widget.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
+
+    def get_value(self):
+        checked_items = []
+        for index in range(self.list_widget.count()):
+            if self.list_widget.item(index).checkState() == 2:
+                checked_items.append(self.list_widget.item(index).text())
+
+        if self.analysis_arg.get_default_value() and (len(checked_items) == 0):
+            # then we put the default value as results
+            checked_items.append(self.analysis_arg.get_default_value())
+
+        return checked_items
 
 
 class LineEditWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
@@ -141,21 +214,45 @@ class ComboBoxWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
         ParameterWidgetModel.__init__(self)
 
         self.analysis_arg = analysis_arg
-        self.combo_box = QComboBox()
+        self.combo_boxes = dict()
+
+        default_value = self.analysis_arg.get_default_value()
 
         if self.analysis_arg.choices is not None:
-            for choice in self.analysis_arg.choices:
-                # need to put 2 arguments, in order to be able to find it using findData
-                self.combo_box.addItem(str(choice), str(choice))
+
+            # two cases, either choices is a list
+            # then we're displaying option valid for all sessions
+            if isinstance(self.analysis_arg.choices, list):
+                # we put "toto", but it doesn't matter, if there is only one element
+                # then the key won't be displayed
+                self.combo_boxes["toto"] = QComboBox()
+                index = 0
+                for choice in self.analysis_arg.choices:
+                    # need to put 2 arguments, in order to be able to find it using findData
+                    self.combo_boxes["toto"].addItem(str(choice), str(choice))
+                    if default_value:
+                        if choice == default_value:
+                            self.combo_boxes["toto"].setCurrentIndex(index)
+                    index += 1
+            elif isinstance(self.analysis_arg.choices, dict):
+                # then each key represent a session_id and the value will be a list of choices
+                index = 0
+                for session_id, choices in self.analysis_arg.choices.items():
+                    self.combo_boxes[session_id] = QComboBox()
+                    for choice in choices:
+                        # need to put 2 arguments, in order to be able to find it using findData
+                        self.combo_boxes[session_id].addItem(str(choice), str(choice))
+                        # TODO: implement default_value, see how make it practical
+                        # if default_value:
+                        #     if choice == default_value:
+                        #         self.combo_box.setCurrentIndex(index)
+                        index += 1
 
         # setting it to default if it exists
-        if self.analysis_arg.get_default_value():
-            print(f"default combo: {self.analysis_arg.get_default_value()}")
-            index = self.combo_box.findData(self.analysis_arg.get_default_value())
-            print(f"default combo: {index}")
-            if index >= 0:
-                self.combo_box.setCurrentIndex(index)
-
+        # if self.analysis_arg.get_default_value():
+        #     index = self.combo_box.findData(self.analysis_arg.get_default_value())
+        #     if index >= 0:
+        #         self.combo_box.setCurrentIndex(index)
 
         v_box = QVBoxLayout()
         description = self.analysis_arg.get_description()
@@ -166,9 +263,21 @@ class ComboBoxWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
             q_label.setAttribute(QtCore.Qt.WA_TranslucentBackground)
             v_box.addWidget(q_label)
 
-        h_box = QHBoxLayout()
-        h_box.addWidget(self.combo_box)
-        v_box.addLayout(h_box)
+
+
+        for session_id, combo_box in self.combo_boxes.items():
+            h_box = QHBoxLayout()
+            if len(self.combo_boxes) > 1:
+                # if more than one session_id, we display the name of the session
+                q_label = QLabel(session_id)
+                # q_label.setAlignment(Qt.AlignCenter)
+                q_label.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+                q_label.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+                h_box.addWidget(q_label)
+                h_box.addWidget(combo_box)
+            else:
+                h_box.addWidget(combo_box)
+            v_box.addLayout(h_box)
         # h_box.addStretch(1)
         self.setLayout(v_box)
 
@@ -176,7 +285,12 @@ class ComboBoxWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
         self.setProperty("is_mandatory", str(is_mandatory))
 
     def get_value(self):
-        return self.combo_box.currentText()
+        if len(self.combo_boxes) == 1:
+            for combo_box in self.combo_boxes.values():
+                return combo_box.currentText()
+        result_dict = dict()
+        for session_id, combo_box in self.combo_boxes.items():
+            result_dict[session_id] = combo_box.currentText()
 
 
 class CheckBoxWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
@@ -191,7 +305,6 @@ class CheckBoxWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
         ParameterWidgetModel.__init__(self)
 
         self.analysis_arg = analysis_arg
-        self.slider = QSlider(Qt.Horizontal)
 
         self.check_box = QCheckBox()
 
@@ -200,7 +313,7 @@ class CheckBoxWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
 
         # False by default otherwise
         if self.analysis_arg.get_default_value():
-            # using setCheckState make it a triState checkbox
+            # using setCheckState make it a triState
             self.check_box.setChecked(self.analysis_arg.get_default_value())
 
         description = self.analysis_arg.get_description()
@@ -245,12 +358,13 @@ class SliderWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
 
         self.spin_box = QSpinBox()
 
-        if self.analysis_arg.get_default_value():
-            self.slider.setValue(self.analysis_arg.get_default_value())
-            self.spin_box.setValue(self.analysis_arg.get_default_value())
         if (self.analysis_arg.max_value is not None) and (self.analysis_arg.min_value is not None):
             self.slider.setRange(self.analysis_arg.min_value, self.analysis_arg.max_value)
             self.spin_box.setRange(self.analysis_arg.min_value, self.analysis_arg.max_value)
+
+        if self.analysis_arg.get_default_value():
+            self.slider.setValue(self.analysis_arg.get_default_value())
+            self.spin_box.setValue(self.analysis_arg.get_default_value())
 
         self.spin_box.valueChanged.connect(self.spin_box_value_changed)
 
@@ -292,6 +406,7 @@ class AnalysisParametersApp(QWidget):
         QWidget.__init__(self, parent=parent)
 
         self.special_background_on = False
+        self.current_style_sheet_background = ".QWidget{background-image:url(\"\"); background-position: center;}"
         self.cicada_analysis = None
         self.dataView = None
         self.analysis_tree_model = None
@@ -317,11 +432,27 @@ class AnalysisParametersApp(QWidget):
         # ==============================
 
         self.run_analysis_button = QPushButton("Push me and then just touch me", self)
+        self.run_analysis_button.setEnabled(False)
         self.run_analysis_button.clicked.connect(self.run_analysis)
         self.main_layout.addWidget(self.run_analysis_button)
 
         self.setLayout(self.main_layout)
         # self.show()
+
+
+    def tabula_rasa(self):
+        """
+        Erase the widgets and make an empty section
+        Returns:
+
+        """
+        # clearing the widget to update it
+        self.scroll_area_widget_contents = QWidget()
+        self.scrollArea.setWidget(self.scroll_area_widget_contents)
+        self.layout = QVBoxLayout(self.scroll_area_widget_contents)
+        self.scroll_area_widget_contents.setStyleSheet(self.current_style_sheet_background)
+        self.run_analysis_button.setEnabled(False)
+
 
     def create_widgets(self, cicada_analysis):
         """
@@ -332,13 +463,10 @@ class AnalysisParametersApp(QWidget):
         Returns:
 
         """
-        print("params create_widgets")
         self.cicada_analysis = cicada_analysis
 
         # clearing the widget to update it
-        self.scroll_area_widget_contents = QWidget()
-        self.scrollArea.setWidget(self.scroll_area_widget_contents)
-        self.layout = QVBoxLayout(self.scroll_area_widget_contents)
+        self.tabula_rasa()
         # ==============================
 
         self.analysis_arguments_handler = self.cicada_analysis.analysis_arguments_handler
@@ -355,20 +483,22 @@ class AnalysisParametersApp(QWidget):
                 "background-color:transparent; border-radius: 20px;")
 
         self.layout.addStretch(1)
+        self.run_analysis_button.setEnabled(True)
 
     def keyPressEvent(self, event):
         available_background = ["black_widow.png", "captain_marvel.png", "iron_man.png", "hulk.png"]
         if event.key() == QtCore.Qt.Key_A:
             if self.special_background_on:
-                self.scroll_area_widget_contents.setStyleSheet(
-                    ".QWidget{background-image:url(\"\"); background-position: center;}")
+                self.current_style_sheet_background = ".QWidget{background-image:url(\"\"); background-position: center;}"
+                self.scroll_area_widget_contents.setStyleSheet(self.current_style_sheet_background)
                 self.special_background_on = False
             else:
                 pic_index = randint(0, len(available_background) - 1)
                 # we add .QWidget so the background is specific to this widget and is not applied by other widgets
-                self.scroll_area_widget_contents.setStyleSheet(
-                    ".QWidget{background-image:url(\"cicada/gui/icons/rc/" + available_background[pic_index] +
-                    "\"); background-position: center; background-repeat:no-repeat;}")
+                self.current_style_sheet_background = ".QWidget{background-image:url(\"cicada/gui/icons/rc/" + \
+                                                      available_background[pic_index] + \
+                                                      "\"); background-position: center; background-repeat:no-repeat;}"
+                self.scroll_area_widget_contents.setStyleSheet(self.current_style_sheet_background)
                 self.special_background_on = True
 
     def run_analysis(self):
@@ -376,7 +506,6 @@ class AnalysisParametersApp(QWidget):
             return
 
         self.analysis_arguments_handler.run_analysis()
-
 
 
 def clearvbox(self, L = False):

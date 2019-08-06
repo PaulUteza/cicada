@@ -10,7 +10,7 @@ class CicadaPsthAnalysis(CicadaAnalysis):
         the analysis is a family in its own.
         :param data_format: indicate the type of data structure. for NWB, NIX
         """
-        super().__init__(name="PSTH",
+        CicadaAnalysis.__init__(self, name="PSTH",
                          short_description="Build PSTH")
 
     def check_data(self):
@@ -40,19 +40,37 @@ class CicadaPsthAnalysis(CicadaAnalysis):
         Returns:
 
         """
+        CicadaAnalysis.set_arguments_for_gui(self)
+
         range_arg = {"arg_name": "psth_range", "value_type": "int", "min_value": 50, "max_value": 2000,
                      "default_value": 500, "description": "Range of the PSTH (ms)"}
         self.add_argument_for_gui(**range_arg)
+
         stim_arg = {"arg_name": "stimulus name", "value_type": "str",
                      "default_value": "stim", "description": "Name of the stimulus"}
         self.add_argument_for_gui(**stim_arg)
+
         plot_arg = {"arg_name": "plot_options", "choices": ["lines", "bars"],
                     "default_value": "bars", "description": "Options to display the PSTH"}
         self.add_argument_for_gui(**plot_arg)
+
         avg_arg = {"arg_name": "average_fig", "value_type": "bool",
                    "default_value": True, "description": "Add a figure that average all sessions"}
 
         self.add_argument_for_gui(**avg_arg)
+
+        format_arg = {"arg_name": "save_formats", "choices": ["pdf", "png"],
+                    "default_value": "pdf", "description": "Formats in which to save the figures",
+                    "multiple_choices": True}
+
+        self.add_argument_for_gui(**format_arg)
+
+        # not mandatory, because one of the element will be selected by the GUI
+        segmentation_arg = {"arg_name": "segmentation", "choices": self.analysis_formats_wrapper.get_segmentations(),
+                            "description": "Segmentation to use", "mandatory": False,
+                            "multiple_choices": False}
+
+        self.add_argument_for_gui(**segmentation_arg)
 
     def update_original_data(self):
         """
@@ -68,4 +86,6 @@ class CicadaPsthAnalysis(CicadaAnalysis):
         :return:
         """
         for data in self._data_to_analyse:
-            print(f"PSTH ----- {data.identifier} on range {kwargs['psth_range']}")
+            print(f"PSTH ----- {data.identifier} on range {kwargs['psth_range']} with {kwargs['plot_options']} "
+                  f"plot using {kwargs['segmentation']} "
+                  f"with formats {kwargs['save_formats']}")

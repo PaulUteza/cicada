@@ -20,6 +20,7 @@ class SessionsListWidget(QListWidget):
         QListWidget.__init__(self)
         self.special_background_on = False
         self.session_widget = session_widget
+        self.arguments_section_widget = None
 
     def keyPressEvent(self, event):
         available_background = ["michou_BG.jpg", "michou_BG2.jpg"]
@@ -42,7 +43,7 @@ class SessionsListWidget(QListWidget):
 
 class SessionsWidget(QWidget):
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, to_analysis_button=None):
         super().__init__()
         self.parent = parent
 
@@ -58,10 +59,12 @@ class SessionsWidget(QWidget):
 
         self.q_list = SessionsListWidget(session_widget=self)
         self.q_list.setSelectionMode(QAbstractItemView.ExtendedSelection)
-        self.toAnalysisButton = QPushButton()
-        self.toAnalysisButton.setIcon(QtGui.QIcon('cicada/gui/icons/svg/cicada_arrow.svg'))
-        self.toAnalysisButton.setStyleSheet('border: none; background-color: none;')
-        self.toAnalysisButton.clicked.connect(self.send_data_to_analysis_tree)
+
+        # connecting the button that will fill the analysis tree
+        # TODO: see to deactivate until the tree is loaded
+        if to_analysis_button:
+            to_analysis_button.clicked.connect(self.send_data_to_analysis_tree)
+
         self.layout.addWidget(self.q_list)
         self.items = []
         if self.parent.grouped:
@@ -72,7 +75,6 @@ class SessionsWidget(QWidget):
             self.populate(self.parent.labels)
         self.q_list.itemSelectionChanged.connect(self.on_change)
         self.hlayout2.addLayout(self.layout)
-        self.hlayout2.addWidget(self.toAnalysisButton)
         self.setLayout(self.hlayout2)
         self.analysis_tree = None
 
@@ -184,8 +186,6 @@ class SessionsWidget(QWidget):
                 if self.q_list.item(idx).text() == item:
                     self.q_list.item(idx).setCheckState(QtCore.Qt.Checked)
 
-
-
     def on_change(self):
         self.items = [item.text() for item in self.q_list.selectedItems()]
 
@@ -200,17 +200,20 @@ class SessionsWidget(QWidget):
         return [data for key, data in self.parent.data_dict.items() if key in checked_items]
 
     def send_data_to_analysis_tree(self):
+        # we erase the widgets in the parameters section
+        self.arguments_section_widget.tabula_rasa()
         data_to_analyse = self.get_data_to_analyse()
         # TODO: deal with the fact the data might not be in nwb format
         if data_to_analyse:
             self.analysis_tree.set_data(data_to_analyse=data_to_analyse, data_format="nwb")
+
 
     def populate(self, labels):
         self.q_list.clear()
         print(labels)
         for file in labels:
             item = QListWidgetItem()
-            item.setCheckState(QtCore.Qt.Checked)
+            item.setCheckState(QtCore.Qt.Unchecked)
             item.setText(str(file))
             item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsUserCheckable)
             self.q_list.addItem(item)
