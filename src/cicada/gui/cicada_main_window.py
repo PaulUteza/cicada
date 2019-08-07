@@ -30,6 +30,7 @@ class CicadaMainWindow(QMainWindow):
         self.param_group_list = []
         self.grouped = False
         self.sorted = False
+        self.nwb_path_list = []
         # contains the data, if nwb format will contains instance of Nwb class
         # the key is the identifier of the data file, value is the instance
         self.data_dict = dict()
@@ -62,6 +63,17 @@ class CicadaMainWindow(QMainWindow):
             self.group_data = dict()
             with open(group_file_name, 'r') as stream:
                 self.group_data = yaml.safe_load(stream)
+            if self.group_data:
+                keys_to_del = []
+                for key, value in self.group_data.items():
+                    missing_file = False
+                    for file in value:
+                        if file not in self.nwb_path_list:
+                            missing_file = True
+                    if missing_file:
+                        keys_to_del.append(key)
+                for key in keys_to_del:
+                    self.group_data.pop(key)
             self.grouped_labels = []
             if self.group_data:
                 self.grouped = True
@@ -83,30 +95,44 @@ class CicadaMainWindow(QMainWindow):
 
         config_file_name = "cicada/config/config.yaml"
         config_dict = None
-
+        self.labels = []
+        self.to_add_labels = []
         if os.path.isfile(config_file_name):
             with open(config_file_name, 'r') as stream:
                 config_dict = yaml.safe_load(stream)
                 print(f"config_dict {config_dict}")
         if (config_dict is not None) and config_dict.get("dir_name"):
-            self.load_data_from_dir(dir_name=config_dict["dir_name"])
+            self.load_data_from_dir(dir_name=config_dict["dir_name"], method='clear')
 
 
-    def open(self):
+    def open_new_dataset(self):
         """Open a directory"""
 
         self.labels = []
+        self.to_add_labels = []
+        self.nwb_path_list = []
         self.grouped_labels = []
         QFileDialog.Options()
         dir_name = QFileDialog.getExistingDirectory(self, "Select Directory")
-        self.load_data_from_dir(dir_name=dir_name)
+        self.load_data_from_dir(dir_name=dir_name, method='clear')
 
-    def load_data_from_dir(self, dir_name):
+    def add_data(self):
+        """Open a directory"""
+
+        self.to_add_labels = []
+        QFileDialog.Options()
+        dir_name = QFileDialog.getExistingDirectory(self, "Select Directory")
+        self.load_data_from_dir(dir_name=dir_name, method='add')
+
+
+    def load_data_from_dir(self, dir_name, method):
         """
         Load data (currently only NWB) from selected directory
 
         Args:
             dir_name (str): Path to data
+            method (str): String to choose whether to add data to the existing dataset or open a new one,
+             takes two values : 'add' or 'clear'
 
         """
 
@@ -114,9 +140,7 @@ class CicadaMainWindow(QMainWindow):
         # TODO: decide if we should add those nwb to the ones already opened (if that's the case)
         #  or erase the ones present and replace them by the new one.
         #  probably best to have 2 options on the menu open new, and something like add data
-        self.labels = []
         file_names = []
-        self.nwb_path_list = []
         # look for filenames in the first directory, if we don't break, it will go through all directories
         for (dirpath, dirnames, local_filenames) in os.walk(dir_name):
             file_names.extend(local_filenames)
@@ -127,13 +151,17 @@ class CicadaMainWindow(QMainWindow):
                 io = NWBHDF5IO(os.path.join(dir_name, file_name), 'r')
                 nwb_file = io.read()
                 self.data_dict[nwb_file.identifier] = nwb_file
-                self.labels.append(nwb_file.identifier)
-        # self.openWindow()
+                self.to_add_labels.append(nwb_file.identifier)
+        self.labels = self.labels + self.to_add_labels
         # checking there is at least one data file loaded
         if len(self.data_dict) > 0:
-            self.musketeers_widget.session_widget.populate(self.labels)
+            if method == 'clear':
+                self.musketeers_widget.session_widget.populate(self.labels, method)
+            else:
+                self.musketeers_widget.session_widget.populate(self.to_add_labels, method)
             self.sortMenu.setEnabled(True)
             self.groupMenu.setEnabled(True)
+            self.load_group_from_config()
             # then we save the last location opened in the yaml file in config
             self.save_last_data_location(dir_name=dir_name)
 
@@ -195,6 +223,8 @@ class CicadaMainWindow(QMainWindow):
             self.labels.append(nwb_file.identifier)
         self.musketeers_widget.session_widget.populate(self.labels)
         self.musketeers_widget.session_widget.update_text_filter()
+        self.groupMenu.setEnabled(True)
+        self.sortMenu.setEnabled(True)
 
     def add_group_data(self, group_name):
         """
@@ -214,6 +244,8 @@ class CicadaMainWindow(QMainWindow):
             self.labels.append(nwb_file.identifier)
         self.musketeers_widget.session_widget.populate(self.labels, 'add')
         self.musketeers_widget.session_widget.update_text_filter()
+        self.groupMenu.setEnabled(True)
+        self.sortMenu.setEnabled(True)
 
 
     def createMenus(self):
@@ -221,6 +253,7 @@ class CicadaMainWindow(QMainWindow):
 
         self.fileMenu = QMenu("&File", self)
         self.fileMenu.addAction(self.openAct)
+        self.fileMenu.addAction(self.addAct)
         self.fileMenu.addSeparator()
         # self.fileMenu.addAction(self.showSessionAct)
         self.fileMenu.addAction(self.exitAct)
@@ -378,7 +411,8 @@ class CicadaMainWindow(QMainWindow):
     def createActions(self):
         """Create some QAction"""
 
-        self.openAct = QAction("&Open...", self, shortcut="Ctrl+O", triggered=self.open)
+        self.openAct = QAction("&Open new dataset...", self, shortcut="Ctrl+O", triggered=self.open_new_dataset)
+        self.addAct = QAction("&Add data to current dataset...", self, shortcut="Ctrl+P", triggered=self.add_data)
         self.exitAct = QAction("E&xit", self, shortcut="Ctrl+Q", triggered=self.close)
         self.aboutAct = QAction("&About", self, triggered=self.about)
         self.aboutQtAct = QAction("About &Qt", self, triggered=qApp.aboutQt)
@@ -434,7 +468,6 @@ class CicadaMainWindow(QMainWindow):
             if param not in self.param_group_list:
                 self.param_group_list.append(param)
             self.grouped_labels, param_group_list = utils.group_by_param(self.nwb_path_list, self.param_group_list)
-            print(self.grouped_labels)
             self.dict_group = dict()
             for i in range(len(self.grouped_labels)):
                 self.dict_group.update({param_group_list[i]: self.grouped_labels[i]})

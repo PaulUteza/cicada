@@ -143,6 +143,8 @@ class SessionsWidget(QWidget):
         self.removeAct.triggered.connect(self.remove_data)
         self.createGroupAct = QAction("Create groups")
         self.createGroupAct.triggered.connect(self.save_group)
+        self.otherActionsMenu.addMenu(self.parent.showGroupMenu)
+        self.otherActionsMenu.addMenu(self.parent.addGroupDataMenu)
         self.otherActionsMenu.addAction(self.removeAct)
         self.otherActionsMenu.addAction(self.createGroupAct)
         self.hlayout.addWidget(self.otherActionsButton)
@@ -290,7 +292,6 @@ class SessionsWidget(QWidget):
             item.setText(str(file))
             item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsUserCheckable)
             self.q_list.addItem(item)
-        # self.q_list.insertItems(0, labels)
 
     def form_group(self, labels, param=["-"]):
         """
@@ -314,7 +315,6 @@ class SessionsWidget(QWidget):
             item.setFlags(item.flags() & ~QtCore.Qt.ItemIsSelectable)  # item should not be selectable
             self.q_list.addItem(item)
             for file in group:
-                print(file)
                 item = QListWidgetItem()
                 item.setCheckState(QtCore.Qt.Unchecked)
                 item.setText(str(file))
@@ -378,7 +378,6 @@ class SessionsWidget(QWidget):
                             group_to_save.append(path)
                 try:
                     for key, value in self.parent.dict_group.items():
-                        print(value,group)
                         if value == group:
                             if key:
                                 id_group = key
