@@ -2,9 +2,14 @@ from qtpy.QtWidgets import *
 from qtpy.QtCore import QAbstractItemModel, QModelIndex, Qt
 from qtpy import QtCore, QtGui
 from sortedcontainers import SortedDict
+from cicada.gui.cicada_analysis_parameters_gui import AnalysisParametersApp, AnalysisPackage
+from cicada.gui.cicada_analysis_overview import AnalysisOverview
 from cicada.preprocessing.utils import class_name_to_file_name
 import importlib
-from random import randint
+from copy import copy, deepcopy
+from random import randint, choice
+import string
+
 
 
 """
@@ -341,7 +346,7 @@ class AnalysisTreeApp(QWidget):
         self.dataView = None
         self.analysis_tree_model = None
         # will be initialize when the param section will have been created
-        self.arguments_section_widget = None
+        self.analysis_overview = None
 
         self.init_ui()
         to_parameters_button.clicked.connect(self.load_arguments_parameters_section)
@@ -362,11 +367,20 @@ class AnalysisTreeApp(QWidget):
             return
 
         if tree_item.cicada_analysis is not None and tree_item.data_valid:
-            self.arguments_section_widget.create_widgets(cicada_analysis=tree_item.cicada_analysis)
+            # Assign a random id to an analysis to access it later
+            random_id = ''.join([choice(string.ascii_letters) for n in range(32)])
+            copied_object = deepcopy(tree_item.cicada_analysis,
+                                     {id(tree_item.cicada_analysis):tree_item.cicada_analysis})
+            # Create analysis window
+            exec('self.' + random_id +' = AnalysisPackage(cicada_analysis=copied_object,'
+                                      ' analysis_name=str(tree_item.item_data[0]),'
+                                      ' analysis_description = str(tree_item.item_data[1]))')
+            # Add analysis overview item linked to the analysis window
+            self.analysis_overview.add_analysis_overview(str(tree_item.item_data[0]), random_id, eval('self.'+random_id))
 
     def load_arguments_parameters_section(self):
-       q_model_index = self.dataView.currentIndex()
-       self.doubleClickedItem(q_model_index)
+        q_model_index = self.dataView.currentIndex()
+        self.doubleClickedItem(q_model_index)
 
     def init_ui(self):
         # self.setWindowTitle(self.title)

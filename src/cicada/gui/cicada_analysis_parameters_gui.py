@@ -1,7 +1,10 @@
 from qtpy.QtWidgets import *
-from qtpy.QtCore import QAbstractItemModel, QModelIndex, Qt
+from qtpy.QtCore import QAbstractItemModel, QModelIndex, Qt, QProcess
+from PyQt5 import QtCore as Core
+from qtpy import QtGui
 import numpy as np
 from qtpy import QtCore
+import sys
 from random import randint
 from abc import ABC, abstractmethod
 
@@ -506,6 +509,77 @@ class AnalysisParametersApp(QWidget):
             return
 
         self.analysis_arguments_handler.run_analysis()
+
+
+class EmittingStream(QtCore.QObject):
+
+    textWritten = Core.pyqtSignal(str)
+
+    def write(self, text):
+        # QMessageBox.critical(None, str(text), str(text))
+        self.textWritten.emit(str(text))
+
+class AnalysisData(QWidget):
+
+    def __init__(self, session_list, analysis_description, parent=None):
+        QWidget.__init__(self, parent=parent)
+        self.layout = QVBoxLayout()
+        self.q_list = QListWidget()
+        self.analysis_description = QTextEdit()
+        self.analysis_description.append(analysis_description)
+        self.analysis_description.setReadOnly(True)
+        self.populate_session_list(session_list)
+        self.layout.addWidget(self.q_list)
+        self.layout.addWidget(self.analysis_description)
+        self.setLayout(self.layout)
+
+    def populate_session_list(self, session_list):
+        for session in session_list:
+            item = QListWidgetItem()
+            item.setText(str(session.identifier))
+            item.setFlags(item.flags() & ~QtCore.Qt.ItemIsSelectable)
+            self.q_list.addItem(item)
+
+class AnalysisPackage(QWidget):
+
+    def __init__(self, cicada_analysis, analysis_name, analysis_description, parent=None):
+        QWidget.__init__(self, parent=parent)
+        super().__init__()
+        # print(cicada_analysis.analysis_arguments_handler)
+        self.text_output = QTextEdit()
+        self.text_output.setReadOnly(True)
+        sys.stdout = EmittingStream(textWritten=self.normalOutputWritten)
+        self.resize(1000, 750)
+        self.setWindowTitle(analysis_name)
+        self.layout = QVBoxLayout()
+        self.hlayout = QHBoxLayout()
+        self.analysis_data = AnalysisData(cicada_analysis._data_to_analyse, analysis_description)
+        self.hlayout.addWidget(self.analysis_data)
+        self.arguments_section_widget = AnalysisParametersApp()
+        self.arguments_section_widget.create_widgets(cicada_analysis=cicada_analysis)
+        self.hlayout.addWidget(self.arguments_section_widget)
+        self.layout.addLayout(self.hlayout)
+        self.layout.addWidget(self.text_output)
+        self.setLayout(self.layout)
+        self.show()
+
+
+
+    def normalOutputWritten(self, text):
+        """
+        Append text to the QTextEdit.
+
+        Args:
+            text (str): Output of the standard output in python interpreter
+        """
+        cursor = self.text_output.textCursor()
+        cursor.movePosition(QtGui.QTextCursor.End)
+        cursor.insertText(text)
+        self.text_output.setTextCursor(cursor)
+        self.text_output.ensureCursorVisible()
+
+    def closeEvent(self, QCloseEvent):
+        sys.stdout = sys.__stdout__
 
 
 def clearvbox(self, L = False):

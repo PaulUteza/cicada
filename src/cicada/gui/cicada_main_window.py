@@ -1,14 +1,17 @@
 from qtpy.QtWidgets import *
 from qtpy import QtGui
+from qtpy import QtCore
 import os
 from pynwb import NWBHDF5IO
 import sys
 from functools import partial
 import cicada.preprocessing.utils as utils
 import yaml
+import gc
 from itertools import islice
 from cicada.gui.cicada_analysis_tree_gui import AnalysisTreeApp
-# from cicada.gui.analysis_parameters_gui import ParamSection
+from cicada.gui.cicada_analysis_overview import AnalysisOverview
+from cicada.gui.cicada_analysis_parameters_gui import AnalysisPackage
 from cicada.gui.cicada_analysis_parameters_gui import AnalysisParametersApp
 from cicada.gui.session_show_filter_group import SessionsWidget
 
@@ -414,6 +417,7 @@ class CicadaMainWindow(QMainWindow):
         self.openAct = QAction("&Open new dataset...", self, shortcut="Ctrl+O", triggered=self.open_new_dataset)
         self.addAct = QAction("&Add data to current dataset...", self, shortcut="Ctrl+P", triggered=self.add_data)
         self.exitAct = QAction("E&xit", self, shortcut="Ctrl+Q", triggered=self.close)
+        self.exitAct.setShortcutContext(QtCore.Qt.ApplicationShortcut)
         self.aboutAct = QAction("&About", self, triggered=self.about)
         self.aboutQtAct = QAction("About &Qt", self, triggered=qApp.aboutQt)
         # self.showSessionAct = QAction("&Show session", self, triggered=self.openWindow)
@@ -523,10 +527,20 @@ class CicadaMainWindow(QMainWindow):
         self.fileMenu.addAction(self.saveGroupMenu)
         self.saveGroupMenu.triggered.connect(self.musketeers_widget.session_widget.save_group)
 
+    def closeEvent(self, *args, **kwargs):
+        """
+        Close all analysises windows on main window close
+        (uses Garbage Collector to get a list of them and close them, might be a better and faster way)
+        """
+        for obj in gc.get_objects():
+            if isinstance(obj, AnalysisPackage):
+                obj.close()
+
+
 class MusketeersWidget(QWidget):
     """
     Gather in a layout the 3 main sub-windows composing the gui: displaying the subject sessions,
-    the analysis tree and the parameters for the analysis. + buttons
+    the analysis tree and an overview of the running analysis
     """
     def __init__(self, parent=None):
         QWidget.__init__(self, parent=parent)
@@ -549,13 +563,16 @@ class MusketeersWidget(QWidget):
 
         self.layout.addWidget(to_parameters_button)
 
-        analysis_param_widget = AnalysisParametersApp(parent)
-        self.layout.addWidget(analysis_param_widget)
-        analysis_tree_app.arguments_section_widget = analysis_param_widget
+        # analysis_param_widget = AnalysisParametersApp()
+        analysis_overview_widget = AnalysisOverview(parent)
+        analysis_tree_app.analysis_overview = analysis_overview_widget
+        self.layout.addWidget(analysis_overview_widget)
+        # analysis_tree_app.arguments_section_widget = analysis_param_widget
         # useful to empty the arguments section when we click on the to_analysis_button
-        self.session_widget.arguments_section_widget = analysis_param_widget
+        # self.session_widget.arguments_section_widget = analysis_param_widget
+        self.session_widget.analysis_overview_widget = analysis_overview_widget
         self.setLayout(self.layout)
-#
+
 #
 # def catch_exceptions(t, val, tb):
 #     """
