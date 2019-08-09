@@ -373,10 +373,9 @@ class AnalysisTreeApp(QWidget):
         if tree_item.cicada_analysis is not None and tree_item.data_valid:
             # Assign a random id to an analysis to access it later
             random_id = ''.join([choice(string.ascii_letters) for n in range(32)])
-            copied_data = deepcopy(tree_item.cicada_analysis,
-                                     {id(tree_item.cicada_analysis):tree_item.cicada_analysis})
+            self.copied_data = tree_item.cicada_analysis.copy()
             # Create analysis window
-            exec('self.' + random_id +' = AnalysisPackage(cicada_analysis=copied_data,'
+            exec('self.' + random_id +' = AnalysisPackage(cicada_analysis=self.copied_data,'
                                       ' analysis_name=str(tree_item.item_data[0]),'
                                       ' analysis_description = str(tree_item.item_data[1]), name=random_id)')
             # Add analysis overview item linked to the analysis window

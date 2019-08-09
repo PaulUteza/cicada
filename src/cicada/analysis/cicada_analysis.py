@@ -1,7 +1,9 @@
 from abc import ABC, abstractmethod, abstractproperty
 from cicada.analysis.cicada_analysis_arguments_handler import AnalysisArgumentsHandler
 from cicada.analysis.cicada_analysis_nwb_wrapper import CicadaAnalysisNwbWrapper
-
+from cicada.preprocessing.utils import class_name_to_file_name
+import importlib
+from copy import copy, deepcopy
 
 class CicadaAnalysis(ABC):
     """
@@ -44,6 +46,20 @@ class CicadaAnalysis(ABC):
     # @abstractproperty
     # def data_format(self):
     #     pass
+
+
+    def copy(self):
+
+        module_name = 'cicada.analysis.' + class_name_to_file_name(self.__class__.__name__)
+        module = importlib.import_module(module_name)
+        new_class = getattr(module, self.__class__.__name__)
+        new_object = new_class()
+        new_object.name = self.name
+        new_object.short_description = self.short_description
+        new_object.family_id = self.family_id
+        new_object.long_description = self.long_description
+        new_object.set_data(self._data_to_analyse, self._data_format)
+        return new_object
 
     def initiate_analysis_formats_wrapper(self, data_format):
         if data_format == "nwb":
