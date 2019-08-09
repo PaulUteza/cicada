@@ -6,6 +6,9 @@ from cicada.gui.cicada_analysis_parameters_gui import AnalysisParametersApp, Ana
 from cicada.gui.cicada_analysis_overview import AnalysisOverview
 from cicada.preprocessing.utils import class_name_to_file_name
 import importlib
+from threading import Thread
+import threading
+import sys
 from copy import copy, deepcopy
 from random import randint, choice
 import string
@@ -345,6 +348,7 @@ class AnalysisTreeApp(QWidget):
         # self.dataGroupBox = None
         self.dataView = None
         self.analysis_tree_model = None
+
         # will be initialize when the param section will have been created
         self.analysis_overview = None
 
@@ -369,12 +373,12 @@ class AnalysisTreeApp(QWidget):
         if tree_item.cicada_analysis is not None and tree_item.data_valid:
             # Assign a random id to an analysis to access it later
             random_id = ''.join([choice(string.ascii_letters) for n in range(32)])
-            copied_object = deepcopy(tree_item.cicada_analysis,
+            copied_data = deepcopy(tree_item.cicada_analysis,
                                      {id(tree_item.cicada_analysis):tree_item.cicada_analysis})
             # Create analysis window
-            exec('self.' + random_id +' = AnalysisPackage(cicada_analysis=copied_object,'
+            exec('self.' + random_id +' = AnalysisPackage(cicada_analysis=copied_data,'
                                       ' analysis_name=str(tree_item.item_data[0]),'
-                                      ' analysis_description = str(tree_item.item_data[1]))')
+                                      ' analysis_description = str(tree_item.item_data[1]), name=random_id)')
             # Add analysis overview item linked to the analysis window
             self.analysis_overview.add_analysis_overview(str(tree_item.item_data[0]), random_id, eval('self.'+random_id))
 

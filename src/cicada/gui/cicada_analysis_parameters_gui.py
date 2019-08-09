@@ -5,7 +5,12 @@ from qtpy import QtGui
 import numpy as np
 from qtpy import QtCore
 import sys
+from multiprocessing import Process
+from threading import Thread
+import threading
+import logging
 from random import randint
+import gc
 from abc import ABC, abstractmethod
 
 
@@ -405,9 +410,9 @@ class SliderWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
 
 
 class AnalysisParametersApp(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, thread_name, parent=None):
         QWidget.__init__(self, parent=parent)
-
+        self.name = thread_name
         self.special_background_on = False
         self.current_style_sheet_background = ".QWidget{background-image:url(\"\"); background-position: center;}"
         self.cicada_analysis = None
@@ -508,16 +513,21 @@ class AnalysisParametersApp(QWidget):
         if self.analysis_arguments_handler is None:
             return
 
-        self.analysis_arguments_handler.run_analysis()
-
+        p = Thread(target=self.analysis_arguments_handler.run_analysis)
+        p.setName(self.name)
+        p.start()
 
 class EmittingStream(QtCore.QObject):
 
-    textWritten = Core.pyqtSignal(str)
+    def __init__(self, parent=None):
+        self.parent = parent
+        self.terminal = sys.stdout
+        self.textWritten = Core.pyqtSignal(str)
 
     def write(self, text):
-        # QMessageBox.critical(None, str(text), str(text))
-        self.textWritten.emit(str(text))
+        # GET THREAD THAT TRIGGERED THE FUNCTION THEN ADD IT TO THE TEXT TO THEN FILTER THE DISPLAY
+        self.parent.normalOutputWritten(text + str(threading.current_thread().name))
+        self.terminal.write(str(text))
 
 class AnalysisData(QWidget):
 
@@ -542,20 +552,21 @@ class AnalysisData(QWidget):
 
 class AnalysisPackage(QWidget):
 
-    def __init__(self, cicada_analysis, analysis_name, analysis_description, parent=None):
+    def __init__(self, cicada_analysis, analysis_name, analysis_description, name, parent=None):
         QWidget.__init__(self, parent=parent)
         super().__init__()
+        self.name = name
         # print(cicada_analysis.analysis_arguments_handler)
         self.text_output = QTextEdit()
         self.text_output.setReadOnly(True)
-        sys.stdout = EmittingStream(textWritten=self.normalOutputWritten)
+        sys.stdout = EmittingStream(self)
         self.resize(1000, 750)
         self.setWindowTitle(analysis_name)
         self.layout = QVBoxLayout()
         self.hlayout = QHBoxLayout()
         self.analysis_data = AnalysisData(cicada_analysis._data_to_analyse, analysis_description)
         self.hlayout.addWidget(self.analysis_data)
-        self.arguments_section_widget = AnalysisParametersApp()
+        self.arguments_section_widget = AnalysisParametersApp(self.name)
         self.arguments_section_widget.create_widgets(cicada_analysis=cicada_analysis)
         self.hlayout.addWidget(self.arguments_section_widget)
         self.layout.addLayout(self.hlayout)
@@ -572,11 +583,13 @@ class AnalysisPackage(QWidget):
         Args:
             text (str): Output of the standard output in python interpreter
         """
-        cursor = self.text_output.textCursor()
-        cursor.movePosition(QtGui.QTextCursor.End)
-        cursor.insertText(text)
-        self.text_output.setTextCursor(cursor)
-        self.text_output.ensureCursorVisible()
+        if self.name in text:
+            text = text.replace(self.name,"")
+            cursor = self.text_output.textCursor()
+            cursor.movePosition(QtGui.QTextCursor.End)
+            cursor.insertText(text)
+            self.text_output.setTextCursor(cursor)
+            self.text_output.ensureCursorVisible()
 
     def closeEvent(self, QCloseEvent):
         sys.stdout = sys.__stdout__
