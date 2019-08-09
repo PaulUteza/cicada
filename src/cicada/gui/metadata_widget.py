@@ -92,6 +92,8 @@ class CicadaMetaDataContainer:
         self.metadata_finder_wrapper = None
         self.initiate_metadata_finder_wrapper(data_format=data_format)
 
+        self.set_metadata_for_gui()
+
     def initiate_metadata_finder_wrapper(self, data_format):
         if data_format == "nwb":
             self.metadata_finder_wrapper = MetaDataFinder(self.data_file)
@@ -159,8 +161,8 @@ class CicadaMetaDataContainer:
                                   "description": "a dictionary containing the IntracellularElectrode in this"
                                                  " NWBFile container"}
 
-        identifier_metadata = {"metadata_name": " identifier", "value_type": "str",
-                               "value": self.metadata_finder_wrapper.get_metadata(" identifier"),
+        identifier_metadata = {"metadata_name": "identifier", "value_type": "str",
+                               "value": self.metadata_finder_wrapper.get_metadata("identifier"),
                                "description": "a unique text identifier for the file"}
 
         imaging_planes_metadata = {"metadata_name": "imaging_planes", "value_type": "dictionnary",
@@ -354,8 +356,9 @@ class CicadaMetaDataContainer:
                                                  ]
 
     @staticmethod
-    def save_changes():
+    def save_changes(**kwargs):
         print("Ah !")
+        print(kwargs)
 
 
 class MetaDataHandler:
@@ -384,9 +387,10 @@ class MetaDataHandler:
 
     def save_changes(self):
         kwargs = {}
-        for metadata_name, metadata in self.groups_dict.items():
-            kwargs[metadata_name] = metadata.get_metadata_value()
-        self.cicada_metadata_container.run_analysis(**kwargs)
+        for metadata_group_name, metadata_group in self.groups_dict.items():
+            for metadata_name, metadata in metadata_group.metadata_dict.items():
+                kwargs[metadata_name] = metadata_group.get_metadata_value_in_widget(metadata)
+        self.cicada_metadata_container.save_changes(**kwargs)
 
 
 class MetaData:
@@ -411,6 +415,12 @@ class MetaData:
     def set_metadata_value(self, value):
         self.final_value = value
 
+    def get_metadata_value(self):
+        return getattr(self, "value", None)
+
+    def get_metadata_name(self):
+        return getattr(self, "name", None)
+
 
 class MetaDataGroup:  # In case of Qtable
 
@@ -432,37 +442,40 @@ class MetaDataGroup:  # In case of Qtable
         self.metadata_dict = dict()
         self.idx_position = 0  # Counter, add 1 each time a metadata is add to the group to define its position inside
 
+        if getattr(self, "metadata_in_group", None) is not None:
+            for raw_metadata in getattr(self, "metadata_in_group", None):
+                self.add_metadata(**raw_metadata)
+        else:
+            print("No metadata found !")
+
     # Convert metadata from CicadaMetadataContainer in MetaData class and add it to metadata_dict
     def add_metadata(self, **kwargs):
-        metadata = MetaData(self.idx_position, **kwargs)
-        self.metadata_dict[metadata.metadata_name] = metadata
+        metadata_to_add = MetaData(self.idx_position, **kwargs)
+        self.metadata_dict[metadata_to_add.metadata_name] = metadata_to_add
         self.idx_position += 1
 
-    # TODO : Try to add a QTable to see if it works !
-    def get_gui_widget(self, metadata_group):
-        # Get widget depending of the widget_type
-        # In case of QTable, should construct a QTable with size corresponding to metadata_group size
-        pass
+    def get_gui_widget(self):
+        if getattr(self, "widget_type", None) == "QTable":
+            self.widget = TableWidget(metadata_group=self)
+            return self.widget
 
-    def put_metadata_in_widget(self, metadata):
-        pass
-
-    def get_metadata_value(self, metadata):
+    def get_metadata_value_in_widget(self, metadata):
         if self.widget is None:
             return None
-        if not metadata.position_in_widget:
-            return self.widget.get_value()
+        if getattr(self, "widget_type", None) == "QTable":
+            return self.widget.get_value(metadata.position_in_widget)
         else:
-            pass
-            # SEE WHAT TO DO HERE !!!
+            return self.widget.get_value()
+
+    def get_group_description(self):
+        return getattr(self, "description", None)
 
 
 class MetaDataWidget(QWidget):
 
-    def __init__(self, data_file, parent=None):
+    def __init__(self, parent=None):
         QWidget.__init__(self, parent=parent)
 
-        self.data_file = data_file
         self.cicada_metadata_container = None
         self.metadata_handler = None
 
@@ -555,40 +568,70 @@ class MetaDataWidget(QWidget):
         self.metadata_handler.save_changes()
 
 
-'''
-class TableView(QTableWidget):
-    def __init__(self, data, *args):
-        QTableWidget.__init__(self, *args)
-        self.data = data
-        self.setData()
-        self.resizeColumnsToContents()
-        self.resizeRowsToContents()
+class TableWidget(QFrame):
+    def __init__(self, metadata_group, parent=None):
+        QWidget.__init__(self, parent=parent)
 
-    def setData(self):
-        horHeaders = []
-        for n, key in enumerate(sorted(self.data.keys())):
-            horHeaders.append(key)
-            for m, item in enumerate(self.data[key]):
-                newitem = QTableWidgetItem(item)
-                self.setItem(m, n, newitem)
-        self.setHorizontalHeaderLabels(horHeaders)
-'''
-'''
-def main(args):
-    app = QApplication(args)
-    table = TableView(data, 4, 3)
-    table.show()
-    sys.exit(app.exec_())
-'''
+        self.metadata_group = metadata_group
+        self.metadata_dict = self.metadata_group.metadata_dict
+
+        self.table = QTableWidget()
+
+        nb_rows = len(self.metadata_dict)
+        nb_columns = 4
+        # TODO : set nb_columns depending of metadata struct
+
+        self.table.setRowCount(nb_rows)
+        self.table.setColumnCount(nb_columns)
+
+        for metadata_to_add in self.metadata_dict.values():
+            position = metadata_to_add.position_in_widget
+            self.table.setItem(position, 0, QTableWidgetItem(metadata_to_add.metadata_name))
+            self.table.setItem(position, 1, QTableWidgetItem(metadata_to_add.value_type))
+            self.table.setItem(position, 2, QTableWidgetItem(str(metadata_to_add.value)))
+            self.table.setItem(position, 3, QTableWidgetItem(metadata_to_add.description))
+            self.table.move(0, 0)
+
+        self.table.resizeColumnsToContents()
+        self.table.resizeRowsToContents()
+
+        v_box = QVBoxLayout()
+        description = self.metadata_group.get_group_description()
+
+        if description:
+            q_label = QLabel(description)
+            q_label.setAlignment(Qt.AlignCenter)
+            q_label.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+            q_label.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+            v_box.addWidget(q_label)
+
+        h_box = QHBoxLayout()
+        h_box.addWidget(self.table)
+        v_box.addLayout(h_box)
+
+        self.setLayout(v_box)
+
+    def get_value(self, metadata_position):
+        return self.table.item(metadata_position, 2).text()
 
 
 if __name__ == "__main__":
-    # main(sys.argv)
-    io = NWBHDF5IO('F:/nwb_files/p6_18_02_07_a002.nwb', 'r')
+    app = QApplication(sys.argv)
+    # Change the path !
+    # ============================================
+    file_path = 'F:/nwb_files/p6_18_02_07_a002.nwb'
+    # ============================================
+    io = NWBHDF5IO(file_path, 'r')
     nwb_file = io.read()
+    cicada_metadata_container = CicadaMetaDataContainer(nwb_file, "nwb")
+    widget = MetaDataWidget()
+    widget.create_widgets(cicada_metadata_container)
+    widget.show()
+    '''
     all_metadata = MetaDataFinder(nwb_file).get_all_metadata_in_nwb()
     for metadata, value in all_metadata.items():
         print(metadata + '\n')
     for metadata, value in all_metadata.items():
         print(metadata + ' : ' + str(value) + '\n')
-    #MetaDataFinder(nwb_file).test_data_got_in_nwb()
+    '''
+    sys.exit(app.exec_())
