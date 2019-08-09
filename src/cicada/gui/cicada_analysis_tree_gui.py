@@ -2,9 +2,8 @@ from qtpy.QtWidgets import *
 from qtpy.QtCore import QAbstractItemModel, QModelIndex, Qt
 from qtpy import QtCore, QtGui
 from sortedcontainers import SortedDict
-from cicada.gui.cicada_analysis_parameters_gui import AnalysisParametersApp, AnalysisPackage
-from cicada.gui.cicada_analysis_overview import AnalysisOverview
 from cicada.preprocessing.utils import class_name_to_file_name
+from cicada.gui.cicada_analysis_overview import AnalysisPackage
 import importlib
 from threading import Thread
 import threading
@@ -373,6 +372,7 @@ class AnalysisTreeApp(QWidget):
         if tree_item.cicada_analysis is not None and tree_item.data_valid:
             # Assign a random id to an analysis to access it later
             random_id = ''.join([choice(string.ascii_letters) for n in range(32)])
+            # Copy the object so each analysis has its own object
             self.copied_data = tree_item.cicada_analysis.copy()
             # Create analysis window
             exec('self.' + random_id +' = AnalysisPackage(cicada_analysis=self.copied_data,'

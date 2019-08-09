@@ -34,18 +34,22 @@ class AnalysisOverview(QWidget):
         self.layout = QVBoxLayout(self.scroll_area_widget_contents)
         # ==============================
 
-        self.run_analysis_button = QPushButton("Push me and then just touch me", self)
-        self.run_analysis_button.setEnabled(True)
-        self.run_analysis_button.clicked.connect(self.add_analysis_overview)
-
-        self.main_layout.addWidget(self.run_analysis_button)
         self.setLayout(self.main_layout)
 
     def add_analysis_overview(self, analysis_name, analysis_id, obj):
+        """
+        Add a widget to track the corresponding analysis
+        Args:
+            analysis_name (str): Name of the analysis
+            analysis_id (str): Randomly generated ID linked to the analysis
+            obj (object): The analysis window's object itself
+
+        """
         self.created_analysis_names.append(analysis_id + '_overview')
         exec('self.' + analysis_id + '_overview = AnalysisState( "' + str(obj) +
              '", self.scroll_area_widget_contents, "' + analysis_name + '")')
         eval('self.layout.addWidget(self.' + analysis_id + '_overview)')
+        eval('self.' + analysis_id + '_overview.setStyleSheet("background-color:transparent; border-radius: 20px;")')
 
     def keyPressEvent(self, event):
         available_background = ["black_widow.png", "captain_marvel.png", "iron_man.png", "hulk.png"]
@@ -73,7 +77,7 @@ class AnalysisState(QLabel):
 
 
     def bring_to_front(self, window_id, event):
-        """Bring analysis' window to the front"""
+        """Bring corresponding analysis window to the front (re-routed from the double click method)"""
         for obj in gc.get_objects():
             if isinstance(obj, AnalysisPackage):
                 if str(obj) == str(window_id):

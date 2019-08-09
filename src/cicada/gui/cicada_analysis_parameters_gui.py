@@ -525,7 +525,13 @@ class EmittingStream(QtCore.QObject):
         self.textWritten = Core.pyqtSignal(str)
 
     def write(self, text):
-        # GET THREAD THAT TRIGGERED THE FUNCTION THEN ADD IT TO THE TEXT TO THEN FILTER THE DISPLAY
+        """
+        Override of the write function used to display output
+        Args:
+            text (str): Python output from stdout
+
+        """
+        # Add thread name to the output when writting in the the widget
         self.parent.normalOutputWritten(text + str(threading.current_thread().name))
         self.terminal.write(str(text))
 
@@ -533,9 +539,13 @@ class AnalysisData(QWidget):
 
     def __init__(self, session_list, analysis_description, parent=None):
         QWidget.__init__(self, parent=parent)
+        self.special_background_on_list = False
+        self.special_background_on_text = False
         self.layout = QVBoxLayout()
         self.q_list = QListWidget()
+        self.q_list.keyPressEvent = self.on_key_press_list
         self.analysis_description = QTextEdit()
+        self.analysis_description.keyPressEvent = self.on_key_press_text
         self.analysis_description.append(analysis_description)
         self.analysis_description.setReadOnly(True)
         self.populate_session_list(session_list)
@@ -544,11 +554,44 @@ class AnalysisData(QWidget):
         self.setLayout(self.layout)
 
     def populate_session_list(self, session_list):
+        """
+        Add all session to the QListWidget
+        Args:
+            session_list (list): List of all sessions' identifier
+
+        """
         for session in session_list:
             item = QListWidgetItem()
             item.setText(str(session.identifier))
             item.setFlags(item.flags() & ~QtCore.Qt.ItemIsSelectable)
             self.q_list.addItem(item)
+
+    def on_key_press_list(self, event):
+        if event.key() == QtCore.Qt.Key_J:
+            if self.special_background_on_list:
+                self.current_style_sheet_background_list = "background-image:url(\"\"); background-position: center;"
+                self.q_list.setStyleSheet(self.current_style_sheet_background_list)
+                self.special_background_on_list = False
+            else:
+                # we add .QWidget so the background is specific to this widget and is not applied by other widgets
+                self.current_style_sheet_background_list = "background-image:url(\"cicada/gui/icons/rc/test.jpg\");" \
+                                                      "background-position: center; background-repeat:no-repeat;"
+                self.q_list.setStyleSheet(self.current_style_sheet_background_list)
+                self.special_background_on_list = True
+
+    def on_key_press_text(self, event):
+        if event.key() == QtCore.Qt.Key_J:
+            if self.special_background_on_text:
+                self.current_style_sheet_background_text = "background-image:url(\"\"); background-position: center;"
+                self.analysis_description.setStyleSheet(self.current_style_sheet_background_text)
+                self.special_background_on_text = False
+            else:
+                pic_index = 0
+                # we add .QWidget so the background is specific to this widget and is not applied by other widgets
+                self.current_style_sheet_background_text = "background-image:url(\"cicada/gui/icons/rc/test2.jpg\");" \
+                                                      "background-position: center; background-repeat:no-repeat;"
+                self.analysis_description.setStyleSheet(self.current_style_sheet_background_text)
+                self.special_background_on_text = True
 
 class AnalysisPackage(QWidget):
 
@@ -592,7 +635,9 @@ class AnalysisPackage(QWidget):
             self.text_output.ensureCursorVisible()
 
     def closeEvent(self, QCloseEvent):
-        sys.stdout = sys.__stdout__
+        """ Need to delete the overview widget associated to this analysis"""
+        pass
+
 
 
 def clearvbox(self, L = False):
