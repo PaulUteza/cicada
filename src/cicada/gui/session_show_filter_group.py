@@ -19,6 +19,8 @@ class SessionsListWidget(QListWidget):
     def __init__(self, session_widget):
         QListWidget.__init__(self)
         self.special_background_on = False
+        self.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.customContextMenuRequested.connect(self.showContextMenu)
         self.session_widget = session_widget
         self.arguments_section_widget = None
 
@@ -40,6 +42,17 @@ class SessionsListWidget(QListWidget):
             data_to_analyse = self.session_widget.get_data_to_analyse()
             self.session_widget.analysis_tree.set_data(data_to_analyse=data_to_analyse, data_format="nwb")
 
+    def showContextMenu(self, pos):
+        self.global_pos = self.mapToGlobal(pos)
+        self.context_menu = QMenu()
+        self.context_menuAct = QAction("Show info", self, triggered=self.show_info)
+        self.context_menuAct.setIcon(QtGui.QIcon('cicada/gui/icons/svg/question-mark.svg'))
+        self.context_menu.addAction(self.context_menuAct)
+        self.context_menu.exec(self.global_pos)
+
+    def show_info(self):
+        item = self.item(self.currentRow())
+        QMessageBox.critical(None, 'test', item.text())
 
 class SessionsWidget(QWidget):
 
@@ -268,7 +281,7 @@ class SessionsWidget(QWidget):
     def send_data_to_analysis_tree(self):
         """Send data to the analysis tree function"""
         # we erase the widgets in the parameters section
-        self.arguments_section_widget.tabula_rasa()
+        # self.arguments_section_widget.tabula_rasa()
         data_to_analyse = self.get_data_to_analyse()
         # TODO: deal with the fact the data might not be in nwb format
         if data_to_analyse:
@@ -401,6 +414,4 @@ class SessionsWidget(QWidget):
         with open(group_yaml_file, 'w') as stream:
             yaml.dump(self.parent.group_data, stream, default_flow_style=False)
         self.parent.load_group_from_config()
-
-
 
