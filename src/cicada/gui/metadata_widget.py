@@ -1,5 +1,6 @@
 from qtpy.QtWidgets import *
 from qtpy.QtCore import QAbstractItemModel, QModelIndex, Qt
+from qtpy.QtGui import *
 import numpy as np
 from qtpy import QtCore
 from random import randint
@@ -12,12 +13,16 @@ class MetaDataFinder:
 
     def __init__(self, data_file):
         self.data_file = data_file
-        self.metadata_from_data_file = self.get_all_metadata_in_nwb()
+        self.metadata_from_data_file = self.get_general_metadata_in_nwb()
+        self.subject_metadata_from_data_file = self.get_subject_metadata_in_nwb(self.metadata_from_data_file['subject'])
 
     def get_metadata(self, name):
         return self.metadata_from_data_file[name]
 
-    def get_all_metadata_in_nwb(self):
+    def get_subject_metadata(self, name):
+        return self.subject_metadata_from_data_file[name]
+
+    def get_general_metadata_in_nwb(self):
         metadata_from_data_file = {
             "acquisition":  getattr(self.data_file, "acquisition"),
             "analysis":  getattr(self.data_file, "analysis"),
@@ -75,11 +80,19 @@ class MetaDataFinder:
 
         return metadata_from_data_file
 
-    def test_data_got_in_nwb(self):
-        for truc in dir(self.data_file):
-            if truc[0] != '_':
-                print(truc)
-                print(getattr(self.data_file, truc))
+    @staticmethod
+    def get_subject_metadata_in_nwb(subject):
+        subject_metadata_from_data_file = {
+            "age": getattr(subject, "age"),
+            "description": getattr(subject, "description"),
+            "genotype": getattr(subject, "genotype"),
+            "sex": getattr(subject, "sex"),
+            "species": getattr(subject, "species"),
+            "subject_id": getattr(subject, "subject_id"),
+            "weight": getattr(subject, "weight"),
+            "date_of_birth": getattr(subject, "date_of_birth")}
+
+        return subject_metadata_from_data_file
 
 
 class CicadaMetaDataContainer:
@@ -295,6 +308,40 @@ class CicadaMetaDataContainer:
                           "description": "Information about virus(es) used in experiments, including virus ID,"
                                          " source, date made, injection location, volume, etc."}
 
+        # Subject part :
+
+        age_subject_metadata = {"metadata_name": "age", "value_type": "str",
+                                "value": self.metadata_finder_wrapper.get_subject_metadata("age"),
+                                "description": "the age of the subject"}
+
+        description_subject_metadata = {"metadata_name": "description", "value_type": "str",
+                                        "value": self.metadata_finder_wrapper.get_subject_metadata("description"),
+                                        "description": "a description of the subject"}
+
+        genotype_subject_metadata = {"metadata_name": "genotype", "value_type": "str",
+                                     "value": self.metadata_finder_wrapper.get_subject_metadata("genotype"),
+                                     "description": "the genotype of the subject"}
+
+        sex_subject_metadata = {"metadata_name": "sex", "value_type": "str",
+                                "value": self.metadata_finder_wrapper.get_subject_metadata("sex"),
+                                "description": "the sex of the subject"}
+
+        species_subject_metadata = {"metadata_name": "species", "value_type": "str",
+                                    "value": self.metadata_finder_wrapper.get_subject_metadata("species"),
+                                    "description": "the species of the subject"}
+
+        subject_id_subject_metadata = {"metadata_name": "subject_id", "value_type": "str",
+                                       "value": self.metadata_finder_wrapper.get_subject_metadata("subject_id"),
+                                       "description": "a unique identifier for the subject"}
+
+        weight_subject_metadata = {"metadata_name": "weight", "value_type": "str",
+                                   "value": self.metadata_finder_wrapper.get_subject_metadata("weight"),
+                                   "description": "the weight of the subject"}
+
+        date_of_birth_subject_metadata = {"metadata_name": "date_of_birth", "value_type": "datetime",
+                                          "value": self.metadata_finder_wrapper.get_subject_metadata("date_of_birth"),
+                                          "description": "datetime of date of birth. May be supplied instead of age"}
+
         # Define groups to add :
 
         general_metadata = dict()
@@ -325,6 +372,22 @@ class CicadaMetaDataContainer:
 
         self.add_metadata_group_for_gui(**general_metadata)
 
+        metadata_from_subject = dict()
+        metadata_from_subject["group_name"] = 'metadata_from_subject'
+        metadata_from_subject["widget_type"] = 'QTable'
+        metadata_from_subject["description"] = 'metadata about the subject'
+        metadata_from_subject["metadata_in_group"] = [age_subject_metadata,
+                                                      description_subject_metadata,
+                                                      genotype_subject_metadata,
+                                                      sex_subject_metadata,
+                                                      species_subject_metadata,
+                                                      subject_id_subject_metadata,
+                                                      weight_subject_metadata,
+                                                      date_of_birth_subject_metadata]
+
+        self.add_metadata_group_for_gui(**metadata_from_subject)
+
+        # TODO : for each of those following metadata, find a way to show them
         other_metadata = dict()
         general_metadata["group_name"] = 'other_metadata'
         general_metadata["widget_type"] = 'QTable'
@@ -422,7 +485,7 @@ class MetaData:
         return getattr(self, "name", None)
 
 
-class MetaDataGroup:  # In case of Qtable
+class MetaDataGroup:  # Necessary to add multiple metadata in one widget
 
     def __init__(self, **kwargs):
         """
@@ -583,6 +646,8 @@ class TableWidget(QFrame):
 
         self.table.setRowCount(nb_rows)
         self.table.setColumnCount(nb_columns)
+
+        self.table.setHorizontalHeaderLabels(["metadata name", "value type", "value", "description"])
 
         for metadata_to_add in self.metadata_dict.values():
             position = metadata_to_add.position_in_widget
