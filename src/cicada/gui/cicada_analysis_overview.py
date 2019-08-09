@@ -75,6 +75,7 @@ class AnalysisState(QLabel):
     def bring_to_front(self, window_id, event):
         """Bring analysis' window to the front"""
         for obj in gc.get_objects():
-            if str(obj) == str(window_id):
-                obj.setWindowState(obj.windowState() & ~QtCore.Qt.WindowMinimized | QtCore.Qt.WindowActive)
-                obj.activateWindow()
+            if isinstance(obj, AnalysisPackage):
+                if str(obj) == str(window_id):
+                    obj.setWindowState(obj.windowState() & ~QtCore.Qt.WindowMinimized | QtCore.Qt.WindowActive)
+                    obj.activateWindow()
