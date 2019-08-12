@@ -513,13 +513,14 @@ class AnalysisParametersApp(QWidget):
         if self.analysis_arguments_handler is None:
             return
 
-        p = Thread(target=self.analysis_arguments_handler.run_analysis)
+        p = Thread(target=self.analysis_arguments_handler.run_analysis, daemon=True)
         p.setName(self.name)
         p.start()
 
 class EmittingStream(QtCore.QObject):
 
     def __init__(self, parent=None):
+        super().__init__(parent=parent)
         self.parent = parent
         self.terminal = sys.stdout
         self.textWritten = Core.pyqtSignal(str)
@@ -534,6 +535,9 @@ class EmittingStream(QtCore.QObject):
         # Add thread name to the output when writting in the the widget
         self.parent.normalOutputWritten(text + str(threading.current_thread().name))
         self.terminal.write(str(text))
+
+    def flush(self):
+        pass
 
 class AnalysisData(QWidget):
 
@@ -599,9 +603,18 @@ class AnalysisPackage(QWidget):
         QWidget.__init__(self, parent=parent)
         super().__init__()
         self.name = name
+        self.resize(1000, 750)
+        self.setFixedSize(self.size())
         # print(cicada_analysis.analysis_arguments_handler)
-        self.text_output = QTextEdit()
-        self.text_output.setReadOnly(True)
+        self.scrollArea = QScrollArea()
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.text_output = QLabel()
+        self.text_output.setWordWrap(True)
+        self.text_output.setAlignment(Qt.AlignLeft)
+        self.text_output.setAlignment(Qt.AlignTop)
+        self.text_output.show()
         sys.stdout = EmittingStream(self)
         self.resize(1000, 750)
         self.setWindowTitle(analysis_name)
@@ -614,6 +627,8 @@ class AnalysisPackage(QWidget):
         self.hlayout.addWidget(self.arguments_section_widget)
         self.layout.addLayout(self.hlayout)
         self.layout.addWidget(self.text_output)
+        self.scrollArea.setWidget(self.text_output)
+        self.layout.addWidget(self.scrollArea)
         self.setLayout(self.layout)
         self.show()
 
@@ -621,16 +636,17 @@ class AnalysisPackage(QWidget):
 
     def normalOutputWritten(self, text):
         """
-        Append text to the QTextEdit.
+        Append text to the QLabel.
 
         Args:
             text (str): Output of the standard output in python interpreter
         """
+
         if self.name in text:
-            text = text.replace(self.name,"")
-            cursor = self.text_output.textCursor()
-            cursor.movePosition(QtGui.QTextCursor.End)
-            cursor.insertText(text)
+            text = text.replace(self.name, "\n")
+            text = "".join([s for s in text.splitlines(True) if s.strip("\r\n")])
+            text = self.text_output.text() + text
+            self.text_output.setText(text)
             self.text_output.setTextCursor(cursor)
             self.text_output.ensureCursorVisible()
 
