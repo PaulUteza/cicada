@@ -1,7 +1,5 @@
 from cicada.analysis.cicada_analysis import CicadaAnalysis
-from tqdm import tqdm
-import sys
-from time import sleep
+
 
 class CicadaPsthAnalysis(CicadaAnalysis):
     def __init__(self):
@@ -87,9 +85,7 @@ class CicadaPsthAnalysis(CicadaAnalysis):
         :param kwargs:
         :return:
         """
-        for data in tqdm(self._data_to_analyse, file=sys.stdout, ncols=100, desc=self.name, ascii=False):
+        for data in self._data_to_analyse:
             print(f"PSTH ----- {data.identifier} on range {kwargs['psth_range']} with {kwargs['plot_options']} "
                   f"plot using {kwargs['segmentation']} "
-                  f"with formats {kwargs['save_formats']} ")
-        # for i in tqdm(range(10),file=sys.stdout, ncols=100, ascii=False):
-        #     sleep(1)
+                  f"with formats {kwargs['save_formats']}")

@@ -12,9 +12,7 @@ import logging
 from random import randint
 import gc
 from abc import ABC, abstractmethod
-from tqdm import tqdm
-from qtpy.QtCore import QThread
-import os
+
 
 class ParameterWidgetModel(ABC):
     def __init__(self):
@@ -520,12 +518,11 @@ class AnalysisParametersApp(QWidget):
         p.start()
 
 class EmittingStream(QtCore.QObject):
+
     def __init__(self, parent=None):
-        super().__init__(parent=parent)
         self.parent = parent
         self.terminal = sys.stdout
         self.textWritten = Core.pyqtSignal(str)
-        self.test = QThread
 
     def write(self, text):
         """
@@ -537,9 +534,6 @@ class EmittingStream(QtCore.QObject):
         # Add thread name to the output when writting in the the widget
         self.parent.normalOutputWritten(text + str(threading.current_thread().name))
         self.terminal.write(str(text))
-
-    def flush(self):
-        pass
 
 class AnalysisData(QWidget):
 
@@ -605,20 +599,11 @@ class AnalysisPackage(QWidget):
         QWidget.__init__(self, parent=parent)
         super().__init__()
         self.name = name
-        self.flag = False
-        self.resize(1000, 750)
-        self.setFixedSize(self.size())
         # print(cicada_analysis.analysis_arguments_handler)
-        self.scrollArea = QScrollArea()
-        self.scrollArea.setWidgetResizable(True)
-        self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-        self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
-        self.text_output = QLabel()
-        self.text_output.setWordWrap(True)
-        self.text_output.setAlignment(Qt.AlignLeft)
-        self.text_output.setAlignment(Qt.AlignTop)
-        self.text_output.show()
+        self.text_output = QTextEdit()
+        self.text_output.setReadOnly(True)
         sys.stdout = EmittingStream(self)
+        self.resize(1000, 750)
         self.setWindowTitle(analysis_name)
         self.layout = QVBoxLayout()
         self.hlayout = QHBoxLayout()
@@ -628,9 +613,7 @@ class AnalysisPackage(QWidget):
         self.arguments_section_widget.create_widgets(cicada_analysis=cicada_analysis)
         self.hlayout.addWidget(self.arguments_section_widget)
         self.layout.addLayout(self.hlayout)
-        # self.layout.addWidget(self.text_output)
-        self.scrollArea.setWidget(self.text_output)
-        self.layout.addWidget(self.scrollArea)
+        self.layout.addWidget(self.text_output)
         self.setLayout(self.layout)
         self.show()
 
@@ -638,31 +621,18 @@ class AnalysisPackage(QWidget):
 
     def normalOutputWritten(self, text):
         """
-        Append text to the QLabel.
+        Append text to the QTextEdit.
 
         Args:
             text (str): Output of the standard output in python interpreter
         """
-
-        # sys.stderr.write("\n Splitted lines : " + str(self.text_output.text().splitlines())+" end of splitted lines \n")
         if self.name in text:
-            if "%|" in text and self.flag:
-                text = text.replace(self.name, "")
-                split_lines = self.text_output.text().splitlines()
-                split_lines[len(split_lines)-1] = text
-                text = "".join(split_lines)
-                self.text_output.setText(text)
-                self.flag = True
-            elif "%|" in text and not self.flag:
-                text = text.replace(self.name, "\n")
-                text = "".join([s for s in text.splitlines(True) if s.strip("\r\n")])
-                self.text_output.setText(self.text_output.text() + text)
-                self.flag = True
-            else:
-                text = text.replace(self.name, "\n")
-                text = "".join([s for s in text.splitlines(True) if s.strip("\r\n")])
-                self.text_output.setText(self.text_output.text() + text)
-                self.flag = False
+            text = text.replace(self.name,"")
+            cursor = self.text_output.textCursor()
+            cursor.movePosition(QtGui.QTextCursor.End)
+            cursor.insertText(text)
+            self.text_output.setTextCursor(cursor)
+            self.text_output.ensureCursorVisible()
 
     def closeEvent(self, QCloseEvent):
         """ Need to delete the overview widget associated to this analysis"""

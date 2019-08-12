@@ -11,7 +11,7 @@ class CicadaAnalysis(ABC):
 
     """
     def __init__(self, name, short_description, family_id=None, long_description=None,
-                 data_to_analyse=None, data_format=None,):
+                 data_to_analyse=None, data_format=None):
         """
         A list of
         :param name:
