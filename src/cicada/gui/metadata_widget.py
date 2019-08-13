@@ -5,16 +5,30 @@ import numpy as np
 from qtpy import QtCore
 from random import randint
 import sys
+import os
 from abc import ABC, abstractmethod
-from pynwb import NWBHDF5IO
+from pynwb import NWBHDF5IO, get_manager, NWBContainer
+from datetime import datetime
+from pynwb.core import LabelledDict
+from pynwb.file import NWBFile, Subject
+import hdmf
+from shutil import copyfile
 
 
 class MetaDataFinder:
 
-    def __init__(self, data_file):
-        self.data_file = data_file
+    def __init__(self, data_path):
+        self.data_path = data_path
+        self.data_file = self.get_data_file()
         self.metadata_from_data_file = self.get_general_metadata_in_nwb()
         self.subject_metadata_from_data_file = self.get_subject_metadata_in_nwb(self.metadata_from_data_file['subject'])
+        self.containers_from_data_file = self.get_containers_in_nwb()
+
+    def get_data_file(self):
+        io_read = NWBHDF5IO(self.data_path, 'r')
+        data_file_to_get = io_read.read()
+        io_read.close()
+        return data_file_to_get
 
     def get_metadata(self, name):
         return self.metadata_from_data_file[name]
@@ -80,6 +94,22 @@ class MetaDataFinder:
 
         return metadata_from_data_file
 
+    def get_containers_in_nwb(self):
+
+        containers_from_data_file = dict()
+
+        for field in self.data_file.fields:
+            field_class = self.data_file.fields.get(field)
+            if isinstance(field_class, LabelledDict):
+                for sub_field in field_class:
+                    sub_field_class = field_class.get(sub_field)
+                    print(type(sub_field_class))
+                    if isinstance(sub_field_class, NWBContainer):
+                        containers_from_data_file[sub_field_class.name] = sub_field_class
+                        print(sub_field_class.name)
+
+        return containers_from_data_file
+
     @staticmethod
     def get_subject_metadata_in_nwb(subject):
         subject_metadata_from_data_file = {
@@ -97,19 +127,23 @@ class MetaDataFinder:
 
 class CicadaMetaDataContainer:
 
-    def __init__(self, data_file, data_format):
-        self.data_file = data_file
+    def __init__(self, data_path, data_format):
 
-        self.metadata_handler = MetaDataHandler(cicada_metadata_container=self)
+        self.data_path = data_path
 
         self.metadata_finder_wrapper = None
         self.initiate_metadata_finder_wrapper(data_format=data_format)
 
+        self.data_file = self.metadata_finder_wrapper.data_file
+
+        self.metadata_handler = MetaDataHandler(cicada_metadata_container=self)
+
         self.set_metadata_for_gui()
+        self.set_containers_for_gui()
 
     def initiate_metadata_finder_wrapper(self, data_format):
         if data_format == "nwb":
-            self.metadata_finder_wrapper = MetaDataFinder(self.data_file)
+            self.metadata_finder_wrapper = MetaDataFinder(self.data_path)
 
     def add_metadata_group_for_gui(self, **kwargs):
 
@@ -125,11 +159,11 @@ class CicadaMetaDataContainer:
 
         analysis_metadata = {"metadata_name": "analysis", "value_type": "dictionnary",
                              "value": self.metadata_finder_wrapper.get_metadata("analysis"),
-                             "description": "result of analysis"}
+                             "description": "Result of analysis"}
 
         container_source_metadata = {"metadata_name": "container_source", "value_type": "str",
                                      "value": self.metadata_finder_wrapper.get_metadata("container_source"),
-                                     "description": "path to the container source"}
+                                     "description": "Path to the container source"}
 
         data_collection_metadata = {"metadata_name": "data_collection", "value_type": "str",
                                     "value": self.metadata_finder_wrapper.get_metadata("data_collection"),
@@ -141,12 +175,12 @@ class CicadaMetaDataContainer:
 
         electrode_groups_metadata = {"metadata_name": "electrode_groups", "value_type": "dictionnary",
                                      "value": self.metadata_finder_wrapper.get_metadata("electrode_groups"),
-                                     "description": "a dictionary containing the ElectrodeGroup in this"
+                                     "description": "A dictionary containing the ElectrodeGroup in this"
                                                     " NWBFile container"}
 
         electrodes_metadata = {"metadata_name": "electrodes", "value_type": "dictionnary",
                                "value": self.metadata_finder_wrapper.get_metadata("electrodes"),
-                               "description": "the ElectrodeTable that belongs to this NWBFile"}
+                               "description": "The ElectrodeTable that belongs to this NWBFile"}
 
         epoch_tags_metadata = {"metadata_name": "epoch_tags", "value_type": "set",
                                "value": self.metadata_finder_wrapper.get_metadata("epoch_tags"),
@@ -158,33 +192,33 @@ class CicadaMetaDataContainer:
 
         experiment_description_metadata = {"metadata_name": "experiment_description", "value_type": "str",
                                            "value": self.metadata_finder_wrapper.get_metadata("experiment_description"),
-                                           "description": "general description of the experiment"}
+                                           "description": "General description of the experiment"}
 
         experimenter_metadata = {"metadata_name": "experimenter", "value_type": "str",
                                  "value": self.metadata_finder_wrapper.get_metadata("experimenter"),
-                                 "description": "name of person who performed experiment"}
+                                 "description": "Name of person who performed experiment"}
 
         file_create_date_metadata = {"metadata_name": "file_create_date", "value_type": "datetime",
                                      "value": self.metadata_finder_wrapper.get_metadata("file_create_date"),
-                                     "description": "the date and time the file was created and subsequent"
+                                     "description": "The date and time the file was created and subsequent"
                                                     " modifications made"}
 
         ic_electrodes_metadata = {"metadata_name": "ic_electrodes", "value_type": "dictionnary",
                                   "value": self.metadata_finder_wrapper.get_metadata("ic_electrodes"),
-                                  "description": "a dictionary containing the IntracellularElectrode in this"
+                                  "description": "A dictionary containing the IntracellularElectrode in this"
                                                  " NWBFile container"}
 
         identifier_metadata = {"metadata_name": "identifier", "value_type": "str",
                                "value": self.metadata_finder_wrapper.get_metadata("identifier"),
-                               "description": "a unique text identifier for the file"}
+                               "description": "A unique text identifier for the file"}
 
         imaging_planes_metadata = {"metadata_name": "imaging_planes", "value_type": "dictionnary",
                                    "value": self.metadata_finder_wrapper.get_metadata("imaging_planes"),
-                                   "description": "a dictionary containing the ImagingPlane in this NWBFile container"}
+                                   "description": "A dictionary containing the ImagingPlane in this NWBFile container"}
 
         institution_metadata = {"metadata_name": "institution", "value_type": "str",
                                 "value": self.metadata_finder_wrapper.get_metadata("institution"),
-                                "description": "institution(s) where experiment is performed"}
+                                "description": "Institution(s) where experiment is performed"}
 
         invalid_times_metadata = {"metadata_name": "invalid_times", "value_type": "dictionnary",
                                   "value": self.metadata_finder_wrapper.get_metadata("invalid_times"),
@@ -196,11 +230,11 @@ class CicadaMetaDataContainer:
 
         lab_metadata = {"metadata_name": "lab", "value_type": "str",
                         "value": self.metadata_finder_wrapper.get_metadata("lab"),
-                        "description": "lab where experiment was performed"}
+                        "description": "Lab where experiment was performed"}
 
         lab_meta_data_metadata = {"metadata_name": "lab_meta_data", "value_type": "dictionnary",
                                   "value": self.metadata_finder_wrapper.get_metadata("lab_meta_data"),
-                                  "description": "an extension that contains lab-specific meta-data"}
+                                  "description": "An extension that contains lab-specific meta-data"}
 
         modified_metadata = {"metadata_name": "modified", "value_type": "bool",
                              "value": self.metadata_finder_wrapper.get_metadata("modified"),
@@ -225,7 +259,7 @@ class CicadaMetaDataContainer:
         pharmacology_metadata = {"metadata_name": "pharmacology", "value_type": "str",
                                  "value": self.metadata_finder_wrapper.get_metadata("pharmacology"),
                                  "description": "Description of drugs used, including how and when they were"
-                                                " administered. Anesthesia(s), painkiller(s), etc., plus dosage,"
+                                                " administered.\nAnesthesia(s), painkiller(s), etc., plus dosage,"
                                                 " concentration, etc."}
 
         protocol_metadata = {"metadata_name": "protocol", "value_type": "str",
@@ -234,25 +268,25 @@ class CicadaMetaDataContainer:
 
         related_publications_metadata = {"metadata_name": "related_publications", "value_type": "str",
                                          "value": self.metadata_finder_wrapper.get_metadata("related_publications"),
-                                         "description": "Publication information.PMID, DOI, URL, etc. If multiple,"
-                                                        " concatenate together and describe which is which. such as"
+                                         "description": "Publication information.PMID, DOI, URL, etc. If multiple,\n"
+                                                        "concatenate together and describe which is which. such as"
                                                         " PMID, DOI, URL, etc"}
 
         session_description_metadata = {"metadata_name": "session_description", "value_type": "str",
                                         "value": self.metadata_finder_wrapper.get_metadata("session_description"),
-                                        "description": "a description of the session where this data was generated"}
+                                        "description": "A description of the session where this data was generated"}
 
         session_id_metadata = {"metadata_name": "session_id", "value_type": "str",
                                "value": self.metadata_finder_wrapper.get_metadata("session_id"),
-                               "description": "lab-specific ID for the session"}
+                               "description": "Lab-specific ID for the session"}
 
         session_start_time_metadata = {"metadata_name": "session_start_time", "value_type": "datetime",
                                        "value": self.metadata_finder_wrapper.get_metadata("session_start_time"),
-                                       "description": "the start date and time of the recording session"}
+                                       "description": "The start date and time of the recording session"}
 
         slices_metadata = {"metadata_name": "slices", "value_type": "str",
                            "value": self.metadata_finder_wrapper.get_metadata("slices"),
-                           "description": "Description of slices, including information about preparation "
+                           "description": "Description of slices, including information about preparation\n"
                                           "thickness, orientation, temperature and bath solution"}
 
         source_script_metadata = {"metadata_name": "source_script", "value_type": "str",
@@ -278,22 +312,22 @@ class CicadaMetaDataContainer:
 
         subject_metadata = {"metadata_name": "subject", "value_type": "class",
                             "value": self.metadata_finder_wrapper.get_metadata("subject"),
-                            "description": "subject metadata"}
+                            "description": "Subject metadata"}
 
         surgery_metadata = {"metadata_name": "surgery", "value_type": "str",
                             "value": self.metadata_finder_wrapper.get_metadata("surgery"),
-                            "description": "Narrative description about surgery/surgeries,"
-                                           " including date(s) and who performed surgery"}
+                            "description": "Narrative description about surgery/surgeries,\n"
+                                           "including date(s) and who performed surgery"}
 
         sweep_table_metadata = {"metadata_name": "sweep_table", "value_type": "class",
                                 "value": self.metadata_finder_wrapper.get_metadata("sweep_table"),
-                                "description": "the SweepTable that belong to this NWBFile"}
+                                "description": "The SweepTable that belong to this NWBFile"}
 
         timestamps_reference_time_metadata = {"metadata_name": "timestamps_reference_time", "value_type": "datetime",
                                               "value": self.metadata_finder_wrapper.get_metadata(
                                                   "timestamps_reference_time"),
-                                              "description": "date and time corresponding to time zero of all "
-                                                             "timestamps; defaults to value of session_start_time"}
+                                              "description": "Date and time corresponding to time zero of all "
+                                                             "timestamps;\ndefaults to value of session_start_time"}
 
         trials_metadata = {"metadata_name": "trials", "value_type": "class",
                            "value": self.metadata_finder_wrapper.get_metadata("trials"),
@@ -305,42 +339,42 @@ class CicadaMetaDataContainer:
 
         virus_metadata = {"metadata_name": "virus", "value_type": "str",
                           "value": self.metadata_finder_wrapper.get_metadata("virus"),
-                          "description": "Information about virus(es) used in experiments, including virus ID,"
-                                         " source, date made, injection location, volume, etc."}
+                          "description": "Information about virus(es) used in experiments, including virus ID,\n"
+                                         "source, date made, injection location, volume, etc."}
 
         # Subject part :
 
         age_subject_metadata = {"metadata_name": "age", "value_type": "str",
                                 "value": self.metadata_finder_wrapper.get_subject_metadata("age"),
-                                "description": "the age of the subject"}
+                                "description": "The age of the subject"}
 
         description_subject_metadata = {"metadata_name": "description", "value_type": "str",
                                         "value": self.metadata_finder_wrapper.get_subject_metadata("description"),
-                                        "description": "a description of the subject"}
+                                        "description": "A description of the subject"}
 
         genotype_subject_metadata = {"metadata_name": "genotype", "value_type": "str",
                                      "value": self.metadata_finder_wrapper.get_subject_metadata("genotype"),
-                                     "description": "the genotype of the subject"}
+                                     "description": "The genotype of the subject"}
 
         sex_subject_metadata = {"metadata_name": "sex", "value_type": "str",
                                 "value": self.metadata_finder_wrapper.get_subject_metadata("sex"),
-                                "description": "the sex of the subject"}
+                                "description": "The sex of the subject"}
 
         species_subject_metadata = {"metadata_name": "species", "value_type": "str",
                                     "value": self.metadata_finder_wrapper.get_subject_metadata("species"),
-                                    "description": "the species of the subject"}
+                                    "description": "The species of the subject"}
 
         subject_id_subject_metadata = {"metadata_name": "subject_id", "value_type": "str",
                                        "value": self.metadata_finder_wrapper.get_subject_metadata("subject_id"),
-                                       "description": "a unique identifier for the subject"}
+                                       "description": "A unique identifier for the subject"}
 
         weight_subject_metadata = {"metadata_name": "weight", "value_type": "str",
                                    "value": self.metadata_finder_wrapper.get_subject_metadata("weight"),
-                                   "description": "the weight of the subject"}
+                                   "description": "The weight of the subject"}
 
         date_of_birth_subject_metadata = {"metadata_name": "date_of_birth", "value_type": "datetime",
                                           "value": self.metadata_finder_wrapper.get_subject_metadata("date_of_birth"),
-                                          "description": "datetime of date of birth. May be supplied instead of age"}
+                                          "description": "Datetime of date of birth.\nMay be supplied instead of age"}
 
         # Define groups to add :
 
@@ -389,39 +423,104 @@ class CicadaMetaDataContainer:
 
         # TODO : for each of those following metadata, find a way to show them
         other_metadata = dict()
-        general_metadata["group_name"] = 'other_metadata'
-        general_metadata["widget_type"] = 'QTable'
-        general_metadata["description"] = 'metadata which are not affiliated to a group'
-        general_metadata["metadata_in_group"] = [keywords_metadata,
-                                                 acquisition_metadata,
-                                                 analysis_metadata,
-                                                 stimulus_metadata,
-                                                 stimulus_template_metadata,
-                                                 epochs_metadata,
-                                                 epoch_tags_metadata,
-                                                 trials_metadata,
-                                                 invalid_times_metadata,
-                                                 units_metadata,
-                                                 modules_metadata,
-                                                 lab_metadata,
-                                                 electrodes_metadata,
-                                                 electrode_groups_metadata,
-                                                 ic_electrodes_metadata,
-                                                 sweep_table_metadata,
-                                                 imaging_planes_metadata,
-                                                 ogen_sites_metadata,
-                                                 devices_metadata,
-                                                 subject_metadata,
-                                                 neurodata_type_metadata,
-                                                 lab_meta_data_metadata,
-                                                 modified_metadata,
-                                                 container_source_metadata
-                                                 ]
+        other_metadata["group_name"] = 'other_metadata'
+        other_metadata["widget_type"] = 'QTable'
+        other_metadata["description"] = 'metadata which are not affiliated to a group'
+        other_metadata["metadata_in_group"] = [keywords_metadata,
+                                               epochs_metadata,
+                                               trials_metadata,
+                                               invalid_times_metadata,
+                                               units_metadata,
+                                               electrodes_metadata,
+                                               sweep_table_metadata,
+                                               neurodata_type_metadata,
+                                               modified_metadata,
+                                               container_source_metadata]
 
-    @staticmethod
-    def save_changes(**kwargs):
-        print("Ah !")
-        print(kwargs)
+    def set_containers_for_gui(self):
+
+        containers_from_data_file = self.metadata_finder_wrapper.containers_from_data_file
+
+        container_metadata = dict()
+        container_metadata["group_name"] = 'containers'
+        container_metadata["widget_type"] = 'QTable'
+        container_metadata["description"] = 'all containers with data (value indicates if the container contains data)'
+        container_metadata["metadata_in_group"] = []
+
+        for container in containers_from_data_file.values():
+            container_dict = {'metadata_name': container.name, 'value_type': container.neurodata_type,
+                              'value': getattr(container, 'data', None) is not None,
+                              'description': getattr(container, 'description', None)}
+            container_metadata["metadata_in_group"].append(container_dict)
+
+        self.add_metadata_group_for_gui(**container_metadata)
+
+    def save_changes(self, general_metadata, subject_metadata):
+        # TODO : wrapper for save : only in NWB for the moment
+
+        # SaveModifiedNWB(self.data_path, general_metadata=general_metadata, subject_metadata=subject_metadata)
+        pass
+
+
+class SaveModifiedNWB:
+    # IT DOESN'T WORK !!!
+    # TODO: make it work
+
+    # I tried to open the initial NWB_file, add to it all metadata completed by the user on the GUI
+    # and then save the modified NWB_file in a new file. However there is a problem with all container objects like
+    # acquisition : when I try to save the file, they are not found ...
+
+    def __init__(self, nwb_path, general_metadata=None, subject_metadata=None):
+        self.manager = get_manager()
+        self.nwb_path = nwb_path
+
+        # New path to save the modified NWB
+        parent_dir, file_name = os.path.split(self.nwb_path)
+        self.new_path = os.path.join(parent_dir, "new_" + file_name)
+
+        self.io_read = None
+        self.io_write = None
+        self.nwb_file = self.get_nwb_file()
+        self.general_metadata = general_metadata  # dictionnary with all general metadata fields and values
+        self.subject_metadata = subject_metadata  # dictionnary with all value metadata fields and values
+
+        self.modify_general_metadata()
+        self.modify_subject_metadata()
+
+        self.write_nwb()
+
+    def get_nwb_file(self):
+        self.io_read = NWBHDF5IO(self.nwb_path, 'r', manager=self.manager)
+        nwb_file_to_get = self.io_read.read()
+        return nwb_file_to_get
+
+    def modify_general_metadata(self):
+        # Add general metadata if not already exists
+        for metadata_field, metadata_value in self.general_metadata.items():
+            try:
+                setattr(self.nwb_file, metadata_field, metadata_value)
+            except AttributeError:
+                print(metadata_field, " : NO ! NO ! NO !")
+
+    def modify_subject_metadata(self):
+        # Add subject metadata if not already exists
+        if getattr(self.nwb_file, 'subject', None) is None:
+            pass
+        else:
+            for metadata_field, metadata_value in self.subject_metadata.items():
+                try:
+                    setattr(self.nwb_file.subject, metadata_field, metadata_value)
+                except AttributeError:
+                    print(metadata_field, " : NO ! NO ! NO !")
+                except Exception as e:
+                    print(e)
+
+    def write_nwb(self):
+        # It seems that io.read need to be open to save data in file, so I try to save data in an other file
+        self.io_write = NWBHDF5IO(self.new_path, 'a', manager=self.manager)
+        self.io_write.write(self.nwb_file, link_data=False)
+        self.io_read.close()
+        self.io_write.close()
 
 
 class MetaDataHandler:
@@ -449,11 +548,15 @@ class MetaDataHandler:
         return gui_widgets
 
     def save_changes(self):
-        kwargs = {}
+        general_metadata_values = dict()
+        subject_metadata_values = dict()
         for metadata_group_name, metadata_group in self.groups_dict.items():
             for metadata_name, metadata in metadata_group.metadata_dict.items():
-                kwargs[metadata_name] = metadata_group.get_metadata_value_in_widget(metadata)
-        self.cicada_metadata_container.save_changes(**kwargs)
+                if metadata_group_name == 'general_metadata':
+                    general_metadata_values[metadata_name] = metadata_group.get_metadata_value_in_widget(metadata)
+                elif metadata_group_name == 'metadata_from_subject':
+                    subject_metadata_values[metadata_name] = metadata_group.get_metadata_value_in_widget(metadata)
+        self.cicada_metadata_container.save_changes(general_metadata_values, subject_metadata_values)
 
 
 class MetaData:
@@ -650,6 +753,7 @@ class TableWidget(QFrame):
         self.table.setHorizontalHeaderLabels(["metadata name", "value type", "value", "description"])
 
         for metadata_to_add in self.metadata_dict.values():
+            print(metadata_to_add.metadata_name)
             position = metadata_to_add.position_in_widget
             self.table.setItem(position, 0, QTableWidgetItem(metadata_to_add.metadata_name))
             self.table.setItem(position, 1, QTableWidgetItem(metadata_to_add.value_type))
@@ -684,11 +788,9 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     # Change the path !
     # ============================================
-    file_path = 'F:/nwb_files/p6_18_02_07_a002.nwb'
+    file_path = 'C:/Users/Public/nwb_files/p6_18_02_07_a002.nwb'
     # ============================================
-    io = NWBHDF5IO(file_path, 'r')
-    nwb_file = io.read()
-    cicada_metadata_container = CicadaMetaDataContainer(nwb_file, "nwb")
+    cicada_metadata_container = CicadaMetaDataContainer(file_path, "nwb")
     widget = MetaDataWidget()
     widget.create_widgets(cicada_metadata_container)
     widget.show()
