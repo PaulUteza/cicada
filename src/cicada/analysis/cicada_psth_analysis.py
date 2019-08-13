@@ -1,5 +1,10 @@
 from cicada.analysis.cicada_analysis import CicadaAnalysis
-
+from tqdm import tqdm
+import sys
+from qtpy.QtCore import Signal
+from qtpy import QtCore
+import PyQt5.QtCore as Core
+from time import sleep, time
 
 class CicadaPsthAnalysis(CicadaAnalysis):
     def __init__(self):
@@ -85,7 +90,20 @@ class CicadaPsthAnalysis(CicadaAnalysis):
         :param kwargs:
         :return:
         """
-        for data in self._data_to_analyse:
-            print(f"PSTH ----- {data.identifier} on range {kwargs['psth_range']} with {kwargs['plot_options']} "
-                  f"plot using {kwargs['segmentation']} "
-                  f"with formats {kwargs['save_formats']}")
+        # for data in self._data_to_analyse:
+        #     print(f"PSTH ----- {data.identifier} on range {kwargs['psth_range']} with {kwargs['plot_options']} "
+        #           f"plot using {kwargs['segmentation']} "
+        #           f"with formats {kwargs['save_formats']} ")
+        start_time = time()
+        for i in range(101):
+            print(i)
+            sleep(0.1)
+            self.update_progressbar(start_time, 1)
+
+        # for data in tqdm(self._data_to_analyse, file=sys.stdout, ncols=100, desc=self.name, ascii=False):
+        #     print(f"PSTH ----- {data.identifier} on range {kwargs['psth_range']} with {kwargs['plot_options']} "
+        #           f"plot using {kwargs['segmentation']} "
+        #           f"with formats {kwargs['save_formats']} ")
+        # for i in tqdm(range(10), file=sys.stdout, ncols=100, ascii=False):
+        #     print('toto')
+        #     sleep(1)

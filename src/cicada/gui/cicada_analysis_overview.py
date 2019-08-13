@@ -2,10 +2,13 @@ from qtpy.QtWidgets import *
 from qtpy.QtCore import QAbstractItemModel, QModelIndex, Qt
 import numpy as np
 from qtpy import QtCore
+from qtpy.QtCore import QThread
 from random import randint
-from cicada.gui.cicada_analysis_parameters_gui import AnalysisParametersApp, AnalysisPackage
+# from cicada.gui.cicada_analysis_parameters_gui import AnalysisPackage
 import gc
 from functools import partial
+from time import time, sleep
+import sys
 
 
 class AnalysisOverview(QWidget):
@@ -33,7 +36,6 @@ class AnalysisOverview(QWidget):
         self.scrollArea.setWidget(self.scroll_area_widget_contents)
         self.layout = QVBoxLayout(self.scroll_area_widget_contents)
         # ==============================
-
         self.setLayout(self.main_layout)
 
     def add_analysis_overview(self, analysis_name, analysis_id, obj):
@@ -50,6 +52,12 @@ class AnalysisOverview(QWidget):
              '", self.scroll_area_widget_contents, "' + analysis_name + '")')
         eval('self.layout.addWidget(self.' + analysis_id + '_overview)')
         eval('self.' + analysis_id + '_overview.setStyleSheet("background-color:transparent; border-radius: 20px;")')
+        exec('self.hlayout_' + analysis_id + ' = QHBoxLayout()')
+        # exec('self.' + analysis_id + '_remaining_time_label = RemainingTime()')
+        exec('self.' + analysis_id + '_progress_bar = QProgressBar()')
+        eval('self.hlayout_' + analysis_id + '.addWidget(self.' + analysis_id + '_progress_bar)')
+        # eval('self.hlayout_' + analysis_id + '.addWidget(self.' + analysis_id + '_remaining_time_label)')
+        eval('self.layout.addLayout(self.hlayout_' + analysis_id + ')')
 
     def keyPressEvent(self, event):
         available_background = ["black_widow.png", "captain_marvel.png", "iron_man.png", "hulk.png"]
@@ -73,13 +81,18 @@ class AnalysisState(QLabel):
     def __init__(self, analysis_id, parent=None,analysis_name=''):
         super().__init__(parent)
         self.setText(analysis_name)
-        self.mouseDoubleClickEvent = partial(self.bring_to_front, analysis_id)
+    #     self.mouseDoubleClickEvent = partial(self.bring_to_front, analysis_id)
+    #
+    #
+    # def bring_to_front(self, window_id, event):
+    #     """Bring corresponding analysis window to the front (re-routed from the double click method)"""
+    #     for obj in gc.get_objects():
+    #         if isinstance(obj, AnalysisPackage):
+    #             if str(obj) == str(window_id):
+    #                 obj.setWindowState(obj.windowState() & ~QtCore.Qt.WindowMinimized | QtCore.Qt.WindowActive)
+    #                 obj.activateWindow()
+    #
+    #
 
 
-    def bring_to_front(self, window_id, event):
-        """Bring corresponding analysis window to the front (re-routed from the double click method)"""
-        for obj in gc.get_objects():
-            if isinstance(obj, AnalysisPackage):
-                if str(obj) == str(window_id):
-                    obj.setWindowState(obj.windowState() & ~QtCore.Qt.WindowMinimized | QtCore.Qt.WindowActive)
-                    obj.activateWindow()
+

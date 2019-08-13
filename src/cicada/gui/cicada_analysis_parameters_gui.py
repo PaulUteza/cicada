@@ -2,9 +2,11 @@ from qtpy.QtWidgets import *
 from qtpy.QtCore import QAbstractItemModel, QModelIndex, Qt, QProcess
 from PyQt5 import QtCore as Core
 from qtpy import QtGui
+import math
 import numpy as np
 from qtpy import QtCore
 import sys
+from multiprocessing.pool import ThreadPool
 from multiprocessing import Process
 from threading import Thread
 import threading
@@ -12,7 +14,11 @@ import logging
 from random import randint
 import gc
 from abc import ABC, abstractmethod
-
+from cicada.gui.cicada_analysis_overview import AnalysisOverview, AnalysisState
+from qtpy.QtCore import QThread
+import os
+from functools import partial
+from time import time
 
 class ParameterWidgetModel(ABC):
     def __init__(self):
@@ -410,9 +416,10 @@ class SliderWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
 
 
 class AnalysisParametersApp(QWidget):
-    def __init__(self, thread_name, parent=None):
+    def __init__(self, thread_name, progress_bar, parent=None):
         QWidget.__init__(self, parent=parent)
         self.name = thread_name
+        self.progress_bar = progress_bar
         self.special_background_on = False
         self.current_style_sheet_background = ".QWidget{background-image:url(\"\"); background-position: center;}"
         self.cicada_analysis = None
@@ -512,13 +519,15 @@ class AnalysisParametersApp(QWidget):
     def run_analysis(self):
         if self.analysis_arguments_handler is None:
             return
-
-        p = Thread(target=self.analysis_arguments_handler.run_analysis, daemon=True)
-        p.setName(self.name)
-        p.start()
+        self.worker = Worker(self.name, self.analysis_arguments_handler)
+        self.worker.updateProgress.connect(self.progress_bar.update_progress_bar)
+        self.worker.updateProgress2.connect(self.progress_bar.update_progress_bar_overview)
+        self.worker.start()
+        # p = Thread(target=self.analysis_arguments_handler.run_analysis, daemon=True)
+        # p.setName(self.name)
+        # p.start()
 
 class EmittingStream(QtCore.QObject):
-
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.parent = parent
@@ -532,8 +541,10 @@ class EmittingStream(QtCore.QObject):
             text (str): Python output from stdout
 
         """
+
         # Add thread name to the output when writting in the the widget
-        self.parent.normalOutputWritten(text + str(threading.current_thread().name))
+        current_thread = QThread.currentThread()
+        self.parent.normalOutputWritten(text + str(current_thread.name))
         self.terminal.write(str(text))
 
     def flush(self):
@@ -605,6 +616,10 @@ class AnalysisPackage(QWidget):
         self.name = name
         self.resize(1000, 750)
         self.setFixedSize(self.size())
+        self.remaining_time_label = RemainingTime()
+        self.progress_bar = ProgressBar(self.remaining_time_label)
+        self.progress_bar.setEnabled(False)
+        cicada_analysis.progress_bar_analysis = self.progress_bar
         # print(cicada_analysis.analysis_arguments_handler)
         self.scrollArea = QScrollArea()
         self.scrollArea.setWidgetResizable(True)
@@ -616,17 +631,20 @@ class AnalysisPackage(QWidget):
         self.text_output.setAlignment(Qt.AlignTop)
         self.text_output.show()
         sys.stdout = EmittingStream(self)
-        self.resize(1000, 750)
         self.setWindowTitle(analysis_name)
         self.layout = QVBoxLayout()
         self.hlayout = QHBoxLayout()
         self.analysis_data = AnalysisData(cicada_analysis._data_to_analyse, analysis_description)
         self.hlayout.addWidget(self.analysis_data)
-        self.arguments_section_widget = AnalysisParametersApp(self.name)
+        self.arguments_section_widget = AnalysisParametersApp(self.name, self.progress_bar)
         self.arguments_section_widget.create_widgets(cicada_analysis=cicada_analysis)
         self.hlayout.addWidget(self.arguments_section_widget)
         self.layout.addLayout(self.hlayout)
-        self.layout.addWidget(self.text_output)
+        self.hlayout2 = QHBoxLayout()
+        self.hlayout2.addWidget(self.progress_bar)
+        self.hlayout2.addWidget(self.remaining_time_label)
+        self.layout.addLayout(self.hlayout2)
+        # self.layout.addWidget(self.text_output)
         self.scrollArea.setWidget(self.text_output)
         self.layout.addWidget(self.scrollArea)
         self.setLayout(self.layout)
@@ -647,14 +665,79 @@ class AnalysisPackage(QWidget):
             text = "".join([s for s in text.splitlines(True) if s.strip("\r\n")])
             text = self.text_output.text() + text
             self.text_output.setText(text)
-            self.text_output.setTextCursor(cursor)
-            self.text_output.ensureCursorVisible()
+            self.scrollArea.verticalScrollBar().setSliderPosition(self.text_output.height())
 
     def closeEvent(self, QCloseEvent):
         """ Need to delete the overview widget associated to this analysis"""
         pass
 
+class Worker(QtCore.QThread):
 
+    updateProgress = QtCore.Signal(float, float, float)
+    updateProgress2 = QtCore.Signal(str, float, float, float)
+    def __init__(self, name, cicada_analysis):
+        QtCore.QThread.__init__(self)
+        self.name = name
+        self.cicada_analysis = cicada_analysis
+
+    def run(self):
+        self.cicada_analysis.run_analysis()
+
+    def setProgress(self,name, time_started, increment_value=0, new_set_value=0):
+        self.updateProgress.emit(time_started, increment_value, new_set_value)
+        self.updateProgress2.emit(name, time_started, increment_value, new_set_value)
+
+class ProgressBar(QProgressBar):
+
+    def __init__(self, remaining_time_label, parent=None):
+        QProgressBar.__init__(self, parent=parent)
+        self.setMinimum(0)
+        self.progress = self
+        self.remaining_time_label = remaining_time_label
+
+    def update_progress_bar(self, time_started, increment_value=0, new_set_value=0):
+        current_thread = QThread.currentThread()
+        # sys.stderr.write(current_thread.name)
+        self.setEnabled(True)
+        if new_set_value:
+            self.setValue(new_set_value)
+
+        if increment_value:
+            self.setValue(self.value() + increment_value)
+
+        if self.isEnabled() and self.value() != 0:
+            self.remaining_time_label.update_remaining_time(self.value(), time_started)
+
+    def update_progress_bar_overview(self, name, time_started, increment_value=0, new_set_value=0):
+        # eval('AnalysisOverview.' + name + '_progress_bar.setValue(50)')
+        for obj in gc.get_objects():
+            if isinstance(obj, AnalysisOverview):
+                try:
+                    eval('obj.' + name + '_progress_bar.setEnabled(True)')
+                    if new_set_value:
+                        eval('obj.' + name + '_progress_bar.setValue(new_set_value)')
+
+                    if increment_value:
+                        eval('obj.' + name + '_progress_bar.setValue(self.value() + increment_value)')
+
+                    if eval('obj.' + name + '_progress_bar.isEnabled()') and eval('obj.' + name + '_progress_bar.value()') != 0:
+                        eval('obj.' + name + '_progress_bar.setEnabled(True)')
+
+                except:
+                    pass
+
+class RemainingTime(QLabel):
+
+    def __init__(self, parent=None):
+        QLabel.__init__(self, parent=parent)
+        self.setMinimumSize(0,0)
+        self.setMaximumSize(self.size())
+        self.setText("Time remaining : ")
+
+    def update_remaining_time(self, progress_value, time_started):
+        # sys.stderr.write("\n Time elapsed:" + str(time()-time_started))
+        remaining_time = ((time() - time_started) * 100) / progress_value
+        self.setText("Time remaining : " + str("%.2f" % (time() - time_started)) + "/" + str("%.2f" % remaining_time))
 
 def clearvbox(self, L = False):
     if not L:
@@ -669,3 +752,4 @@ def clearvbox(self, L = False):
                 widget.deleteLater()
             else:
                 self.clearvbox(item.layout())
+

@@ -3,6 +3,8 @@ from cicada.analysis.cicada_analysis_arguments_handler import AnalysisArgumentsH
 from cicada.analysis.cicada_analysis_nwb_wrapper import CicadaAnalysisNwbWrapper
 from cicada.preprocessing.utils import class_name_to_file_name
 import importlib
+import PyQt5.QtCore as Core
+from qtpy.QtCore import QThread
 from copy import copy, deepcopy
 
 class CicadaAnalysis(ABC):
@@ -11,7 +13,7 @@ class CicadaAnalysis(ABC):
 
     """
     def __init__(self, name, short_description, family_id=None, long_description=None,
-                 data_to_analyse=None, data_format=None):
+                 data_to_analyse=None, data_format=None,):
         """
         A list of
         :param name:
@@ -26,6 +28,8 @@ class CicadaAnalysis(ABC):
         #  to the GUI in order to communicate with it and get the results displayed if needed
         self.short_description = short_description
         self.long_description = long_description
+        self.progress_bar_overview = None
+        self.progress_bar_analysis = None
         self.family_id = family_id
         self.name = name
         self.current_order_index = 0
@@ -140,3 +144,8 @@ class CicadaAnalysis(ABC):
 
     # TODO: do a function that return a structure (home-made class ?) that will be used by the GUI to know
     #  which argument to pass to run_analysis, their types, if mandatory and their range among other things
+
+    def update_progressbar(self, time_started, increment_value=0, new_set_value=0):
+        worker = QThread.currentThread()
+        worker.setProgress(name=worker.name, time_started=time_started, increment_value=increment_value, new_set_value=new_set_value)
+
