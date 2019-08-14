@@ -347,6 +347,7 @@ class AnalysisTreeApp(QWidget):
         # self.dataGroupBox = None
         self.dataView = None
         self.analysis_tree_model = None
+        self.created_analysis = []
 
         # will be initialize when the param section will have been created
         self.analysis_overview = None
@@ -378,8 +379,10 @@ class AnalysisTreeApp(QWidget):
             exec('self.' + random_id +' = AnalysisPackage(cicada_analysis=self.copied_data,'
                                       ' analysis_name=str(tree_item.item_data[0]),'
                                       ' analysis_description = str(tree_item.item_data[1]), name=random_id)')
+            exec('self.created_analysis.append(self.' + random_id + ')')
             # Add analysis overview item linked to the analysis window
             self.analysis_overview.add_analysis_overview(str(tree_item.item_data[0]), random_id, eval('self.'+random_id))
+            # self.analysis_overview.created_analysis = self.created_analysis
 
     def load_arguments_parameters_section(self):
         q_model_index = self.dataView.currentIndex()

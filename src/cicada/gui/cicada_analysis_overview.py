@@ -19,7 +19,7 @@ class AnalysisOverview(QWidget):
         self.special_background_on = False
         self.current_style_sheet_background = ".QWidget{background-image:url(\"\"); background-position: center;}"
         self.created_analysis_names = []
-
+        self.created_analysis = []
         # Add the scroll bar
         # ==============================
         self.main_layout = QVBoxLayout()
@@ -48,8 +48,7 @@ class AnalysisOverview(QWidget):
 
         """
         self.created_analysis_names.append(analysis_id + '_overview')
-        exec('self.' + analysis_id + '_overview = AnalysisState( "' + str(obj) +
-             '", self.scroll_area_widget_contents, "' + analysis_name + '")')
+        exec('self.' + analysis_id + '_overview = AnalysisState(obj, self.scroll_area_widget_contents, "' + analysis_name + '")')
         eval('self.layout.addWidget(self.' + analysis_id + '_overview)')
         eval('self.' + analysis_id + '_overview.setStyleSheet("background-color:transparent; border-radius: 20px;")')
         exec('self.hlayout_' + analysis_id + ' = QHBoxLayout()')
@@ -78,20 +77,17 @@ class AnalysisOverview(QWidget):
 
 class AnalysisState(QLabel):
 
-    def __init__(self, analysis_id, parent=None,analysis_name=''):
+    def __init__(self, analysis_id, parent=None, analysis_name=''):
         super().__init__(parent)
         self.setText(analysis_name)
-    #     self.mouseDoubleClickEvent = partial(self.bring_to_front, analysis_id)
-    #
-    #
-    # def bring_to_front(self, window_id, event):
-    #     """Bring corresponding analysis window to the front (re-routed from the double click method)"""
-    #     for obj in gc.get_objects():
-    #         if isinstance(obj, AnalysisPackage):
-    #             if str(obj) == str(window_id):
-    #                 obj.setWindowState(obj.windowState() & ~QtCore.Qt.WindowMinimized | QtCore.Qt.WindowActive)
-    #                 obj.activateWindow()
-    #
+        self.mouseDoubleClickEvent = partial(self.bring_to_front, analysis_id)
+
+
+    def bring_to_front(self, window_id, event):
+        """Bring corresponding analysis window to the front (re-routed from the double click method)"""
+        window_id.setWindowState(window_id.windowState() & ~QtCore.Qt.WindowMinimized | QtCore.Qt.WindowActive)
+        window_id.activateWindow()
+        window_id.raise_()
     #
 
 
