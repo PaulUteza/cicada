@@ -69,14 +69,15 @@ def filter_list_according_to_keywords(list_to_filter, keywords, keywords_to_excl
     while counter < len(list_to_filter):
         delete = False
         for keyword in keywords:
-            if keyword not in list_to_filter[counter]:
+            if keyword.lower() not in list_to_filter[counter].lower():
                 # print("Keyword not found in : " + str(filtered_list))
                 del list_to_filter[counter]
                 # print("New list : " + str(filtered_list))
                 delete = True
         if (not delete) and keywords_to_exclude:
             for keyword_to_exclude in keywords_to_exclude:
-                if keyword_to_exclude in list_to_filter[counter]:
+                # we lower both, to make them insensible to case
+                if keyword_to_exclude.lower() in list_to_filter[counter].lower():
                     # print("Excluded keyword found in : " + str(filtered_list))
                     del list_to_filter[counter]
                     # print("New list : " + str(filtered_list))
@@ -85,63 +86,78 @@ def filter_list_according_to_keywords(list_to_filter, keywords, keywords_to_excl
             counter += 1
 
 
-def create_nwb_file(yaml_path):
+def create_nwb_file(subject_data_yaml_file, session_data_yaml_file):
     """
     Create an NWB file object using all metadata containing in YAML file
 
     Args:
-        yaml_path (str): Absolute path to YAML file
+        subject_data_yaml_file (str): Absolute path to YAML file containing the subject metadata
+        session_data_yaml_file (str): Absolute path to YAML file containing the session metadata
 
     """
 
-    # Weight SI unit is newton
-    yaml_data = None
-    with open(yaml_path, 'r') as stream:
-        yaml_data = yaml.safe_load(stream)
-    if yaml_data is None:
-        raise Exception(f"Issue while reading the file {yaml_path}")
+    subject_data_yaml = None
+    with open(subject_data_yaml_file, 'r') as stream:
+        subject_data_yaml = yaml.safe_load(stream)
+    if subject_data_yaml is None:
+        print(f"Issue while reading the file {subject_data_yaml}")
+        return None
+
+    session_data_yaml = None
+    with open(session_data_yaml_file, 'r') as stream:
+        session_data_yaml = yaml.safe_load(stream)
+    if session_data_yaml is None:
+        print(f"Issue while reading the file {session_data_yaml}")
+        return None
 
     keys_kwargs_subject = ["age", "weight", "genotype", "subject_id", "species", "sex", "date_of_birth"]
     kwargs_subject = dict()
     for key in keys_kwargs_subject:
-        kwargs_subject[key] = yaml_data.get(key)
+        kwargs_subject[key] = subject_data_yaml.get(key)
         if kwargs_subject[key] is not None:
             kwargs_subject[key] = str(kwargs_subject[key])
+    if "date_of_birth" in kwargs_subject:
+        kwargs_subject["date_of_birth"] = datetime.strptime(kwargs_subject["date_of_birth"], '%m/%d/%Y')
     print(f'kwargs_subject {kwargs_subject}')
     subject = Subject(**kwargs_subject)
 
     #####################################
     # ###    creating the NWB file    ###
     #####################################
-    keys_kwargs_nwb_file = ["session_description", "identifier", "session_start_time", "session_id",
+    keys_kwargs_nwb_file = ["session_description", "identifier", "session_id", "session_start_time",
                             "experimenter", "experiment_description", "institution", "keywords",
                             "notes", "pharmacology", "protocol", "related_publications",
-                            "source_script", "source_script_file_name", "data_collection", "surgery", "virus",
-                            "stimulus_notes", "lab"
-                            ]
-    # TODO: for "notes", "pharmacology", "protocol", "related_publications" "data_collection", "surgery", "virus",
-    #  "stimulus_notes" see if yaml format is the best option ?
+                            "source_script", "source_script_file_name",  "surgery", "virus",
+                            "stimulus_notes", "slices", "lab_meta_data"]
 
     kwargs_nwb_file = dict()
     for key in keys_kwargs_nwb_file:
-        kwargs_nwb_file[key] = yaml_data.get(key)
+        kwargs_nwb_file[key] = session_data_yaml.get(key)
         if kwargs_nwb_file[key] is not None:
             kwargs_nwb_file[key] = str(kwargs_nwb_file[key])
     if "session_description" not in kwargs_nwb_file:
-        raise Exception(f"session_description is needed in the file {yaml_path}")
+        print(f"session_description is needed in the file {session_data_yaml_file}")
+        return
     if "identifier" not in kwargs_nwb_file:
-        raise Exception(f"identifier is needed in the file {yaml_path}")
-    if "session_start_time" not in kwargs_nwb_file or kwargs_nwb_file["session_start_time"] is None:
-        kwargs_nwb_file["session_start_time"] = datetime.now(tzlocal())
+        print(f"identifier is needed in the file {session_data_yaml_file}")
+        return
+    if "session_start_time" not in kwargs_nwb_file:
+        print(f"session_start_time is needed in the file {session_data_yaml_file}")
+        return
+    else:
+        kwargs_nwb_file["session_start_time"] = datetime.strptime(kwargs_nwb_file["session_start_time"],
+                                                                  '%m/%d/%Y %H:%M:%S')
+        print(f"kwargs_nwb_file['session_start_time'] {kwargs_nwb_file['session_start_time']}")
+
     if "session_id" not in kwargs_nwb_file:
         kwargs_nwb_file["session_id"] = kwargs_nwb_file["identifier"]
 
     # #### arguments that are not in the yaml file (yet ?)
-    # file_create_date, timestamps_reference_time=None, slices=None, acquisition=None, analysis=None, stimulus=None,
+    # file_create_date, timestamps_reference_time=None, acquisition=None, analysis=None, stimulus=None,
     # stimulus_template=None, epochs=None, epoch_tags=set(), trials=None, invalid_times=None,
-    # time_intervals=None, units=None, modules=None, lab_meta_data=None, electrodes=None,
+    # time_intervals=None, units=None, modules=None, electrodes=None,
     # electrode_groups=None, ic_electrodes=None, sweep_table=None, imaging_planes=None,
-    # ogen_sites=None, devices=None, subject=None
+    # ogen_sites=None, devices=None
 
     kwargs_nwb_file["subject"] = subject
     kwargs_nwb_file["file_create_date"] = datetime.now(tzlocal())
@@ -152,115 +168,111 @@ def create_nwb_file(yaml_path):
 
     return nwb_file
 
-    # abf_converter = ConvertAbfToNWB(nwb_file)
-    # abf_file_name = os.path.join(path_data, "p6_18_02_07_a001", "p6_18_02_07_001.abf")
-    # abf_yaml_file_name = os.path.join(path_data, "p6_18_02_07_a001", "p6_18_02_07_a001_abf.yaml")
-    # abf_converter.convert(abf_file_name=abf_file_name, abf_yaml_file_name=abf_yaml_file_name)
-    # # TODO: if yaml file stating which file to open with which instance of ConvertToNWB,
-    # #  use it, otherwise read a directory and depending on extension of the file and keywords
-    # #  using a yaml file that map those to an instance ConvertToNWB. There should be a default
-    # #  yaml file for this mapping and use could make its own that will override the default one.
-    # #  the yaml file should associated for each argument of the convert function the keyword +
-    # #  extension allowing to find the file_name to give as argument.
-    # ci_movie_converter = ConvertCIMovieToNWB(nwb_file, ci_sampling_rate=abf_converter.sampling_rate_calcium_imaging)
-    # ci_movie_converter.convert(format=format_movie,
-    #                            motion_corrected_file_name=os.path.join(path_data, tiff_file_name),
-    #                            non_motion_corrected_file_name=None,
-    #                            xy_translation_file_name=None,
-    #                            yaml_file_name=os.path.join(path_data, yaml_file_name))
-    #
-    # suite2p_dir = os.path.join(path_data, "p6_18_02_07_a001", "suite2p")
-    # suite2p_rois_converter = ConvertSuite2PRoisToNWB(nwb_file)
-    # suite2p_rois_converter.convert(suite2p_dir=suite2p_dir)
-
-    # TODO: use create_time_intervals(name, description='experimental intervals', id=None, columns=None, colnames=None)
-    #  to create time_intervals using npy files or other file in which intervals are contained through a
-    #  an instance of ConvertToNWB and the yaml_file for extension and keywords
-
-
-def convert_data_to_nwb(dir_path, default_convert_to_nwb_yml_file):
+def convert_data_to_nwb(data_to_convert_dir, default_convert_to_nwb_yml_file, nwb_files_dir):
     """
-    Convert all data and put it in NWB format then create the file
+    Convert all default_config_data_for_conversion located in dir_path and put it in NWB format then create the file.
+    Use the yaml file contains in dir_path to convert the default_config_data_for_conversion.
+    A yaml file with in its name session_data and one with subject_data must be in directory.
+    Otherwise nothing will happend.
+    A yaml file with abf in its name will need to be present to convert the abf default_config_data_for_conversion.
 
     Args:
-        dir_path (str): Absolute path to the directory containing all data
+        data_to_convert_dir (str): Absolute path to the directory containing all data
         default_convert_to_nwb_yml_file (str): Absolute path to the default YAML file to convert an NWB file
+        nwb_files_dir (str): Absolute path to the directory where to save the nwb file created
 
     """
     # Get all files and directories present in the path
-    files = utils.get_subfiles(dir_path)
-    dirs = utils.get_subdirs(dir_path)
+    files = utils.get_subfiles(data_to_convert_dir)
+    dirs = utils.get_subdirs(data_to_convert_dir)
     files = files + dirs
 
-    data = None
+    default_config_data_for_conversion = None
     with open(default_convert_to_nwb_yml_file, 'r') as stream:
-        data = yaml.safe_load(stream)
+        default_config_data_for_conversion = yaml.safe_load(stream)
 
-    home_data = dict()
+    config_data_for_conversion = dict()
     # Look for another YAML file containing the keywords, extensions and keywords to exclude
     for file in files:
         if not(file.endswith(".yaml") or file.endswith(".yml")):
             continue
-        if "convert_to_nwb" in file:
-            with open(os.path.join(dir_path, file, 'r')) as stream:
-                home_data = yaml.safe_load(stream)
+        if "create_nwb_data" in file:
+            with open(os.path.join(data_to_convert_dir, file, 'r')) as stream:
+                config_data_for_conversion = yaml.safe_load(stream)
 
     # If 2 files are provided, the one given by the user will take the priority
-    if data is not None:
-        difference = set(list(data.keys())) - set(list(home_data.keys()))
+    if default_config_data_for_conversion is not None:
+        difference = set(list(default_config_data_for_conversion.keys())) - set(list(config_data_for_conversion.keys()))
         for arg in list(difference):
-            home_data[arg] = data[arg]
+            config_data_for_conversion[arg] = default_config_data_for_conversion[arg]
 
     # First we create the nwb file because it will be needed for everything
-    converttonwb = home_data.pop("ConvertToNWB")
 
-    for arg in converttonwb:
+    # The class ConvertToNWB will create the nwb file, based on the 2 yaml file
+    create_nwb_data = config_data_for_conversion.pop("CreateNWB")
+
+    session_data_yaml_file = None
+    subject_data_yaml_file = None
+    for arg in create_nwb_data:
         # If no extension is provided it means we are looking for a directory, so we filter the list of files and
         # directory to only contain directories
-        filtered_list = filter_list_of_files(dir_path=dir_path, files=files,
-                                             extensions=converttonwb[arg].get("extension"))
+        filtered_list = filter_list_of_files(dir_path=data_to_convert_dir, files=files,
+                                             extensions=create_nwb_data[arg].get("extension"))
         # Conditional loop to remove all files or directories not containing the keywords
         # or containing excluded keywords
         filter_list_according_to_keywords(list_to_filter=filtered_list,
-                                          keywords=converttonwb[arg].get("keyword"),
-                                          keywords_to_exclude=converttonwb[arg].get("keyword_to_exclude"))
-        if len(filtered_list) == 0:
-            raise Exception(f"No yaml data file was found in {dir_path}")
+                                          keywords=create_nwb_data[arg].get("keyword"),
+                                          keywords_to_exclude=create_nwb_data[arg].get("keyword_to_exclude"))
         print("Files to pass for " + arg + ": " + str(filtered_list))
+        if len(filtered_list) == 0:
+            continue
         # If files were found respecting every element, add the whole path to pass them as arguments
-        yaml_path = os.path.join(dir_path, filtered_list[0])
+        if arg == "session_data_yaml":
+            session_data_yaml_file = os.path.join(data_to_convert_dir, filtered_list[0])
+        elif arg == "subject_data_yaml":
+            subject_data_yaml_file = os.path.join(data_to_convert_dir, filtered_list[0])
 
-    nwb_file = create_nwb_file(yaml_path)
+    if subject_data_yaml_file is None:
+        print(f"Conversion of data in {data_to_convert_dir} not possible, no yaml file found with 'subject_data' in its name.")
+        return
+    if session_data_yaml_file is None:
+        print(f"Conversion of data in {data_to_convert_dir} not possible, no yaml file found with 'session_data' in its name.")
+        return
+    nwb_file = create_nwb_file(subject_data_yaml_file=subject_data_yaml_file,
+                               session_data_yaml_file=session_data_yaml_file)
+    # raise Exception("NOT TODAY")
+    if nwb_file is None:
+        return
 
     converter_dict = dict()
     order_list = []
-    if home_data.get("order"):
-        order_list = home_data.pop("order")
-    class_names_list = list(home_data.keys())
+    if config_data_for_conversion.get("order"):
+        order_list = config_data_for_conversion.pop("order")
+    class_names_list = list(config_data_for_conversion.keys())
     # putting them on the right order
     class_names_list = order_list + list(set(class_names_list) - set(order_list))
     for class_name in class_names_list:
-        if class_name not in home_data:
+        if class_name not in config_data_for_conversion:
             # in a class in order would not have been added to the yaml file
             continue
-        keys = list(home_data[class_name].keys())
+        keys = list(config_data_for_conversion[class_name].keys())
         if len(keys) == 0:
             continue
         first_key = keys[0]
         if isinstance(first_key, int):
             # means we need to create more than one instance of this class
-            for key, config_dict in home_data[class_name].items():
+            for key, config_dict in config_data_for_conversion[class_name].items():
                 create_convert_class(class_name, config_dict, converter_dict, nwb_file,
-                                     yaml_path, files, dir_path)
+                                     default_convert_to_nwb_yml_file, files, data_to_convert_dir)
         else:
-            create_convert_class(class_name, home_data[class_name], converter_dict, nwb_file,
-                                 yaml_path, files, dir_path)
+            create_convert_class(class_name, config_data_for_conversion[class_name], converter_dict, nwb_file,
+                                 default_convert_to_nwb_yml_file, files, data_to_convert_dir)
 
     # Create NWB file in the data folder
-    nwb_files_dir = "/Users/pappyhammer/Documents/academique/these_inmed/robin_michel_data/data/nwb_files/"
-    # nwb_files_dir = "H:/Documents/Data/julien/data/nwb_files"
-    # nwb_files_dir = "/media/julien/Not_today/hne_not_today/data/nwb_files/"
-    nwb_name = utils.path_leaf(dir_path) + ".nwb"
+    # nwb_name = utils.path_leaf(data_to_convert_dir) + ".nwb"
+    # adding the time of creation of the file, to make sure we don't erase another one
+    time_str = datetime.now().strftime("%Y_%m_%d.%H-%M-%S")
+    nwb_name = nwb_file.identifier + "_" + time_str + ".nwb"
     print(f"Before NWBHDF5IO write: nwb_file.epoch_tags {nwb_file.epoch_tags}")
     with NWBHDF5IO(os.path.join(nwb_files_dir, nwb_name), 'w') as io:
         io.write(nwb_file)
@@ -275,7 +287,10 @@ def create_convert_class(class_name, config_dict, converter_dict, nwb_file, yaml
         class_name:
         config_dict:
         converter_dict:
-
+        nwb_file:
+        yaml_path:
+        files:
+        dir_path:
     Returns:
 
     """
@@ -308,7 +323,7 @@ def create_convert_class(class_name, config_dict, converter_dict, nwb_file, yaml
                 raise Exception(f"{attribute_name} is not a string for {class_name} argument {arg} "
                                 f"in the yaml file {yaml_path}")
             arg_dict[arg] = getattr(converter_dict[converter_name], attribute_name)
-        # If value if found it means the argument is not a file but a string/int/etc
+        # If value if found, and no extension is given, it means the argument is not a file but a string/int/etc
         elif config_dict[arg].get("value") and not config_dict[arg].get("extension") and \
                 (not config_dict[arg].get("keyword") or
                  (not config_dict[arg].get("keyword_to_exclude"))):
@@ -335,18 +350,23 @@ def create_convert_class(class_name, config_dict, converter_dict, nwb_file, yaml
             print("Files to pass for " + arg + ": " + str(filtered_list))
             # If files were found respecting every element, add the whole path to pass them as arguments
             if filtered_list:
+                file_name = filtered_list[0]
                 if config_dict[arg].get("dir"):
                     directory = config_dict[arg].get("dir")
-                    arg_dict[arg] = os.path.join(dir_path, *directory, filtered_list[0])
+                    arg_dict[arg] = os.path.join(dir_path, *directory, file_name)
                 else:
-                    arg_dict[arg] = os.path.join(dir_path, filtered_list[0])
-                if config_dict[arg].get("extension") in ["mat", "npz"] and \
+                    arg_dict[arg] = os.path.join(dir_path, file_name)
+                if (file_name.endswith("mat") or file_name.endswith("npz")) and \
                         config_dict[arg].get("value"):
-                    # TODO: decide if we load the value first or if we pass the file and the argument
-                    #  to the function
-                    # if home_data[class_name][arg].get("extension") == "npz":
-                    #     arg_dict[arg] = np.load(arg_dict[arg], )
-                    arg_dict[arg] = [arg_dict[arg]] + list(config_dict[arg].get("value"))
+                    if file_name.endswith("npz"):
+                        arg_dict[arg] = np.load(arg_dict[arg])
+                        arg_dict[arg] = arg_dict[arg][config_dict[arg].get("value")]
+                    else:
+                        arg_dict[arg] = hdf5storage.loadmat(arg_dict[arg])
+                        arg_dict[arg] = arg_dict[arg][config_dict[arg].get("value")][0]
+                    # another option will be to pass the file_name + the value field like this:
+                    # arg_dict[arg] = [arg_dict[arg]] + list(config_dict[arg].get("value"))
+                    arg_dict[arg] = arg_dict[arg]
             # If no file found, put the argument at None
             else:
                 arg_dict[arg] = None

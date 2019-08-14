@@ -7,11 +7,11 @@ ConvertCiMovieToNWB :
   xy_translation_file_name :
     keyword : ["xy"]
     keyword_to_exclude : []
-    extension : ["npy","mat"]
+    extension : ["npy", "mat"]
     value : []
   motion_corrected_file_name :
-    keyword : ["corrected"]
-    keyword_to_exclude : ["non"]
+    keyword : []
+    keyword_to_exclude : ["non", "avg"]
     extension : ["tif", "tiff"]
     value : []
   yaml_file_name :
@@ -23,7 +23,8 @@ ConvertCiMovieToNWB :
     keyword : []
     keyword_to_exclude : []
     extension : []
-    value : ["tiff"]
+    value : ["external"]
+# value : ["tiff"]
   ci_sampling_rate:
     from_other_converter: ConvertAbfToNWB
     value: ["sampling_rate_calcium_imaging"]
@@ -43,6 +44,36 @@ ConvertNeuralActivityToNWB:
 #    extension : ["npy", "mat", "npz"]
 #    value : ["raster_dur"]
 
+ConvertTimeIntervalsToNWB:
+  1:
+    intervals_data:
+      keyword: ["mvts_categories"]
+      extension: ["npz"]
+      value: shift_twitch
+    name:
+      value: twitches
+    description:
+      value: time intervals during which twitches happen
+  2:
+    intervals_data:
+      keyword: ["mvts_categories"]
+      extension: ["npz"]
+      value: shift_long
+    name:
+      value: long mouvement
+    description:
+      value: time intervals during which long movements happen
+  3:
+    intervals_data:
+      keyword: ["mvts_categories"]
+      extension: ["npz"]
+      value: shift_unclassified
+    name:
+      value: unclassified mouvement
+    description:
+      value: time intervals during which unclassified movements happen
+
+
 
 ConvertSuite2pRoisToNWB:
   suite2p_dir :
@@ -51,12 +82,18 @@ ConvertSuite2pRoisToNWB:
     extension : []
     value : []
 
-ConvertToNWB :
-  metadata_yaml :
-    keyword : ["data"]
-    keyword_to_exclude : ["abf"]
+CreateNWB :
+  session_data_yaml :
+    keyword : ["session_data"]
+    keyword_to_exclude : []
     extension : ["yaml", "yml"]
     value : []
+
+  subject_data_yaml:
+    keyword: ["subject_data"]
+    keyword_to_exclude: []
+    extension: ["yaml", "yml"]
+    value: []
 
 ConvertAbfToNWB:
   abf_yaml_file_name:
@@ -71,4 +108,5 @@ ConvertAbfToNWB:
     value: []
 
 order :
-  [ConvertAbfToNWB, ConvertCiMovieToNWB, ConvertSuite2pRoisToNWB, ConvertNeuralActivityToNWB]
+#  [ConvertCiMovieToNWB, ConvertSuite2pRoisToNWB, ConvertNeuralActivityToNWB, ConvertTimeIntervalsToNWB]
+ [ConvertAbfToNWB, ConvertCiMovieToNWB, ConvertSuite2pRoisToNWB, ConvertNeuralActivityToNWB, ConvertTimeIntervalsToNWB]

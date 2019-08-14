@@ -1,0 +1,53 @@
+# An exemple of session_data file to put in the directory containing your data to convert
+# replace the values by yours. If None, comment or erase the corresponding fields, don't let the None value
+
+# MANDATORY: (str) a description of the session where this data was generated
+session_description: recording of p6_18_02_07_a001
+# MANDATORY: (str) lab-specific ID for the session
+identifier: p6_18_02_07_a001
+# MANDATORY: Use to fill the session_start_time field, you have to indicate the date and the time:
+# in this format: '%m/%d/%y %H:%M:%S' representing the start of the recording session
+session_start_time: None
+
+device: 2Pdevice
+emission_lambda: 510.0
+excitation_lambda: 920.0
+image_plane_location: stratum pyramidale
+indicator: GCaMP6s
+# lab where experiment was performed
+lab: Cossart Lab
+# (str) institution(s) where experiment is performed
+institution: INMED
+# could be one or multiples experimenters, using a list in that case []
+experimenter: Robin Dard
+# (str)  – general description of the experiment
+experiment_description: recording with head fixed
+# Terms to search over
+keywords: ["pup", "calcium imaging", "GCaMP6s"]
+# (str) Notes about the experiment
+notes: no issues
+# Description of drugs used, including how and when they were administered.
+# Anesthesia(s), painkiller(s), etc., plus dosage, concentration, etc.
+pharmacology: propofol
+# (str) Experimental protocol, if applicable. E.g., include IACUC protocol
+protocol: None
+# (str) – Publication information.PMID, DOI, URL, etc.
+# If multiple, concatenate together and describe which is which. such as PMID, DOI, URL, etc
+related_publications: None
+# Description of slices, including information about preparation thickness, orientation, temperature and bath solution
+slices: None
+#  (str) – Script file used to create this NWB file.
+source_script: None
+# (str) – Name of the source_script file
+source_script_file_name: None
+#  (str) – Notes about data collection and analysis.
+data_collection: NOne
+# (str) – Narrative description about surgery/surgeries, including date(s) and who performed surgery.
+surgery: performed by Robin Dard on the 02/07/2018
+# virus (str) – Information about virus(es) used in experiments,
+# including virus ID, source, date made, injection location, volume, etc.
+virus: Ventricular injection of GCaMP6s at p0
+# (str) – Notes about stimuli, such as how and where presented.
+stimulus_notes: None
+# an extension that contains lab-specific meta-data, should be a list of string
+lab_meta_data: None

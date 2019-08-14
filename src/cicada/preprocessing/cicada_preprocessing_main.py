@@ -82,6 +82,11 @@ def load_nwb_file():
 
 
 def cicada_pre_processing_main():
+    """
+    Main function to be called in order to start the pre_processing
+    Returns:
+
+    """
     # interesting page: https://nwb-schema.readthedocs.io/en/latest/format.html#sec-labmetadata
     # IntervalSeries: used for interval periods
     test_paul_code = True
@@ -93,23 +98,76 @@ def cicada_pre_processing_main():
     else:
         # root_path = "/media/julien/Not_today/hne_not_today/"
         root_path = "/Users/pappyhammer/Documents/academique/these_inmed/robin_michel_data/"
-        path_data = os.path.join(root_path, "data_cicada_format")
+        dir_to_explore = os.path.join(root_path, "data")
         default_convert_to_nwb_yml_file = "pre_processing_default.yaml"
-        p = pathlib.Path(path_data)
-        # subject_dirs = []
-        # for (dirpath, dirnames, local_filenames) in os.walk(path_data):
-        #     subject_dirs = [dir for dir in dirnames if (not dir.startswith("."))]
-        #     break
-        subject_dirs = [x for x in p.iterdir() if (x.is_dir()) and (not x.as_posix().startswith("."))]
 
-        for subject_dir in subject_dirs:
-            # In case one of the directory is not complete/right we don't want the whole thing to stop
-            # try:
-            print(f"Loading data for {os.path.split(subject_dir)[1]}")
-            convert_data_to_nwb(subject_dir, default_convert_to_nwb_yml_file=default_convert_to_nwb_yml_file)
-            # except:
-            #     print(f"Error while loading {utils.path_leaf(dir)}")
-            #     continue
+        session_dirs = find_dir_to_convert(dir_to_explore=dir_to_explore,
+                                           keywords=[["session_data"], ["subject_data"]],
+                                           extensions=("yaml", "yml"))
+        print(f"session_dirs {session_dirs}")
+
+        nwb_files_dir = "/Users/pappyhammer/Documents/academique/these_inmed/robin_michel_data/data/nwb_files/"
+        # nwb_files_dir = "H:/Documents/Data/julien/data/nwb_files"
+        # nwb_files_dir = "/media/julien/Not_today/hne_not_today/data/nwb_files/"
+
+        for session_dir in session_dirs:
+            print(f"Loading data for {os.path.split(session_dir)[1]}")
+            convert_data_to_nwb(data_to_convert_dir=session_dir,
+                                default_convert_to_nwb_yml_file=default_convert_to_nwb_yml_file,
+                                nwb_files_dir=nwb_files_dir)
+
+
+def find_dir_to_convert(dir_to_explore, keywords, extensions=("yaml", "yml")):
+    """
+    Recursivefunction that will go through all subdirectories in dir_to_explore
+    and look for directories that contains 2 yaml files that contains the keywords "session_data" and "
+    Args:
+        dir_to_explore:
+
+        key_words: list of list. each list is composed of strings representing the keywords the file should made of
+
+        extensions: extensions of the files we're looking for
+
+    Returns:
+
+    """
+    dirs_found = []
+    for (dir_path, dir_names, local_filenames) in os.walk(dir_to_explore):
+
+        n_files_found = 0
+
+        for file_name in local_filenames:
+            valid_extension = False
+            for extension in extensions:
+                if file_name.endswith(extension):
+                    valid_extension = True
+                    continue
+            if not valid_extension:
+                continue
+            for sub_keywords in keywords:
+                n_keywords_found = 0
+                for keyword in sub_keywords:
+                    if keyword in file_name:
+                        n_keywords_found += 1
+                        continue
+                if n_keywords_found == len(sub_keywords):
+                    n_files_found += 1
+        if n_files_found == len(keywords):
+            dirs_found.append(dir_path)
+
+        dirs_to_explore = [dir_name for dir_name in dir_names if (not dir_name.startswith("."))]
+
+        for new_dir_to_explore in dirs_to_explore:
+            new_dir_to_explore = os.path.join(dir_path, new_dir_to_explore)
+            dirs_found.extend(find_dir_to_convert(dir_to_explore=new_dir_to_explore,
+                                                  keywords=keywords,
+                                                  extensions=extensions))
+        # we could avoid the break, as the loop goes deep in the subdirectories.
+        # but by using a recursive function we allows ourselves to filter some directories
+        # such as the hidden ones, which starts with a dot.
+        break
+
+    return dirs_found
 
 
 cicada_pre_processing_main()

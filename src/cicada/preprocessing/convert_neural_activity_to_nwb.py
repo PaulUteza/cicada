@@ -3,6 +3,7 @@ import hdf5storage
 import numpy as np
 from pynwb.ophys import Fluorescence
 
+
 class ConvertNeuralActivityToNWB(ConvertToNWB):
     def __init__(self, nwb_file):
         ConvertToNWB.__init__(self, nwb_file)
