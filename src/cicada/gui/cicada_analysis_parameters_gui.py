@@ -544,7 +544,11 @@ class EmittingStream(QtCore.QObject):
 
         # Add thread name to the output when writting in the the widget
         current_thread = QThread.currentThread()
-        self.parent.normalOutputWritten(text + str(current_thread.name))
+        try:
+            thread_text = text + str(current_thread.name)
+            self.parent.normalOutputWritten(thread_text)
+        except AttributeError:
+            self.parent.normalOutputWritten(text)
         self.terminal.write(str(text))
 
     def flush(self):

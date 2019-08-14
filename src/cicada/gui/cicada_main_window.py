@@ -12,7 +12,6 @@ from itertools import islice
 from cicada.gui.cicada_analysis_tree_gui import AnalysisTreeApp
 from cicada.gui.cicada_analysis_overview import AnalysisOverview
 from cicada.gui.cicada_analysis_parameters_gui import AnalysisPackage
-from cicada.gui.cicada_analysis_parameters_gui import AnalysisParametersApp
 from cicada.gui.session_show_filter_group import SessionsWidget
 
 
@@ -55,7 +54,6 @@ class CicadaMainWindow(QMainWindow):
         #     self.data = yaml.safe_load(stream)
 
         self.openWindow()
-        self.load_group_from_config()
         self.load_data_from_config()
 
 
@@ -92,6 +90,11 @@ class CicadaMainWindow(QMainWindow):
                 self.showGroupMenu.setEnabled(True)
                 self.addGroupDataMenu.setEnabled(True)
                 self.populate_menu()
+            else:
+                self.showGroupMenu.setEnabled(False)
+                self.addGroupDataMenu.setEnabled(False)
+                self.showGroupMenu.clear()
+                self.addGroupDataMenu.clear()
 
 
     def load_data_from_config(self):
@@ -161,11 +164,11 @@ class CicadaMainWindow(QMainWindow):
         if len(self.data_dict) > 0:
             if method == 'clear':
                 self.musketeers_widget.session_widget.populate(self.labels, method)
+                self.load_group_from_config()
             else:
                 self.musketeers_widget.session_widget.populate(self.to_add_labels, method)
             self.sortMenu.setEnabled(True)
             self.groupMenu.setEnabled(True)
-            self.load_group_from_config()
             # then we save the last location opened in the yaml file in config
             self.save_last_data_location(dir_name=dir_name)
 

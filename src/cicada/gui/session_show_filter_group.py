@@ -242,6 +242,7 @@ class SessionsWidget(QWidget):
         if not self.parent.labels:
             self.parent.groupMenu.setEnabled(False)
             self.parent.sortMenu.setEnabled(False)
+        self.parent.load_group_from_config()
 
     def uncheck_all(self):
         """Uncheck all items"""
@@ -320,6 +321,7 @@ class SessionsWidget(QWidget):
             for label in labels:
                 if label not in self.parent.labels:
                     self.parent.labels.append(label)
+            self.parent.load_group_from_config()
         items = []
         if self.q_list.count() != 0:
             for file in labels:
