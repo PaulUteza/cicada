@@ -13,8 +13,6 @@ import datetime
 from random import randint
 
 
-# TODO : Quand des éléments à sort ont des None, les griser
-
 class SessionsListWidget(QListWidget):
 
     def __init__(self, session_widget):
@@ -406,47 +404,19 @@ class SessionsWidget(QWidget):
         group_yaml_file = "cicada/config/group.yaml"
         name = self.save_name.text()
         group_to_save = []
-        if self.q_list.selectedItems():
-            for item in self.get_items():
-                for path in self.parent.nwb_path_list.values():
-                    if path.endswith(item + ".nwb"):
-                        group_to_save.append(path)
-            if self.parent.group_data:
-                self.parent.group_data.update({name: group_to_save})
-            else:
-                self.parent.group_data = {name: group_to_save}
-        elif self.parent.grouped:
-            counter = 0
-            for group in self.parent.grouped_labels:
-                counter +=1
-                group_to_save = []
-                for item in group:
-                    for path in self.parent.nwb_path_list.values():
-                        if path.endswith(item + ".nwb"):
-                            group_to_save.append(path)
-                try:
-                    for key, value in self.parent.dict_group.items():
-                        if value == group:
-                            if key:
-                                id_group = key
-                            else:
-                                id_group = str(counter)
-                except AttributeError:
-                    id_group = str(counter)
-                if self.parent.group_data:
-                    self.parent.group_data.update({str(name + '_' + id_group): group_to_save})
-                else:
-                    self.parent.group_data = {str(name + '_' + id_group): group_to_save}
+        checked_items = []
+        for index in range(self.q_list.count()):
+            if self.q_list.item(index).checkState() == 2:
+                checked_items.append(self.q_list.item(index).text())
+        for item in checked_items:
+            for path in self.parent.nwb_path_list.values():
+                if path.endswith(item + ".nwb"):
+                    group_to_save.append(path)
+        if self.parent.all_groups:
+            self.parent.all_groups.update({name: group_to_save})
         else:
-            for item in self.parent.labels:
-                for path in self.parent.nwb_path_list.values():
-                    if path.endswith(item + ".nwb"):
-                        group_to_save.append(path)
-            if self.parent.group_data:
-                self.parent.group_data.update({name: group_to_save})
-            else:
-                self.parent.group_data = {name: group_to_save}
+            self.parent.all_groups = {name: group_to_save}
         with open(group_yaml_file, 'w') as stream:
-            yaml.dump(self.parent.group_data, stream, default_flow_style=False)
+            yaml.dump(self.parent.all_groups, stream, default_flow_style=False)
         self.parent.load_group_from_config()
 

@@ -2,6 +2,7 @@ from qtpy.QtWidgets import *
 from qtpy import QtGui
 from qtpy import QtCore
 import os
+from copy import deepcopy
 from pynwb import NWBHDF5IO
 import sys
 from functools import partial
@@ -65,6 +66,7 @@ class CicadaMainWindow(QMainWindow):
             self.group_data = dict()
             with open(group_file_name, 'r') as stream:
                 self.group_data = yaml.safe_load(stream)
+            self.all_groups = deepcopy(self.group_data)
             if self.group_data:
                 keys_to_del = []
                 for key, value in self.group_data.items():
@@ -194,16 +196,11 @@ class CicadaMainWindow(QMainWindow):
 
     def populate_menu(self):
         """Populate the menu to load groups"""
-
+        # TODO : Performance issue ?
         self.showGroupMenu.clear()
         self.addGroupDataMenu.clear()
-        counter =0
-        if len(self.group_data.keys()) > 10:
-            populate_data_keys = list(islice(self.group_data, 10))
-        else:
-            populate_data_keys = list(self.group_data)
-        for group_name in populate_data_keys:
-            print(group_name)
+        counter = 0
+        for group_name in self.group_data.keys():
             counter +=1
             exec('self.groupAct' + str(counter) + ' = QAction("' + group_name+'", self)')
             eval('self.groupAct' + str(counter) + '.triggered.connect(partial(self.load_group, group_name))')
@@ -224,7 +221,7 @@ class CicadaMainWindow(QMainWindow):
         self.grouped = False
         self.nwb_path_list = dict()
         self.labels = []
-        for path_list in {group_name : self.group_data.get(group_name)}.values():
+        for path_list in {group_name: self.all_groups.get(group_name)}.values():
             for path in path_list:
                 io = NWBHDF5IO(path, 'r')
                 nwb_file = io.read()
@@ -246,7 +243,7 @@ class CicadaMainWindow(QMainWindow):
         self.sorted = False
         self.grouped = False
         self.labels_to_add = []
-        for path in self.group_data.get(group_name):
+        for path in self.all_groups.get(group_name):
             io = NWBHDF5IO(path, 'r')
             nwb_file = io.read()
             # self.labels.append(nwb_file.identifier)
@@ -281,6 +278,7 @@ class CicadaMainWindow(QMainWindow):
         self.addGroupDataMenu = QMenu('Add Group', self.fileMenu, enabled=False)
         self.fileMenu.addMenu(self.showGroupMenu)
         self.fileMenu.addMenu(self.addGroupDataMenu)
+        self.fileMenu.addAction(self.seeAllGroupAct)
         self.viewMenu.addMenu(self.groupMenu)
         self.viewMenu.addMenu(self.sortMenu)
 
@@ -429,7 +427,13 @@ class CicadaMainWindow(QMainWindow):
         self.aboutQtAct = QAction("About &Qt", self, triggered=qApp.aboutQt)
         # self.showSessionAct = QAction("&Show session", self, triggered=self.openWindow)
         self.showGroupAct = QAction("&Show all groups", self)
+        self.seeAllGroupAct = QAction('&See all groups', self, triggered=self.see_all_groups)
 
+
+    def see_all_groups(self):
+        self.all_group_window = AllGroups(self)
+        self.all_group_window.show()
+        self.object_created.append(self.all_group_window)
 
     def uncheck_all_sort(self):
         """Uncheck all checkboxes in sort menu"""
@@ -547,6 +551,68 @@ class CicadaMainWindow(QMainWindow):
             obj.close()
 
 
+class AllGroups(QWidget):
+
+    def __init__(self, parent=None):
+        QWidget.__init__(self)
+        self.layout = QVBoxLayout()
+        self.parent = parent
+        self.setWindowTitle("See all groups")
+        self.group_list = QListWidget(self)
+        self.populate_list()
+        self.group_list.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.group_list.setContextMenuPolicy(QtCore.Qt.CustomContextMenu)
+        self.group_list.customContextMenuRequested.connect(self.showContextMenu)
+        self.group_list.doubleClicked.connect(self.double_click_event)
+        self.layout.addWidget(self.group_list)
+        self.hlayout = QHBoxLayout()
+        self.load_button = QPushButton('Load group')
+        self.load_button.clicked.connect(self.load_group)
+        self.add_button = QPushButton('Add group')
+        self.add_button.clicked.connect(self.add_group)
+        self.hlayout.addWidget(self.load_button)
+        self.hlayout.addWidget(self.add_button)
+        self.layout.addLayout(self.hlayout)
+        self.setLayout(self.layout)
+
+    def populate_list(self):
+        """Populate the list containing all existing groups"""
+        counter = 0
+        for group_name in self.parent.all_groups.keys():
+            counter += 1
+            exec('self.groupItem' + str(counter) + ' = QListWidgetItem()')
+            eval('self.groupItem' + str(counter) + '.setText("' + group_name + '")')
+            self.group_list.addItem(eval('self.groupItem' + str(counter)))
+
+    def double_click_event(self, clicked_item):
+        item = self.group_list.item(clicked_item.row())
+        self.parent.load_group(item.text())
+
+    def add_group(self):
+        items = self.group_list.selectedItems()
+        for item in items:
+            self.parent.add_group_data(item.text())
+
+    def load_group(self):
+        items = self.group_list.selectedItems()
+        counter = 0
+        for item in items:
+            if counter == 0:
+                self.parent.load_group(item.text())
+            else:
+                self.parent.add_group_data(item.text())
+            counter += 1
+
+    def showContextMenu(self, pos):
+        self.global_pos = self.mapToGlobal(pos)
+        self.context_menu = QMenu()
+        self.context_menuAct = QAction("Load group", self, triggered=self.load_group)
+        self.context_menuAct.setIcon(QtGui.QIcon('cicada/gui/icons/svg/question-mark.svg'))
+        self.context_menu.addAction(self.context_menuAct)
+        self.context_menuAct = QAction("Add group", self, triggered=self.load_group)
+        self.context_menuAct.setIcon(QtGui.QIcon('cicada/gui/icons/svg/question-mark.svg'))
+        self.context_menu.addAction(self.context_menuAct)
+        self.context_menu.exec(self.global_pos)
 
 class MusketeersWidget(QWidget):
     """
