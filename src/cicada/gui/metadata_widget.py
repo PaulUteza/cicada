@@ -639,10 +639,10 @@ class MetaDataGroup:  # Necessary to add multiple metadata in one widget
 
 class MetaDataWidget(QWidget):
 
-    def __init__(self, parent=None):
+    def __init__(self, file_path, extension, parent=None):
         QWidget.__init__(self, parent=parent)
 
-        self.cicada_metadata_container = None
+        self.cicada_metadata_container = CicadaMetaDataContainer(file_path, extension)
         self.metadata_handler = None
 
         self.special_background_on = False
@@ -671,7 +671,8 @@ class MetaDataWidget(QWidget):
         self.main_layout.addWidget(self.save_button)
 
         self.setLayout(self.main_layout)
-        # self.show()
+        self.create_widgets(self.cicada_metadata_container)
+        self.show()
 
     def tabula_rasa(self):
         """
@@ -784,21 +785,22 @@ class TableWidget(QFrame):
         return self.table.item(metadata_position, 2).text()
 
 
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    # Change the path !
-    # ============================================
-    file_path = 'C:/Users/Public/nwb_files/p6_18_02_07_a002.nwb'
-    # ============================================
-    cicada_metadata_container = CicadaMetaDataContainer(file_path, "nwb")
-    widget = MetaDataWidget()
-    widget.create_widgets(cicada_metadata_container)
-    widget.show()
-    '''
-    all_metadata = MetaDataFinder(nwb_file).get_all_metadata_in_nwb()
-    for metadata, value in all_metadata.items():
-        print(metadata + '\n')
-    for metadata, value in all_metadata.items():
-        print(metadata + ' : ' + str(value) + '\n')
-    '''
-    sys.exit(app.exec_())
+
+# if __name__ == "__main__":
+#     app = QApplication(sys.argv)
+#     # Change the path !
+#     # ============================================
+#     file_path = 'C:/Users/Public/nwb_files/p6_18_02_07_a002.nwb'
+#     # ============================================
+#     cicada_metadata_container = CicadaMetaDataContainer(file_path, "nwb")
+#     widget = MetaDataWidget()
+#     widget.create_widgets(cicada_metadata_container)
+#     widget.show()
+#     '''
+#     all_metadata = MetaDataFinder(nwb_file).get_all_metadata_in_nwb()
+#     for metadata, value in all_metadata.items():
+#         print(metadata + '\n')
+#     for metadata, value in all_metadata.items():
+#         print(metadata + ' : ' + str(value) + '\n')
+#     '''
+#     sys.exit(app.exec_())

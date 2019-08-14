@@ -21,6 +21,7 @@ class CicadaMainWindow(QMainWindow):
         super().__init__()
         self.createActions()
         self.createMenus()
+        self.object_created = []
         self.labels = []
         self.setWindowTitle("CICADA")
 
@@ -33,7 +34,7 @@ class CicadaMainWindow(QMainWindow):
         self.param_group_list = []
         self.grouped = False
         self.sorted = False
-        self.nwb_path_list = []
+        self.nwb_path_list = dict()
         # contains the data, if nwb format will contains instance of Nwb class
         # the key is the identifier of the data file, value is the instance
         self.data_dict = dict()
@@ -71,7 +72,7 @@ class CicadaMainWindow(QMainWindow):
                 for key, value in self.group_data.items():
                     missing_file = False
                     for file in value:
-                        if file not in self.nwb_path_list:
+                        if file not in self.nwb_path_list.values():
                             missing_file = True
                     if missing_file:
                         keys_to_del.append(key)
@@ -113,7 +114,7 @@ class CicadaMainWindow(QMainWindow):
 
         self.labels = []
         self.to_add_labels = []
-        self.nwb_path_list = []
+        self.nwb_path_list = dict()
         self.grouped_labels = []
         QFileDialog.Options()
         dir_name = QFileDialog.getExistingDirectory(self, "Select Directory")
@@ -150,10 +151,10 @@ class CicadaMainWindow(QMainWindow):
             break
         for file_name in file_names:
             if file_name.endswith(".nwb"):
-                self.nwb_path_list.append(os.path.join(dir_name, file_name))
                 io = NWBHDF5IO(os.path.join(dir_name, file_name), 'r')
                 nwb_file = io.read()
                 self.data_dict[nwb_file.identifier] = nwb_file
+                self.nwb_path_list[nwb_file.identifier] = os.path.join(dir_name, file_name)
                 self.to_add_labels.append(nwb_file.identifier)
         self.labels = self.labels + self.to_add_labels
         # checking there is at least one data file loaded
@@ -218,12 +219,14 @@ class CicadaMainWindow(QMainWindow):
         """
         self.sorted = False
         self.grouped = False
-        self.nwb_path_list = self.group_data.get(group_name)
+        self.nwb_path_list = dict()
         self.labels = []
-        for path in self.nwb_path_list:
-            io = NWBHDF5IO(path, 'r')
-            nwb_file = io.read()
-            self.labels.append(nwb_file.identifier)
+        for path_list in {group_name : self.group_data.get(group_name)}.values():
+            for path in path_list:
+                io = NWBHDF5IO(path, 'r')
+                nwb_file = io.read()
+                self.labels.append(nwb_file.identifier)
+                self.nwb_path_list.update({nwb_file.identifier: path})
         self.musketeers_widget.session_widget.populate(self.labels)
         self.musketeers_widget.session_widget.update_text_filter()
         self.groupMenu.setEnabled(True)
@@ -239,13 +242,14 @@ class CicadaMainWindow(QMainWindow):
         """
         self.sorted = False
         self.grouped = False
-        self.nwb_path_list = self.group_data.get(group_name)
-        self.labels = []
-        for path in self.nwb_path_list:
+        self.labels_to_add = []
+        for path in self.group_data.get(group_name):
             io = NWBHDF5IO(path, 'r')
             nwb_file = io.read()
-            self.labels.append(nwb_file.identifier)
-        self.musketeers_widget.session_widget.populate(self.labels, 'add')
+            # self.labels.append(nwb_file.identifier)
+            self.nwb_path_list.update({nwb_file.identifier: path})
+            self.labels_to_add.append(nwb_file.identifier)
+        self.musketeers_widget.session_widget.populate(self.labels_to_add, 'add')
         self.musketeers_widget.session_widget.update_text_filter()
         self.groupMenu.setEnabled(True)
         self.sortMenu.setEnabled(True)
@@ -471,7 +475,7 @@ class CicadaMainWindow(QMainWindow):
             self.musketeers_widget.session_widget.update_text_filter(param)
             if param not in self.param_group_list:
                 self.param_group_list.append(param)
-            self.grouped_labels, param_group_list = utils.group_by_param(self.nwb_path_list, self.param_group_list)
+            self.grouped_labels, param_group_list = utils.group_by_param(self.nwb_path_list.values(), self.param_group_list)
             self.dict_group = dict()
             for i in range(len(self.grouped_labels)):
                 self.dict_group.update({param_group_list[i]: self.grouped_labels[i]})
@@ -505,7 +509,7 @@ class CicadaMainWindow(QMainWindow):
                     self.param_list = []
                 else:
                     self.param_list.remove(param)
-        self.sorted_labels = utils.sort_by_param(self.nwb_path_list, self.param_list)
+        self.sorted_labels = utils.sort_by_param(self.nwb_path_list.values(), self.param_list)
         if self.param_list:
             self.sorted = True
         else:
@@ -535,6 +539,10 @@ class CicadaMainWindow(QMainWindow):
         for obj in gc.get_objects():
             if isinstance(obj, AnalysisPackage):
                 obj.close()
+
+        for obj in self.object_created:
+            obj.close()
+
 
 
 class MusketeersWidget(QWidget):

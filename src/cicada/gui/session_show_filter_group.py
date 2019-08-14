@@ -7,6 +7,7 @@ from pynwb import NWBHDF5IO
 from functools import partial
 from cicada.preprocessing.utils import sort_by_param, group_by_param
 import cicada.preprocessing.utils as utils
+from cicada.gui.metadata_widget import MetaDataWidget
 import yaml
 import datetime
 from random import randint
@@ -51,8 +52,12 @@ class SessionsListWidget(QListWidget):
         self.context_menu.exec(self.global_pos)
 
     def show_info(self):
-        item = self.item(self.currentRow())
-        QMessageBox.critical(None, 'test', item.text())
+        item_list = self.selectedItems()
+        for item in item_list:
+            exec('self.' + item.text() + '_metadata = '
+                                         'MetaDataWidget(self.session_widget.parent.nwb_path_list.get(item.text()),'
+                                         ' "nwb")')
+            self.session_widget.parent.object_created.append(eval('self.' + item.text() + '_metadata'))
 
 class SessionsWidget(QWidget):
 
@@ -197,6 +202,10 @@ class SessionsWidget(QWidget):
                 for label in self.parent.grouped_labels:
                     if item in label:
                         self.parent.grouped_labels.remove(label)
+                        try:
+                            del self.parent.nwb_path_list[item]
+                        except KeyError:
+                            continue
                         list_item_to_remove = self.q_list.findItems(item, Qt.MatchExactly)
                         try:
                             for item_to_remove in list_item_to_remove:
@@ -207,6 +216,10 @@ class SessionsWidget(QWidget):
                 for label in self.parent.sorted_labels:
                     if item in label:
                         self.parent.sorted_labels.remove(label)
+                        try:
+                            del self.parent.nwb_path_list[item]
+                        except KeyError:
+                            continue
                         list_item_to_remove = self.q_list.findItems(item, Qt.MatchExactly)
                         try:
                             for item_to_remove in list_item_to_remove:
@@ -216,6 +229,10 @@ class SessionsWidget(QWidget):
             for label in self.parent.labels:
                 if item in label:
                     self.parent.labels.remove(label)
+                    try:
+                        del self.parent.nwb_path_list[item]
+                    except KeyError:
+                        continue
                     list_item_to_remove = self.q_list.findItems(item, Qt.MatchExactly)
                     try:
                         for item_to_remove in list_item_to_remove:
@@ -299,12 +316,28 @@ class SessionsWidget(QWidget):
         """
         if method == 'clear':
             self.q_list.clear()
-        for file in labels:
-            item = QListWidgetItem()
-            item.setCheckState(QtCore.Qt.Unchecked)
-            item.setText(str(file))
-            item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsUserCheckable)
-            self.q_list.addItem(item)
+        if method == 'add':
+            for label in labels:
+                if label not in self.parent.labels:
+                    self.parent.labels.append(label)
+        items = []
+        if self.q_list.count() != 0:
+            for file in labels:
+                for index in range(self.q_list.count()):
+                    items.append(self.q_list.item(index).text())
+                if file not in items:
+                    item = QListWidgetItem()
+                    item.setCheckState(QtCore.Qt.Unchecked)
+                    item.setText(str(file))
+                    item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsUserCheckable)
+                    self.q_list.addItem(item)
+        else:
+            for file in labels:
+                item = QListWidgetItem()
+                item.setCheckState(QtCore.Qt.Unchecked)
+                item.setText(str(file))
+                item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled | QtCore.Qt.ItemIsUserCheckable)
+                self.q_list.addItem(item)
 
     def form_group(self, labels, param=["-"]):
         """
@@ -373,7 +406,7 @@ class SessionsWidget(QWidget):
         group_to_save = []
         if self.q_list.selectedItems():
             for item in self.get_items():
-                for path in self.parent.nwb_path_list:
+                for path in self.parent.nwb_path_list.values():
                     if path.endswith(item + ".nwb"):
                         group_to_save.append(path)
             if self.parent.group_data:
@@ -386,7 +419,7 @@ class SessionsWidget(QWidget):
                 counter +=1
                 group_to_save = []
                 for item in group:
-                    for path in self.parent.nwb_path_list:
+                    for path in self.parent.nwb_path_list.values():
                         if path.endswith(item + ".nwb"):
                             group_to_save.append(path)
                 try:
@@ -404,7 +437,7 @@ class SessionsWidget(QWidget):
                     self.parent.group_data = {str(name + '_' + id_group): group_to_save}
         else:
             for item in self.parent.labels:
-                for path in self.parent.nwb_path_list:
+                for path in self.parent.nwb_path_list.values():
                     if path.endswith(item + ".nwb"):
                         group_to_save.append(path)
             if self.parent.group_data:
