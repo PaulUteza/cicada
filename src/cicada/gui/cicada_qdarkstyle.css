@@ -839,6 +839,38 @@ QLabel {
   color: #F0F0F0;
 }
 
+QLabel[state="True"] {
+  background-color: transparent;
+  border: none;
+  padding: 2px;
+  padding-left: 4px;
+  margin-left: 20px;
+  margin-right: 20px;
+  color: #F0F0F0;
+}
+
+QLabel[state="False"] {
+  background-color: transparent;
+  border: none;
+  padding: 2px;
+  padding-left: 4px;
+  margin-left: 20px;
+  margin-right: 20px;
+  color: #F0F0F0;
+}
+
+QLabel[state="True"]::hover {
+  background-color: transparent;
+  border: none;
+  color: #148CD2;
+}
+
+QLabel[state="False"]::hover {
+  background-color: transparent;
+  border: none;
+  color: #F0F0F0;
+}
+
 /* Add by JD */
 QLabel::hover {
   color: #148CD2;
@@ -850,7 +882,6 @@ QLabel::disabled {
   color: #787878;
 }
 
-*[is_mandatory="True"] { border: 1px solid white; }
 
 /* QTextBrowser -----------------------------------------------------------
 
@@ -1789,7 +1820,8 @@ QListView[param="True"]{
   border: None;
   color: #F0F0F0;
   gridline-color: #32414B;
-  border-radius: 4px;
+  min-height: 3.0em;
+  padding-bottom: 1px;
 }
 
 QTreeView:disabled,
@@ -2018,6 +2050,32 @@ QToolBox QScrollArea QWidget QWidget {
   background-color: #19232D;
 }
 
+QScrollArea[state="True"]{
+  padding: 0px;
+  border: None;
+  background-color: transparent;
+  min-height: 3.0em;
+  max-height: 4.0em;
+}
+
+QScrollArea[state="True"]::hover{
+  border: None;
+  background-color: transparent;
+}
+
+QScrollArea[state="False"]{
+  padding: 0px;
+  border: None;
+  background-color: transparent;
+  min-height: 3.0em;
+  max-height: 16.0em;
+}
+
+QScrollArea[state="False"]::hover{
+  border: None;
+  background-color: transparent;
+}
+
 /* QFrame -----------------------------------------------------------------
 
 https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qframe
@@ -2033,6 +2091,17 @@ QFrame {
   background-color: #19232D;
   border: 1px solid #32414B;
 }
+
+QFrame[is_mandatory="True"] {
+  margin-right: 10px;
+  border: 1px solid white;
+}
+
+QFrame[is_mandatory="False"] {
+  margin-right: 10px;
+  border: 1px solid #32414B;
+}
+
 
 .QFrame {
   border-radius: 4px;

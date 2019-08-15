@@ -7,6 +7,6 @@ species: SWISS wild type
 subject_id: p6_18_02_07
 # in grams
 weight: 4.35
-# format should be : '%m/%d/%Y'
+# format should be : '%m/%d/%'
 date_of_birth: 02/01/2018
 

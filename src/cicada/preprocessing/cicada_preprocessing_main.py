@@ -28,10 +28,10 @@ https://stackoverflow.com/questions/9806963/how-to-use-pythons-import-function-p
 
 
 def load_nwb_file():
-    # root_path = "/Users/pappyhammer/Documents/academique/these_inmed/robin_michel_data/"
-    root_path = "/media/julien/Not_today/hne_not_today/"
+    root_path = "/Users/pappyhammer/Documents/academique/these_inmed/robin_michel_data/"
+    # root_path = "/media/julien/Not_today/hne_not_today/"
     path_data = os.path.join(root_path, "data/nwb_files/")
-    io = NWBHDF5IO(os.path.join(path_data, 'p6_18_02_07_a001.nwb'), 'r')
+    io = NWBHDF5IO(os.path.join(path_data, 'p6_18_02_07_a001_2019_08_14.20-38-27.nwb'), 'r')
     nwb_file = io.read()
 
     # print(f"nwb_file.acquisition {nwb_file.acquisition}")
@@ -60,11 +60,26 @@ def load_nwb_file():
         pass
 
     print(f"nwb_file.epoch_tags {nwb_file.epoch_tags}")
+
     # time_intervals = nwb_file.get_time_intervals(name="ci_recording_on_pause")
     print(f"intervals {nwb_file.intervals}")
-    if 'ci_recording_on_pause' in nwb_file.intervals:
-        pause_intervals = nwb_file.intervals['ci_recording_on_pause']
-        print(f"data_frame: {pause_intervals.to_dataframe()}")
+    # if 'ci_recording_on_pause' in nwb_file.intervals:
+    #     pause_intervals = nwb_file.intervals['ci_recording_on_pause']
+    #     print(f"data_frame: {pause_intervals.to_dataframe()}")
+
+    if nwb_file.intervals is not None:
+        for name_interval, time_interval in nwb_file.intervals.items():
+            print(f"{name_interval}: {time_interval.to_dataframe()}")
+
+    if nwb_file.invalid_times is not None:
+        print(f"nwb_file.invalid_times {nwb_file.invalid_times.to_dataframe()}")
+    else:
+        print("No invalid times")
+
+    if nwb_file.invalid_times is not None:
+        print(f"nwb_file.invalid_times {nwb_file.invalid_times.to_dataframe()}")
+    else:
+        print("No invalid times")
 
     ps = mod['segmentation_suite2p'].get_plane_segmentation('my_plane_seg')
 

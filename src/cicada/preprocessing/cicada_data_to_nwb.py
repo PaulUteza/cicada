@@ -6,6 +6,7 @@ import importlib
 from pynwb import NWBHDF5IO
 from pynwb import NWBFile
 from pynwb.file import Subject
+from pynwb.epoch import TimeIntervals
 from datetime import datetime
 from dateutil.tz import tzlocal
 import numpy as np
@@ -166,6 +167,10 @@ def create_nwb_file(subject_data_yaml_file, session_data_yaml_file):
     print(f'kwargs_nwb_file {kwargs_nwb_file}')
     nwb_file = NWBFile(**kwargs_nwb_file)
 
+    # nwb_file.invalid_times = TimeIntervals(name="invalid_times",
+    #                                        description="Time intervals to be removed from analysis'")
+
+
     return nwb_file
 
 def convert_data_to_nwb(data_to_convert_dir, default_convert_to_nwb_yml_file, nwb_files_dir):
@@ -308,6 +313,9 @@ def create_convert_class(class_name, config_dict, converter_dict, nwb_file, yaml
     print("Class name : " + str(class_name))
     # Loop through all arguments of the convert of the corresponding class
     for arg in config_dict:
+        if not isinstance(config_dict[arg], dict):
+            # in this case we keep the actual value
+            continue
         if config_dict[arg].get("from_other_converter"):
             # means we get the argument value from an instance of a converter, a value should be indicated
             attribute_name = config_dict[arg].get("value")

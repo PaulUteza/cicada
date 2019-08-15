@@ -20,6 +20,7 @@ import os
 from functools import partial
 from time import time
 
+
 class ParameterWidgetModel(ABC):
     def __init__(self):
         self.mandatory = False
@@ -59,6 +60,7 @@ class MyQFrame(QFrame):
     def get_layout(self):
         return self.v_box
 
+
 # to resolve: TypeError: metaclass conflict: the metaclass of a derived class
 # must be a (non-strict) subclass of the metaclasses of all its bases
 # might not be a good idea to do multiple-heritage with a Qclass
@@ -66,6 +68,7 @@ class MyQFrame(QFrame):
 # http://www.phyast.pitt.edu/~micheles/python/metatype.html
 class FinalMeta(type(ParameterWidgetModel), type(QWidget)):
     pass
+
 
 # TODO: some of the widgets to add
 #  - choose directory
@@ -277,8 +280,6 @@ class ComboBoxWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
             q_label.setAttribute(QtCore.Qt.WA_TranslucentBackground)
             v_box.addWidget(q_label)
 
-
-
         for session_id, combo_box in self.combo_boxes.items():
             h_box = QHBoxLayout()
             if len(self.combo_boxes) > 1:
@@ -416,10 +417,11 @@ class SliderWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
 
 
 class AnalysisParametersApp(QWidget):
-    def __init__(self, thread_name, progress_bar, parent=None):
+    def __init__(self, thread_name, progress_bar, height_main_window, parent=None):
         QWidget.__init__(self, parent=parent)
         self.name = thread_name
         self.progress_bar = progress_bar
+        self.setFixedHeight(int(height_main_window * 0.70))
         self.special_background_on = False
         self.current_style_sheet_background = ".QWidget{background-image:url(\"\"); background-position: center;}"
         self.cicada_analysis = None
@@ -449,11 +451,28 @@ class AnalysisParametersApp(QWidget):
         self.run_analysis_button = QPushButton("Push me and then just touch me", self)
         self.run_analysis_button.setEnabled(False)
         self.run_analysis_button.clicked.connect(self.run_analysis)
-        self.main_layout.addWidget(self.run_analysis_button)
+
+        self.load_arguments_button = QPushButton("Load arguments", self)
+        self.load_arguments_button.setEnabled(True)
+        self.load_arguments_button.clicked.connect(self.load_arguments)
+        # self.main_layout.addWidget(self.run_analysis_button)
 
         self.setLayout(self.main_layout)
         # self.show()
 
+    def load_arguments(self):
+        """
+        Will open a FileDialog to select a yaml file used to load arguments used for a previous analysis
+        Returns:
+
+        """
+        # TODO: Open a Widget to select a yaml file
+
+        # TODO: Read the yaml file, make sure it is valid for this analysis, other display a message through a
+        #  pop-up or via the text_label at the bottom of the window
+
+        # TODO: change the arguments in the widges by the new ones
+        pass
 
     def tabula_rasa(self):
         """
@@ -467,7 +486,6 @@ class AnalysisParametersApp(QWidget):
         self.layout = QVBoxLayout(self.scroll_area_widget_contents)
         self.scroll_area_widget_contents.setStyleSheet(self.current_style_sheet_background)
         self.run_analysis_button.setEnabled(False)
-
 
     def create_widgets(self, cicada_analysis):
         """
@@ -519,6 +537,8 @@ class AnalysisParametersApp(QWidget):
     def run_analysis(self):
         if self.analysis_arguments_handler is None:
             return
+        # first we disable the button so we can launch a given analysis only once
+        self.run_analysis_button.setEnabled(False)
         self.worker = Worker(self.name, self.analysis_arguments_handler)
         self.worker.updateProgress.connect(self.progress_bar.update_progress_bar)
         self.worker.updateProgress2.connect(self.progress_bar.update_progress_bar_overview)
@@ -526,6 +546,7 @@ class AnalysisParametersApp(QWidget):
         # p = Thread(target=self.analysis_arguments_handler.run_analysis, daemon=True)
         # p.setName(self.name)
         # p.start()
+
 
 class EmittingStream(QtCore.QObject):
     def __init__(self, parent=None):
@@ -554,22 +575,31 @@ class EmittingStream(QtCore.QObject):
     def flush(self):
         pass
 
+
 class AnalysisData(QWidget):
 
-    def __init__(self, session_list, analysis_description, parent=None):
+    def __init__(self, cicada_analysis, arguments_section_widget, parent=None):
         QWidget.__init__(self, parent=parent)
-        self.special_background_on_list = False
-        self.special_background_on_text = False
+        # self.special_background_on_list = False
+        # self.special_background_on_text = False
         self.layout = QVBoxLayout()
-        self.q_list = QListWidget()
-        self.q_list.keyPressEvent = self.on_key_press_list
-        self.analysis_description = QTextEdit()
-        self.analysis_description.keyPressEvent = self.on_key_press_text
-        self.analysis_description.append(analysis_description)
-        self.analysis_description.setReadOnly(True)
-        self.populate_session_list(session_list)
-        self.layout.addWidget(self.q_list)
-        self.layout.addWidget(self.analysis_description)
+        # self.q_list = QListWidget()
+        # self.q_list.keyPressEvent = self.on_key_press_list
+        # self.analysis_description = QTextEdit()
+        # self.analysis_description.keyPressEvent = self.on_key_press_text
+        # self.analysis_description.append(analysis_description)
+        # to jump a line
+        # self.populate_session_list(session_list)
+        # self.layout.addWidget(self.q_list)
+
+        self.analysis_state = AnalysisState(analysis_id=None, cicada_analysis=cicada_analysis,
+                                       without_bringing_to_front=True)
+
+        self.layout.addLayout(self.analysis_state)
+        self.layout.addStretch(1)
+        self.layout.addWidget(arguments_section_widget.load_arguments_button)
+        self.layout.addWidget(arguments_section_widget.run_analysis_button)
+
         self.setLayout(self.layout)
 
     def populate_session_list(self, session_list):
@@ -594,7 +624,7 @@ class AnalysisData(QWidget):
             else:
                 # we add .QWidget so the background is specific to this widget and is not applied by other widgets
                 self.current_style_sheet_background_list = "background-image:url(\"cicada/gui/icons/rc/test.jpg\");" \
-                                                      "background-position: center; background-repeat:no-repeat;"
+                                                           "background-position: center; background-repeat:no-repeat;"
                 self.q_list.setStyleSheet(self.current_style_sheet_background_list)
                 self.special_background_on_list = True
 
@@ -608,9 +638,10 @@ class AnalysisData(QWidget):
                 pic_index = 0
                 # we add .QWidget so the background is specific to this widget and is not applied by other widgets
                 self.current_style_sheet_background_text = "background-image:url(\"cicada/gui/icons/rc/test2.jpg\");" \
-                                                      "background-position: center; background-repeat:no-repeat;"
+                                                           "background-position: center; background-repeat:no-repeat;"
                 self.analysis_description.setStyleSheet(self.current_style_sheet_background_text)
                 self.special_background_on_text = True
+
 
 class AnalysisPackage(QWidget):
 
@@ -618,7 +649,8 @@ class AnalysisPackage(QWidget):
         QWidget.__init__(self, parent=parent)
         super().__init__()
         self.name = name
-        self.resize(1000, 750)
+        height_window = 750
+        self.resize(1000, height_window)
         self.setFixedSize(self.size())
         self.remaining_time_label = RemainingTime()
         self.progress_bar = ProgressBar(self.remaining_time_label)
@@ -638,11 +670,17 @@ class AnalysisPackage(QWidget):
         self.setWindowTitle(analysis_name)
         self.layout = QVBoxLayout()
         self.hlayout = QHBoxLayout()
-        self.analysis_data = AnalysisData(cicada_analysis._data_to_analyse, analysis_description)
-        self.hlayout.addWidget(self.analysis_data)
-        self.arguments_section_widget = AnalysisParametersApp(self.name, self.progress_bar)
+
+        self.arguments_section_widget = AnalysisParametersApp(thread_name=self.name, progress_bar=self.progress_bar,
+                                                              height_main_window=height_window)
         self.arguments_section_widget.create_widgets(cicada_analysis=cicada_analysis)
+
+        self.analysis_data = AnalysisData(cicada_analysis=cicada_analysis,
+                                          arguments_section_widget=self.arguments_section_widget)
+        self.hlayout.addWidget(self.analysis_data)
+
         self.hlayout.addWidget(self.arguments_section_widget)
+
         self.layout.addLayout(self.hlayout)
         self.hlayout2 = QHBoxLayout()
         self.hlayout2.addWidget(self.progress_bar)
@@ -653,8 +691,6 @@ class AnalysisPackage(QWidget):
         self.layout.addWidget(self.scrollArea)
         self.setLayout(self.layout)
         self.show()
-
-
 
     def normalOutputWritten(self, text):
         """
@@ -675,10 +711,11 @@ class AnalysisPackage(QWidget):
         """ Need to delete the overview widget associated to this analysis"""
         pass
 
-class Worker(QtCore.QThread):
 
+class Worker(QtCore.QThread):
     updateProgress = QtCore.Signal(float, float, float)
     updateProgress2 = QtCore.Signal(str, float, float, float)
+
     def __init__(self, name, cicada_analysis):
         QtCore.QThread.__init__(self)
         self.name = name
@@ -687,9 +724,10 @@ class Worker(QtCore.QThread):
     def run(self):
         self.cicada_analysis.run_analysis()
 
-    def setProgress(self,name, time_started, increment_value=0, new_set_value=0):
+    def setProgress(self, name, time_started, increment_value=0, new_set_value=0):
         self.updateProgress.emit(time_started, increment_value, new_set_value)
         self.updateProgress2.emit(name, time_started, increment_value, new_set_value)
+
 
 class ProgressBar(QProgressBar):
 
@@ -724,17 +762,19 @@ class ProgressBar(QProgressBar):
                     if increment_value:
                         eval('obj.' + name + '_progress_bar.setValue(self.value() + increment_value)')
 
-                    if eval('obj.' + name + '_progress_bar.isEnabled()') and eval('obj.' + name + '_progress_bar.value()') != 0:
+                    if eval('obj.' + name + '_progress_bar.isEnabled()') and eval(
+                            'obj.' + name + '_progress_bar.value()') != 0:
                         eval('obj.' + name + '_progress_bar.setEnabled(True)')
 
                 except:
                     pass
 
+
 class RemainingTime(QLabel):
 
     def __init__(self, parent=None):
         QLabel.__init__(self, parent=parent)
-        self.setMinimumSize(0,0)
+        self.setMinimumSize(0, 0)
         self.setMaximumSize(self.size())
         self.setText("Time remaining : ")
 
@@ -743,7 +783,8 @@ class RemainingTime(QLabel):
         remaining_time = ((time() - time_started) * 100) / progress_value
         self.setText("Time remaining : " + str("%.2f" % (time() - time_started)) + "/" + str("%.2f" % remaining_time))
 
-def clearvbox(self, L = False):
+
+def clearvbox(self, L=False):
     if not L:
         L = self.vbox
     if L is not None:
@@ -756,4 +797,3 @@ def clearvbox(self, L = False):
                 widget.deleteLater()
             else:
                 self.clearvbox(item.layout())
-

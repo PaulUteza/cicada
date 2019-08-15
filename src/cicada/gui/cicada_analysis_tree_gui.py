@@ -371,17 +371,23 @@ class AnalysisTreeApp(QWidget):
             return
 
         if tree_item.cicada_analysis is not None and tree_item.data_valid:
-            # Assign a random id to an analysis to access it later
-            random_id = ''.join([choice(string.ascii_letters) for n in range(32)])
+
             # Copy the object so each analysis has its own object
             self.copied_data = tree_item.cicada_analysis.copy()
+            # Assign a random id to an analysis to access it laters
+            # random_id = ''.join([choice(string.ascii_letters) for n in range(32)])
+            # using the id of the object instead, so no chance to have a double, adding 'a' so the variable don't start
+            # by a numerical value
+            random_id = "a" + str(id(self.copied_data))
             # Create analysis window
-            exec('self.' + random_id +' = AnalysisPackage(cicada_analysis=self.copied_data,'
-                                      ' analysis_name=str(tree_item.item_data[0]),'
-                                      ' analysis_description = str(tree_item.item_data[1]), name=random_id)')
+            exec('self.' + random_id + ' = AnalysisPackage(cicada_analysis=self.copied_data,'
+                                       ' analysis_name=str(tree_item.item_data[0]),'
+                                       ' analysis_description = str(tree_item.item_data[1]), name=random_id)')
             exec('self.created_analysis.append(self.' + random_id + ')')
             # Add analysis overview item linked to the analysis window
-            self.analysis_overview.add_analysis_overview(str(tree_item.item_data[0]), random_id, eval('self.'+random_id))
+            # self.analysis_overview.add_analysis_overview(str(tree_item.item_data[0]), random_id, eval('self.'+random_id))
+            self.analysis_overview.add_analysis_overview(self.copied_data, random_id,
+                                                         eval('self.' + random_id))
             # self.analysis_overview.created_analysis = self.created_analysis
 
     def load_arguments_parameters_section(self):

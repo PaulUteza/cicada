@@ -51,6 +51,17 @@ class CicadaAnalysis(ABC):
     # def data_format(self):
     #     pass
 
+    def get_data_identifiers(self):
+        """
+        Return a list of string representing each data to analyse
+        Returns:
+
+        """
+        identifiers = []
+        if self._data_format == "nwb":
+            identifiers = [data.identifier for data in self._data_to_analyse]
+
+        return identifiers
 
     def copy(self):
 

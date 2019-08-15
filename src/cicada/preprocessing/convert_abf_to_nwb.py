@@ -15,12 +15,11 @@ class ConvertAbfToNWB(ConvertToNWB):
         # array of integers representing the index at which the frame has been acquired
         # the indices is used in sweepY
         self.ci_frames_indices = None
-        # It's a list of 2 integers, the first one being the frame after which adding frames and the second
-        # one the number of frame to add
-        self.frames_to_add = []
         self.frames_data = None
         self.timestamps_in_sec = None
         self.timestamps_in_ms = None
+        # means if there are more than one movie, we consider it as one movie (concatenation of the segments)
+        # without any breaks in the movie
         self.fusion_movie_segments = False
         self.sampling_rate_calcium_imaging = None
         # contains the frames indices (matching self.ci_frames_indices) after which there is a gap (for ex when
@@ -38,8 +37,11 @@ class ConvertAbfToNWB(ConvertToNWB):
         movies, such is the case if the movie need to be saved every x frames for memory issue for ex.
         If the movie is the concatenation of many, then there is an option to choose to extract the information as
         if 2 frames concatenate are contiguous in times (such as then LFP signal or piezzo would be match movie),
-        or to add frames in those signals and return the indices and how many frames to add in the movie so it will
-        be synchronize with the rest of the data. Thus an information named frames_to_add will be added in the NWB_file
+        or to add interval_times indicating at which time the recording is on pause and at which time it's starting
+        again. The time interval containing this information is named "ci_recording_on_pause" and you can get it
+        doing:
+        if 'ci_recording_on_pause' in nwb_file.intervals:
+            pause_intervals = nwb_file.intervals['ci_recording_on_pause']
 
         Args:
             **kwargs (dict) : kwargs is a dictionary, potentials keys and values types are:
@@ -52,10 +54,7 @@ class ConvertAbfToNWB(ConvertToNWB):
 
         """
         super().convert(**kwargs)
-        # TODO: See to use a default config yaml file and use a specific yaml file,
-        #  only if this abf doesn't follow the default configuration.
 
-        # TODO: save in the NWB file frames_to_add as well as timestamps of ci_frames_indices
         if "abf_yaml_file_name" not in kwargs:
             raise Exception(f"'abf_yaml_file' argument should be pass to convert "
                             f"function in class {self.__class__.__name__}")
@@ -296,6 +295,7 @@ class ConvertAbfToNWB(ConvertToNWB):
                                                        self.timestamps_in_ms[self.ci_frames_indices[0]]) / 1000) / len(
                     self.ci_frames_indices)
             else:
+                # contains the sampling rate of each movie recorded
                 movies_sampling_rate = []
                 for i, gap_index in enumerate(self.gap_indices):
                     first_frame_segment = 0 if i == 0 else self.gap_indices[i - 1] + 1
@@ -329,13 +329,22 @@ class ConvertAbfToNWB(ConvertToNWB):
                     # to recover the data do: nwb_file.get_acquisition(name=name_channel)
                     self.nwb_file.add_acquisition(ci_frames_time_series)
                     # pause_time_intervals = TimeIntervals
+                    columns_pause = []
+                    columns_pause.append({"name": "start_time", "description": "Start time of epoch, in seconds"})
+                    columns_pause.append({"name": "stop_time", "description": "Stop time of epoch, in seconds"})
+                    columns_pause.append({"name": "start_original_frame",
+                                          "description": "Frame after which the pause starts, using frames from the"
+                                                         "original concatenated movie"})
+                    columns_pause.append({"name": "stop_original_frame",
+                                          "description": "Frame at which the pause ends, using frames from the "
+                                                         "original concatenated movie"})
                     pause_time_intervals = self.nwb_file.create_time_intervals(name="ci_recording_on_pause",
                                                          description='Intervals that correspond to '
                                                                      'the time of last frame recorded '
                                                                      'before the pause, and stop_time '
                                                                      'is the time of the first frame '
                                                                      'recorded after the pause, during calcium imaging'
-                                                                     'recording. ')
+                                                                     'recording.', columns=columns_pause)
                     for i, gap_index in enumerate(self.gap_indices):
                         # print(f"gap_index {gap_index}")
                         # gap_in_ms = self.timestamps_in_ms[self.ci_frames_indices[gap_index + 1]] - \
@@ -350,19 +359,23 @@ class ConvertAbfToNWB(ConvertToNWB):
                         # issue with add_epoch, it does work but after saving, when loading the nwb_file, there is no
                         # epoch. Solution using add_time_intervals inspired by this issue
                         # https://github.com/NeurodataWithoutBorders/pynwb/issues/958
-                        # TODO: report an issue on the github
+                        # TODO: See to report an issue on the github
                         # self.nwb_file.add_epoch(start_time=self.timestamps_in_sec[self.ci_frames_indices[gap_index]],
                         #                         stop_time=self.timestamps_in_sec[self.ci_frames_indices[gap_index + 1]],
                         #                         timeseries=ci_frames_time_series,
                         #                         tags=['ci_recording_on_pause'])
-                        pause_time_intervals.add_interval(start_time=self.timestamps_in_sec[self.ci_frames_indices[gap_index]],
-                                                stop_time=self.timestamps_in_sec[self.ci_frames_indices[gap_index + 1]])
-                                                # timeseries=ci_frames_time_series)
-                                                # tags=['ci_recording_on_pause'])
-                    # self.nwb_file.add_time_intervals(pause_time_intervals)
-                        # self.frames_to_add.append((gap_index, int(gap_in_frames)))
-                        # print(f"gap in sec {gap_in_sec}")
+                        data_dict = {}
+                        data_dict["start_time"] = self.timestamps_in_sec[self.ci_frames_indices[gap_index]]
+                        data_dict["stop_time"] = self.timestamps_in_sec[self.ci_frames_indices[gap_index + 1]]
+                        data_dict["start_original_frame"] = gap_index
+                        data_dict["stop_original_frame"] = gap_index + 1
+                        pause_time_intervals.add_row(data_dict)
 
+                        # we add those intervals during which the CI recording is on pause as invalid_time
+                        # so those time intervals will be removed from analysis'
+                        self.nwb_file.add_invalid_time_interval(
+                            start_time=self.timestamps_in_sec[self.ci_frames_indices[gap_index]],
+                            stop_time=self.timestamps_in_sec[self.ci_frames_indices[gap_index + 1]])
 
     def detect_run_periods(self, run_data, min_speed):
         """

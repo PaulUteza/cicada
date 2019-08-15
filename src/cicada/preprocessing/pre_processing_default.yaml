@@ -54,26 +54,38 @@ ConvertTimeIntervalsToNWB:
       value: twitches
     description:
       value: time intervals during which twitches happen
+    ci_recording_pause_included: False
   2:
     intervals_data:
       keyword: ["mvts_categories"]
       extension: ["npz"]
       value: shift_long
     name:
-      value: long mouvement
+      value: long_movement
     description:
       value: time intervals during which long movements happen
+    ci_recording_pause_included: False
   3:
     intervals_data:
       keyword: ["mvts_categories"]
       extension: ["npz"]
       value: shift_unclassified
     name:
-      value: unclassified mouvement
+      value: unclassified_movement
     description:
       value: time intervals during which unclassified movements happen
-
-
+    ci_recording_pause_included: False
+  4:
+    intervals_data:
+      keyword: ["z_mvts"]
+      keyword_to_exclude: ["categories"]
+      extension: ["yaml", "yml"]
+      value: []
+    name:
+      value: z_shift_movements
+    description:
+      value: time intervals during which there are some z shift movement in CI movie.
+    ci_recording_pause_included: False
 
 ConvertSuite2pRoisToNWB:
   suite2p_dir :
@@ -109,4 +121,5 @@ ConvertAbfToNWB:
 
 order :
 #  [ConvertCiMovieToNWB, ConvertSuite2pRoisToNWB, ConvertNeuralActivityToNWB, ConvertTimeIntervalsToNWB]
+#
  [ConvertAbfToNWB, ConvertCiMovieToNWB, ConvertSuite2pRoisToNWB, ConvertNeuralActivityToNWB, ConvertTimeIntervalsToNWB]

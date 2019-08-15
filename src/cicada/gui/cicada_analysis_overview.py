@@ -35,28 +35,40 @@ class AnalysisOverview(QWidget):
         self.scroll_area_widget_contents = QWidget()
         self.scrollArea.setWidget(self.scroll_area_widget_contents)
         self.layout = QVBoxLayout(self.scroll_area_widget_contents)
+        # we add strech now and we will insert new widget before the strech
+        self.layout.addStretch(1)
         # ==============================
         self.setLayout(self.main_layout)
 
-    def add_analysis_overview(self, analysis_name, analysis_id, obj):
+    def add_analysis_overview(self, cicada_analysis, analysis_id, obj):
         """
         Add a widget to track the corresponding analysis
         Args:
-            analysis_name (str): Name of the analysis
+            cicada_analysis (CicadaAnalysis): CicadaAnalysis instance
             analysis_id (str): Randomly generated ID linked to the analysis
             obj (object): The analysis window's object itself
 
         """
         self.created_analysis_names.append(analysis_id + '_overview')
-        exec('self.' + analysis_id + '_overview = AnalysisState(obj, self.scroll_area_widget_contents, "' + analysis_name + '")')
-        eval('self.layout.addWidget(self.' + analysis_id + '_overview)')
-        eval('self.' + analysis_id + '_overview.setStyleSheet("background-color:transparent; border-radius: 20px;")')
-        exec('self.hlayout_' + analysis_id + ' = QHBoxLayout()')
+
+        setattr(self, analysis_id + '_overview', AnalysisState(analysis_id=obj, cicada_analysis=cicada_analysis,
+                                                               parent=self.scroll_area_widget_contents))
+        analysis_overview = getattr(self, analysis_id + '_overview')
+
+        # self.layout.addWidget(analysis_overview)
+        self.layout.insertLayout(self.layout.count() - 1, analysis_overview)
+        # analysis_overview.setStyleSheet("background-color:transparent; border-radius: 20px;")
+        setattr(self, 'hlayout_' + analysis_id, QHBoxLayout())
+        h_layout = getattr(self, 'hlayout_' + analysis_id)
+        # setattr(self, analysis_id + '_remaining_time_label', RemainingTime())
         # exec('self.' + analysis_id + '_remaining_time_label = RemainingTime()')
-        exec('self.' + analysis_id + '_progress_bar = QProgressBar()')
-        eval('self.hlayout_' + analysis_id + '.addWidget(self.' + analysis_id + '_progress_bar)')
+        setattr(self, analysis_id + '_progress_bar', QProgressBar())
+        # exec('self.' + analysis_id + '_progress_bar = QProgressBar()')
+        h_layout.addWidget(getattr(self, analysis_id + '_progress_bar'))
         # eval('self.hlayout_' + analysis_id + '.addWidget(self.' + analysis_id + '_remaining_time_label)')
-        eval('self.layout.addLayout(self.hlayout_' + analysis_id + ')')
+        self.layout.insertLayout(self.layout.count() - 1, h_layout)
+        # self.layout.addLayout(h_layout)
+
 
     def keyPressEvent(self, event):
         available_background = ["black_widow.png", "captain_marvel.png", "iron_man.png", "hulk.png"]
@@ -75,13 +87,50 @@ class AnalysisOverview(QWidget):
                 self.special_background_on = True
 
 
-class AnalysisState(QLabel):
+class AnalysisState(QHBoxLayout):
 
-    def __init__(self, analysis_id, parent=None, analysis_name=''):
+    def __init__(self, analysis_id, cicada_analysis, parent=None, without_bringing_to_front=False):
         super().__init__(parent)
-        self.setText(analysis_name)
-        self.mouseDoubleClickEvent = partial(self.bring_to_front, analysis_id)
 
+        self.q_scroll_bar = QScrollArea()
+        # self.h_layout = QHBoxLayout()
+        property_value = "True"
+        if without_bringing_to_front:
+            # this way we can remove the change of color for QLabel when hover state
+            # and we can increase the max-height of the scrollbar
+            property_value = "False"
+
+        self.q_label_analysis_name = QLabel()
+        self.q_label_analysis_name.setText(cicada_analysis.name)
+        self.q_label_analysis_name.setAlignment(Qt.AlignCenter)
+        # use for personnalized style-sheet
+        self.q_label_analysis_name.setProperty("state", property_value)
+        self.setProperty("state", "True")
+        if not without_bringing_to_front:
+            self.q_label_analysis_name.mouseDoubleClickEvent = partial(self.bring_to_front, analysis_id)
+        self.addWidget(self.q_label_analysis_name)
+
+        data_identifiers = "\n".join(cicada_analysis.get_data_identifiers())
+        self.q_label_data_identifiers = QLabel()
+        self.q_label_data_identifiers.setText(data_identifiers)
+        self.q_label_data_identifiers.setAlignment(Qt.AlignCenter)
+        # use for personnalized style-sheet
+        self.q_label_data_identifiers.setProperty("state", property_value)
+        self.q_scroll_bar.setProperty("state", property_value)
+
+        if not without_bringing_to_front:
+            self.q_label_data_identifiers.mouseDoubleClickEvent = partial(self.bring_to_front, analysis_id)
+
+        # ScrollBarAlwaysOff = 1
+        # ScrollBarAlwaysOn = 2
+        # ScrollBarAsNeeded = 0
+        self.q_scroll_bar.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        # self.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.q_scroll_bar.setWidgetResizable(True)
+        self.q_scroll_bar.setWidget(self.q_label_data_identifiers)
+
+        self.addWidget(self.q_scroll_bar)
+        # self.addStretch(1)
 
     def bring_to_front(self, window_id, event):
         """Bring corresponding analysis window to the front (re-routed from the double click method)"""
