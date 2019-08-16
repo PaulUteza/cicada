@@ -202,7 +202,7 @@ def convert_data_to_nwb(data_to_convert_dir, default_convert_to_nwb_yml_file, nw
         if not(file.endswith(".yaml") or file.endswith(".yml")):
             continue
         if "create_nwb_data" in file:
-            with open(os.path.join(data_to_convert_dir, file, 'r')) as stream:
+            with open(os.path.join(data_to_convert_dir, file), 'r') as stream:
                 config_data_for_conversion = yaml.safe_load(stream)
 
     # If 2 files are provided, the one given by the user will take the priority

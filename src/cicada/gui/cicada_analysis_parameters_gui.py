@@ -34,7 +34,14 @@ class ParameterWidgetModel(ABC):
         """
         return None
 
-    # TODO: add set_value, allow to load params from a file for ex, though AnalysisArgumentHandler
+    @abstractmethod
+    def set_value(self, value):
+        """
+        Set the widget value to the value passed
+        Returns:
+
+        """
+        pass
 
 
 class MyQFrame(QFrame):
@@ -150,12 +157,14 @@ class ListCheckboxWidget(MyQFrame, ParameterWidgetModel, metaclass=FinalMeta):
 
         choices = getattr(self.analysis_arg, choices_attr_name, None)
         default_value = self.analysis_arg.get_default_value()
+        if isinstance(default_value, str):
+            default_value = [default_value]
         if choices:
             for choice in choices:
                 item = QListWidgetItem()
                 item.setFlags(item.flags() | QtCore.Qt.ItemIsUserCheckable |
                               QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
-                if default_value and (choice == default_value):
+                if default_value and (choice in default_value):
                     item.setCheckState(QtCore.Qt.Checked)
                 else:
                     item.setCheckState(QtCore.Qt.Unchecked)
@@ -165,6 +174,34 @@ class ListCheckboxWidget(MyQFrame, ParameterWidgetModel, metaclass=FinalMeta):
 
         # self.list_widget.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         self.list_widget.setSizeAdjustPolicy(QAbstractScrollArea.AdjustToContents)
+
+    def set_value(self, value):
+        """
+        Set the value.
+        Args:
+            value: value is either a string or integer or float, or a list. If a list, then item whose value matches
+            one of the elements in the list will be checkeds
+        Returns: None
+
+        """
+        # first we uncheck them all
+        for i in np.arange(self.list_widget.count()):
+            item = self.list_widget.item(i)
+            item.setCheckState(QtCore.Qt.Unchecked)
+
+        if value is None:
+            return
+
+        if not isinstance(value, list):
+            values = [value]
+        else:
+            values = value
+
+        # then we find the item that match the values and checked them
+        for value in values:
+            items = self.list_widget.findItems(value, Qt.MatchExactly)
+            for item in items:
+                item.setCheckState(QtCore.Qt.Checked)
 
     def get_value(self):
         checked_items = []
@@ -214,6 +251,10 @@ class LineEditWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
 
         is_mandatory = self.analysis_arg.is_mandatory()
         self.setProperty("is_mandatory", str(is_mandatory))
+
+    def set_value(self, value):
+        if value is not None:
+            self.line_edit.setText(value)
 
     def get_value(self):
         return self.line_edit.text()
@@ -299,6 +340,37 @@ class ComboBoxWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
         is_mandatory = self.analysis_arg.is_mandatory()
         self.setProperty("is_mandatory", str(is_mandatory))
 
+    def set_value(self, value):
+        """
+        Set a new value.
+        Either value is None and nothing will happen
+        If value is a list instance,
+        Args:
+            value:
+
+        Returns:
+
+        """
+        if value is None:
+            return
+
+        if isinstance(value, dict):
+            # means each key represent the session_id and the value the default value
+            for session_id, value_to_set in value.items():
+                combo_box = self.combo_boxes[session_id]
+                index = combo_box.findData(value_to_set)
+                # -1 for not found
+                if index != -1:
+                    combo_box.setCurrentIndex(index)
+        else:
+            # otherwise we look for the value in each of the combo_box
+            for combo_box in self.combo_boxes.values():
+                index = combo_box.findData(value)
+                # -1 for not found
+                if index != -1:
+                    combo_box.setCurrentIndex(index)
+
+
     def get_value(self):
         if len(self.combo_boxes) == 1:
             for combo_box in self.combo_boxes.values():
@@ -352,6 +424,11 @@ class CheckBoxWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
 
         is_mandatory = self.analysis_arg.is_mandatory()
         self.setProperty("is_mandatory", str(is_mandatory))
+
+    def set_value(self, value):
+        if value is None:
+            value = False
+        self.check_box.setChecked(value)
 
     def get_value(self):
         return self.check_box.checkState()
@@ -412,6 +489,10 @@ class SliderWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
         self.slider.setValue(value)
         # self.analysis_arg.set_argument_value(value)
 
+    def set_value(self, value):
+        if value is not None:
+            self.spin_box.setValue(value)
+
     def get_value(self):
         return self.slider.value()
 
@@ -430,6 +511,7 @@ class AnalysisParametersApp(QWidget):
         # will be initialize when the param section will have been created
         self.param_section_widget = None
         self.analysis_arguments_handler = None
+        # use for multithreading
 
         # Add the scroll bar
         # ==============================
@@ -455,6 +537,10 @@ class AnalysisParametersApp(QWidget):
         self.load_arguments_button = QPushButton("Load arguments", self)
         self.load_arguments_button.setEnabled(True)
         self.load_arguments_button.clicked.connect(self.load_arguments)
+
+        self.reset_arguments_button = QPushButton("Reset arguments to default value", self)
+        self.reset_arguments_button.setEnabled(True)
+        self.reset_arguments_button.clicked.connect(self.reset_arguments)
         # self.main_layout.addWidget(self.run_analysis_button)
 
         self.setLayout(self.main_layout)
@@ -534,15 +620,18 @@ class AnalysisParametersApp(QWidget):
                 self.scroll_area_widget_contents.setStyleSheet(self.current_style_sheet_background)
                 self.special_background_on = True
 
+    def reset_arguments(self):
+        self.analysis_arguments_handler.set_widgets_to_default_value()
+
     def run_analysis(self):
         if self.analysis_arguments_handler is None:
             return
         # first we disable the button so we can launch a given analysis only once
         self.run_analysis_button.setEnabled(False)
-        self.worker = Worker(self.name, self.analysis_arguments_handler)
-        self.worker.updateProgress.connect(self.progress_bar.update_progress_bar)
-        self.worker.updateProgress2.connect(self.progress_bar.update_progress_bar_overview)
-        self.worker.start()
+        worker = Worker(self.name, self.analysis_arguments_handler)
+        worker.updateProgress.connect(self.progress_bar.update_progress_bar)
+        worker.updateProgress2.connect(self.progress_bar.update_progress_bar_overview)
+        worker.start()
         # p = Thread(target=self.analysis_arguments_handler.run_analysis, daemon=True)
         # p.setName(self.name)
         # p.start()
@@ -597,6 +686,7 @@ class AnalysisData(QWidget):
 
         self.layout.addLayout(self.analysis_state)
         self.layout.addStretch(1)
+        self.layout.addWidget(arguments_section_widget.reset_arguments_button)
         self.layout.addWidget(arguments_section_widget.load_arguments_button)
         self.layout.addWidget(arguments_section_widget.run_analysis_button)
 
@@ -716,13 +806,13 @@ class Worker(QtCore.QThread):
     updateProgress = QtCore.Signal(float, float, float)
     updateProgress2 = QtCore.Signal(str, float, float, float)
 
-    def __init__(self, name, cicada_analysis):
+    def __init__(self, name, analysis_arguments_handler):
         QtCore.QThread.__init__(self)
         self.name = name
-        self.cicada_analysis = cicada_analysis
+        self.analysis_arguments_handler = analysis_arguments_handler
 
     def run(self):
-        self.cicada_analysis.run_analysis()
+        self.analysis_arguments_handler.run_analysis()
 
     def setProgress(self, name, time_started, increment_value=0, new_set_value=0):
         self.updateProgress.emit(time_started, increment_value, new_set_value)

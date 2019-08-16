@@ -2,13 +2,14 @@ from qtpy.QtWidgets import *
 from qtpy.QtCore import Qt
 # to import the Widgets for the GUI
 from cicada.gui.cicada_analysis_parameters_gui import *
+import yaml
 
 
 class AnalysisArgument:
 
     def __init__(self, **kwargs):
         """
-
+        Arguments passed to the function can't be named '_widget' or '_final_value'
         Args:
             **kwargs:
                 - arg_name
@@ -25,9 +26,9 @@ class AnalysisArgument:
         for attribute_name, value in kwargs.items():
             setattr(self, attribute_name, value)
 
-        self.widget = None
+        self._widget = None
 
-        self.final_value = None
+        self._final_value = None
 
     def get_gui_widget(self):
         """
@@ -48,25 +49,80 @@ class AnalysisArgument:
 
         if getattr(self, "value_type", None) == "int":
             if hasattr(self, "min_value") and hasattr(self, "max_value"):
-                self.widget = SliderWidget(analysis_arg=self)
-                return self.widget
+                self._widget = SliderWidget(analysis_arg=self)
+                return self._widget
         elif getattr(self, "value_type", None) == "bool":
-            self.widget = CheckBoxWidget(analysis_arg=self)
-            return self.widget
+            self._widget = CheckBoxWidget(analysis_arg=self)
+            return self._widget
 
         elif hasattr(self, "choices"):
             if getattr(self, "multiple_choices", False):
-                self.widget = ListCheckboxWidget(analysis_arg=self, choices_attr_name="choices")
+                self._widget = ListCheckboxWidget(analysis_arg=self, choices_attr_name="choices")
             else:
-                self.widget = ComboBoxWidget(analysis_arg=self)
-            return self.widget
+                self._widget = ComboBoxWidget(analysis_arg=self)
+            return self._widget
 
         else:
-            self.widget = LineEditWidget(analysis_arg=self)
-            return self.widget
+            self._widget = LineEditWidget(analysis_arg=self)
+            return self._widget
 
     def set_argument_value(self, value):
-        self.final_value = value
+        self._final_value = value
+
+    def set_argument_value_from_widget(self):
+        """
+        Look in the widget to get the final_value of this argument
+        Returns:
+
+        """
+        self._final_value = self.get_argument_value()
+
+    def get_all_attributes(self):
+        """
+        Return a dict containing all attributes of this argument except for the widget one
+        Returns:
+
+        """
+        all_attr = dir(self)
+        attr_dict = dict()
+        for attr_name in all_attr:
+            if attr_name.startswith("_"):
+                continue
+            attr_dict[attr_name] = getattr(self, attr_name, None)
+
+        return attr_dict
+
+    def set_widget_to_default_value(self):
+        """
+        Set the widget to the default value of this analysis argument
+        Returns:
+
+        """
+        self._widget.set_value(value=self.get_default_value())
+
+    def set_widget_value_from_saved_data(self, args_content):
+        """
+
+        Args:
+            args_content: dict with key the attribute name and value the content
+
+        Returns:
+
+        """
+        # if there is no "final_value", then somthing wrong
+        if "final_value" not in args_content:
+            print(f"No final_value found while using set_widget_value_from_saved_data for analysis_argument "
+                  f"{self.arg_name}")
+            return
+
+        # first we check if each attribute corresponds the actual one in terms of value
+        for attr_name, attr_value in args_content.dict():
+            if attr_name == "final_value":
+                continue
+            # TODO: check them one by one, see depending of the type of the data how to compare the values
+            #  if it's not the same, use return to exit the functioon
+
+        self.final_value = args_content["final_value"]
 
     def is_mandatory(self):
         """
@@ -209,9 +265,6 @@ class AnalysisArgument:
 
         return self_order_index >= other_order_index
 
-    # TODO: implement __eq__ etc.. in order to sort AnalysisArgument, mandatory first... and then use order_index
-    #  to sort among mandatory and among non-mandatory arguments
-
     def get_default_value(self):
         return getattr(self, "default_value", None)
 
@@ -219,9 +272,9 @@ class AnalysisArgument:
         return getattr(self, "description", None)
 
     def get_argument_value(self):
-        if self.widget is None:
+        if self._widget is None:
             return None
-        return self.widget.get_value()
+        return self._widget.get_value()
 
 
 class AnalysisArgumentsHandler:
@@ -238,6 +291,52 @@ class AnalysisArgumentsHandler:
         arg_analysis = AnalysisArgument(**kwargs)
         self.args_dict[arg_analysis.arg_name] = arg_analysis
 
+    def save_analysis_arguments_to_yaml_file(self, path_dir, yaml_file_name):
+        """
+        Save the arguments value to a yaml file.
+        The first key will represent the argument name
+        then the value will be a dict with the argument details such as the type etc...
+        Args:
+            path_dir: directory in which save the yaml file
+            yaml_file_name: yaml file name, with the extension or without (will be added in that case)
+
+        Returns:
+
+        """
+        analysis_args_for_yaml = dict()
+
+        for arg_name, analysis_arg in self.args_dict.items():
+            analysis_args_for_yaml[arg_name] = analysis_arg.get_all_attributes()
+
+        if (not yaml_file_name.endswith(".yaml")) and (not yaml_file_name.endswith(".yml")):
+            yaml_file_name = yaml_file_name + ".yaml"
+
+        with open(os.path.join(path_dir, yaml_file_name), 'w') as outfile:
+            yaml.dump(analysis_args_for_yaml, outfile, default_flow_style=False)
+
+    def load_analysis_argument_from_yaml_file(self, file_name):
+        """
+        Set the analysis argument value based on the value in the yaml file.
+        The
+        Args:
+            file_name:
+
+        Returns:
+
+        """
+
+        with open(file_name, 'r') as stream:
+            analysis_args_from_yaml = yaml.safe_load(stream)
+
+        for arg_name, args_content in analysis_args_from_yaml.items():
+            # now we check if an arg with this name exists
+            # we also check that the attributes other than final_value match the one we want to load
+            # otherwise it means the analysis function change since the time the file was saved and it's not safe
+            # to us this value.
+            # if everything is good, then we change the value in the widget accordingly
+            if arg_name in self.args_dict:
+                self.args_dict[arg_name].set_widget_value_from_saved_data(args_content)
+
     def get_analysis_argument(self, arg_name):
         self.args_dict.get(arg_name)
 
@@ -246,6 +345,15 @@ class AnalysisArgumentsHandler:
         if sorted:
             analysis_arguments.sort()
         return analysis_arguments
+
+    def set_widgets_to_default_value(self):
+        """
+        Set the widgets to the default value of their AnalysisArgument
+        Returns:
+
+        """
+        for analysis_argument in self.args_dict.values():
+            analysis_argument.set_widget_to_default_value()
 
     def set_argument_value(self, arg_name, **kwargs):
         """
@@ -286,11 +394,3 @@ class AnalysisArgumentsHandler:
         for arg_name, analysis_argument in self.args_dict.items():
             kwargs[arg_name] = analysis_argument.get_argument_value()
         self.cicada_analysis.run_analysis(**kwargs)
-
-    # TODO: function that save arguments to a yaml file and a function to load them
-
-    def save_analysis_arguments(self):
-        pass
-
-    def load_analysis_arguments(self):
-        pass
