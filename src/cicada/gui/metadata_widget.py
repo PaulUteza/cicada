@@ -10,7 +10,7 @@ from abc import ABC, abstractmethod
 from pynwb import NWBHDF5IO, get_manager, NWBContainer
 from datetime import datetime
 from pynwb.core import LabelledDict
-from pynwb.file import NWBFile, Subject
+from pynwb.file import NWBFile, Subject, ProcessingModule
 import hdmf
 from shutil import copyfile
 
@@ -86,15 +86,16 @@ class NWBMetaDataFinder:
 
         containers_from_data_file = dict()
 
-        # It is quite hard to manipulate nwb_object (not dataset so not printable),
-        # the goal here is to get all containers, and later get name, description, ... and print them
-        for field in self.data_file.fields:  # fields contains all containers belonging to the NWB.
-            field_class = self.data_file.fields.get(field)  # 'field' is a string, corresponds to a 'fields' attribute
-            if isinstance(field_class, LabelledDict):
-                for sub_field in field_class:
-                    sub_field_class = field_class.get(sub_field)
-                    if isinstance(sub_field_class, NWBContainer):
-                        containers_from_data_file[sub_field_class.name] = sub_field_class
+        def check_containers(container):
+            # recursive research of all containers (with 'children' field)
+            children = getattr(container, 'children', None)
+            for child in children:
+                if isinstance(child, NWBContainer) and not isinstance(child, Subject):
+                    # Subject is a NWBContainer but is already got somewhere else (see get_subject_metadata_in_nwb)
+                    containers_from_data_file[child.name] = child
+                    check_containers(child)
+
+        check_containers(self.data_file)
 
         return containers_from_data_file
 
@@ -382,25 +383,46 @@ class CicadaMetaDataContainer:
                                                epoch_tags_metadata]  # set
 
     def set_containers_for_gui(self):
+        # For all containers found, if they have metadata, show them in a QTable
+        # Create a special QTable for all containers whithout metadata
 
         containers_from_data_file = self.metadata_finder_wrapper.containers_from_data_file
+
+        other_containers = dict()
+        other_containers['group_name'] = 'other containers'
+        other_containers['widget_type'] = 'QTable'
+        other_containers['description'] = 'other containers'
+        other_containers['metadata_in_group'] = []
 
         for container in containers_from_data_file.values():
             container_metadata = dict()
             container_metadata['group_name'] = container.name
             container_metadata['widget_type'] = 'QTable'
-            container_metadata['description'] = container.name
+            container_metadata['description'] = container.name + "     (type : " \
+                                                               + str(type(container)).split("'")[1] + ")"
             container_metadata['metadata_in_group'] = []
 
+            # Try to get all metadata for this container
             for field in container.fields:
                 field_class = container.fields.get(field)  # 'field' is a string, corresponds to a 'fields' attribute
                 if isinstance(field_class, (str, float, int)):
-                    container_metadata_dict = {'metadata_name': str(field), 'value_type': str(type(field_class)),
-                                               'value': field_class,
+                    container_metadata_dict = {'metadata_name': str(field), 'value_type':
+                                               str(type(field_class)).split("'")[1], 'value': field_class,
                                                'description': str(field) + ' of ' + container.name}
                     container_metadata['metadata_in_group'].append(container_metadata_dict)
 
-            self.add_metadata_group_for_gui(**container_metadata)
+            if len(container_metadata['metadata_in_group']) > 0:
+                self.add_metadata_group_for_gui(**container_metadata)
+
+            # When there isn't any metadata, put them in a QTable with all other containers
+            else:
+                container_to_add = {'metadata_name': str(container.name), 'value_type':
+                                    str(type(container)).split("'")[1],
+                                    'value': None, 'description': getattr(container, 'description', None)}
+                other_containers['metadata_in_group'].append(container_to_add)
+
+        if len(other_containers['metadata_in_group']) > 0:
+            self.add_metadata_group_for_gui(**other_containers)
 
     def save_changes(self, general_metadata, subject_metadata):
         # TODO : wrapper for save : only in NWB for the moment
@@ -459,8 +481,6 @@ class SaveModifiedNWB:
                     setattr(self.nwb_file.subject, metadata_field, metadata_value)
                 except AttributeError:
                     print(metadata_field, " : NO ! NO ! NO !")
-                except Exception as e:
-                    print(e)
 
     def write_nwb(self):
         # It seems that io.read need to be open to save data in file, so I try to save data in an other file
@@ -571,9 +591,8 @@ class MetaDataGroup:  # Necessary to add multiple metadata in one widget (QTable
 
     def get_gui_widget(self):
         if getattr(self, "widget_type", None) == "QTable":
-            if len(self.metadata_dict) > 0:
-                self.widget = TableWidget(metadata_group=self)
-                return self.widget
+            self.widget = TableWidget(metadata_group=self)
+            return self.widget
 
     def get_metadata_value_in_widget(self, metadata):
         if self.widget is None:
@@ -689,6 +708,7 @@ class MetaDataWidget(QWidget):
 
 
 class TableWidget(QFrame):
+
     def __init__(self, metadata_group, parent=None):
         QWidget.__init__(self, parent=parent)
 
@@ -707,7 +727,6 @@ class TableWidget(QFrame):
         self.table.setHorizontalHeaderLabels(["metadata name", "value type", "value", "description"])
 
         for metadata_to_add in self.metadata_dict.values():
-            print(metadata_to_add.metadata_name)
             position = metadata_to_add.position_in_widget
             self.table.setItem(position, 0, QTableWidgetItem(metadata_to_add.metadata_name))
             self.table.setItem(position, 1, QTableWidgetItem(metadata_to_add.value_type))
