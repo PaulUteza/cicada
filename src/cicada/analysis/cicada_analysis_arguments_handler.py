@@ -54,14 +54,15 @@ class AnalysisArgument:
         elif getattr(self, "value_type", None) == "bool":
             self._widget = CheckBoxWidget(analysis_arg=self)
             return self._widget
-
+        elif getattr(self, "value_type", None) == "dir":
+            self._widget = FileDialogWidget(analysis_arg=self, directory_only=True)
+            return self._widget
         elif hasattr(self, "choices"):
             if getattr(self, "multiple_choices", False):
                 self._widget = ListCheckboxWidget(analysis_arg=self, choices_attr_name="choices")
             else:
                 self._widget = ComboBoxWidget(analysis_arg=self)
             return self._widget
-
         else:
             self._widget = LineEditWidget(analysis_arg=self)
             return self._widget
@@ -83,10 +84,11 @@ class AnalysisArgument:
         Returns:
 
         """
-        all_attr = dir(self)
+        # first we upddate _final_value
+        self.set_argument_value_from_widget()
         attr_dict = dict()
-        for attr_name in all_attr:
-            if attr_name.startswith("_"):
+        for attr_name in self.__dict__.keys():
+            if attr_name.startswith("_") and attr_name != "_final_value":
                 continue
             attr_dict[attr_name] = getattr(self, attr_name, None)
 
@@ -109,15 +111,15 @@ class AnalysisArgument:
         Returns:
 
         """
-        # if there is no "final_value", then somthing wrong
-        if "final_value" not in args_content:
+        # if there is no "final_value", then something wrong
+        if "_final_value" not in args_content:
             print(f"No final_value found while using set_widget_value_from_saved_data for analysis_argument "
                   f"{self.arg_name}")
             return
 
         # first we check if each attribute corresponds the actual one in terms of value
         for attr_name, attr_value in args_content.dict():
-            if attr_name == "final_value":
+            if attr_name == "_final_value":
                 continue
             # TODO: check them one by one, see depending of the type of the data how to compare the values
             #  if it's not the same, use return to exit the functioon
@@ -384,10 +386,13 @@ class AnalysisArgumentsHandler:
     def check_arguments_validity(self):
         """
         Check if all mandatory arguments have been filled
-        Returns:
-
+        Returns: True if we can run the analysis
         """
-        pass
+        for arg_name, analysis_argument in self.args_dict.items():
+            value = analysis_argument.get_argument_value()
+            if analysis_argument.is_mandatory and (value is None):
+                return False
+        return True
 
     def run_analysis(self):
         kwargs = {}

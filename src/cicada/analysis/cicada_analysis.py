@@ -5,7 +5,8 @@ from cicada.preprocessing.utils import class_name_to_file_name
 import importlib
 import PyQt5.QtCore as Core
 from qtpy.QtCore import QThread
-from copy import copy, deepcopy
+from datetime import datetime
+import os
 
 class CicadaAnalysis(ABC):
     """
@@ -13,7 +14,7 @@ class CicadaAnalysis(ABC):
 
     """
     def __init__(self, name, short_description, family_id=None, long_description=None,
-                 data_to_analyse=None, data_format=None,):
+                 data_to_analyse=None, data_format=None, config_handler=None):
         """
         A list of
         :param name:
@@ -22,6 +23,7 @@ class CicadaAnalysis(ABC):
         :param family_id: family_id indicated to which family of analysis this class belongs. If None, then
         the analysis is a family in its own.
         :param long_description: string
+        :param config_handler: Instance of ConfigHandler to have access to configuration
         """
         super().__init__()
         # TODO: when the exploratory GUI will be built, think about passing in argument some sort of connector
@@ -35,7 +37,11 @@ class CicadaAnalysis(ABC):
         self.current_order_index = 0
         self._data_to_analyse = data_to_analyse
         self._data_format = data_format
+        self.config_handler = config_handler
         self.analysis_arguments_handler = AnalysisArgumentsHandler(cicada_analysis=self)
+
+        # path of the dir where the results will be saved
+        self._results_path = None
 
         # dict containing instances of CicadaAnalysisFormatWrapper, for each format supported
         self.analysis_formats_wrapper = None
@@ -50,6 +56,27 @@ class CicadaAnalysis(ABC):
     # @abstractproperty
     # def data_format(self):
     #     pass
+
+    def create_results_directory(self, dir_path):
+        """
+        Will create a directory in dir_path with the name of analysis and time at which the directory is created
+        so it can be unique. The attribute _results_path will be updated with the path of this new directory
+        Args:
+            dir_path: path of the dir in which create the results dir
+
+        Returns: this new directory
+
+        """
+        # first we check if dir_path exists
+        if (not os.path.exists(dir_path)) or (not os.path.isdir(dir_path)):
+            print(f"{dir_path} doesn't exist or is not a directory")
+            return
+
+        time_str = datetime.now().strftime("%Y_%m_%d.%H-%M-%S")
+        self._results_path = os.path.join(dir_path, self.name + f"_{time_str}")
+        os.mkdir(self._results_path)
+
+        return self._results_path
 
     def get_data_identifiers(self):
         """
@@ -123,11 +150,22 @@ class CicadaAnalysis(ABC):
     def set_arguments_for_gui(self):
         """
         Need to be implemented in order to be used through the graphical interface.
+        super().set_arguments_for_gui() should be call first to instantiate an AnalysisArgumentsHandler and
+        create the attribution for results_path
         :return: None
         """
         # creating a new AnalysisArgumentsHandler instance
         self.analysis_arguments_handler = AnalysisArgumentsHandler(cicada_analysis=self)
-        return None
+        # we order_index at 1000 for it to be displayed at the end
+        default_results_path = None
+        mandatory = True
+        if self.config_handler is not None:
+            default_results_path = self.config_handler.get_default_results_path()
+            mandatory = False
+        range_arg = {"arg_name": "results_path", "value_type": "dir",
+                     "default_value": default_results_path, "description": "Directory to save the results",
+                     "with_incremental_order": False, "order_index": 1000, "mandatory": mandatory}
+        self.add_argument_for_gui(**range_arg)
 
     @property
     def data_to_analyse(self):
@@ -151,7 +189,11 @@ class CicadaAnalysis(ABC):
         :param kwargs:
         :return:
         """
-        pass
+        if "results_path" in kwargs:
+            results_path = kwargs["results_path"]
+            self.create_results_directory(results_path)
+            self.analysis_arguments_handler.save_analysis_arguments_to_yaml_file(path_dir=self._results_path,
+                                                                                 yaml_file_name=self.name)
 
     # TODO: do a function that return a structure (home-made class ?) that will be used by the GUI to know
     #  which argument to pass to run_analysis, their types, if mandatory and their range among other things

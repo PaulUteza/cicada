@@ -21,9 +21,10 @@ from functools import partial
 from time import time
 
 
+
 class ParameterWidgetModel(ABC):
     def __init__(self):
-        self.mandatory = False
+        pass
 
     @abstractmethod
     def get_value(self):
@@ -53,19 +54,40 @@ class MyQFrame(QFrame):
         self.v_box = QVBoxLayout()
         description = self.analysis_arg.get_description()
         if description:
-            q_label = QLabel(description)
-            q_label.setAlignment(Qt.AlignCenter)
-            q_label.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-            q_label.setAttribute(QtCore.Qt.WA_TranslucentBackground)
-            self.v_box.addWidget(q_label)
+            self.q_label_description = QLabel(description)
+            self.q_label_description.setAlignment(Qt.AlignCenter)
+            self.q_label_description.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+            self.q_label_description.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+            self.v_box.addWidget(self.q_label_description)
 
         self.setLayout(self.v_box)
 
-        is_mandatory = self.analysis_arg.is_mandatory()
-        self.setProperty("is_mandatory", str(is_mandatory))
+        self.mandatory = self.analysis_arg.is_mandatory()
+        self.setProperty("is_mandatory", str(self.mandatory))
+
+    def change_mandatory_property(self, value):
+        """
+        Changing the property allowing to change the style sheet depending on the mandatory aspect of the argument
+        Args:
+            value:
+
+        Returns:
+
+        """
+        self.setProperty("is_mandatory", value)
+        self.style().unpolish(self)
+        self.style().polish(self)
 
     def get_layout(self):
         return self.v_box
+
+    def set_property_to_missing(self):
+        """
+        Allows the change the stylesheet and indicate the user that a
+        Returns:
+
+        """
+        self.setProperty("something_is_missing", "True")
 
 
 # to resolve: TypeError: metaclass conflict: the metaclass of a derived class
@@ -82,28 +104,100 @@ class FinalMeta(type(ParameterWidgetModel), type(QWidget)):
 #  - choose a color
 #  -
 
-class FileDialogWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
+class FileDialogWidget(MyQFrame, ParameterWidgetModel, metaclass=FinalMeta):
     """
     Create a widget that will contain a button to open a FileDialog and a label to display the file or directory choosen
     A label will also explain what this parameter do
     """
 
-    def __init__(self, analysis_arg, save_file_dialog, directory_only, parent=None):
-        QFrame.__init__(self, parent=parent)
+    def __init__(self, analysis_arg, directory_only, parent=None):
+        MyQFrame.__init__(self, analysis_arg, parent=parent)
         ParameterWidgetModel.__init__(self)
 
         self.analysis_arg = analysis_arg
         # both are booleans
-        self.save_file_dialog = save_file_dialog
+        # self.save_file_dialog = save_file_dialog
         self.directory_only = directory_only
+
+        description = self.analysis_arg.get_description()
+        if description is None:
+            if directory_only:
+                description = "Choose directory"
+            else:
+                description = "Choose a file or a directory"
+        self.q_label_description.setText(description)
+
+        self.file_dialog = QFileDialog(self, description)
+
+        # setting options
+        options = QFileDialog.Options()
+        # options |= QFileDialog.DontUseNativeDialog
+        options |= QFileDialog.DontUseCustomDirectoryIcons
+        self.file_dialog.setOptions(options)
+
+        # ARE WE TALKING ABOUT FILES OR FOLDERS
+        if directory_only:
+            self.file_dialog.setFileMode(QFileDialog.DirectoryOnly)
+        else:
+            self.file_dialog.setFileMode(QFileDialog.AnyFile)
+
+        # OPENING OR SAVING
+        # self.file_dialog.setAcceptMode(QFileDialog.AcceptOpen) if forOpen else \
+        #     self.file_dialog.setAcceptMode(QFileDialog.AcceptSave)
+
+        # self.file_dialog.setSidebarUrls([QtCore.QUrl.fromLocalFile(place)])
+
+        # SET THE STARTING DIRECTORY
+        default_value = self.analysis_arg.get_default_value()
+        if default_value is not None and isinstance(default_value, str):
+            self.file_dialog.setDirectory(default_value)
+        # else:
+        #     self.file_dialog.setDirectory(str(ROOT_DIR))
+
+        # SET FORMAT, IF SPECIFIED
+        # if fmt != '' and directory_only is False:
+        #     self.file_dialog.setDefaultSuffix(fmt)
+        #     self.file_dialog.setNameFilters([f'{fmt} (*.{fmt})'])
+
+        h_box = QHBoxLayout()
+        select_button = QPushButton("Select", self)
+        select_button.clicked.connect(self.open_dialog)
+        h_box.addStretch(1)
+        h_box.addWidget(select_button)
+        h_box.addStretch(1)
+        self.v_box.addLayout(h_box)
+
+        label_text = ""
+        if default_value is not None and isinstance(default_value, str):
+            label_text = default_value
+        self.q_label_path = QLabel(label_text)
+        self.q_label_path.setAlignment(Qt.AlignCenter)
+        self.q_label_path.setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        self.q_label_path.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+        self.scrollArea = QScrollArea()
+        # ScrollBarAlwaysOff = 1
+        # ScrollBarAlwaysOn = 2
+        # ScrollBarAsNeeded = 0
+        self.scrollArea.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+        self.scrollArea.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.scrollArea.setWidgetResizable(True)
+        self.scrollArea.setProperty("label_path", "True")
+        self.v_box.addWidget(self.scrollArea)
+
+        self.scrollArea.setWidget(self.q_label_path)
+        # v_box.addWidget(self.q_label_path)
+
 
         # def openFileNameDialog(self):
         #     options = QFileDialog.Options()
+        #     setFileMode(QFileDialog.Directory)
         #     options |= QFileDialog.DontUseNativeDialog
         #     fileName, _ = QFileDialog.getOpenFileName(self, "QFileDialog.getOpenFileName()", "",
         #                                               "All Files (*);;Python Files (*.py)", options=options)
         #     if fileName:
         #         print(fileName)
+
+
         #
         # def openFileNamesDialog(self):
         #     options = QFileDialog.Options()
@@ -120,7 +214,7 @@ class FileDialogWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
         # if fileName:
         #     print(fileName)
 
-        # fileDialog = QtWidgets.QFileDialog(self, "Choose directory")
+
         # # directory only
         # fileDialog.setFileMode(QtWidgets.QFileDialog.DirectoryOnly)
         # # just list mode is quite sufficient for choosing a diectory
@@ -135,6 +229,33 @@ class FileDialogWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
         # # DontResolveSymlinks seemingly recommended by http://doc.qt.io/qt-5/qfiledialog.html#getExistingDirectory
         # # but I found it didn't make any difference (symlinks resolved anyway)
         # # fileDialog.setOption(QtWidgets.QFileDialog.DontResolveSymlinks)
+
+    def open_dialog(self):
+        if self.file_dialog.exec_() == QDialog.Accepted:
+            path = self.file_dialog.selectedFiles()[0]  # returns a list
+            self.file_dialog.setDirectory(path)
+            self.q_label_path.setText(path)
+            if self.mandatory:
+                self.change_mandatory_property(value="False")
+
+    def get_value(self):
+        text = self.q_label_path.text()
+        if text == "":
+            return None
+        return text
+
+    def set_value(self, value):
+        if value is None:
+            if self.mandatory:
+                self.change_mandatory_property(value="True")
+            self.q_label_path.setText('')
+        else:
+            # then we checks if it exists
+            if os.path.exists(value):
+                if self.analysis_arg.is_mandatory():
+                    self.change_mandatory_property(value="True")
+                self.q_label_path.setText(value)
+                self.file_dialog.setDirectory(value)
 
 
 class ListCheckboxWidget(MyQFrame, ParameterWidgetModel, metaclass=FinalMeta):
@@ -216,7 +337,7 @@ class ListCheckboxWidget(MyQFrame, ParameterWidgetModel, metaclass=FinalMeta):
         return checked_items
 
 
-class LineEditWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
+class LineEditWidget(MyQFrame, ParameterWidgetModel, metaclass=FinalMeta):
 
     def __init__(self, analysis_arg, parent=None):
         """
@@ -224,7 +345,7 @@ class LineEditWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
         Args:
             analysis_arg: instance of AnalysisArgument
         """
-        QWidget.__init__(self, parent=parent)
+        MyQFrame.__init__(self, analysis_arg, parent=parent)
         ParameterWidgetModel.__init__(self)
 
         self.analysis_arg = analysis_arg
@@ -234,23 +355,10 @@ class LineEditWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
         if self.analysis_arg.get_default_value():
             self.line_edit.setText(self.analysis_arg.get_default_value())
 
-        v_box = QVBoxLayout()
-        description = self.analysis_arg.get_description()
-        if description:
-            q_label = QLabel(description)
-            q_label.setAlignment(Qt.AlignCenter)
-            q_label.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-            q_label.setAttribute(QtCore.Qt.WA_TranslucentBackground)
-            v_box.addWidget(q_label)
-
         h_box = QHBoxLayout()
         h_box.addWidget(self.line_edit)
-        v_box.addLayout(h_box)
+        self.v_box.addLayout(h_box)
         # h_box.addStretch(1)
-        self.setLayout(v_box)
-
-        is_mandatory = self.analysis_arg.is_mandatory()
-        self.setProperty("is_mandatory", str(is_mandatory))
 
     def set_value(self, value):
         if value is not None:
@@ -378,6 +486,7 @@ class ComboBoxWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
         result_dict = dict()
         for session_id, combo_box in self.combo_boxes.items():
             result_dict[session_id] = combo_box.currentText()
+        return result_dict
 
 
 class CheckBoxWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
@@ -626,12 +735,17 @@ class AnalysisParametersApp(QWidget):
     def run_analysis(self):
         if self.analysis_arguments_handler is None:
             return
+
+        # first we check if analysis_arguments are filled correctly
+        if not self.analysis_arguments_handler.check_arguments_validity():
+            return
+
         # first we disable the button so we can launch a given analysis only once
         self.run_analysis_button.setEnabled(False)
-        worker = Worker(self.name, self.analysis_arguments_handler)
-        worker.updateProgress.connect(self.progress_bar.update_progress_bar)
-        worker.updateProgress2.connect(self.progress_bar.update_progress_bar_overview)
-        worker.start()
+        self.worker = Worker(self.name, self.analysis_arguments_handler)
+        self.worker.updateProgress.connect(self.progress_bar.update_progress_bar)
+        self.worker.updateProgress2.connect(self.progress_bar.update_progress_bar_overview)
+        self.worker.start()
         # p = Thread(target=self.analysis_arguments_handler.run_analysis, daemon=True)
         # p.setName(self.name)
         # p.start()
@@ -741,7 +855,7 @@ class AnalysisPackage(QWidget):
         self.name = name
         height_window = 750
         self.resize(1000, height_window)
-        self.setFixedSize(self.size())
+        # self.setFixedSize(self.size())
         self.remaining_time_label = RemainingTime()
         self.progress_bar = ProgressBar(self.remaining_time_label)
         self.progress_bar.setEnabled(False)
@@ -828,7 +942,7 @@ class ProgressBar(QProgressBar):
         self.remaining_time_label = remaining_time_label
 
     def update_progress_bar(self, time_started, increment_value=0, new_set_value=0):
-        current_thread = QThread.currentThread()
+        self.current_thread = QThread.currentThread()
         # sys.stderr.write(current_thread.name)
         self.setEnabled(True)
         if new_set_value:
