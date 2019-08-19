@@ -1915,6 +1915,13 @@ QTableCornerButton::section {
   border-radius: 0px;
 }
 
+
+
+QTableView[session_data="True"] {
+  min-height: 150px;
+}
+
+
 /* QHeaderView ------------------------------------------------------------
 
 https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qheaderview
@@ -2115,7 +2122,6 @@ QFrame[is_mandatory="False"] {
   margin-right: 10px;
   border: 1px solid #32414B;
 }
-
 
 .QFrame {
   border-radius: 4px;

@@ -734,17 +734,17 @@ class TableWidget(QFrame):
             self.table.setItem(position, 3, QTableWidgetItem(metadata_to_add.description))
             self.table.move(0, 0)
 
-        self.table.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-
-        self.table.setVerticalScrollBarPolicy(1)
-        self.table.setHorizontalScrollBarPolicy(0)
+        # self.table.setVerticalScrollBarPolicy(0)
+        # self.table.setHorizontalScrollBarPolicy(0)
 
         self.table.resizeColumnsToContents()
         self.table.resizeRowsToContents()
 
-        self.table.setFixedSize(
-            self.table.horizontalHeader().length() + self.table.verticalHeader().width() + 2,
-            self.table.verticalHeader().length() + self.table.horizontalHeader().height() + 2)
+        # self.table.setFixedSize(
+        #     self.table.horizontalHeader().length() + self.table.verticalHeader().width() + 2,
+        #     self.table.verticalHeader().length() + self.table.horizontalHeader().height() + 2)
+
+        self.table.setProperty("session_data", "True")
 
         v_box = QVBoxLayout()
         description = self.metadata_group.get_group_description()
