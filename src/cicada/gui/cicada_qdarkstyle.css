@@ -2076,6 +2076,20 @@ QScrollArea[state="False"]::hover{
   background-color: transparent;
 }
 
+QScrollArea[label_path="True"]{
+  padding: 0px;
+  border: None;
+  background-color: transparent;
+    min-height: 3.0em;
+}
+
+QScrollArea[label_path="True"]::hover{
+  border: None;
+  background-color: transparent;
+}
+
+
+
 /* QFrame -----------------------------------------------------------------
 
 https://doc.qt.io/qt-5/stylesheet-examples.html#customizing-qframe
@@ -2094,7 +2108,7 @@ QFrame {
 
 QFrame[is_mandatory="True"] {
   margin-right: 10px;
-  border: 1px solid white;
+  border: 1px solid red;
 }
 
 QFrame[is_mandatory="False"] {

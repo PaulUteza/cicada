@@ -90,6 +90,7 @@ class CicadaPsthAnalysis(CicadaAnalysis):
         :param kwargs:
         :return:
         """
+        CicadaAnalysis.run_analysis(self, **kwargs)
         # for data in self._data_to_analyse:
         #     print(f"PSTH ----- {data.identifier} on range {kwargs['psth_range']} with {kwargs['plot_options']} "
         #           f"plot using {kwargs['segmentation']} "
