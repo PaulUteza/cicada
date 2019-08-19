@@ -57,6 +57,14 @@ class CicadaAnalysis(ABC):
     # def data_format(self):
     #     pass
 
+    def get_results_path(self):
+        """
+        Return the path when the results from the analysis will be saved or None if it doesn't exist yet
+        Returns:
+
+        """
+        return self._results_path
+
     def create_results_directory(self, dir_path):
         """
         Will create a directory in dir_path with the name of analysis and time at which the directory is created

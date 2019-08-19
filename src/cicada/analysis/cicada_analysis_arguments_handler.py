@@ -118,13 +118,14 @@ class AnalysisArgument:
             return
 
         # first we check if each attribute corresponds the actual one in terms of value
-        for attr_name, attr_value in args_content.dict():
-            if attr_name == "_final_value":
-                continue
-            # TODO: check them one by one, see depending of the type of the data how to compare the values
-            #  if it's not the same, use return to exit the functioon
+        # for attr_name, attr_value in args_content.items():
+        #     if attr_name == "_final_value":
+        #         continue
 
-        self.final_value = args_content["final_value"]
+        # _final_value will be set later when the analysis is launched
+        # not need to checked if the value is correct, like if the value from a list should be selected
+        # and this value doesn't exist, then the widget should handle it by its own
+        self._widget.set_value(self._final_value)
 
     def is_mandatory(self):
         """
@@ -306,6 +307,10 @@ class AnalysisArgumentsHandler:
 
         """
         analysis_args_for_yaml = dict()
+
+        # first we add the subjects id
+        session_identifiers = [session.identifier for session in self.cicada_analysis.get_data_to_analyse()]
+        analysis_args_for_yaml[session_identifiers] = session_identifiers
 
         for arg_name, analysis_arg in self.args_dict.items():
             analysis_args_for_yaml[arg_name] = analysis_arg.get_all_attributes()

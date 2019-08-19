@@ -465,6 +465,9 @@ class ComboBoxWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
         if isinstance(value, dict):
             # means each key represent the session_id and the value the default value
             for session_id, value_to_set in value.items():
+                # first checking is the session exists
+                if session_id not in self.combo_boxes:
+                    continue
                 combo_box = self.combo_boxes[session_id]
                 index = combo_box.findData(value_to_set)
                 # -1 for not found
@@ -540,7 +543,7 @@ class CheckBoxWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
         self.check_box.setChecked(value)
 
     def get_value(self):
-        return self.check_box.checkState()
+        return self.check_box.isChecked()
 
 
 class SliderWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
@@ -661,13 +664,30 @@ class AnalysisParametersApp(QWidget):
         Returns:
 
         """
-        # TODO: Open a Widget to select a yaml file
+        file_dialog = QFileDialog(self, "Loading arguments")
 
-        # TODO: Read the yaml file, make sure it is valid for this analysis, other display a message through a
-        #  pop-up or via the text_label at the bottom of the window
+        # setting options
+        options = QFileDialog.Options()
+        # options |= QFileDialog.DontUseNativeDialog
+        options |= QFileDialog.DontUseCustomDirectoryIcons
+        file_dialog.setOptions(options)
 
-        # TODO: change the arguments in the widges by the new ones
-        pass
+        # ARE WE TALKING ABOUT FILES OR FOLDERS
+        file_dialog.setFileMode(QFileDialog.ExistingFiles)
+        file_dialog.setNameFilter("Yaml files (*.yml *.yaml)")
+
+        # OPENING OR SAVING
+        file_dialog.setAcceptMode(QFileDialog.AcceptOpen)
+
+
+        # SET THE STARTING DIRECTORY
+        # default_value = self.analysis_arg.get_default_value()
+        # if default_value is not None and isinstance(default_value, str):
+        #     self.file_dialog.setDirectory(default_value)
+
+        if file_dialog.exec_() == QDialog.Accepted:
+            yaml_file = file_dialog.selectedFiles()[0]
+            self.analysis_arguments_handler.load_analysis_argument_from_yaml_file(yaml_file)
 
     def tabula_rasa(self):
         """
