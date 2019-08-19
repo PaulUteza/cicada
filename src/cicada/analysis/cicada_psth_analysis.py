@@ -98,6 +98,7 @@ class CicadaPsthAnalysis(CicadaAnalysis):
         start_time = time()
         for i in range(101):
             print(i)
+            sys.stderr.write('No error')
             sleep(0.1)
             self.update_progressbar(start_time, 1)
 

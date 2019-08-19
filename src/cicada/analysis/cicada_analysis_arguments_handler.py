@@ -312,6 +312,7 @@ class AnalysisArgumentsHandler:
         session_identifiers = [session.identifier for session in self.cicada_analysis.get_data_to_analyse()]
         analysis_args_for_yaml["session_identifiers"] = session_identifiers
 
+
         for arg_name, analysis_arg in self.args_dict.items():
             analysis_args_for_yaml[arg_name] = analysis_arg.get_all_attributes()
 

@@ -113,7 +113,6 @@ class FileDialogWidget(MyQFrame, ParameterWidgetModel, metaclass=FinalMeta):
     def __init__(self, analysis_arg, directory_only, parent=None):
         MyQFrame.__init__(self, analysis_arg, parent=parent)
         ParameterWidgetModel.__init__(self)
-
         self.analysis_arg = analysis_arg
         # both are booleans
         # self.save_file_dialog = save_file_dialog
@@ -718,7 +717,6 @@ class AnalysisParametersApp(QWidget):
         # ==============================
 
         self.analysis_arguments_handler = self.cicada_analysis.analysis_arguments_handler
-
         # list of instances of AnalysisArgument
         gui_widgets = self.analysis_arguments_handler.get_gui_widgets()
 
@@ -762,7 +760,7 @@ class AnalysisParametersApp(QWidget):
 
         # first we disable the button so we can launch a given analysis only once
         self.run_analysis_button.setEnabled(False)
-        self.worker = Worker(self.name, self.analysis_arguments_handler)
+        self.worker = Worker(self.name, self.cicada_analysis, self.analysis_arguments_handler)
         self.worker.updateProgress.connect(self.progress_bar.update_progress_bar)
         self.worker.updateProgress2.connect(self.progress_bar.update_progress_bar_overview)
         self.worker.start()
@@ -785,15 +783,13 @@ class EmittingStream(QtCore.QObject):
             text (str): Python output from stdout
 
         """
-
         # Add thread name to the output when writting in the the widget
         current_thread = QThread.currentThread()
-        try:
-            thread_text = text + str(current_thread.name)
-            self.parent.normalOutputWritten(thread_text)
-        except AttributeError:
-            self.parent.normalOutputWritten(text)
+        thread_text = text + str(current_thread.name)
         self.terminal.write(str(text))
+        dir_path = current_thread.cicada_analysis.get_results_path()
+        self.parent.normalOutputWritten(thread_text, dir_path)
+
 
     def flush(self):
         pass
@@ -816,12 +812,10 @@ class EmittingErrStream(QtCore.QObject):
 
         # Add thread name to the output when writting in the the widget
         current_thread = QThread.currentThread()
-        try:
-            thread_text = text + str(current_thread.name)
-            self.parent.errOutputWritten(thread_text)
-        except AttributeError:
-            self.parent.errOutputWritten(text)
+        thread_text = text + str(current_thread.name)
         self.terminal.write(str(text))
+        dir_path = current_thread.cicada_analysis.get_results_path()
+        self.parent.errOutputWritten(thread_text,dir_path)
 
     def flush(self):
         pass
@@ -956,7 +950,7 @@ class AnalysisPackage(QWidget):
         self.setLayout(self.layout)
         self.show()
 
-    def normalOutputWritten(self, text):
+    def normalOutputWritten(self, text, path):
         """
         Append text to the QLabel.
 
@@ -971,8 +965,11 @@ class AnalysisPackage(QWidget):
             text = self.text_output.text() + text
             self.text_output.setText(text)
             self.scrollArea.verticalScrollBar().setSliderPosition(self.text_output.height())
+            file = open(os.path.join(path, "log.txt"), "w+")
+            file.write(str(self.text_output.text()))
+            file.close()
 
-    def errOutputWritten(self, text):
+    def errOutputWritten(self, text, path):
         """
         Append text to the QLabel.
 
@@ -986,7 +983,9 @@ class AnalysisPackage(QWidget):
             text = self.text_output_err.text() + text
             self.text_output_err.setText(text)
             self.scrollAreaErr.verticalScrollBar().setSliderPosition(self.text_output.height())
-
+            file = open(os.path.join(path, "err.txt"), "w+")
+            file.write(str(self.text_output_err.text()))
+            file.close()
 
     def closeEvent(self, QCloseEvent):
         """ Need to delete the overview widget associated to this analysis"""
@@ -997,12 +996,15 @@ class Worker(QtCore.QThread):
     updateProgress = QtCore.Signal(float, float, float)
     updateProgress2 = QtCore.Signal(str, float, float, float)
 
-    def __init__(self, name, analysis_arguments_handler):
+    def __init__(self, name, cicada_analysis, analysis_arguments_handler):
         QtCore.QThread.__init__(self)
         self.name = name
+        self.cicada_analysis = cicada_analysis
+        self.results_path = self.cicada_analysis.get_results_path()
         self.analysis_arguments_handler = analysis_arguments_handler
 
     def run(self):
+        self.results_path = self.cicada_analysis.get_results_path()
         self.analysis_arguments_handler.run_analysis()
 
     def setProgress(self, name, time_started, increment_value=0, new_set_value=0):
