@@ -745,6 +745,16 @@ class TableWidget(QFrame):
         #     self.table.verticalHeader().length() + self.table.horizontalHeader().height() + 2)
 
         self.table.setProperty("session_data", "True")
+        if nb_rows <= 1:
+            self.table.setProperty("set_height", "tiny")
+        elif nb_rows <= 3:
+            self.table.setProperty("set_height", "small")
+        elif nb_rows <= 8:
+            self.table.setProperty("set_height", "medium")
+        elif nb_rows <= 12:
+            self.table.setProperty("set_height", "big")
+        else:
+            self.table.setProperty("set_height", "gigantic")
 
         v_box = QVBoxLayout()
         description = self.metadata_group.get_group_description()

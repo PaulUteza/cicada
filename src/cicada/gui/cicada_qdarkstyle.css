@@ -1916,11 +1916,25 @@ QTableCornerButton::section {
 }
 
 
-
-QTableView[session_data="True"] {
-  min-height: 150px;
+QTableView[set_height="tiny"] {
+  min-height: 75px;
 }
 
+QTableView[set_height="small"] {
+  min-height: 125px;
+}
+
+QTableView[set_height="medium"] {
+  min-height: 200px;
+}
+
+QTableView[set_height="big"] {
+  min-height: 300px;
+}
+
+QTableView[set_height="gigantic"] {
+  min-height: 400px;
+}
 
 /* QHeaderView ------------------------------------------------------------
 
