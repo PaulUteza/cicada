@@ -1,7 +1,7 @@
 import os
 import sys
-from cicada_data_to_nwb import convert_data_to_nwb
-import utils
+from cicada.preprocessing.cicada_data_to_nwb import convert_data_to_nwb
+from cicada.preprocessing.utils import path_leaf
 import pathlib
 
 """
@@ -30,8 +30,8 @@ else:
         for dir in dir_path:
             # In case one of the directory is not complete/right we don't want the whole thing to stop
             try:
-                print(f"Loading data for {utils.path_leaf(dir)}")
+                print(f"Loading data for {path_leaf(dir)}")
                 convert_data_to_nwb(dir, default_convert_to_nwb_yml_file=default_convert_to_nwb_yml_file)
             except:
-                print(f"Error while loading {utils.path_leaf(dir)}")
+                print(f"Error while loading {path_leaf(dir)}")
                 continue

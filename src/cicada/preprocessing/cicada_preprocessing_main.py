@@ -1,8 +1,8 @@
 import os
 import pathlib
 from pynwb import NWBHDF5IO
-from cicada_data_to_nwb import convert_data_to_nwb
-import utils
+from cicada.preprocessing.cicada_data_to_nwb import convert_data_to_nwb
+import cicada.preprocessing.utils
 
 """
 To excecute CICADA preprocessing module using pycharm

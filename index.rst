@@ -24,7 +24,7 @@ Donec sed ipsum blandit, consectetur neque vel, luctus diam. Morbi ullamcorper j
 Data to NWB
 ===========
 
-.. automodule:: src.cicada.preprocessing.cicada_data_to_nwb
+.. automodule:: cicada.preprocessing.cicada_data_to_nwb
     :members:
 
 
@@ -32,43 +32,43 @@ Data to NWB
 Run preprocessing
 =================
 
-.. automodule:: src.cicada.preprocessing.cicada_preprocessing_run
+.. automodule:: cicada.preprocessing.cicada_preprocessing_run
     :members:
 
 NWB file class
 ==============
 
-.. automodule:: src.cicada.preprocessing.converttonwb
+.. automodule:: cicada.preprocessing.convert_to_nwb
     :members:
 
 Suite 2P ROIs
 =============
 
-.. automodule:: src.cicada.preprocessing.convertsuite2proistonwb
+.. automodule:: cicada.preprocessing.convert_suite2p_rois_to_nwb
     :members:
 
 2D series
 =========
 
-.. automodule:: src.cicada.preprocessing.convertprocessed2dseriestonwb
+.. automodule:: cicada.preprocessing.convert_processed_2d_series_to_nwb
     :members:
 
 Calcium imaging movie
 =====================
 
-.. automodule:: src.cicada.preprocessing.convertcimovietonwb
+.. automodule:: cicada.preprocessing.convert_ci_movie_to_nwb
     :members:
 
 ABF
 ===
 
-.. automodule:: src.cicada.preprocessing.convertabftonwb
+.. automodule:: cicada.preprocessing.convert_abf_to_nwb
     :members:
 
 Utils
 =====
 
-.. automodule:: src.cicada.preprocessing.utils
+.. automodule:: cicada.preprocessing.utils
     :members:
 
 Indices and tables

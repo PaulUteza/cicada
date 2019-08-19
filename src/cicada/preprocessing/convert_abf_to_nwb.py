@@ -1,4 +1,4 @@
-from convert_to_nwb import ConvertToNWB
+from cicada.preprocessing.convert_to_nwb import ConvertToNWB
 import numpy as np
 import yaml
 import pyabf

@@ -1,11 +1,11 @@
-from convert_to_nwb import ConvertToNWB
+from cicada.preprocessing.convert_to_nwb import ConvertToNWB
 from pynwb.ophys import ImageSegmentation, Fluorescence
 import numpy as np
 from PIL import ImageSequence
 import PIL
 import PIL.Image as pil_image
 import os
-from convert_ci_movie_to_nwb import ConvertCiMovieToNWB
+from cicada.preprocessing.convert_ci_movie_to_nwb import ConvertCiMovieToNWB
 
 
 class ConvertSuite2pRoisToNWB(ConvertToNWB):

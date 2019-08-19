@@ -1,7 +1,7 @@
 import yaml
 import os
-import utils
-from utils import class_name_to_file_name
+import cicada.preprocessing.utils
+from cicada.preprocessing.utils import class_name_to_file_name
 import importlib
 from pynwb import NWBHDF5IO
 from pynwb import NWBFile
