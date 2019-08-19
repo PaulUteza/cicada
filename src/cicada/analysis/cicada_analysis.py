@@ -175,8 +175,7 @@ class CicadaAnalysis(ABC):
                      "with_incremental_order": False, "order_index": 1000, "mandatory": mandatory}
         self.add_argument_for_gui(**range_arg)
 
-    @property
-    def data_to_analyse(self):
+    def get_data_to_analyse(self):
         """
 
         :return: a list of the data to analyse
