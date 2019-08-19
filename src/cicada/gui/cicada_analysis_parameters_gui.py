@@ -799,6 +799,33 @@ class EmittingStream(QtCore.QObject):
         pass
 
 
+class EmittingErrStream(QtCore.QObject):
+    def __init__(self, parent=None):
+        super().__init__(parent=parent)
+        self.parent = parent
+        self.terminal = sys.stderr
+        self.errWritten = Core.pyqtSignal(str)
+
+    def write(self, text):
+        """
+        Override of the write function used to display output
+        Args:
+            text (str): Python output from stdout
+
+        """
+
+        # Add thread name to the output when writting in the the widget
+        current_thread = QThread.currentThread()
+        try:
+            thread_text = text + str(current_thread.name)
+            self.parent.errOutputWritten(thread_text)
+        except AttributeError:
+            self.parent.errOutputWritten(text)
+        self.terminal.write(str(text))
+
+    def flush(self):
+        pass
+
 class AnalysisData(QWidget):
 
     def __init__(self, cicada_analysis, arguments_section_widget, parent=None):
@@ -891,6 +918,17 @@ class AnalysisPackage(QWidget):
         self.text_output.setAlignment(Qt.AlignTop)
         self.text_output.show()
         sys.stdout = EmittingStream(self)
+        sys.stderr = EmittingErrStream(self)
+        self.scrollAreaErr = QScrollArea()
+        self.scrollAreaErr.setWidgetResizable(True)
+        self.scrollAreaErr.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.scrollAreaErr.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)
+        self.text_output_err = QLabel()
+        self.text_output_err.setStyleSheet("color: red;")
+        self.text_output_err.setWordWrap(True)
+        self.text_output_err.setAlignment(Qt.AlignLeft)
+        self.text_output_err.setAlignment(Qt.AlignTop)
+        self.text_output_err.show()
         self.setWindowTitle(analysis_name)
         self.layout = QVBoxLayout()
         self.hlayout = QHBoxLayout()
@@ -912,7 +950,9 @@ class AnalysisPackage(QWidget):
         self.layout.addLayout(self.hlayout2)
         # self.layout.addWidget(self.text_output)
         self.scrollArea.setWidget(self.text_output)
+        self.scrollAreaErr.setWidget(self.text_output_err)
         self.layout.addWidget(self.scrollArea)
+        self.layout.addWidget(self.scrollAreaErr)
         self.setLayout(self.layout)
         self.show()
 
@@ -927,9 +967,26 @@ class AnalysisPackage(QWidget):
         if self.name in text:
             text = text.replace(self.name, "\n")
             text = "".join([s for s in text.splitlines(True) if s.strip("\r\n")])
+
             text = self.text_output.text() + text
             self.text_output.setText(text)
             self.scrollArea.verticalScrollBar().setSliderPosition(self.text_output.height())
+
+    def errOutputWritten(self, text):
+        """
+        Append text to the QLabel.
+
+        Args:
+            text (str): Output of the standard output in python interpreter
+        """
+
+        if self.name in text:
+            text = text.replace(self.name, "\n")
+            text = "".join([s for s in text.splitlines(True) if s.strip("\r\n")])
+            text = self.text_output_err.text() + text
+            self.text_output_err.setText(text)
+            self.scrollAreaErr.verticalScrollBar().setSliderPosition(self.text_output.height())
+
 
     def closeEvent(self, QCloseEvent):
         """ Need to delete the overview widget associated to this analysis"""
