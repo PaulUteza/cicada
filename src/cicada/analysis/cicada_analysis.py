@@ -6,6 +6,7 @@ import importlib
 import PyQt5.QtCore as Core
 from qtpy.QtCore import QThread
 from datetime import datetime
+import sys
 import os
 
 class CicadaAnalysis(ABC):
@@ -64,6 +65,7 @@ class CicadaAnalysis(ABC):
 
         """
         return self._results_path
+        # return "H:/Documents/Patterning/CICADA/src/PSTH_2019_08_19.11-18-09"
 
     def create_results_directory(self, dir_path):
         """
@@ -109,6 +111,7 @@ class CicadaAnalysis(ABC):
         new_object.family_id = self.family_id
         new_object.long_description = self.long_description
         new_object.set_data(self._data_to_analyse, self._data_format)
+        new_object.config_handler = self.config_handler
         return new_object
 
     def initiate_analysis_formats_wrapper(self, data_format):
@@ -175,7 +178,8 @@ class CicadaAnalysis(ABC):
                      "with_incremental_order": False, "order_index": 1000, "mandatory": mandatory}
         self.add_argument_for_gui(**range_arg)
 
-    def get_data_to_analyse(self):
+    @property
+    def data_to_analyse(self):
         """
 
         :return: a list of the data to analyse

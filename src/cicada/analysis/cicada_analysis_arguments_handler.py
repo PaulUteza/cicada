@@ -309,8 +309,10 @@ class AnalysisArgumentsHandler:
         analysis_args_for_yaml = dict()
 
         # first we add the subjects id
-        session_identifiers = [session.identifier for session in self.cicada_analysis.get_data_to_analyse()]
-        analysis_args_for_yaml["session_identifiers"] = session_identifiers
+        data_to_analyse = self.cicada_analysis._data_to_analyse
+        session_identifiers = [session.identifier for session in data_to_analyse]
+        for session_id in session_identifiers:
+            analysis_args_for_yaml['session_identifiers'] = session_id
 
         for arg_name, analysis_arg in self.args_dict.items():
             analysis_args_for_yaml[arg_name] = analysis_arg.get_all_attributes()
