@@ -137,7 +137,12 @@ class AnalysisState(QHBoxLayout):
         window_id.setWindowState(window_id.windowState() & ~QtCore.Qt.WindowMinimized | QtCore.Qt.WindowActive)
         window_id.activateWindow()
         window_id.raise_()
-    #
 
+    def deleteLater(self):
+        try:
+            self.q_label_analysis_name.deleteLater()
+            self.q_label_data_identifiers.deleteLater()
+        except RuntimeError:
+            pass
 
 

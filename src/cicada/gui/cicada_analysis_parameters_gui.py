@@ -760,6 +760,7 @@ class AnalysisParametersApp(QWidget):
 
         # first we disable the button so we can launch a given analysis only once
         self.run_analysis_button.setEnabled(False)
+        # self.thread_list.append(Worker())
         self.worker = Worker(self.name, self.cicada_analysis, self.analysis_arguments_handler)
         self.worker.updateProgress.connect(self.progress_bar.update_progress_bar)
         self.worker.updateProgress2.connect(self.progress_bar.update_progress_bar_overview)
@@ -811,11 +812,12 @@ class EmittingErrStream(QtCore.QObject):
         """
 
         # Add thread name to the output when writting in the the widget
+
         current_thread = QThread.currentThread()
         thread_text = text + str(current_thread.name)
         self.terminal.write(str(text))
         dir_path = current_thread.cicada_analysis.get_results_path()
-        self.parent.errOutputWritten(thread_text,dir_path)
+        self.parent.errOutputWritten(thread_text, dir_path)
 
     def flush(self):
         pass
@@ -894,6 +896,7 @@ class AnalysisPackage(QWidget):
         QWidget.__init__(self, parent=parent)
         super().__init__()
         self.name = name
+        self.closeEvent = self.on_close
         height_window = 750
         self.resize(1000, height_window)
         # self.setFixedSize(self.size())
@@ -957,7 +960,6 @@ class AnalysisPackage(QWidget):
         Args:
             text (str): Output of the standard output in python interpreter
         """
-
         if self.name in text:
             text = text.replace(self.name, "\n")
             text = "".join([s for s in text.splitlines(True) if s.strip("\r\n")])
@@ -987,9 +989,48 @@ class AnalysisPackage(QWidget):
             file.write(str(self.text_output_err.text()))
             file.close()
 
-    def closeEvent(self, QCloseEvent):
+
+
+    def on_close(self, event):
         """ Need to delete the overview widget associated to this analysis"""
-        pass
+        if (self.progress_bar.value() < 100 and self.progress_bar.isEnabled()):
+            self.confirm_quit = QMessageBox()
+            self.confirm_quit.setWindowTitle("CICADA")
+            self.confirm_quit.setText("The analysis is still ongoing, do you still want to quit ?")
+            self.confirm_quit.setStandardButtons(QMessageBox.Yes)
+            self.confirm_quit.addButton(QMessageBox.No)
+            self.confirm_quit.setDefaultButton(QMessageBox.No)
+            if self.confirm_quit.exec() == QMessageBox.Yes:
+                self.progress_bar.setEnabled(False)
+                self.close()
+                for obj in gc.get_objects():
+                    if isinstance(obj, Worker):
+                        if obj.name == self.name:
+                            obj.terminate()
+                for obj in gc.get_objects():
+                    if isinstance(obj, AnalysisOverview):
+                        # sys.stderr.write(str(dir(obj)))
+                        for attr in dir(obj):
+                            if self.name in attr:
+                                if "layout" in attr:
+                                    eval('obj.layout.removeItem( obj.' + attr + ')')
+
+                                else:
+                                    eval('obj.' + attr + '.setParent(None)')
+                                    eval('obj.' + attr + '.deleteLater()')
+
+        else:
+            for obj in gc.get_objects():
+                if isinstance(obj, AnalysisOverview):
+                    # sys.stderr.write(str(dir(obj)))
+                    for attr in dir(obj):
+                        if self.name in attr:
+                            if "layout" in attr:
+                                eval('obj.layout.removeItem( obj.' + attr + ')')
+
+                            else:
+                                eval('obj.' + attr + '.setParent(None)')
+                                eval('obj.' + attr + '.deleteLater()')
 
 
 class Worker(QtCore.QThread):

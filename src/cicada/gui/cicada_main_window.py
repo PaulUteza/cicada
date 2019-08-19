@@ -545,8 +545,8 @@ class CicadaMainWindow(QMainWindow):
         """
         for obj in gc.get_objects():
             if isinstance(obj, AnalysisPackage):
-                obj.close()
-
+                if obj.isVisible():
+                    obj.close()
         for obj in self.object_created:
             obj.close()
 
