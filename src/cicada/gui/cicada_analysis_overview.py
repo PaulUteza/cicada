@@ -1,12 +1,14 @@
 from qtpy.QtWidgets import *
 from qtpy.QtCore import QAbstractItemModel, QModelIndex, Qt
 import numpy as np
+import os
 from qtpy import QtCore
 from qtpy.QtCore import QThread
 from random import randint
 # from cicada.gui.cicada_analysis_parameters_gui import AnalysisPackage
 import gc
 from functools import partial
+import subprocess
 from time import time, sleep
 import sys
 
@@ -65,8 +67,11 @@ class AnalysisOverview(QWidget):
         setattr(self, analysis_id + '_progress_bar', QProgressBar())
         # exec('self.' + analysis_id + '_progress_bar = QProgressBar()')
         h_layout.addWidget(getattr(self, analysis_id + '_progress_bar'))
+        setattr(self, analysis_id + '_button', ResultsButton(cicada_analysis=cicada_analysis))
+        results_button = getattr(self, analysis_id + '_button')
         # eval('self.hlayout_' + analysis_id + '.addWidget(self.' + analysis_id + '_remaining_time_label)')
         self.layout.insertLayout(self.layout.count() - 1, h_layout)
+        self.layout.insertLayout(self.layout.count() - 1, results_button)
         # self.layout.addLayout(h_layout)
 
 
@@ -146,3 +151,25 @@ class AnalysisState(QHBoxLayout):
             pass
 
 
+class ResultsButton(QHBoxLayout):
+
+    def __init__(self, cicada_analysis):
+        super().__init__()
+        self.result_button = QPushButton()
+        self.result_button.setEnabled(False)
+        self.result_button.setText('Open results folder')
+        self.result_path = cicada_analysis.get_results_path()
+        self.addWidget(self.result_button)
+        self.result_button.clicked.connect(self.open_explorer)
+
+    def open_explorer(self):
+        if self.result_path is None:
+            pass
+        else:
+            subprocess.run(['explorer', os.path.realpath(self.result_path)])
+
+    def deleteLater(self):
+        try:
+            self.result_button.deleteLater()
+        except RuntimeError:
+            pass

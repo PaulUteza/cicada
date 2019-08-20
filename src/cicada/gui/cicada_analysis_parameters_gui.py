@@ -14,7 +14,7 @@ import logging
 from random import randint
 import gc
 from abc import ABC, abstractmethod
-from cicada.gui.cicada_analysis_overview import AnalysisOverview, AnalysisState
+from cicada.gui.cicada_analysis_overview import AnalysisOverview, AnalysisState, ResultsButton
 from qtpy.QtCore import QThread
 import os
 from functools import partial
@@ -789,6 +789,7 @@ class EmittingStream(QtCore.QObject):
         thread_text = text + str(current_thread.name)
         self.terminal.write(str(text))
         dir_path = current_thread.cicada_analysis.get_results_path()
+        current_thread.set_results_path(dir_path)
         self.parent.normalOutputWritten(thread_text, dir_path)
 
 
@@ -817,6 +818,7 @@ class EmittingErrStream(QtCore.QObject):
         thread_text = text + str(current_thread.name)
         self.terminal.write(str(text))
         dir_path = current_thread.cicada_analysis.get_results_path()
+        current_thread.set_results_path(dir_path)
         self.parent.errOutputWritten(thread_text, dir_path)
 
     def flush(self):
@@ -915,6 +917,7 @@ class AnalysisPackage(QWidget):
         self.text_output.setAlignment(Qt.AlignTop)
         self.text_output.show()
         sys.stdout = EmittingStream(self)
+        # Comment to debug, else we will get unhandled python exception
         sys.stderr = EmittingErrStream(self)
         self.scrollAreaErr = QScrollArea()
         self.scrollAreaErr.setWidgetResizable(True)
@@ -993,6 +996,7 @@ class AnalysisPackage(QWidget):
 
     def on_close(self, event):
         """ Need to delete the overview widget associated to this analysis"""
+        # TODO : Check if an analysis is running if the thread is running
         if (self.progress_bar.value() < 100 and self.progress_bar.isEnabled()):
             self.confirm_quit = QMessageBox()
             self.confirm_quit.setWindowTitle("CICADA")
@@ -1018,6 +1022,8 @@ class AnalysisPackage(QWidget):
                                 else:
                                     eval('obj.' + attr + '.setParent(None)')
                                     eval('obj.' + attr + '.deleteLater()')
+            else:
+                event.ignore()
 
         else:
             for obj in gc.get_objects():
@@ -1052,6 +1058,14 @@ class Worker(QtCore.QThread):
         self.updateProgress.emit(time_started, increment_value, new_set_value)
         self.updateProgress2.emit(name, time_started, increment_value, new_set_value)
 
+    def set_results_path(self, results_path):
+        for obj in gc.get_objects():
+            if isinstance(obj, AnalysisOverview):
+                if eval('obj.' + self.name + '_button.result_path') is None:
+                    exec('obj.' + self.name + '_button.result_path = "' + results_path + '"')
+                    eval('obj.' + self.name + '_button.result_button.setEnabled(True)')
+                else:
+                    pass
 
 class ProgressBar(QProgressBar):
 

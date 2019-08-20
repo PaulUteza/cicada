@@ -17,14 +17,15 @@ Vivamus lacinia nibh mauris, quis tristique odio dictum eu. Aliquam erat volutpa
 
 Donec sed ipsum blandit, consectetur neque vel, luctus diam. Morbi ullamcorper justo sit amet elit iaculis, ac pulvinar felis pellentesque. Ut laoreet velit eget neque pretium dictum. Maecenas neque massa, sollicitudin a massa et, condimentum mattis neque. Pellentesque et convallis enim, at lacinia dui. Cras et maximus nibh. Pellentesque id dapibus odio. Aliquam semper massa sit amet ex accumsan congue. Sed rutrum tempor elit at porta. Suspendisse ullamcorper eu dolor et imperdiet.
 
-.. topic:: Pre-processing
+.. topic:: Contents
 
-    Pre-processing part of CICADA
 
 .. toctree::
     :maxdepth: 2
 
     preprocessing
+    analysis
+    gui
     See on Git <https://github.com/pappyhammer/cicada>
 
 
