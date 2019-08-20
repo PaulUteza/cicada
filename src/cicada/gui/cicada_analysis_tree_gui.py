@@ -12,8 +12,6 @@ from copy import copy, deepcopy
 from random import randint, choice
 import string
 
-
-
 """
 Interesting exemples:
 https://www.programcreek.com/python/example/101690/PyQt5.QtCore.Qt.CustomContextMenu
@@ -21,6 +19,7 @@ https://github.com/EternityForest/mdNotes/blob/master/pyscrapbook/__main__.py
 https://stackoverflow.com/questions/45035515/qtreeview-change-icon-on-row-icon-click
 
 """
+
 
 class TreeItem(object):
     # TODO: add a function that allows to update all analyses function contained in the tree
@@ -117,7 +116,7 @@ class TreeItem(object):
 
 
 class QAnalysisTreeView(QTreeView):
-    def __init__(self, tree_item, parent = None):
+    def __init__(self, tree_item, parent=None):
         QTreeView.__init__(self)
         # in case we want to hide the header
         # self.setHeaderHidden(True)
@@ -169,6 +168,7 @@ class QAnalysisTreeView(QTreeView):
                     f"background-position: center; "
                     f"background-repeat:no-repeat;")
                 self.special_background_on = True
+
     # def mouseMoveEvent(self, event):
     #     print("mouse")
 
@@ -339,30 +339,50 @@ class QAnalysisTreeModel(QAbstractItemModel):
 
 class AnalysisTreeApp(QWidget):
     def __init__(self, to_parameters_button=None):
+        """
+
+        Args:
+            to_parameters_button: QButton that when clicked, will open the window with the widgets
+            allowing the user to fill the parameters of the selected analysis
+        """
         super().__init__()
-        # self.left = 10
-        # self.top = 10
-        # self.width = 600
-        # self.height = 240
-        # self.dataGroupBox = None
         self.dataView = None
         self.analysis_tree_model = None
         self.created_analysis = []
+        # used in self.doubleClickedItem()
+        self.copied_data = None
 
-        # will be initialize when the param section will have been created
+        # will be initialized when the param section will have been created
         self.analysis_overview = None
 
         self.init_ui()
         to_parameters_button.clicked.connect(self.load_arguments_parameters_section)
-        # self.setStyleSheet("QLineEdit { background-color: yellow }")
 
     def set_data(self, data_to_analyse, data_format):
+        """
+        Give to the tree the data that the analysis classes will be given to analyze.
+        Allows the tree to inactivate the analyses for which the data don't fulfill the requierements
+        Args:
+            data_to_analyse: a list of data in a given format (could be nwb or other)
+            data_format: format of the data, must be a string. So far only "nwb" is supported
+
+        Returns: None
+
+        """
         self.analysis_tree_model.rootItem.set_data(data_to_analyse, data_format)
 
     def doubleClickedItem(self, idx):
+        """
+        Method called when the user double click in the tree
+        Args:
+            idx: Index of the branch clicked
+
+        Returns:
+
+        """
         if not idx.isValid():
             return
-        # idx instance of PyQt5.QtCore.QModelIndex
+        # idx is an instance of PyQt5.QtCore.QModelIndex
 
         # getting the TreeItem that has been double-clicked
         tree_item = idx.internalPointer()
@@ -371,62 +391,48 @@ class AnalysisTreeApp(QWidget):
             return
 
         if tree_item.cicada_analysis is not None and tree_item.data_valid:
-
             # Copy the object so each analysis has its own object
             self.copied_data = tree_item.cicada_analysis.copy()
-            # Assign a random id to an analysis to access it laters
-            # random_id = ''.join([choice(string.ascii_letters) for n in range(32)])
             # using the id of the object instead, so no chance to have a double, adding 'a' so the variable don't start
             # by a numerical value
             random_id = "a" + str(id(self.copied_data))
             # Create analysis window
-            exec('self.' + random_id + ' = AnalysisPackage(cicada_analysis=self.copied_data,'
-                                       ' analysis_name=str(tree_item.item_data[0]),'
-                                       ' analysis_description = str(tree_item.item_data[1]), name=random_id)')
-            exec('self.created_analysis.append(self.' + random_id + ')')
-            # Add analysis overview item linked to the analysis window
-            # self.analysis_overview.add_analysis_overview(str(tree_item.item_data[0]), random_id, eval('self.'+random_id))
+            analysis_package = AnalysisPackage(cicada_analysis=self.copied_data,
+                                               analysis_name=str(tree_item.item_data[0]),
+                                               analysis_description=str(tree_item.item_data[1]), name=random_id)
+            setattr(self, random_id, analysis_package)
+            self.created_analysis.append(getattr(self, random_id))
+
             self.analysis_overview.add_analysis_overview(self.copied_data, random_id,
-                                                         eval('self.' + random_id))
-            # self.analysis_overview.created_analysis = self.created_analysis
+                                                         getattr(self, random_id))
 
     def load_arguments_parameters_section(self):
+        """
+        Used to load the parameters section with widgets, based on the current selection in the tree.
+        If the selection is not on any valid tree item, nothing will happen
+        Returns: None
+
+        """
         q_model_index = self.dataView.currentIndex()
         self.doubleClickedItem(q_model_index)
 
     def init_ui(self):
-        # self.setWindowTitle(self.title)
-        # self.setGeometry(self.left, self.top, self.width, self.height)
+        """
+        Set some of the elements used to build the tree
+        Returns:
 
-        # self.dataGroupBox = QGroupBox("")
-
+        """
         self.analysis_tree_model = self.create_tree_model()
 
-        self.dataView = QAnalysisTreeView(tree_item = self.analysis_tree_model.rootItem)
+        self.dataView = QAnalysisTreeView(tree_item=self.analysis_tree_model.rootItem)
         # self.dataView.setRootIsDecorated(False)
         self.dataView.setAlternatingRowColors(False)
         self.dataView.doubleClicked.connect(self.doubleClickedItem)
 
-        # dataLayout = QHBoxLayout()
         mainLayout = QVBoxLayout()
         mainLayout.addWidget(self.dataView)
-        # self.dataGroupBox.setLayout(dataLayout)
 
         self.dataView.setModel(self.analysis_tree_model)
-
-        # work to add icon # TODO: find a way to do it with QAnalysisTreeModel QAbstractItemModel
-        # source_model = QtGui.QStandardItemModel()
-        # self.dataView.setModel(source_model)
-        #
-        # item = QtGui.QStandardItem()
-        # item.setData("titi", role=QtCore.Qt.UserRole)
-        # icon_path = "cicada/gui/icons/like.svg"
-        # # if os.path.isdir(path):
-        # #     icon_path = DIR_ICON_PATH
-        # icon = QtGui.QIcon(icon_path)
-        # # item.setText("toto")
-        # item.setIcon(icon)
-        # source_model.appendRow(item)
 
         # we expand all by default
         self.dataView.expandAll()
@@ -440,30 +446,22 @@ class AnalysisTreeApp(QWidget):
         # opacity_effect.setOpacity(0.1)
         # self.setGraphicsEffect(opacity_effect)
 
-        # self.setAutoFillBackground(True)
-        # self.setStyleSheet(
-        #     "background-image:url(\"cicada/gui/icons/rc/sky_night.jpeg\"); background-position: center;")
-        # self.setStyleSheet(
-        #     "background-image:url(\"\"); background-position: center;")
-
-        # palette = self.palette()
-        # palette.setColor(self.backgroundRole(), Qt.black)
-        # self.setPalette(palette)
-
-
-
-        # mainLayout.addWidget(self.dataGroupBox)
         self.setLayout(mainLayout)
 
         self.show()
 
     def create_tree_model(self):
+        """
+        Create the tree model
+        Returns: the tree model, an instance of QAnalysisTreeModel
+
+        """
         # TODO: a system that list the Analysis Function available in the pipeline
         #  + a system that either read a yaml file or a dir and load automatically analysis function
         # TODO: don't load classed if the method get_params_for_gui return None ?
         analysis_class_names = ["CicadaCellsCount", "CicadaFramesCount",
                                 "CicadaHubsAnalysis", "CicadaConnectivityGraph",
-                                "CicadaPsthAnalysis"]
+                                "CicadaPsthAnalysis", "CicadaCellsMapAnalysis"]
         analysis_instances = []
         for class_name in analysis_class_names:
             module_name = class_name_to_file_name(class_name=class_name)
@@ -518,11 +516,13 @@ class AnalysisTreeApp(QWidget):
         model = QAnalysisTreeModel(tree_item=root_tree)
         return model
 
+
 def fill_tree_item_with_dict(root_tree, instances_dict):
     """
-
-    :param root_tree:
-    :param instances_dict:
+    Recursive function that fills the root_tree according to data in instances_dict.
+    :param root_tree: instance of TreeItem
+    :param instances_dict: Contains instance of cicada_analysis, in a hierarchy similar to the one we want
+    the tree to be
     :return:
     """
     for key, value in instances_dict.items():
@@ -545,11 +545,3 @@ def fill_tree_item_with_dict(root_tree, instances_dict):
         for analysis_instance in analysis_to_add:
             analysis_tree = TreeItem(cicada_analysis=analysis_instance, parent=family_title_tree)
             family_title_tree.append_child(analysis_tree)
-
-    #
-    # def add_analysis(self, model, analysis, description):
-    #     model.insertRow(0)
-    #     model.setData(model.index(0, 0), analysis)
-    #     model.setData(model.index(0, 1), description)
-
-

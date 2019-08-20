@@ -211,10 +211,18 @@ class CicadaAnalysis(ABC):
             self.analysis_arguments_handler.save_analysis_arguments_to_yaml_file(path_dir=self._results_path,
                                                                                  yaml_file_name=self.name)
 
-    # TODO: do a function that return a structure (home-made class ?) that will be used by the GUI to know
-    #  which argument to pass to run_analysis, their types, if mandatory and their range among other things
-
     def update_progressbar(self, time_started, increment_value=0, new_set_value=0):
+        """
+
+        Args:
+            time_started:
+            increment_value:
+            new_set_value:
+
+        Returns:
+
+        """
         worker = QThread.currentThread()
-        worker.setProgress(name=worker.name, time_started=time_started, increment_value=increment_value, new_set_value=new_set_value)
+        worker.setProgress(name=worker.name, time_started=time_started, increment_value=increment_value,
+                           new_set_value=new_set_value)
 
