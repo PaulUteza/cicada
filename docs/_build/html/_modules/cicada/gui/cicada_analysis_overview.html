@@ -1,0 +1,366 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cicada.gui.cicada_analysis_overview &mdash; CICADA 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> CICADA
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../preprocessing.html">Pre-processing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.cicada_data_to_nwb">Data to NWB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.cicada_preprocessing_run">Run preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_to_nwb">NWB file class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_suite_2p_rois_to_nwb">Suite 2P ROIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_processed_2d_series_to_nwb">2D series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_ci_movie_to_nwb">Calcium imaging movie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_abf_to_nwb">ABF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.utils">Utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_analysis">Main analysis class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_analysis_arguments_handler">Argument handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_analysis_format_wrapper">Format wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_analysis_nwb_wrapper">NWB wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_cells_count">Cells count</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_connectivity_graph">Connectivity graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_frames_count">Frames count</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_hubs_analysis">Hubs analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_psth_analysis">PSTH analysis</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gui.html">GUI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.cicada_main_window">Main Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.session_show_filter_group">Filter/group sessions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.metadata_widget">Display metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.cicada_analysis_tree_gui">Analysises list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.cicada_analysis_overview">Overview of analysises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.cicada_analysis_parameters_gui">Analysis parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/pappyhammer/cicada">See on Git</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">CICADA</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>cicada.gui.cicada_analysis_overview</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for cicada.gui.cicada_analysis_overview</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">QAbstractItemModel</span><span class="p">,</span> <span class="n">QModelIndex</span><span class="p">,</span> <span class="n">Qt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">qtpy</span> <span class="k">import</span> <span class="n">QtCore</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">QThread</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">randint</span>
+<span class="c1"># from cicada.gui.cicada_analysis_parameters_gui import AnalysisPackage</span>
+<span class="kn">import</span> <span class="nn">gc</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span><span class="p">,</span> <span class="n">sleep</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+
+
+<div class="viewcode-block" id="AnalysisOverview"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_overview.AnalysisOverview">[docs]</a><span class="k">class</span> <span class="nc">AnalysisOverview</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">QWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">special_background_on</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_style_sheet_background</span> <span class="o">=</span> <span class="s2">&quot;.QWidget{background-image:url(</span><span class="se">\&quot;\&quot;</span><span class="s2">); background-position: center;}&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_analysis_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_analysis</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># Add the scroll bar</span>
+        <span class="c1"># ==============================</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span> <span class="o">=</span> <span class="n">QScrollArea</span><span class="p">()</span>
+        <span class="c1"># ScrollBarAlwaysOff = 1</span>
+        <span class="c1"># ScrollBarAlwaysOn = 2</span>
+        <span class="c1"># ScrollBarAsNeeded = 0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setVerticalScrollBarPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAsNeeded</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setHorizontalScrollBarPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAsNeeded</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setWidgetResizable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">scroll_area_widget_contents</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scroll_area_widget_contents</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scroll_area_widget_contents</span><span class="p">)</span>
+        <span class="c1"># we add strech now and we will insert new widget before the strech</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addStretch</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="c1"># ==============================</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="p">)</span>
+
+<div class="viewcode-block" id="AnalysisOverview.add_analysis_overview"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_overview.AnalysisOverview.add_analysis_overview">[docs]</a>    <span class="k">def</span> <span class="nf">add_analysis_overview</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cicada_analysis</span><span class="p">,</span> <span class="n">analysis_id</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a widget to track the corresponding analysis</span>
+<span class="sd">        Args:</span>
+<span class="sd">            cicada_analysis (CicadaAnalysis): CicadaAnalysis instance</span>
+<span class="sd">            analysis_id (str): Randomly generated ID linked to the analysis</span>
+<span class="sd">            obj (object): The analysis window&#39;s object itself</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">created_analysis_names</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">analysis_id</span> <span class="o">+</span> <span class="s1">&#39;_overview&#39;</span><span class="p">)</span>
+
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">analysis_id</span> <span class="o">+</span> <span class="s1">&#39;_overview&#39;</span><span class="p">,</span> <span class="n">AnalysisState</span><span class="p">(</span><span class="n">analysis_id</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span> <span class="n">cicada_analysis</span><span class="o">=</span><span class="n">cicada_analysis</span><span class="p">,</span>
+                                                               <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">scroll_area_widget_contents</span><span class="p">))</span>
+        <span class="n">analysis_overview</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">analysis_id</span> <span class="o">+</span> <span class="s1">&#39;_overview&#39;</span><span class="p">)</span>
+
+        <span class="c1"># self.layout.addWidget(analysis_overview)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">insertLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">analysis_overview</span><span class="p">)</span>
+        <span class="c1"># analysis_overview.setStyleSheet(&quot;background-color:transparent; border-radius: 20px;&quot;)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;hlayout_&#39;</span> <span class="o">+</span> <span class="n">analysis_id</span><span class="p">,</span> <span class="n">QHBoxLayout</span><span class="p">())</span>
+        <span class="n">h_layout</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;hlayout_&#39;</span> <span class="o">+</span> <span class="n">analysis_id</span><span class="p">)</span>
+        <span class="c1"># setattr(self, analysis_id + &#39;_remaining_time_label&#39;, RemainingTime())</span>
+        <span class="c1"># exec(&#39;self.&#39; + analysis_id + &#39;_remaining_time_label = RemainingTime()&#39;)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">analysis_id</span> <span class="o">+</span> <span class="s1">&#39;_progress_bar&#39;</span><span class="p">,</span> <span class="n">QProgressBar</span><span class="p">())</span>
+        <span class="c1"># exec(&#39;self.&#39; + analysis_id + &#39;_progress_bar = QProgressBar()&#39;)</span>
+        <span class="n">h_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">analysis_id</span> <span class="o">+</span> <span class="s1">&#39;_progress_bar&#39;</span><span class="p">))</span>
+        <span class="c1"># eval(&#39;self.hlayout_&#39; + analysis_id + &#39;.addWidget(self.&#39; + analysis_id + &#39;_remaining_time_label)&#39;)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">insertLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">h_layout</span><span class="p">)</span></div>
+        <span class="c1"># self.layout.addLayout(h_layout)</span>
+
+
+<div class="viewcode-block" id="AnalysisOverview.keyPressEvent"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_overview.AnalysisOverview.keyPressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="n">available_background</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;black_widow.png&quot;</span><span class="p">,</span> <span class="s2">&quot;captain_marvel.png&quot;</span><span class="p">,</span> <span class="s2">&quot;iron_man.png&quot;</span><span class="p">,</span> <span class="s2">&quot;hulk.png&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Key_A</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">special_background_on</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_style_sheet_background</span> <span class="o">=</span> <span class="s2">&quot;.QWidget{background-image:url(</span><span class="se">\&quot;\&quot;</span><span class="s2">); background-position: center;}&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">scroll_area_widget_contents</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_style_sheet_background</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">special_background_on</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">pic_index</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">available_background</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="c1"># we add .QWidget so the background is specific to this widget and is not applied by other widgets</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_style_sheet_background</span> <span class="o">=</span> <span class="s2">&quot;.QWidget{background-image:url(</span><span class="se">\&quot;</span><span class="s2">cicada/gui/icons/rc/&quot;</span> <span class="o">+</span> \
+                                                      <span class="n">available_background</span><span class="p">[</span><span class="n">pic_index</span><span class="p">]</span> <span class="o">+</span> \
+                                                      <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">); background-position: center; background-repeat:no-repeat;}&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">scroll_area_widget_contents</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_style_sheet_background</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">special_background_on</span> <span class="o">=</span> <span class="kc">True</span></div></div>
+
+
+<div class="viewcode-block" id="AnalysisState"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_overview.AnalysisState">[docs]</a><span class="k">class</span> <span class="nc">AnalysisState</span><span class="p">(</span><span class="n">QHBoxLayout</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">analysis_id</span><span class="p">,</span> <span class="n">cicada_analysis</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">without_bringing_to_front</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_scroll_bar</span> <span class="o">=</span> <span class="n">QScrollArea</span><span class="p">()</span>
+        <span class="c1"># self.h_layout = QHBoxLayout()</span>
+        <span class="n">property_value</span> <span class="o">=</span> <span class="s2">&quot;True&quot;</span>
+        <span class="k">if</span> <span class="n">without_bringing_to_front</span><span class="p">:</span>
+            <span class="c1"># this way we can remove the change of color for QLabel when hover state</span>
+            <span class="c1"># and we can increase the max-height of the scrollbar</span>
+            <span class="n">property_value</span> <span class="o">=</span> <span class="s2">&quot;False&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_label_analysis_name</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_label_analysis_name</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">cicada_analysis</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_label_analysis_name</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="c1"># use for personnalized style-sheet</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_label_analysis_name</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;state&quot;</span><span class="p">,</span> <span class="n">property_value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;state&quot;</span><span class="p">,</span> <span class="s2">&quot;True&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">without_bringing_to_front</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">q_label_analysis_name</span><span class="o">.</span><span class="n">mouseDoubleClickEvent</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bring_to_front</span><span class="p">,</span> <span class="n">analysis_id</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_label_analysis_name</span><span class="p">)</span>
+
+        <span class="n">data_identifiers</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cicada_analysis</span><span class="o">.</span><span class="n">get_data_identifiers</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_label_data_identifiers</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_label_data_identifiers</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">data_identifiers</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_label_data_identifiers</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="c1"># use for personnalized style-sheet</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_label_data_identifiers</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;state&quot;</span><span class="p">,</span> <span class="n">property_value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_scroll_bar</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;state&quot;</span><span class="p">,</span> <span class="n">property_value</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">without_bringing_to_front</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">q_label_data_identifiers</span><span class="o">.</span><span class="n">mouseDoubleClickEvent</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bring_to_front</span><span class="p">,</span> <span class="n">analysis_id</span><span class="p">)</span>
+
+        <span class="c1"># ScrollBarAlwaysOff = 1</span>
+        <span class="c1"># ScrollBarAlwaysOn = 2</span>
+        <span class="c1"># ScrollBarAsNeeded = 0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_scroll_bar</span><span class="o">.</span><span class="n">setVerticalScrollBarPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAsNeeded</span><span class="p">)</span>
+        <span class="c1"># self.setHorizontalScrollBarPolicy(Qt.ScrollBarAsNeeded)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_scroll_bar</span><span class="o">.</span><span class="n">setWidgetResizable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_scroll_bar</span><span class="o">.</span><span class="n">setWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_label_data_identifiers</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_scroll_bar</span><span class="p">)</span>
+        <span class="c1"># self.addStretch(1)</span>
+
+<div class="viewcode-block" id="AnalysisState.bring_to_front"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_overview.AnalysisState.bring_to_front">[docs]</a>    <span class="k">def</span> <span class="nf">bring_to_front</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">window_id</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Bring corresponding analysis window to the front (re-routed from the double click method)&quot;&quot;&quot;</span>
+        <span class="n">window_id</span><span class="o">.</span><span class="n">setWindowState</span><span class="p">(</span><span class="n">window_id</span><span class="o">.</span><span class="n">windowState</span><span class="p">()</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">WindowMinimized</span> <span class="o">|</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">WindowActive</span><span class="p">)</span>
+        <span class="n">window_id</span><span class="o">.</span><span class="n">activateWindow</span><span class="p">()</span>
+        <span class="n">window_id</span><span class="o">.</span><span class="n">raise_</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="AnalysisState.deleteLater"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_overview.AnalysisState.deleteLater">[docs]</a>    <span class="k">def</span> <span class="nf">deleteLater</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">q_label_analysis_name</span><span class="o">.</span><span class="n">deleteLater</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">q_label_data_identifiers</span><span class="o">.</span><span class="n">deleteLater</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>
+            <span class="k">pass</span></div></div>
+
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, CICADA
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

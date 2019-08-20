@@ -1,0 +1,1341 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cicada.gui.cicada_analysis_parameters_gui &mdash; CICADA 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> CICADA
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../preprocessing.html">Pre-processing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.cicada_data_to_nwb">Data to NWB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.cicada_preprocessing_run">Run preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_to_nwb">NWB file class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_suite_2p_rois_to_nwb">Suite 2P ROIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_processed_2d_series_to_nwb">2D series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_ci_movie_to_nwb">Calcium imaging movie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_abf_to_nwb">ABF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.utils">Utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_analysis">Main analysis class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_analysis_arguments_handler">Argument handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_analysis_format_wrapper">Format wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_analysis_nwb_wrapper">NWB wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_cells_count">Cells count</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_connectivity_graph">Connectivity graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_frames_count">Frames count</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_hubs_analysis">Hubs analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_psth_analysis">PSTH analysis</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gui.html">GUI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.cicada_main_window">Main Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.session_show_filter_group">Filter/group sessions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.metadata_widget">Display metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.cicada_analysis_tree_gui">Analysises list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.cicada_analysis_overview">Overview of analysises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.cicada_analysis_parameters_gui">Analysis parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/pappyhammer/cicada">See on Git</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">CICADA</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>cicada.gui.cicada_analysis_parameters_gui</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for cicada.gui.cicada_analysis_parameters_gui</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">QAbstractItemModel</span><span class="p">,</span> <span class="n">QModelIndex</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QProcess</span>
+<span class="kn">from</span> <span class="nn">PyQt5</span> <span class="k">import</span> <span class="n">QtCore</span> <span class="k">as</span> <span class="n">Core</span>
+<span class="kn">from</span> <span class="nn">qtpy</span> <span class="k">import</span> <span class="n">QtGui</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">qtpy</span> <span class="k">import</span> <span class="n">QtCore</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">multiprocessing.pool</span> <span class="k">import</span> <span class="n">ThreadPool</span>
+<span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="k">import</span> <span class="n">Process</span>
+<span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Thread</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">randint</span>
+<span class="kn">import</span> <span class="nn">gc</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="k">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">cicada.gui.cicada_analysis_overview</span> <span class="k">import</span> <span class="n">AnalysisOverview</span><span class="p">,</span> <span class="n">AnalysisState</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">QThread</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">time</span> <span class="k">import</span> <span class="n">time</span>
+
+
+
+<div class="viewcode-block" id="ParameterWidgetModel"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.ParameterWidgetModel">[docs]</a><span class="k">class</span> <span class="nc">ParameterWidgetModel</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="ParameterWidgetModel.get_value"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.ParameterWidgetModel.get_value">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the value of the widget</span>
+<span class="sd">        Returns:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="ParameterWidgetModel.set_value"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.ParameterWidgetModel.set_value">[docs]</a>    <span class="nd">@abstractmethod</span>
+    <span class="k">def</span> <span class="nf">set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the widget value to the value passed</span>
+<span class="sd">        Returns:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div></div>
+
+
+<div class="viewcode-block" id="MyQFrame"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.MyQFrame">[docs]</a><span class="k">class</span> <span class="nc">MyQFrame</span><span class="p">(</span><span class="n">QFrame</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">analysis_arg</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">QFrame</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span> <span class="o">=</span> <span class="n">analysis_arg</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">v_box</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">get_description</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">description</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">q_label_description</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">q_label_description</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">q_label_description</span><span class="o">.</span><span class="n">setWindowFlags</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">FramelessWindowHint</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">q_label_description</span><span class="o">.</span><span class="n">setAttribute</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">WA_TranslucentBackground</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">v_box</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_label_description</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">v_box</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">mandatory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">is_mandatory</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;is_mandatory&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">mandatory</span><span class="p">))</span>
+
+<div class="viewcode-block" id="MyQFrame.change_mandatory_property"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.MyQFrame.change_mandatory_property">[docs]</a>    <span class="k">def</span> <span class="nf">change_mandatory_property</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Changing the property allowing to change the style sheet depending on the mandatory aspect of the argument</span>
+<span class="sd">        Args:</span>
+<span class="sd">            value:</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;is_mandatory&quot;</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">unpolish</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">style</span><span class="p">()</span><span class="o">.</span><span class="n">polish</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">get_layout</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">v_box</span>
+
+<div class="viewcode-block" id="MyQFrame.set_property_to_missing"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.MyQFrame.set_property_to_missing">[docs]</a>    <span class="k">def</span> <span class="nf">set_property_to_missing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Allows the change the stylesheet and indicate the user that a</span>
+<span class="sd">        Returns:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;something_is_missing&quot;</span><span class="p">,</span> <span class="s2">&quot;True&quot;</span><span class="p">)</span></div></div>
+
+
+<span class="c1"># to resolve: TypeError: metaclass conflict: the metaclass of a derived class</span>
+<span class="c1"># must be a (non-strict) subclass of the metaclasses of all its bases</span>
+<span class="c1"># might not be a good idea to do multiple-heritage with a Qclass</span>
+<span class="c1"># solution from: https://stackoverflow.com/questions/28720217/multiple-inheritance-metaclass-conflict</span>
+<span class="c1"># http://www.phyast.pitt.edu/~micheles/python/metatype.html</span>
+<div class="viewcode-block" id="FinalMeta"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.FinalMeta">[docs]</a><span class="k">class</span> <span class="nc">FinalMeta</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">ParameterWidgetModel</span><span class="p">),</span> <span class="nb">type</span><span class="p">(</span><span class="n">QWidget</span><span class="p">)):</span>
+    <span class="k">pass</span></div>
+
+
+<span class="c1"># TODO: some of the widgets to add</span>
+<span class="c1">#  - choose directory</span>
+<span class="c1">#  - choose a color</span>
+<span class="c1">#  -</span>
+
+<div class="viewcode-block" id="FileDialogWidget"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.FileDialogWidget">[docs]</a><span class="k">class</span> <span class="nc">FileDialogWidget</span><span class="p">(</span><span class="n">MyQFrame</span><span class="p">,</span> <span class="n">ParameterWidgetModel</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FinalMeta</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a widget that will contain a button to open a FileDialog and a label to display the file or directory choosen</span>
+<span class="sd">    A label will also explain what this parameter do</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">analysis_arg</span><span class="p">,</span> <span class="n">directory_only</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">MyQFrame</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">analysis_arg</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+        <span class="n">ParameterWidgetModel</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span> <span class="o">=</span> <span class="n">analysis_arg</span>
+        <span class="c1"># both are booleans</span>
+        <span class="c1"># self.save_file_dialog = save_file_dialog</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">directory_only</span> <span class="o">=</span> <span class="n">directory_only</span>
+
+        <span class="n">description</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">get_description</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">description</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">directory_only</span><span class="p">:</span>
+                <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Choose directory&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">description</span> <span class="o">=</span> <span class="s2">&quot;Choose a file or a directory&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_label_description</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_dialog</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">description</span><span class="p">)</span>
+
+        <span class="c1"># setting options</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="o">.</span><span class="n">Options</span><span class="p">()</span>
+        <span class="c1"># options |= QFileDialog.DontUseNativeDialog</span>
+        <span class="n">options</span> <span class="o">|=</span> <span class="n">QFileDialog</span><span class="o">.</span><span class="n">DontUseCustomDirectoryIcons</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">file_dialog</span><span class="o">.</span><span class="n">setOptions</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+
+        <span class="c1"># ARE WE TALKING ABOUT FILES OR FOLDERS</span>
+        <span class="k">if</span> <span class="n">directory_only</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file_dialog</span><span class="o">.</span><span class="n">setFileMode</span><span class="p">(</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">DirectoryOnly</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file_dialog</span><span class="o">.</span><span class="n">setFileMode</span><span class="p">(</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">AnyFile</span><span class="p">)</span>
+
+        <span class="c1"># OPENING OR SAVING</span>
+        <span class="c1"># self.file_dialog.setAcceptMode(QFileDialog.AcceptOpen) if forOpen else \</span>
+        <span class="c1">#     self.file_dialog.setAcceptMode(QFileDialog.AcceptSave)</span>
+
+        <span class="c1"># self.file_dialog.setSidebarUrls([QtCore.QUrl.fromLocalFile(place)])</span>
+
+        <span class="c1"># SET THE STARTING DIRECTORY</span>
+        <span class="n">default_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">get_default_value</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">default_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">default_value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file_dialog</span><span class="o">.</span><span class="n">setDirectory</span><span class="p">(</span><span class="n">default_value</span><span class="p">)</span>
+        <span class="c1"># else:</span>
+        <span class="c1">#     self.file_dialog.setDirectory(str(ROOT_DIR))</span>
+
+        <span class="c1"># SET FORMAT, IF SPECIFIED</span>
+        <span class="c1"># if fmt != &#39;&#39; and directory_only is False:</span>
+        <span class="c1">#     self.file_dialog.setDefaultSuffix(fmt)</span>
+        <span class="c1">#     self.file_dialog.setNameFilters([f&#39;{fmt} (*.{fmt})&#39;])</span>
+
+        <span class="n">h_box</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">select_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Select&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="n">select_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">open_dialog</span><span class="p">)</span>
+        <span class="n">h_box</span><span class="o">.</span><span class="n">addStretch</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">h_box</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">select_button</span><span class="p">)</span>
+        <span class="n">h_box</span><span class="o">.</span><span class="n">addStretch</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v_box</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">h_box</span><span class="p">)</span>
+
+        <span class="n">label_text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">default_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">default_value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">label_text</span> <span class="o">=</span> <span class="n">default_value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_label_path</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="n">label_text</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_label_path</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_label_path</span><span class="o">.</span><span class="n">setWindowFlags</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">FramelessWindowHint</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_label_path</span><span class="o">.</span><span class="n">setAttribute</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">WA_TranslucentBackground</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span> <span class="o">=</span> <span class="n">QScrollArea</span><span class="p">()</span>
+        <span class="c1"># ScrollBarAlwaysOff = 1</span>
+        <span class="c1"># ScrollBarAlwaysOn = 2</span>
+        <span class="c1"># ScrollBarAsNeeded = 0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setVerticalScrollBarPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAlwaysOff</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setHorizontalScrollBarPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAsNeeded</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setWidgetResizable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;label_path&quot;</span><span class="p">,</span> <span class="s2">&quot;True&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v_box</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_label_path</span><span class="p">)</span>
+        <span class="c1"># v_box.addWidget(self.q_label_path)</span>
+
+
+        <span class="c1"># def openFileNameDialog(self):</span>
+        <span class="c1">#     options = QFileDialog.Options()</span>
+        <span class="c1">#     setFileMode(QFileDialog.Directory)</span>
+        <span class="c1">#     options |= QFileDialog.DontUseNativeDialog</span>
+        <span class="c1">#     fileName, _ = QFileDialog.getOpenFileName(self, &quot;QFileDialog.getOpenFileName()&quot;, &quot;&quot;,</span>
+        <span class="c1">#                                               &quot;All Files (*);;Python Files (*.py)&quot;, options=options)</span>
+        <span class="c1">#     if fileName:</span>
+        <span class="c1">#         print(fileName)</span>
+
+
+        <span class="c1">#</span>
+        <span class="c1"># def openFileNamesDialog(self):</span>
+        <span class="c1">#     options = QFileDialog.Options()</span>
+        <span class="c1">#     options |= QFileDialog.DontUseNativeDialog</span>
+        <span class="c1">#     files, _ = QFileDialog.getOpenFileNames(self, &quot;QFileDialog.getOpenFileNames()&quot;, &quot;&quot;,</span>
+        <span class="c1">#                                             &quot;All Files (*);;Python Files (*.py)&quot;, options=options)</span>
+        <span class="c1">#     if files:</span>
+        <span class="c1">#         print(files)</span>
+        <span class="c1">#</span>
+        <span class="c1"># options = QFileDialog.Options()</span>
+        <span class="c1"># options |= QFileDialog.DontUseNativeDialog</span>
+        <span class="c1"># fileName, _ = QFileDialog.getSaveFileName(self, &quot;QFileDialog.getSaveFileName()&quot;, &quot;&quot;,</span>
+        <span class="c1">#                                           &quot;All Files (*);;Text Files (*.txt)&quot;, options=options)</span>
+        <span class="c1"># if fileName:</span>
+        <span class="c1">#     print(fileName)</span>
+
+
+        <span class="c1"># # directory only</span>
+        <span class="c1"># fileDialog.setFileMode(QtWidgets.QFileDialog.DirectoryOnly)</span>
+        <span class="c1"># # just list mode is quite sufficient for choosing a diectory</span>
+        <span class="c1"># fileDialog.setViewMode(QtWidgets.QFileDialog.List)</span>
+        <span class="c1"># # only want to to show directories</span>
+        <span class="c1"># fileDialog.setOption(QtWidgets.QFileDialog.ShowDirsOnly)</span>
+        <span class="c1"># # native dialog, at least under Ubuntu GNOME is a bit naff for choosing a directory</span>
+        <span class="c1"># # (shows files but greyed out), so going for Qt&#39;s own cross-plaform chooser</span>
+        <span class="c1"># fileDialog.setOption(QtWidgets.QFileDialog.DontUseNativeDialog)</span>
+        <span class="c1"># # get rid of (or at least grey out) file-types selector</span>
+        <span class="c1"># fileDialog.setOption(QtWidgets.QFileDialog.HideNameFilterDetails)</span>
+        <span class="c1"># # DontResolveSymlinks seemingly recommended by http://doc.qt.io/qt-5/qfiledialog.html#getExistingDirectory</span>
+        <span class="c1"># # but I found it didn&#39;t make any difference (symlinks resolved anyway)</span>
+        <span class="c1"># # fileDialog.setOption(QtWidgets.QFileDialog.DontResolveSymlinks)</span>
+
+    <span class="k">def</span> <span class="nf">open_dialog</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_dialog</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span> <span class="o">==</span> <span class="n">QDialog</span><span class="o">.</span><span class="n">Accepted</span><span class="p">:</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">file_dialog</span><span class="o">.</span><span class="n">selectedFiles</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># returns a list</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">file_dialog</span><span class="o">.</span><span class="n">setDirectory</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">q_label_path</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mandatory</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">change_mandatory_property</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;False&quot;</span><span class="p">)</span>
+
+<div class="viewcode-block" id="FileDialogWidget.get_value"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.FileDialogWidget.get_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_label_path</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">text</span> <span class="o">==</span> <span class="s2">&quot;&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="n">text</span></div>
+
+<div class="viewcode-block" id="FileDialogWidget.set_value"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.FileDialogWidget.set_value">[docs]</a>    <span class="k">def</span> <span class="nf">set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mandatory</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">change_mandatory_property</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">q_label_path</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># then we checks if it exists</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">is_mandatory</span><span class="p">():</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">change_mandatory_property</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;True&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">q_label_path</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">file_dialog</span><span class="o">.</span><span class="n">setDirectory</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="ListCheckboxWidget"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.ListCheckboxWidget">[docs]</a><span class="k">class</span> <span class="nc">ListCheckboxWidget</span><span class="p">(</span><span class="n">MyQFrame</span><span class="p">,</span> <span class="n">ParameterWidgetModel</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FinalMeta</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">       Allows multiple choices</span>
+<span class="sd">       &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">analysis_arg</span><span class="p">,</span> <span class="n">choices_attr_name</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">MyQFrame</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">analysis_arg</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+        <span class="n">ParameterWidgetModel</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">list_widget</span> <span class="o">=</span> <span class="n">QListWidget</span><span class="p">()</span>
+        <span class="c1"># property is used to have a specificy stylesheet for this QList</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list_widget</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;param&quot;</span><span class="p">,</span> <span class="s2">&quot;True&quot;</span><span class="p">)</span>
+
+        <span class="n">h_box</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">h_box</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_widget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v_box</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">h_box</span><span class="p">)</span>
+        <span class="c1"># self.v_box.addStretch(1)</span>
+
+        <span class="n">choices</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="p">,</span> <span class="n">choices_attr_name</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">default_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">get_default_value</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">default_value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">default_value</span> <span class="o">=</span> <span class="p">[</span><span class="n">default_value</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">choices</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">choice</span> <span class="ow">in</span> <span class="n">choices</span><span class="p">:</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="n">QListWidgetItem</span><span class="p">()</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">setFlags</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">flags</span><span class="p">()</span> <span class="o">|</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsUserCheckable</span> <span class="o">|</span>
+                              <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsSelectable</span> <span class="o">|</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsEnabled</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">default_value</span> <span class="ow">and</span> <span class="p">(</span><span class="n">choice</span> <span class="ow">in</span> <span class="n">default_value</span><span class="p">):</span>
+                    <span class="n">item</span><span class="o">.</span><span class="n">setCheckState</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Checked</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">item</span><span class="o">.</span><span class="n">setCheckState</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Unchecked</span><span class="p">)</span>
+
+                <span class="n">item</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">choice</span><span class="p">))</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">list_widget</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+
+        <span class="c1"># self.list_widget.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">list_widget</span><span class="o">.</span><span class="n">setSizeAdjustPolicy</span><span class="p">(</span><span class="n">QAbstractScrollArea</span><span class="o">.</span><span class="n">AdjustToContents</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ListCheckboxWidget.set_value"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.ListCheckboxWidget.set_value">[docs]</a>    <span class="k">def</span> <span class="nf">set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the value.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            value: value is either a string or integer or float, or a list. If a list, then item whose value matches</span>
+<span class="sd">            one of the elements in the list will be checkeds</span>
+<span class="sd">        Returns: None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># first we uncheck them all</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_widget</span><span class="o">.</span><span class="n">count</span><span class="p">()):</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_widget</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">setCheckState</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Unchecked</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">value</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">values</span> <span class="o">=</span> <span class="n">value</span>
+
+        <span class="c1"># then we find the item that match the values and checked them</span>
+        <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+            <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_widget</span><span class="o">.</span><span class="n">findItems</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">MatchExactly</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">setCheckState</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Checked</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ListCheckboxWidget.get_value"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.ListCheckboxWidget.get_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">checked_items</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_widget</span><span class="o">.</span><span class="n">count</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">list_widget</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">checkState</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">checked_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">list_widget</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">get_default_value</span><span class="p">()</span> <span class="ow">and</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">checked_items</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="c1"># then we put the default value as results</span>
+            <span class="n">checked_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">get_default_value</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="n">checked_items</span></div></div>
+
+
+<div class="viewcode-block" id="LineEditWidget"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.LineEditWidget">[docs]</a><span class="k">class</span> <span class="nc">LineEditWidget</span><span class="p">(</span><span class="n">MyQFrame</span><span class="p">,</span> <span class="n">ParameterWidgetModel</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FinalMeta</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">analysis_arg</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            analysis_arg: instance of AnalysisArgument</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">MyQFrame</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">analysis_arg</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+        <span class="n">ParameterWidgetModel</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span> <span class="o">=</span> <span class="n">analysis_arg</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">line_edit</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">get_default_value</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">line_edit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">get_default_value</span><span class="p">())</span>
+
+        <span class="n">h_box</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">h_box</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">line_edit</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">v_box</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">h_box</span><span class="p">)</span>
+        <span class="c1"># h_box.addStretch(1)</span>
+
+<div class="viewcode-block" id="LineEditWidget.set_value"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.LineEditWidget.set_value">[docs]</a>    <span class="k">def</span> <span class="nf">set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">line_edit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="LineEditWidget.get_value"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.LineEditWidget.get_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">line_edit</span><span class="o">.</span><span class="n">text</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="ComboBoxWidget"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.ComboBoxWidget">[docs]</a><span class="k">class</span> <span class="nc">ComboBoxWidget</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">ParameterWidgetModel</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FinalMeta</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">analysis_arg</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            analysis_arg: instance of AnalysisArgument</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">QWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+        <span class="n">ParameterWidgetModel</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span> <span class="o">=</span> <span class="n">analysis_arg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">combo_boxes</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+        <span class="n">default_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">get_default_value</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">choices</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="c1"># two cases, either choices is a list</span>
+            <span class="c1"># then we&#39;re displaying option valid for all sessions</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">choices</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="c1"># we put &quot;toto&quot;, but it doesn&#39;t matter, if there is only one element</span>
+                <span class="c1"># then the key won&#39;t be displayed</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">combo_boxes</span><span class="p">[</span><span class="s2">&quot;toto&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">QComboBox</span><span class="p">()</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">choice</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">choices</span><span class="p">:</span>
+                    <span class="c1"># need to put 2 arguments, in order to be able to find it using findData</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">combo_boxes</span><span class="p">[</span><span class="s2">&quot;toto&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">choice</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">choice</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="n">default_value</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">choice</span> <span class="o">==</span> <span class="n">default_value</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">combo_boxes</span><span class="p">[</span><span class="s2">&quot;toto&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+                    <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">choices</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="c1"># then each key represent a session_id and the value will be a list of choices</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">for</span> <span class="n">session_id</span><span class="p">,</span> <span class="n">choices</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">choices</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">combo_boxes</span><span class="p">[</span><span class="n">session_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">QComboBox</span><span class="p">()</span>
+                    <span class="k">for</span> <span class="n">choice</span> <span class="ow">in</span> <span class="n">choices</span><span class="p">:</span>
+                        <span class="c1"># need to put 2 arguments, in order to be able to find it using findData</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">combo_boxes</span><span class="p">[</span><span class="n">session_id</span><span class="p">]</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">choice</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">choice</span><span class="p">))</span>
+                        <span class="c1"># TODO: implement default_value, see how make it practical</span>
+                        <span class="c1"># if default_value:</span>
+                        <span class="c1">#     if choice == default_value:</span>
+                        <span class="c1">#         self.combo_box.setCurrentIndex(index)</span>
+                        <span class="n">index</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="c1"># setting it to default if it exists</span>
+        <span class="c1"># if self.analysis_arg.get_default_value():</span>
+        <span class="c1">#     index = self.combo_box.findData(self.analysis_arg.get_default_value())</span>
+        <span class="c1">#     if index &gt;= 0:</span>
+        <span class="c1">#         self.combo_box.setCurrentIndex(index)</span>
+
+        <span class="n">v_box</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">get_description</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">description</span><span class="p">:</span>
+            <span class="n">q_label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+            <span class="n">q_label</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+            <span class="n">q_label</span><span class="o">.</span><span class="n">setWindowFlags</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">FramelessWindowHint</span><span class="p">)</span>
+            <span class="n">q_label</span><span class="o">.</span><span class="n">setAttribute</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">WA_TranslucentBackground</span><span class="p">)</span>
+            <span class="n">v_box</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">q_label</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">session_id</span><span class="p">,</span> <span class="n">combo_box</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">combo_boxes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">h_box</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">combo_boxes</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="c1"># if more than one session_id, we display the name of the session</span>
+                <span class="n">q_label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="n">session_id</span><span class="p">)</span>
+                <span class="c1"># q_label.setAlignment(Qt.AlignCenter)</span>
+                <span class="n">q_label</span><span class="o">.</span><span class="n">setWindowFlags</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">FramelessWindowHint</span><span class="p">)</span>
+                <span class="n">q_label</span><span class="o">.</span><span class="n">setAttribute</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">WA_TranslucentBackground</span><span class="p">)</span>
+                <span class="n">h_box</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">q_label</span><span class="p">)</span>
+                <span class="n">h_box</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">combo_box</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">h_box</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">combo_box</span><span class="p">)</span>
+            <span class="n">v_box</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">h_box</span><span class="p">)</span>
+        <span class="c1"># h_box.addStretch(1)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">v_box</span><span class="p">)</span>
+
+        <span class="n">is_mandatory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">is_mandatory</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;is_mandatory&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">is_mandatory</span><span class="p">))</span>
+
+<div class="viewcode-block" id="ComboBoxWidget.set_value"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.ComboBoxWidget.set_value">[docs]</a>    <span class="k">def</span> <span class="nf">set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set a new value.</span>
+<span class="sd">        Either value is None and nothing will happen</span>
+<span class="sd">        If value is a list instance,</span>
+<span class="sd">        Args:</span>
+<span class="sd">            value:</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="c1"># means each key represent the session_id and the value the default value</span>
+            <span class="k">for</span> <span class="n">session_id</span><span class="p">,</span> <span class="n">value_to_set</span> <span class="ow">in</span> <span class="n">value</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="c1"># first checking is the session exists</span>
+                <span class="k">if</span> <span class="n">session_id</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">combo_boxes</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">combo_box</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">combo_boxes</span><span class="p">[</span><span class="n">session_id</span><span class="p">]</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="n">combo_box</span><span class="o">.</span><span class="n">findData</span><span class="p">(</span><span class="n">value_to_set</span><span class="p">)</span>
+                <span class="c1"># -1 for not found</span>
+                <span class="k">if</span> <span class="n">index</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">combo_box</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># otherwise we look for the value in each of the combo_box</span>
+            <span class="k">for</span> <span class="n">combo_box</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">combo_boxes</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="n">index</span> <span class="o">=</span> <span class="n">combo_box</span><span class="o">.</span><span class="n">findData</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                <span class="c1"># -1 for not found</span>
+                <span class="k">if</span> <span class="n">index</span> <span class="o">!=</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+                    <span class="n">combo_box</span><span class="o">.</span><span class="n">setCurrentIndex</span><span class="p">(</span><span class="n">index</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ComboBoxWidget.get_value"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.ComboBoxWidget.get_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">combo_boxes</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">combo_box</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">combo_boxes</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="k">return</span> <span class="n">combo_box</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+        <span class="n">result_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">session_id</span><span class="p">,</span> <span class="n">combo_box</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">combo_boxes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">result_dict</span><span class="p">[</span><span class="n">session_id</span><span class="p">]</span> <span class="o">=</span> <span class="n">combo_box</span><span class="o">.</span><span class="n">currentText</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">result_dict</span></div></div>
+
+
+<div class="viewcode-block" id="CheckBoxWidget"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.CheckBoxWidget">[docs]</a><span class="k">class</span> <span class="nc">CheckBoxWidget</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">ParameterWidgetModel</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FinalMeta</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">analysis_arg</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            analysis_arg: instance of AnalysisArgument</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">QWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+        <span class="n">ParameterWidgetModel</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span> <span class="o">=</span> <span class="n">analysis_arg</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_box</span> <span class="o">=</span> <span class="n">QCheckBox</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">check_box</span><span class="p">,</span> <span class="s2">&quot;default_value&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_box</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># False by default otherwise</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">get_default_value</span><span class="p">():</span>
+            <span class="c1"># using setCheckState make it a triState</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_box</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">get_default_value</span><span class="p">())</span>
+
+        <span class="n">description</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">get_description</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">description</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">check_box</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+        <span class="c1">#</span>
+        <span class="n">v_box</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="c1"># description = self.analysis_arg.get_description()</span>
+        <span class="c1"># if description:</span>
+        <span class="c1">#     q_label = QLabel(description)</span>
+        <span class="c1">#     q_label.setAlignment(Qt.AlignCenter)</span>
+        <span class="c1">#     q_label.setWindowFlags(QtCore.Qt.FramelessWindowHint)</span>
+        <span class="c1">#     q_label.setAttribute(QtCore.Qt.WA_TranslucentBackground)</span>
+        <span class="c1">#     v_box.addWidget(q_label)</span>
+
+        <span class="n">h_box</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">h_box</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">check_box</span><span class="p">)</span>
+        <span class="n">v_box</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">h_box</span><span class="p">)</span>
+        <span class="c1"># h_box.addStretch(1)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">v_box</span><span class="p">)</span>
+
+        <span class="n">is_mandatory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">is_mandatory</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;is_mandatory&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">is_mandatory</span><span class="p">))</span>
+
+<div class="viewcode-block" id="CheckBoxWidget.set_value"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.CheckBoxWidget.set_value">[docs]</a>    <span class="k">def</span> <span class="nf">set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_box</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CheckBoxWidget.get_value"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.CheckBoxWidget.get_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">check_box</span><span class="o">.</span><span class="n">isChecked</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="SliderWidget"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.SliderWidget">[docs]</a><span class="k">class</span> <span class="nc">SliderWidget</span><span class="p">(</span><span class="n">QFrame</span><span class="p">,</span> <span class="n">ParameterWidgetModel</span><span class="p">,</span> <span class="n">metaclass</span><span class="o">=</span><span class="n">FinalMeta</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">analysis_arg</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            analysis_arg: instance of AnalysisArgument</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">QWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+        <span class="n">ParameterWidgetModel</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span> <span class="o">=</span> <span class="n">analysis_arg</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider</span> <span class="o">=</span> <span class="n">QSlider</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">Horizontal</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">spin_box</span> <span class="o">=</span> <span class="n">QSpinBox</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">max_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">min_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slider</span><span class="o">.</span><span class="n">setRange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">min_value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">max_value</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">spin_box</span><span class="o">.</span><span class="n">setRange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">min_value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">max_value</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">get_default_value</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slider</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">get_default_value</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">spin_box</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">get_default_value</span><span class="p">())</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">spin_box</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spin_box_value_changed</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider</span><span class="o">.</span><span class="n">valueChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slider_value_changed</span><span class="p">)</span>
+
+        <span class="n">v_box</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">get_description</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">description</span><span class="p">:</span>
+            <span class="n">q_label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+            <span class="n">q_label</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+            <span class="n">q_label</span><span class="o">.</span><span class="n">setWindowFlags</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">FramelessWindowHint</span><span class="p">)</span>
+            <span class="n">q_label</span><span class="o">.</span><span class="n">setAttribute</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">WA_TranslucentBackground</span><span class="p">)</span>
+            <span class="n">v_box</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">q_label</span><span class="p">)</span>
+
+        <span class="n">h_box</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">h_box</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">slider</span><span class="p">)</span>
+        <span class="n">h_box</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">spin_box</span><span class="p">)</span>
+        <span class="n">v_box</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">h_box</span><span class="p">)</span>
+        <span class="c1"># h_box.addStretch(1)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">v_box</span><span class="p">)</span>
+
+        <span class="n">is_mandatory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arg</span><span class="o">.</span><span class="n">is_mandatory</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;is_mandatory&quot;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">is_mandatory</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">slider_value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spin_box</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="c1"># self.analysis_arg.set_argument_value(value)</span>
+
+    <span class="k">def</span> <span class="nf">spin_box_value_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slider</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+        <span class="c1"># self.analysis_arg.set_argument_value(value)</span>
+
+<div class="viewcode-block" id="SliderWidget.set_value"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.SliderWidget.set_value">[docs]</a>    <span class="k">def</span> <span class="nf">set_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">spin_box</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SliderWidget.get_value"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.SliderWidget.get_value">[docs]</a>    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">slider</span><span class="o">.</span><span class="n">value</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="AnalysisParametersApp"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp">[docs]</a><span class="k">class</span> <span class="nc">AnalysisParametersApp</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thread_name</span><span class="p">,</span> <span class="n">progress_bar</span><span class="p">,</span> <span class="n">height_main_window</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">QWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">thread_name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span> <span class="o">=</span> <span class="n">progress_bar</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setFixedHeight</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">height_main_window</span> <span class="o">*</span> <span class="mf">0.70</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">special_background_on</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_style_sheet_background</span> <span class="o">=</span> <span class="s2">&quot;.QWidget{background-image:url(</span><span class="se">\&quot;\&quot;</span><span class="s2">); background-position: center;}&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cicada_analysis</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataView</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">analysis_tree_model</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># will be initialize when the param section will have been created</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">param_section_widget</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arguments_handler</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># use for multithreading</span>
+
+        <span class="c1"># Add the scroll bar</span>
+        <span class="c1"># ==============================</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span> <span class="o">=</span> <span class="n">QScrollArea</span><span class="p">()</span>
+        <span class="c1"># ScrollBarAlwaysOff = 1</span>
+        <span class="c1"># ScrollBarAlwaysOn = 2</span>
+        <span class="c1"># ScrollBarAsNeeded = 0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setVerticalScrollBarPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAsNeeded</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setHorizontalScrollBarPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAsNeeded</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setWidgetResizable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">scroll_area_widget_contents</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scroll_area_widget_contents</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scroll_area_widget_contents</span><span class="p">)</span>
+        <span class="c1"># ==============================</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">run_analysis_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Push me and then just touch me&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run_analysis_button</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run_analysis_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">run_analysis</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_arguments_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Load arguments&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_arguments_button</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_arguments_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">load_arguments</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_arguments_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Reset arguments to default value&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_arguments_button</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reset_arguments_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reset_arguments</span><span class="p">)</span>
+        <span class="c1"># self.main_layout.addWidget(self.run_analysis_button)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="p">)</span>
+        <span class="c1"># self.show()</span>
+
+<div class="viewcode-block" id="AnalysisParametersApp.load_arguments"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp.load_arguments">[docs]</a>    <span class="k">def</span> <span class="nf">load_arguments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Will open a FileDialog to select a yaml file used to load arguments used for a previous analysis</span>
+<span class="sd">        Returns:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">file_dialog</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Loading arguments&quot;</span><span class="p">)</span>
+
+        <span class="c1"># setting options</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="o">.</span><span class="n">Options</span><span class="p">()</span>
+        <span class="c1"># options |= QFileDialog.DontUseNativeDialog</span>
+        <span class="n">options</span> <span class="o">|=</span> <span class="n">QFileDialog</span><span class="o">.</span><span class="n">DontUseCustomDirectoryIcons</span>
+        <span class="n">file_dialog</span><span class="o">.</span><span class="n">setOptions</span><span class="p">(</span><span class="n">options</span><span class="p">)</span>
+
+        <span class="c1"># ARE WE TALKING ABOUT FILES OR FOLDERS</span>
+        <span class="n">file_dialog</span><span class="o">.</span><span class="n">setFileMode</span><span class="p">(</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">ExistingFiles</span><span class="p">)</span>
+        <span class="n">file_dialog</span><span class="o">.</span><span class="n">setNameFilter</span><span class="p">(</span><span class="s2">&quot;Yaml files (*.yml *.yaml)&quot;</span><span class="p">)</span>
+
+        <span class="c1"># OPENING OR SAVING</span>
+        <span class="n">file_dialog</span><span class="o">.</span><span class="n">setAcceptMode</span><span class="p">(</span><span class="n">QFileDialog</span><span class="o">.</span><span class="n">AcceptOpen</span><span class="p">)</span>
+
+
+        <span class="c1"># SET THE STARTING DIRECTORY</span>
+        <span class="c1"># default_value = self.analysis_arg.get_default_value()</span>
+        <span class="c1"># if default_value is not None and isinstance(default_value, str):</span>
+        <span class="c1">#     self.file_dialog.setDirectory(default_value)</span>
+
+        <span class="k">if</span> <span class="n">file_dialog</span><span class="o">.</span><span class="n">exec_</span><span class="p">()</span> <span class="o">==</span> <span class="n">QDialog</span><span class="o">.</span><span class="n">Accepted</span><span class="p">:</span>
+            <span class="n">yaml_file</span> <span class="o">=</span> <span class="n">file_dialog</span><span class="o">.</span><span class="n">selectedFiles</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arguments_handler</span><span class="o">.</span><span class="n">load_analysis_argument_from_yaml_file</span><span class="p">(</span><span class="n">yaml_file</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AnalysisParametersApp.tabula_rasa"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp.tabula_rasa">[docs]</a>    <span class="k">def</span> <span class="nf">tabula_rasa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Erase the widgets and make an empty section</span>
+<span class="sd">        Returns:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># clearing the widget to update it</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scroll_area_widget_contents</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scroll_area_widget_contents</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scroll_area_widget_contents</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scroll_area_widget_contents</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_style_sheet_background</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run_analysis_button</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AnalysisParametersApp.create_widgets"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp.create_widgets">[docs]</a>    <span class="k">def</span> <span class="nf">create_widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cicada_analysis</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            cicada_analysis:</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cicada_analysis</span> <span class="o">=</span> <span class="n">cicada_analysis</span>
+
+        <span class="c1"># clearing the widget to update it</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabula_rasa</span><span class="p">()</span>
+        <span class="c1"># ==============================</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arguments_handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cicada_analysis</span><span class="o">.</span><span class="n">analysis_arguments_handler</span>
+        <span class="c1"># list of instances of AnalysisArgument</span>
+        <span class="n">gui_widgets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arguments_handler</span><span class="o">.</span><span class="n">get_gui_widgets</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">gui_widget</span> <span class="ow">in</span> <span class="n">gui_widgets</span><span class="p">:</span>
+            <span class="c1"># print(f&quot;gui_widget {gui_widget}&quot;)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">gui_widget</span><span class="p">)</span>
+            <span class="c1"># See to check if gui_widget is an instance of QFrame to round the border only</span>
+            <span class="c1"># for QFrame instances</span>
+            <span class="n">gui_widget</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span>
+                <span class="s2">&quot;background-color:transparent; border-radius: 20px;&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addStretch</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run_analysis_button</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AnalysisParametersApp.keyPressEvent"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp.keyPressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="n">available_background</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;black_widow.png&quot;</span><span class="p">,</span> <span class="s2">&quot;captain_marvel.png&quot;</span><span class="p">,</span> <span class="s2">&quot;iron_man.png&quot;</span><span class="p">,</span> <span class="s2">&quot;hulk.png&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Key_A</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">special_background_on</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_style_sheet_background</span> <span class="o">=</span> <span class="s2">&quot;.QWidget{background-image:url(</span><span class="se">\&quot;\&quot;</span><span class="s2">); background-position: center;}&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">scroll_area_widget_contents</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_style_sheet_background</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">special_background_on</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">pic_index</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">available_background</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="c1"># we add .QWidget so the background is specific to this widget and is not applied by other widgets</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_style_sheet_background</span> <span class="o">=</span> <span class="s2">&quot;.QWidget{background-image:url(</span><span class="se">\&quot;</span><span class="s2">cicada/gui/icons/rc/&quot;</span> <span class="o">+</span> \
+                                                      <span class="n">available_background</span><span class="p">[</span><span class="n">pic_index</span><span class="p">]</span> <span class="o">+</span> \
+                                                      <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">); background-position: center; background-repeat:no-repeat;}&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">scroll_area_widget_contents</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_style_sheet_background</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">special_background_on</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+    <span class="k">def</span> <span class="nf">reset_arguments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arguments_handler</span><span class="o">.</span><span class="n">set_widgets_to_default_value</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">run_analysis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arguments_handler</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="c1"># first we check if analysis_arguments are filled correctly</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arguments_handler</span><span class="o">.</span><span class="n">check_arguments_validity</span><span class="p">():</span>
+            <span class="k">return</span>
+
+        <span class="c1"># first we disable the button so we can launch a given analysis only once</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">run_analysis_button</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="c1"># self.thread_list.append(Worker())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">worker</span> <span class="o">=</span> <span class="n">Worker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cicada_analysis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arguments_handler</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">worker</span><span class="o">.</span><span class="n">updateProgress</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">update_progress_bar</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">worker</span><span class="o">.</span><span class="n">updateProgress2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">update_progress_bar_overview</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">worker</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
+        <span class="c1"># p = Thread(target=self.analysis_arguments_handler.run_analysis, daemon=True)</span>
+        <span class="c1"># p.setName(self.name)</span>
+        <span class="c1"># p.start()</span>
+
+
+<div class="viewcode-block" id="EmittingStream"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.EmittingStream">[docs]</a><span class="k">class</span> <span class="nc">EmittingStream</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QObject</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">terminal</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">textWritten</span> <span class="o">=</span> <span class="n">Core</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+
+<div class="viewcode-block" id="EmittingStream.write"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.EmittingStream.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Override of the write function used to display output</span>
+<span class="sd">        Args:</span>
+<span class="sd">            text (str): Python output from stdout</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Add thread name to the output when writting in the the widget</span>
+        <span class="n">current_thread</span> <span class="o">=</span> <span class="n">QThread</span><span class="o">.</span><span class="n">currentThread</span><span class="p">()</span>
+        <span class="n">thread_text</span> <span class="o">=</span> <span class="n">text</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">current_thread</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">terminal</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+        <span class="n">dir_path</span> <span class="o">=</span> <span class="n">current_thread</span><span class="o">.</span><span class="n">cicada_analysis</span><span class="o">.</span><span class="n">get_results_path</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">normalOutputWritten</span><span class="p">(</span><span class="n">thread_text</span><span class="p">,</span> <span class="n">dir_path</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="EmittingErrStream"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.EmittingErrStream">[docs]</a><span class="k">class</span> <span class="nc">EmittingErrStream</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QObject</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">terminal</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">errWritten</span> <span class="o">=</span> <span class="n">Core</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+
+<div class="viewcode-block" id="EmittingErrStream.write"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.EmittingErrStream.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Override of the write function used to display output</span>
+<span class="sd">        Args:</span>
+<span class="sd">            text (str): Python output from stdout</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Add thread name to the output when writting in the the widget</span>
+
+        <span class="n">current_thread</span> <span class="o">=</span> <span class="n">QThread</span><span class="o">.</span><span class="n">currentThread</span><span class="p">()</span>
+        <span class="n">thread_text</span> <span class="o">=</span> <span class="n">text</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">current_thread</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">terminal</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
+        <span class="n">dir_path</span> <span class="o">=</span> <span class="n">current_thread</span><span class="o">.</span><span class="n">cicada_analysis</span><span class="o">.</span><span class="n">get_results_path</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">errOutputWritten</span><span class="p">(</span><span class="n">thread_text</span><span class="p">,</span> <span class="n">dir_path</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="AnalysisData"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisData">[docs]</a><span class="k">class</span> <span class="nc">AnalysisData</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cicada_analysis</span><span class="p">,</span> <span class="n">arguments_section_widget</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">QWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+        <span class="c1"># self.special_background_on_list = False</span>
+        <span class="c1"># self.special_background_on_text = False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="c1"># self.q_list = QListWidget()</span>
+        <span class="c1"># self.q_list.keyPressEvent = self.on_key_press_list</span>
+        <span class="c1"># self.analysis_description = QTextEdit()</span>
+        <span class="c1"># self.analysis_description.keyPressEvent = self.on_key_press_text</span>
+        <span class="c1"># self.analysis_description.append(analysis_description)</span>
+        <span class="c1"># to jump a line</span>
+        <span class="c1"># self.populate_session_list(session_list)</span>
+        <span class="c1"># self.layout.addWidget(self.q_list)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">analysis_state</span> <span class="o">=</span> <span class="n">AnalysisState</span><span class="p">(</span><span class="n">analysis_id</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cicada_analysis</span><span class="o">=</span><span class="n">cicada_analysis</span><span class="p">,</span>
+                                       <span class="n">without_bringing_to_front</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">analysis_state</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addStretch</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">arguments_section_widget</span><span class="o">.</span><span class="n">reset_arguments_button</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">arguments_section_widget</span><span class="o">.</span><span class="n">load_arguments_button</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">arguments_section_widget</span><span class="o">.</span><span class="n">run_analysis_button</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">)</span>
+
+<div class="viewcode-block" id="AnalysisData.populate_session_list"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisData.populate_session_list">[docs]</a>    <span class="k">def</span> <span class="nf">populate_session_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session_list</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add all session to the QListWidget</span>
+<span class="sd">        Args:</span>
+<span class="sd">            session_list (list): List of all sessions&#39; identifier</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">session</span> <span class="ow">in</span> <span class="n">session_list</span><span class="p">:</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">QListWidgetItem</span><span class="p">()</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">session</span><span class="o">.</span><span class="n">identifier</span><span class="p">))</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">setFlags</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">flags</span><span class="p">()</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsSelectable</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">item</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">on_key_press_list</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Key_J</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">special_background_on_list</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_style_sheet_background_list</span> <span class="o">=</span> <span class="s2">&quot;background-image:url(</span><span class="se">\&quot;\&quot;</span><span class="s2">); background-position: center;&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_style_sheet_background_list</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">special_background_on_list</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># we add .QWidget so the background is specific to this widget and is not applied by other widgets</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_style_sheet_background_list</span> <span class="o">=</span> <span class="s2">&quot;background-image:url(</span><span class="se">\&quot;</span><span class="s2">cicada/gui/icons/rc/test.jpg</span><span class="se">\&quot;</span><span class="s2">);&quot;</span> \
+                                                           <span class="s2">&quot;background-position: center; background-repeat:no-repeat;&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_style_sheet_background_list</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">special_background_on_list</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">def</span> <span class="nf">on_key_press_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Key_J</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">special_background_on_text</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_style_sheet_background_text</span> <span class="o">=</span> <span class="s2">&quot;background-image:url(</span><span class="se">\&quot;\&quot;</span><span class="s2">); background-position: center;&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">analysis_description</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_style_sheet_background_text</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">special_background_on_text</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">pic_index</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="c1"># we add .QWidget so the background is specific to this widget and is not applied by other widgets</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_style_sheet_background_text</span> <span class="o">=</span> <span class="s2">&quot;background-image:url(</span><span class="se">\&quot;</span><span class="s2">cicada/gui/icons/rc/test2.jpg</span><span class="se">\&quot;</span><span class="s2">);&quot;</span> \
+                                                           <span class="s2">&quot;background-position: center; background-repeat:no-repeat;&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">analysis_description</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_style_sheet_background_text</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">special_background_on_text</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="AnalysisPackage"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisPackage">[docs]</a><span class="k">class</span> <span class="nc">AnalysisPackage</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cicada_analysis</span><span class="p">,</span> <span class="n">analysis_name</span><span class="p">,</span> <span class="n">analysis_description</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">QWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">closeEvent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_close</span>
+        <span class="n">height_window</span> <span class="o">=</span> <span class="mi">750</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="n">height_window</span><span class="p">)</span>
+        <span class="c1"># self.setFixedSize(self.size())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">remaining_time_label</span> <span class="o">=</span> <span class="n">RemainingTime</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span> <span class="o">=</span> <span class="n">ProgressBar</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">remaining_time_label</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">cicada_analysis</span><span class="o">.</span><span class="n">progress_bar_analysis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span>
+        <span class="c1"># print(cicada_analysis.analysis_arguments_handler)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span> <span class="o">=</span> <span class="n">QScrollArea</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setWidgetResizable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setVerticalScrollBarPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAsNeeded</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setHorizontalScrollBarPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAsNeeded</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_output</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_output</span><span class="o">.</span><span class="n">setWordWrap</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_output</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignLeft</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_output</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignTop</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_output</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">EmittingStream</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span> <span class="o">=</span> <span class="n">EmittingErrStream</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollAreaErr</span> <span class="o">=</span> <span class="n">QScrollArea</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollAreaErr</span><span class="o">.</span><span class="n">setWidgetResizable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollAreaErr</span><span class="o">.</span><span class="n">setVerticalScrollBarPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAsNeeded</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollAreaErr</span><span class="o">.</span><span class="n">setHorizontalScrollBarPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAsNeeded</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_output_err</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_output_err</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s2">&quot;color: red;&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_output_err</span><span class="o">.</span><span class="n">setWordWrap</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_output_err</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignLeft</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_output_err</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignTop</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_output_err</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="n">analysis_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hlayout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">arguments_section_widget</span> <span class="o">=</span> <span class="n">AnalysisParametersApp</span><span class="p">(</span><span class="n">thread_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">progress_bar</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="p">,</span>
+                                                              <span class="n">height_main_window</span><span class="o">=</span><span class="n">height_window</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arguments_section_widget</span><span class="o">.</span><span class="n">create_widgets</span><span class="p">(</span><span class="n">cicada_analysis</span><span class="o">=</span><span class="n">cicada_analysis</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">analysis_data</span> <span class="o">=</span> <span class="n">AnalysisData</span><span class="p">(</span><span class="n">cicada_analysis</span><span class="o">=</span><span class="n">cicada_analysis</span><span class="p">,</span>
+                                          <span class="n">arguments_section_widget</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">arguments_section_widget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hlayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">analysis_data</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">hlayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">arguments_section_widget</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hlayout</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hlayout2</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hlayout2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hlayout2</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">remaining_time_label</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hlayout2</span><span class="p">)</span>
+        <span class="c1"># self.layout.addWidget(self.text_output)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text_output</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollAreaErr</span><span class="o">.</span><span class="n">setWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text_output_err</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scrollAreaErr</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<div class="viewcode-block" id="AnalysisPackage.normalOutputWritten"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisPackage.normalOutputWritten">[docs]</a>    <span class="k">def</span> <span class="nf">normalOutputWritten</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Append text to the QLabel.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            text (str): Output of the standard output in python interpreter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span> <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">)])</span>
+
+            <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_output</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="o">+</span> <span class="n">text</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">text_output</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">verticalScrollBar</span><span class="p">()</span><span class="o">.</span><span class="n">setSliderPosition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text_output</span><span class="o">.</span><span class="n">height</span><span class="p">())</span>
+            <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;log.txt&quot;</span><span class="p">),</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text_output</span><span class="o">.</span><span class="n">text</span><span class="p">()))</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="AnalysisPackage.errOutputWritten"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisPackage.errOutputWritten">[docs]</a>    <span class="k">def</span> <span class="nf">errOutputWritten</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Append text to the QLabel.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            text (str): Output of the standard output in python interpreter</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span> <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\r\n</span><span class="s2">&quot;</span><span class="p">)])</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_output_err</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="o">+</span> <span class="n">text</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">text_output_err</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">scrollAreaErr</span><span class="o">.</span><span class="n">verticalScrollBar</span><span class="p">()</span><span class="o">.</span><span class="n">setSliderPosition</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text_output</span><span class="o">.</span><span class="n">height</span><span class="p">())</span>
+            <span class="n">file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">&quot;err.txt&quot;</span><span class="p">),</span> <span class="s2">&quot;w+&quot;</span><span class="p">)</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text_output_err</span><span class="o">.</span><span class="n">text</span><span class="p">()))</span>
+            <span class="n">file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="AnalysisPackage.on_close"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisPackage.on_close">[docs]</a>    <span class="k">def</span> <span class="nf">on_close</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Need to delete the overview widget associated to this analysis&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">100</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">isEnabled</span><span class="p">()):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">confirm_quit</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">confirm_quit</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;CICADA&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">confirm_quit</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;The analysis is still ongoing, do you still want to quit ?&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">confirm_quit</span><span class="o">.</span><span class="n">setStandardButtons</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">confirm_quit</span><span class="o">.</span><span class="n">addButton</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">confirm_quit</span><span class="o">.</span><span class="n">setDefaultButton</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">confirm_quit</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">gc</span><span class="o">.</span><span class="n">get_objects</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Worker</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+                            <span class="n">obj</span><span class="o">.</span><span class="n">terminate</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">gc</span><span class="o">.</span><span class="n">get_objects</span><span class="p">():</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">AnalysisOverview</span><span class="p">):</span>
+                        <span class="c1"># sys.stderr.write(str(dir(obj)))</span>
+                        <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+                            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">attr</span><span class="p">:</span>
+                                <span class="k">if</span> <span class="s2">&quot;layout&quot;</span> <span class="ow">in</span> <span class="n">attr</span><span class="p">:</span>
+                                    <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;obj.layout.removeItem( obj.&#39;</span> <span class="o">+</span> <span class="n">attr</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span><span class="p">)</span>
+
+                                <span class="k">else</span><span class="p">:</span>
+                                    <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;obj.&#39;</span> <span class="o">+</span> <span class="n">attr</span> <span class="o">+</span> <span class="s1">&#39;.setParent(None)&#39;</span><span class="p">)</span>
+                                    <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;obj.&#39;</span> <span class="o">+</span> <span class="n">attr</span> <span class="o">+</span> <span class="s1">&#39;.deleteLater()&#39;</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">gc</span><span class="o">.</span><span class="n">get_objects</span><span class="p">():</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">AnalysisOverview</span><span class="p">):</span>
+                    <span class="c1"># sys.stderr.write(str(dir(obj)))</span>
+                    <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
+                        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">attr</span><span class="p">:</span>
+                            <span class="k">if</span> <span class="s2">&quot;layout&quot;</span> <span class="ow">in</span> <span class="n">attr</span><span class="p">:</span>
+                                <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;obj.layout.removeItem( obj.&#39;</span> <span class="o">+</span> <span class="n">attr</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span><span class="p">)</span>
+
+                            <span class="k">else</span><span class="p">:</span>
+                                <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;obj.&#39;</span> <span class="o">+</span> <span class="n">attr</span> <span class="o">+</span> <span class="s1">&#39;.setParent(None)&#39;</span><span class="p">)</span>
+                                <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;obj.&#39;</span> <span class="o">+</span> <span class="n">attr</span> <span class="o">+</span> <span class="s1">&#39;.deleteLater()&#39;</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Worker"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.Worker">[docs]</a><span class="k">class</span> <span class="nc">Worker</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QThread</span><span class="p">):</span>
+    <span class="n">updateProgress</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Signal</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+    <span class="n">updateProgress2</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Signal</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">cicada_analysis</span><span class="p">,</span> <span class="n">analysis_arguments_handler</span><span class="p">):</span>
+        <span class="n">QtCore</span><span class="o">.</span><span class="n">QThread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cicada_analysis</span> <span class="o">=</span> <span class="n">cicada_analysis</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">results_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cicada_analysis</span><span class="o">.</span><span class="n">get_results_path</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arguments_handler</span> <span class="o">=</span> <span class="n">analysis_arguments_handler</span>
+
+<div class="viewcode-block" id="Worker.run"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.Worker.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">results_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cicada_analysis</span><span class="o">.</span><span class="n">get_results_path</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arguments_handler</span><span class="o">.</span><span class="n">run_analysis</span><span class="p">()</span></div>
+
+    <span class="k">def</span> <span class="nf">setProgress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">time_started</span><span class="p">,</span> <span class="n">increment_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">new_set_value</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updateProgress</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">time_started</span><span class="p">,</span> <span class="n">increment_value</span><span class="p">,</span> <span class="n">new_set_value</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">updateProgress2</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">time_started</span><span class="p">,</span> <span class="n">increment_value</span><span class="p">,</span> <span class="n">new_set_value</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ProgressBar"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.ProgressBar">[docs]</a><span class="k">class</span> <span class="nc">ProgressBar</span><span class="p">(</span><span class="n">QProgressBar</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">remaining_time_label</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">QProgressBar</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setMinimum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">progress</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">remaining_time_label</span> <span class="o">=</span> <span class="n">remaining_time_label</span>
+
+    <span class="k">def</span> <span class="nf">update_progress_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_started</span><span class="p">,</span> <span class="n">increment_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">new_set_value</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_thread</span> <span class="o">=</span> <span class="n">QThread</span><span class="o">.</span><span class="n">currentThread</span><span class="p">()</span>
+        <span class="c1"># sys.stderr.write(current_thread.name)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">new_set_value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">new_set_value</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">increment_value</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">+</span> <span class="n">increment_value</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isEnabled</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remaining_time_label</span><span class="o">.</span><span class="n">update_remaining_time</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">(),</span> <span class="n">time_started</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">update_progress_bar_overview</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">time_started</span><span class="p">,</span> <span class="n">increment_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">new_set_value</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="c1"># eval(&#39;AnalysisOverview.&#39; + name + &#39;_progress_bar.setValue(50)&#39;)</span>
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">gc</span><span class="o">.</span><span class="n">get_objects</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">AnalysisOverview</span><span class="p">):</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;obj.&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_progress_bar.setEnabled(True)&#39;</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">new_set_value</span><span class="p">:</span>
+                        <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;obj.&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_progress_bar.setValue(new_set_value)&#39;</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="n">increment_value</span><span class="p">:</span>
+                        <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;obj.&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_progress_bar.setValue(self.value() + increment_value)&#39;</span><span class="p">)</span>
+
+                    <span class="k">if</span> <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;obj.&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_progress_bar.isEnabled()&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="nb">eval</span><span class="p">(</span>
+                            <span class="s1">&#39;obj.&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_progress_bar.value()&#39;</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;obj.&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_progress_bar.setEnabled(True)&#39;</span><span class="p">)</span>
+
+                <span class="k">except</span><span class="p">:</span>
+                    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="RemainingTime"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.RemainingTime">[docs]</a><span class="k">class</span> <span class="nc">RemainingTime</span><span class="p">(</span><span class="n">QLabel</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">QLabel</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setMinimumSize</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setMaximumSize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Time remaining : &quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">update_remaining_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progress_value</span><span class="p">,</span> <span class="n">time_started</span><span class="p">):</span>
+        <span class="c1"># sys.stderr.write(&quot;\n Time elapsed:&quot; + str(time()-time_started))</span>
+        <span class="n">remaining_time</span> <span class="o">=</span> <span class="p">((</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">time_started</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span> <span class="o">/</span> <span class="n">progress_value</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Time remaining : &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">time_started</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">remaining_time</span><span class="p">))</span></div>
+
+
+<span class="k">def</span> <span class="nf">clearvbox</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">L</span><span class="p">:</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">vbox</span>
+    <span class="k">if</span> <span class="n">L</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">while</span> <span class="n">L</span><span class="o">.</span><span class="n">count</span><span class="p">():</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">takeAt</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+            <span class="n">widget</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">widget</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">widget</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">widget</span><span class="o">.</span><span class="n">deleteLater</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">clearvbox</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">layout</span><span class="p">())</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, CICADA
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

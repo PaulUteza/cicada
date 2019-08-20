@@ -1,0 +1,640 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cicada.gui.session_show_filter_group &mdash; CICADA 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> CICADA
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../preprocessing.html">Pre-processing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.cicada_data_to_nwb">Data to NWB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.cicada_preprocessing_run">Run preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_to_nwb">NWB file class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_suite_2p_rois_to_nwb">Suite 2P ROIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_processed_2d_series_to_nwb">2D series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_ci_movie_to_nwb">Calcium imaging movie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_abf_to_nwb">ABF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.utils">Utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_analysis">Main analysis class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_analysis_arguments_handler">Argument handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_analysis_format_wrapper">Format wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_analysis_nwb_wrapper">NWB wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_cells_count">Cells count</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_connectivity_graph">Connectivity graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_frames_count">Frames count</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_hubs_analysis">Hubs analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_psth_analysis">PSTH analysis</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gui.html">GUI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.cicada_main_window">Main Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.session_show_filter_group">Filter/group sessions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.metadata_widget">Display metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.cicada_analysis_tree_gui">Analysises list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.cicada_analysis_overview">Overview of analysises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.cicada_analysis_parameters_gui">Analysis parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/pappyhammer/cicada">See on Git</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">CICADA</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>cicada.gui.session_show_filter_group</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for cicada.gui.session_show_filter_group</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">qtpy</span> <span class="k">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtGui</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">Qt</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">pynwb</span> <span class="k">import</span> <span class="n">NWBHDF5IO</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">cicada.preprocessing.utils</span> <span class="k">import</span> <span class="n">sort_by_param</span><span class="p">,</span> <span class="n">group_by_param</span>
+<span class="kn">import</span> <span class="nn">cicada.preprocessing.utils</span> <span class="k">as</span> <span class="nn">utils</span>
+<span class="kn">from</span> <span class="nn">cicada.gui.metadata_widget</span> <span class="k">import</span> <span class="n">MetaDataWidget</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">randint</span>
+
+
+<div class="viewcode-block" id="SessionsListWidget"><a class="viewcode-back" href="../../../gui.html#cicada.gui.session_show_filter_group.SessionsListWidget">[docs]</a><span class="k">class</span> <span class="nc">SessionsListWidget</span><span class="p">(</span><span class="n">QListWidget</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session_widget</span><span class="p">):</span>
+        <span class="n">QListWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">special_background_on</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setContextMenuPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">CustomContextMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">customContextMenuRequested</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">showContextMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_widget</span> <span class="o">=</span> <span class="n">session_widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">arguments_section_widget</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="SessionsListWidget.keyPressEvent"><a class="viewcode-back" href="../../../gui.html#cicada.gui.session_show_filter_group.SessionsListWidget.keyPressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="n">available_background</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;michou_BG.jpg&quot;</span><span class="p">,</span> <span class="s2">&quot;michou_BG2.jpg&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Key_M</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">special_background_on</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span>
+                    <span class="s2">&quot;background-image:url(</span><span class="se">\&quot;\&quot;</span><span class="s2">); background-position: center;&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">special_background_on</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">pic_index</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">available_background</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span>
+                    <span class="n">f</span><span class="s2">&quot;background-image:url(</span><span class="se">\&quot;</span><span class="s2">cicada/gui/icons/rc/</span><span class="si">{available_background[pic_index]}</span><span class="se">\&quot;</span><span class="s2">); &quot;</span>
+                    <span class="n">f</span><span class="s2">&quot;background-position: center; &quot;</span>
+                    <span class="n">f</span><span class="s2">&quot;background-repeat:no-repeat;&quot;</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">special_background_on</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">elif</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Key_Return</span><span class="p">:</span>
+            <span class="n">data_to_analyse</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session_widget</span><span class="o">.</span><span class="n">get_data_to_analyse</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session_widget</span><span class="o">.</span><span class="n">analysis_tree</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="n">data_to_analyse</span><span class="o">=</span><span class="n">data_to_analyse</span><span class="p">,</span> <span class="n">data_format</span><span class="o">=</span><span class="s2">&quot;nwb&quot;</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">showContextMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">global_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapToGlobal</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context_menu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context_menuAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Show info&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">triggered</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">show_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context_menuAct</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QIcon</span><span class="p">(</span><span class="s1">&#39;cicada/gui/icons/svg/question-mark.svg&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context_menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">context_menuAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context_menu</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">global_pos</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">show_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">item_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectedItems</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">item_list</span><span class="p">:</span>
+            <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;self.&#39;</span> <span class="o">+</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_metadata = &#39;</span>
+                                         <span class="s1">&#39;MetaDataWidget(self.session_widget.parent.nwb_path_list.get(item.text()),&#39;</span>
+                                         <span class="s1">&#39; &quot;nwb&quot;)&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session_widget</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">object_created</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;self.&#39;</span> <span class="o">+</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_metadata&#39;</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="SessionsWidget"><a class="viewcode-back" href="../../../gui.html#cicada.gui.session_show_filter_group.SessionsWidget">[docs]</a><span class="k">class</span> <span class="nc">SessionsWidget</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">to_analysis_button</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hlayout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">check_menu</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sort_menu</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group_menu</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">textLabel</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">textLabel</span><span class="o">.</span><span class="n">setTextInteractionFlags</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">NoTextInteraction</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hlayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">textLabel</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">more_menu</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span> <span class="o">=</span> <span class="n">SessionsListWidget</span><span class="p">(</span><span class="n">session_widget</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">doubleClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">double_click_event</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">setSelectionMode</span><span class="p">(</span><span class="n">QAbstractItemView</span><span class="o">.</span><span class="n">ExtendedSelection</span><span class="p">)</span>
+
+        <span class="c1"># connecting the button that will fill the analysis tree</span>
+        <span class="c1"># TODO: see to deactivate until the tree is loaded</span>
+        <span class="k">if</span> <span class="n">to_analysis_button</span><span class="p">:</span>
+            <span class="n">to_analysis_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">send_data_to_analysis_tree</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">grouped</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">form_group</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">grouped_labels</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">sorted</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">populate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">sorted_labels</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">populate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">labels</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">itemSelectionChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_change</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hlayout2</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hlayout2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">analysis_tree</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="SessionsWidget.double_click_event"><a class="viewcode-back" href="../../../gui.html#cicada.gui.session_show_filter_group.SessionsWidget.double_click_event">[docs]</a>    <span class="k">def</span> <span class="nf">double_click_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clicked_item</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Handle double click on item in QListWidget.</span>
+<span class="sd">        Check or uncheck an item or a group on double click.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            clicked_item: Double clicked item</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">flags</span> <span class="o">=</span> <span class="n">clicked_item</span><span class="o">.</span><span class="n">flags</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">flags</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">:</span>  <span class="c1"># Item is selectable, meaning it is a session</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">clicked_item</span><span class="o">.</span><span class="n">row</span><span class="p">())</span><span class="o">.</span><span class="n">checkState</span><span class="p">():</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">clicked_item</span><span class="o">.</span><span class="n">row</span><span class="p">())</span><span class="o">.</span><span class="n">setCheckState</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Unchecked</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">clicked_item</span><span class="o">.</span><span class="n">row</span><span class="p">())</span><span class="o">.</span><span class="n">setCheckState</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Checked</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># Item is not selectable, meaning it is a separator</span>
+            <span class="n">row_index</span> <span class="o">=</span> <span class="n">clicked_item</span><span class="o">.</span><span class="n">row</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">item_is_selectable</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="k">while</span> <span class="n">item_is_selectable</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">row_index</span><span class="p">)</span><span class="o">.</span><span class="n">checkState</span><span class="p">():</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">row_index</span><span class="p">)</span><span class="o">.</span><span class="n">setCheckState</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Unchecked</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">row_index</span><span class="p">)</span><span class="o">.</span><span class="n">setCheckState</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Checked</span><span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">row_index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">flags</span><span class="p">()</span> <span class="o">&amp;</span> <span class="mi">1</span><span class="p">:</span>
+                        <span class="n">item_is_selectable</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="n">row_index</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                    <span class="n">item_is_selectable</span> <span class="o">=</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="SessionsWidget.sort_menu"><a class="viewcode-back" href="../../../gui.html#cicada.gui.session_show_filter_group.SessionsWidget.sort_menu">[docs]</a>    <span class="k">def</span> <span class="nf">sort_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create sort menu&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sortButton</span> <span class="o">=</span> <span class="n">QToolButton</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sortButton</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QIcon</span><span class="p">(</span><span class="s1">&#39;cicada/gui/icons/svg/sort.svg&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sortButton</span><span class="o">.</span><span class="n">setPopupMode</span><span class="p">(</span><span class="n">QToolButton</span><span class="o">.</span><span class="n">InstantPopup</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sortButton</span><span class="o">.</span><span class="n">setMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">sortMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hlayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sortButton</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SessionsWidget.group_menu"><a class="viewcode-back" href="../../../gui.html#cicada.gui.session_show_filter_group.SessionsWidget.group_menu">[docs]</a>    <span class="k">def</span> <span class="nf">group_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create group menu&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">groupButton</span> <span class="o">=</span> <span class="n">QToolButton</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groupButton</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QIcon</span><span class="p">(</span><span class="s1">&#39;cicada/gui/icons/svg/group.svg&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groupButton</span><span class="o">.</span><span class="n">setPopupMode</span><span class="p">(</span><span class="n">QToolButton</span><span class="o">.</span><span class="n">InstantPopup</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groupButton</span><span class="o">.</span><span class="n">setMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">groupMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hlayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">groupButton</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SessionsWidget.more_menu"><a class="viewcode-back" href="../../../gui.html#cicada.gui.session_show_filter_group.SessionsWidget.more_menu">[docs]</a>    <span class="k">def</span> <span class="nf">more_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create more menu&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">otherActionsButton</span> <span class="o">=</span> <span class="n">QToolButton</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">otherActionsButton</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QIcon</span><span class="p">(</span><span class="s1">&#39;cicada/gui/icons/svg/more2.svg&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">otherActionsButton</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s1">&#39;border: none;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">otherActionsButton</span><span class="o">.</span><span class="n">setPopupMode</span><span class="p">(</span><span class="n">QToolButton</span><span class="o">.</span><span class="n">InstantPopup</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">otherActionsMenu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">otherActionsButton</span><span class="o">.</span><span class="n">setMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">otherActionsMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">removeAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s1">&#39;Remove selected&#39;</span><span class="p">,</span> <span class="n">shortcut</span><span class="o">=</span><span class="s1">&#39;Delete&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">removeAct</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">remove_data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">createGroupAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Create groups&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">createGroupAct</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_group</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">otherActionsMenu</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">showGroupMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">otherActionsMenu</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">addGroupDataMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">otherActionsMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">removeAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">otherActionsMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">createGroupAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hlayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">otherActionsButton</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hlayout</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hlayout2</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SessionsWidget.check_menu"><a class="viewcode-back" href="../../../gui.html#cicada.gui.session_show_filter_group.SessionsWidget.check_menu">[docs]</a>    <span class="k">def</span> <span class="nf">check_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create menu to check or uncheck all/none/selected items&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">selectButton</span> <span class="o">=</span> <span class="n">QToolButton</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selectButton</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QIcon</span><span class="p">(</span><span class="s1">&#39;cicada/gui/icons/svg/checkbox.svg&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selectButton</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="s1">&#39;border: none;&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selectButton</span><span class="o">.</span><span class="n">setPopupMode</span><span class="p">(</span><span class="n">QToolButton</span><span class="o">.</span><span class="n">InstantPopup</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selectMenu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selectButton</span><span class="o">.</span><span class="n">setMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selectMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selectAllAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s1">&#39;All&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selectAllAct</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">check_all</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unselectAllAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s1">&#39;None&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unselectAllAct</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uncheck_all</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unselectSelectedAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s1">&#39;Uncheck selected&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">unselectSelectedAct</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uncheck_selected</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selectSelectedAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s1">&#39;Check selected&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selectSelectedAct</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">check_selected</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selectMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selectAllAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selectMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unselectAllAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selectMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unselectSelectedAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selectMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selectSelectedAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hlayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">selectButton</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SessionsWidget.remove_data"><a class="viewcode-back" href="../../../gui.html#cicada.gui.session_show_filter_group.SessionsWidget.remove_data">[docs]</a>    <span class="k">def</span> <span class="nf">remove_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Remove selected item(s) from QListWidget&quot;&quot;&quot;</span>
+
+        <span class="n">selected_items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">selectedItems</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">selected_items</span><span class="p">:</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">grouped</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">grouped_labels</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">label</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">grouped_labels</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">nwb_path_list</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
+                        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                            <span class="k">continue</span>
+                        <span class="n">list_item_to_remove</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">findItems</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">MatchExactly</span><span class="p">)</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="k">for</span> <span class="n">item_to_remove</span> <span class="ow">in</span> <span class="n">list_item_to_remove</span><span class="p">:</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">takeItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="n">item_to_remove</span><span class="p">))</span>
+                        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                            <span class="k">pass</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">sorted</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">sorted_labels</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">label</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">sorted_labels</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">nwb_path_list</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
+                        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                            <span class="k">continue</span>
+                        <span class="n">list_item_to_remove</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">findItems</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">MatchExactly</span><span class="p">)</span>
+                        <span class="k">try</span><span class="p">:</span>
+                            <span class="k">for</span> <span class="n">item_to_remove</span> <span class="ow">in</span> <span class="n">list_item_to_remove</span><span class="p">:</span>
+                                <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">takeItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="n">item_to_remove</span><span class="p">))</span>
+                        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                            <span class="k">pass</span>
+            <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">labels</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">label</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">labels</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">nwb_path_list</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
+                    <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                        <span class="k">continue</span>
+                    <span class="n">list_item_to_remove</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">findItems</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">Qt</span><span class="o">.</span><span class="n">MatchExactly</span><span class="p">)</span>
+                    <span class="k">try</span><span class="p">:</span>
+                        <span class="k">for</span> <span class="n">item_to_remove</span> <span class="ow">in</span> <span class="n">list_item_to_remove</span><span class="p">:</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">takeItem</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">row</span><span class="p">(</span><span class="n">item_to_remove</span><span class="p">))</span>
+                    <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+                        <span class="k">pass</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">labels</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">groupMenu</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">sortMenu</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">load_group_from_config</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="SessionsWidget.uncheck_all"><a class="viewcode-back" href="../../../gui.html#cicada.gui.session_show_filter_group.SessionsWidget.uncheck_all">[docs]</a>    <span class="k">def</span> <span class="nf">uncheck_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Uncheck all items&quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">count</span><span class="p">()):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span><span class="o">.</span><span class="n">setCheckState</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Unchecked</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SessionsWidget.uncheck_selected"><a class="viewcode-back" href="../../../gui.html#cicada.gui.session_show_filter_group.SessionsWidget.uncheck_selected">[docs]</a>    <span class="k">def</span> <span class="nf">uncheck_selected</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Uncheck selected item(s)&quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">count</span><span class="p">()):</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="o">==</span> <span class="n">item</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span><span class="o">.</span><span class="n">setCheckState</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Unchecked</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SessionsWidget.check_all"><a class="viewcode-back" href="../../../gui.html#cicada.gui.session_show_filter_group.SessionsWidget.check_all">[docs]</a>    <span class="k">def</span> <span class="nf">check_all</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check all items&quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">count</span><span class="p">()):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span><span class="o">.</span><span class="n">setCheckState</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Checked</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SessionsWidget.check_selected"><a class="viewcode-back" href="../../../gui.html#cicada.gui.session_show_filter_group.SessionsWidget.check_selected">[docs]</a>    <span class="k">def</span> <span class="nf">check_selected</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check selected item(s)&quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">count</span><span class="p">()):</span>
+            <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="o">==</span> <span class="n">item</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span><span class="o">.</span><span class="n">setCheckState</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Checked</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SessionsWidget.on_change"><a class="viewcode-back" href="../../../gui.html#cicada.gui.session_show_filter_group.SessionsWidget.on_change">[docs]</a>    <span class="k">def</span> <span class="nf">on_change</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handle change in selection&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">items</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">selectedItems</span><span class="p">()]</span></div>
+
+<div class="viewcode-block" id="SessionsWidget.get_items"><a class="viewcode-back" href="../../../gui.html#cicada.gui.session_show_filter_group.SessionsWidget.get_items">[docs]</a>    <span class="k">def</span> <span class="nf">get_items</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns list of items</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            list of items</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">item</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SessionsWidget.get_data_to_analyse"><a class="viewcode-back" href="../../../gui.html#cicada.gui.session_show_filter_group.SessionsWidget.get_data_to_analyse">[docs]</a>    <span class="k">def</span> <span class="nf">get_data_to_analyse</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get data to analyse&quot;&quot;&quot;</span>
+
+        <span class="n">checked_items</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">count</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">checkState</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">checked_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">data</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">data</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">data_dict</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">checked_items</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="SessionsWidget.send_data_to_analysis_tree"><a class="viewcode-back" href="../../../gui.html#cicada.gui.session_show_filter_group.SessionsWidget.send_data_to_analysis_tree">[docs]</a>    <span class="k">def</span> <span class="nf">send_data_to_analysis_tree</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Send data to the analysis tree function&quot;&quot;&quot;</span>
+        <span class="c1"># we erase the widgets in the parameters section</span>
+        <span class="c1"># self.arguments_section_widget.tabula_rasa()</span>
+        <span class="n">data_to_analyse</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data_to_analyse</span><span class="p">()</span>
+        <span class="c1"># TODO: deal with the fact the data might not be in nwb format</span>
+        <span class="k">if</span> <span class="n">data_to_analyse</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">analysis_tree</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="n">data_to_analyse</span><span class="o">=</span><span class="n">data_to_analyse</span><span class="p">,</span> <span class="n">data_format</span><span class="o">=</span><span class="s2">&quot;nwb&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SessionsWidget.populate"><a class="viewcode-back" href="../../../gui.html#cicada.gui.session_show_filter_group.SessionsWidget.populate">[docs]</a>    <span class="k">def</span> <span class="nf">populate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;clear&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Populate the QListWidget with sessions labels</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            labels (list): Sessions identifiers</span>
+<span class="sd">            method (str): In case we don&#39;t want to clear the QListWidget</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;clear&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;add&#39;</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">label</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">labels</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">label</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">load_group_from_config</span><span class="p">()</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">count</span><span class="p">()):</span>
+                    <span class="n">items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+                <span class="k">if</span> <span class="n">file</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+                    <span class="n">item</span> <span class="o">=</span> <span class="n">QListWidgetItem</span><span class="p">()</span>
+                    <span class="n">item</span><span class="o">.</span><span class="n">setCheckState</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Unchecked</span><span class="p">)</span>
+                    <span class="n">item</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="p">))</span>
+                    <span class="n">item</span><span class="o">.</span><span class="n">setFlags</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsSelectable</span> <span class="o">|</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsEnabled</span> <span class="o">|</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsUserCheckable</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">:</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="n">QListWidgetItem</span><span class="p">()</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">setCheckState</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Unchecked</span><span class="p">)</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="p">))</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">setFlags</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsSelectable</span> <span class="o">|</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsEnabled</span> <span class="o">|</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsUserCheckable</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">item</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SessionsWidget.form_group"><a class="viewcode-back" href="../../../gui.html#cicada.gui.session_show_filter_group.SessionsWidget.form_group">[docs]</a>    <span class="k">def</span> <span class="nf">form_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;-&quot;</span><span class="p">]):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Form group of items and display their group name</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            labels (list): Session identifiers</span>
+<span class="sd">            param (str): Parameter used to create the groups</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">param</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">labels</span><span class="p">):</span>
+            <span class="n">param</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">:</span>
+            <span class="n">item</span> <span class="o">=</span> <span class="n">QListWidgetItem</span><span class="p">()</span>  <span class="c1"># delimiter</span>
+            <span class="k">if</span> <span class="n">param</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">param</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;None&quot;</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;--------------------------&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;---------------------------&#39;</span><span class="p">)</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">setFlags</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsEnabled</span><span class="p">)</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">setFlags</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">flags</span><span class="p">()</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsSelectable</span><span class="p">)</span>  <span class="c1"># item should not be selectable</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">group</span><span class="p">:</span>
+                <span class="n">item</span> <span class="o">=</span> <span class="n">QListWidgetItem</span><span class="p">()</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">setCheckState</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Unchecked</span><span class="p">)</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">file</span><span class="p">))</span>
+                <span class="n">item</span><span class="o">.</span><span class="n">setFlags</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsSelectable</span> <span class="o">|</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsEnabled</span> <span class="o">|</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsUserCheckable</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">item</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SessionsWidget.update_text_filter"><a class="viewcode-back" href="../../../gui.html#cicada.gui.session_show_filter_group.SessionsWidget.update_text_filter">[docs]</a>    <span class="k">def</span> <span class="nf">update_text_filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param_group</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the QLabel to display the sort/group state</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            param_group: Parameter used to form group</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">grouped</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">textLabel</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Grouped by : </span><span class="si">{param_group}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">sorted</span><span class="p">:</span>
+            <span class="n">param_list</span> <span class="o">=</span> <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">param_list</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">textLabel</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;Sorted by : </span><span class="si">{param_list}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">textLabel</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SessionsWidget.save_group"><a class="viewcode-back" href="../../../gui.html#cicada.gui.session_show_filter_group.SessionsWidget.save_group">[docs]</a>    <span class="k">def</span> <span class="nf">save_group</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Save sessions in a group&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">nameBox</span> <span class="o">=</span> <span class="n">QDialog</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nameBoxLayout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nameBox</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nameBox</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;Save your group as&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_name</span> <span class="o">=</span> <span class="n">QLineEdit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nameBox</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_name</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Group_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">today</span><span class="p">()))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saveButton</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Save as&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nameBoxLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nameBoxLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">saveButton</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nameBox</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saveButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_group_names</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saveButton</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nameBox</span><span class="o">.</span><span class="n">close</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SessionsWidget.save_group_names"><a class="viewcode-back" href="../../../gui.html#cicada.gui.session_show_filter_group.SessionsWidget.save_group_names">[docs]</a>    <span class="k">def</span> <span class="nf">save_group_names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Save group in a YAML with a certain name&quot;&quot;&quot;</span>
+
+        <span class="n">group_yaml_file</span> <span class="o">=</span> <span class="s2">&quot;cicada/config/group.yaml&quot;</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">save_name</span><span class="o">.</span><span class="n">text</span><span class="p">()</span>
+        <span class="n">group_to_save</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">checked_items</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">count</span><span class="p">()):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">checkState</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="n">checked_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">checked_items</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">nwb_path_list</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="n">item</span> <span class="o">+</span> <span class="s2">&quot;.nwb&quot;</span><span class="p">):</span>
+                    <span class="n">group_to_save</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">all_groups</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">all_groups</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">name</span><span class="p">:</span> <span class="n">group_to_save</span><span class="p">})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">all_groups</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="n">group_to_save</span><span class="p">}</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">group_yaml_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+            <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">all_groups</span><span class="p">,</span> <span class="n">stream</span><span class="p">,</span> <span class="n">default_flow_style</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">load_group_from_config</span><span class="p">()</span></div></div>
+
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, CICADA
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

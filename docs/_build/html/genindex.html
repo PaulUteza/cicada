@@ -1,0 +1,841 @@
+
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Index &mdash; CICADA 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+          
+
+          
+            <a href="index.html" class="icon icon-home"> CICADA
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Pre-processing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#module-cicada.preprocessing.cicada_data_to_nwb">Data to NWB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#module-cicada.preprocessing.cicada_preprocessing_run">Run preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#module-cicada.preprocessing.convert_to_nwb">NWB file class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#module-cicada.preprocessing.convert_suite_2p_rois_to_nwb">Suite 2P ROIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#module-cicada.preprocessing.convert_processed_2d_series_to_nwb">2D series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#module-cicada.preprocessing.convert_ci_movie_to_nwb">Calcium imaging movie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#module-cicada.preprocessing.convert_abf_to_nwb">ABF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#module-cicada.preprocessing.utils">Utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="analysis.html">Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#module-cicada.analysis.cicada_analysis">Main analysis class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#module-cicada.analysis.cicada_analysis_arguments_handler">Argument handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#module-cicada.analysis.cicada_analysis_format_wrapper">Format wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#module-cicada.analysis.cicada_analysis_nwb_wrapper">NWB wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#module-cicada.analysis.cicada_cells_count">Cells count</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#module-cicada.analysis.cicada_connectivity_graph">Connectivity graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#module-cicada.analysis.cicada_frames_count">Frames count</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#module-cicada.analysis.cicada_hubs_analysis">Hubs analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#module-cicada.analysis.cicada_psth_analysis">PSTH analysis</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gui.html">GUI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gui.html#module-cicada.gui.cicada_main_window">Main Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui.html#module-cicada.gui.session_show_filter_group">Filter/group sessions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui.html#module-cicada.gui.metadata_widget">Display metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui.html#module-cicada.gui.cicada_analysis_tree_gui">Analysises list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui.html#module-cicada.gui.cicada_analysis_overview">Overview of analysises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui.html#module-cicada.gui.cicada_analysis_parameters_gui">Analysis parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/pappyhammer/cicada">See on Git</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">CICADA</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Index</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+
+<h1 id="index">Index</h1>
+
+<div class="genindex-jumpbox">
+ <a href="#A"><strong>A</strong></a>
+ | <a href="#B"><strong>B</strong></a>
+ | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
+ | <a href="#E"><strong>E</strong></a>
+ | <a href="#F"><strong>F</strong></a>
+ | <a href="#G"><strong>G</strong></a>
+ | <a href="#H"><strong>H</strong></a>
+ | <a href="#I"><strong>I</strong></a>
+ | <a href="#K"><strong>K</strong></a>
+ | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
+ | <a href="#N"><strong>N</strong></a>
+ | <a href="#O"><strong>O</strong></a>
+ | <a href="#P"><strong>P</strong></a>
+ | <a href="#Q"><strong>Q</strong></a>
+ | <a href="#R"><strong>R</strong></a>
+ | <a href="#S"><strong>S</strong></a>
+ | <a href="#T"><strong>T</strong></a>
+ | <a href="#U"><strong>U</strong></a>
+ | <a href="#W"><strong>W</strong></a>
+ 
+</div>
+<h2 id="A">A</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.about">about() (cicada.gui.cicada_main_window.CicadaMainWindow method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_overview.AnalysisOverview.add_analysis_overview">add_analysis_overview() (cicada.gui.cicada_analysis_overview.AnalysisOverview method)</a>
+</li>
+      <li><a href="analysis.html#cicada.analysis.cicada_analysis.CicadaAnalysis.add_argument_for_gui">add_argument_for_gui() (cicada.analysis.cicada_analysis.CicadaAnalysis method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.add_data">add_data() (cicada.gui.cicada_main_window.CicadaMainWindow method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.add_group_data">add_group_data() (cicada.gui.cicada_main_window.CicadaMainWindow method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_main_window.AllGroups">AllGroups (class in cicada.gui.cicada_main_window)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="analysis.html#cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler">AnalysisArgumentsHandler (class in cicada.analysis.cicada_analysis_arguments_handler)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisData">AnalysisData (class in cicada.gui.cicada_analysis_parameters_gui)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_overview.AnalysisOverview">AnalysisOverview (class in cicada.gui.cicada_analysis_overview)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisPackage">AnalysisPackage (class in cicada.gui.cicada_analysis_parameters_gui)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp">AnalysisParametersApp (class in cicada.gui.cicada_analysis_parameters_gui)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_overview.AnalysisState">AnalysisState (class in cicada.gui.cicada_analysis_overview)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_tree_gui.AnalysisTreeApp">AnalysisTreeApp (class in cicada.gui.cicada_analysis_tree_gui)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="B">B</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_overview.AnalysisState.bring_to_front">bring_to_front() (cicada.gui.cicada_analysis_overview.AnalysisState method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="C">C</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.MyQFrame.change_mandatory_property">change_mandatory_property() (cicada.gui.cicada_analysis_parameters_gui.MyQFrame method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.session_show_filter_group.SessionsWidget.check_all">check_all() (cicada.gui.session_show_filter_group.SessionsWidget method)</a>
+</li>
+      <li><a href="analysis.html#cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler.check_arguments_validity">check_arguments_validity() (cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler method)</a>
+</li>
+      <li><a href="analysis.html#cicada.analysis.cicada_analysis.CicadaAnalysis.check_data">check_data() (cicada.analysis.cicada_analysis.CicadaAnalysis method)</a>
+
+      <ul>
+        <li><a href="analysis.html#cicada.analysis.cicada_cells_count.CicadaCellsCount.check_data">(cicada.analysis.cicada_cells_count.CicadaCellsCount method)</a>
+</li>
+        <li><a href="analysis.html#cicada.analysis.cicada_connectivity_graph.CicadaConnectivityGraph.check_data">(cicada.analysis.cicada_connectivity_graph.CicadaConnectivityGraph method)</a>
+</li>
+        <li><a href="analysis.html#cicada.analysis.cicada_frames_count.CicadaFramesCount.check_data">(cicada.analysis.cicada_frames_count.CicadaFramesCount method)</a>
+</li>
+        <li><a href="analysis.html#cicada.analysis.cicada_hubs_analysis.CicadaHubsAnalysis.check_data">(cicada.analysis.cicada_hubs_analysis.CicadaHubsAnalysis method)</a>
+</li>
+        <li><a href="analysis.html#cicada.analysis.cicada_psth_analysis.CicadaPsthAnalysis.check_data">(cicada.analysis.cicada_psth_analysis.CicadaPsthAnalysis method)</a>
+</li>
+      </ul></li>
+      <li><a href="gui.html#cicada.gui.session_show_filter_group.SessionsWidget.check_menu">check_menu() (cicada.gui.session_show_filter_group.SessionsWidget method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.session_show_filter_group.SessionsWidget.check_selected">check_selected() (cicada.gui.session_show_filter_group.SessionsWidget method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.CheckBoxWidget">CheckBoxWidget (class in cicada.gui.cicada_analysis_parameters_gui)</a>
+</li>
+      <li><a href="analysis.html#module-cicada.analysis.cicada_analysis">cicada.analysis.cicada_analysis (module)</a>
+</li>
+      <li><a href="analysis.html#module-cicada.analysis.cicada_analysis_arguments_handler">cicada.analysis.cicada_analysis_arguments_handler (module)</a>
+</li>
+      <li><a href="analysis.html#module-cicada.analysis.cicada_analysis_format_wrapper">cicada.analysis.cicada_analysis_format_wrapper (module)</a>
+</li>
+      <li><a href="analysis.html#module-cicada.analysis.cicada_analysis_nwb_wrapper">cicada.analysis.cicada_analysis_nwb_wrapper (module)</a>
+</li>
+      <li><a href="analysis.html#module-cicada.analysis.cicada_cells_count">cicada.analysis.cicada_cells_count (module)</a>
+</li>
+      <li><a href="analysis.html#module-cicada.analysis.cicada_connectivity_graph">cicada.analysis.cicada_connectivity_graph (module)</a>
+</li>
+      <li><a href="analysis.html#module-cicada.analysis.cicada_frames_count">cicada.analysis.cicada_frames_count (module)</a>
+</li>
+      <li><a href="analysis.html#module-cicada.analysis.cicada_hubs_analysis">cicada.analysis.cicada_hubs_analysis (module)</a>
+</li>
+      <li><a href="analysis.html#module-cicada.analysis.cicada_psth_analysis">cicada.analysis.cicada_psth_analysis (module)</a>
+</li>
+      <li><a href="gui.html#module-cicada.gui.cicada_analysis_overview">cicada.gui.cicada_analysis_overview (module)</a>
+</li>
+      <li><a href="gui.html#module-cicada.gui.cicada_analysis_parameters_gui">cicada.gui.cicada_analysis_parameters_gui (module)</a>
+</li>
+      <li><a href="gui.html#module-cicada.gui.cicada_analysis_tree_gui">cicada.gui.cicada_analysis_tree_gui (module)</a>
+</li>
+      <li><a href="gui.html#module-cicada.gui.cicada_main_window">cicada.gui.cicada_main_window (module)</a>
+</li>
+      <li><a href="gui.html#module-cicada.gui.metadata_widget">cicada.gui.metadata_widget (module)</a>
+</li>
+      <li><a href="gui.html#module-cicada.gui.session_show_filter_group">cicada.gui.session_show_filter_group (module)</a>
+</li>
+      <li><a href="preprocessing.html#module-cicada.preprocessing.cicada_data_to_nwb">cicada.preprocessing.cicada_data_to_nwb (module)</a>
+</li>
+      <li><a href="preprocessing.html#module-cicada.preprocessing.cicada_preprocessing_run">cicada.preprocessing.cicada_preprocessing_run (module)</a>
+</li>
+      <li><a href="preprocessing.html#module-cicada.preprocessing.convert_abf_to_nwb">cicada.preprocessing.convert_abf_to_nwb (module)</a>
+</li>
+      <li><a href="preprocessing.html#module-cicada.preprocessing.convert_ci_movie_to_nwb">cicada.preprocessing.convert_ci_movie_to_nwb (module)</a>
+</li>
+      <li><a href="preprocessing.html#module-cicada.preprocessing.convert_processed_2d_series_to_nwb">cicada.preprocessing.convert_processed_2d_series_to_nwb (module)</a>
+</li>
+      <li><a href="preprocessing.html#module-cicada.preprocessing.convert_suite_2p_rois_to_nwb">cicada.preprocessing.convert_suite_2p_rois_to_nwb (module)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="preprocessing.html#module-cicada.preprocessing.convert_to_nwb">cicada.preprocessing.convert_to_nwb (module)</a>
+</li>
+      <li><a href="preprocessing.html#module-cicada.preprocessing.utils">cicada.preprocessing.utils (module)</a>
+</li>
+      <li><a href="analysis.html#cicada.analysis.cicada_analysis.CicadaAnalysis">CicadaAnalysis (class in cicada.analysis.cicada_analysis)</a>
+</li>
+      <li><a href="analysis.html#cicada.analysis.cicada_analysis_format_wrapper.CicadaAnalysisFormatWrapper">CicadaAnalysisFormatWrapper (class in cicada.analysis.cicada_analysis_format_wrapper)</a>
+</li>
+      <li><a href="analysis.html#cicada.analysis.cicada_analysis_nwb_wrapper.CicadaAnalysisNwbWrapper">CicadaAnalysisNwbWrapper (class in cicada.analysis.cicada_analysis_nwb_wrapper)</a>
+</li>
+      <li><a href="analysis.html#cicada.analysis.cicada_cells_count.CicadaCellsCount">CicadaCellsCount (class in cicada.analysis.cicada_cells_count)</a>
+</li>
+      <li><a href="analysis.html#cicada.analysis.cicada_connectivity_graph.CicadaConnectivityGraph">CicadaConnectivityGraph (class in cicada.analysis.cicada_connectivity_graph)</a>
+</li>
+      <li><a href="analysis.html#cicada.analysis.cicada_frames_count.CicadaFramesCount">CicadaFramesCount (class in cicada.analysis.cicada_frames_count)</a>
+</li>
+      <li><a href="analysis.html#cicada.analysis.cicada_hubs_analysis.CicadaHubsAnalysis">CicadaHubsAnalysis (class in cicada.analysis.cicada_hubs_analysis)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_main_window.CicadaMainWindow">CicadaMainWindow (class in cicada.gui.cicada_main_window)</a>
+</li>
+      <li><a href="analysis.html#cicada.analysis.cicada_psth_analysis.CicadaPsthAnalysis">CicadaPsthAnalysis (class in cicada.analysis.cicada_psth_analysis)</a>
+</li>
+      <li><a href="preprocessing.html#cicada.preprocessing.utils.class_name_to_file_name">class_name_to_file_name() (in module cicada.preprocessing.utils)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.closeEvent">closeEvent() (cicada.gui.cicada_main_window.CicadaMainWindow method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel.columnCount">columnCount() (cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.ComboBoxWidget">ComboBoxWidget (class in cicada.gui.cicada_analysis_parameters_gui)</a>
+</li>
+      <li><a href="preprocessing.html#cicada.preprocessing.convert_abf_to_nwb.ConvertAbfToNWB.convert">convert() (cicada.preprocessing.convert_abf_to_nwb.ConvertAbfToNWB method)</a>
+
+      <ul>
+        <li><a href="preprocessing.html#cicada.preprocessing.convert_ci_movie_to_nwb.ConvertCiMovieToNWB.convert">(cicada.preprocessing.convert_ci_movie_to_nwb.ConvertCiMovieToNWB method)</a>
+</li>
+        <li><a href="preprocessing.html#cicada.preprocessing.convert_processed_2d_series_to_nwb.ConvertProcessed2dSeriesToNWB.convert">(cicada.preprocessing.convert_processed_2d_series_to_nwb.ConvertProcessed2dSeriesToNWB method)</a>
+</li>
+        <li><a href="preprocessing.html#cicada.preprocessing.convert_suite_2p_rois_to_nwb.ConvertSuite2pRoisToNWB.convert">(cicada.preprocessing.convert_suite_2p_rois_to_nwb.ConvertSuite2pRoisToNWB method)</a>
+</li>
+        <li><a href="preprocessing.html#cicada.preprocessing.convert_to_nwb.ConvertToNWB.convert">(cicada.preprocessing.convert_to_nwb.ConvertToNWB method)</a>
+</li>
+      </ul></li>
+      <li><a href="preprocessing.html#cicada.preprocessing.cicada_data_to_nwb.convert_data_to_nwb">convert_data_to_nwb() (in module cicada.preprocessing.cicada_data_to_nwb)</a>
+</li>
+      <li><a href="preprocessing.html#cicada.preprocessing.convert_abf_to_nwb.ConvertAbfToNWB">ConvertAbfToNWB (class in cicada.preprocessing.convert_abf_to_nwb)</a>
+</li>
+      <li><a href="preprocessing.html#cicada.preprocessing.convert_ci_movie_to_nwb.ConvertCiMovieToNWB">ConvertCiMovieToNWB (class in cicada.preprocessing.convert_ci_movie_to_nwb)</a>
+</li>
+      <li><a href="preprocessing.html#cicada.preprocessing.convert_processed_2d_series_to_nwb.ConvertProcessed2dSeriesToNWB">ConvertProcessed2dSeriesToNWB (class in cicada.preprocessing.convert_processed_2d_series_to_nwb)</a>
+</li>
+      <li><a href="preprocessing.html#cicada.preprocessing.convert_suite_2p_rois_to_nwb.ConvertSuite2pRoisToNWB">ConvertSuite2pRoisToNWB (class in cicada.preprocessing.convert_suite_2p_rois_to_nwb)</a>
+</li>
+      <li><a href="preprocessing.html#cicada.preprocessing.convert_to_nwb.ConvertToNWB">ConvertToNWB (class in cicada.preprocessing.convert_to_nwb)</a>
+</li>
+      <li><a href="preprocessing.html#cicada.preprocessing.cicada_data_to_nwb.create_convert_class">create_convert_class() (in module cicada.preprocessing.cicada_data_to_nwb)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.create_group_menu">create_group_menu() (cicada.gui.cicada_main_window.CicadaMainWindow method)</a>
+</li>
+      <li><a href="preprocessing.html#cicada.preprocessing.cicada_data_to_nwb.create_nwb_file">create_nwb_file() (in module cicada.preprocessing.cicada_data_to_nwb)</a>
+</li>
+      <li><a href="analysis.html#cicada.analysis.cicada_analysis.CicadaAnalysis.create_results_directory">create_results_directory() (cicada.analysis.cicada_analysis.CicadaAnalysis method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.create_sort_menu">create_sort_menu() (cicada.gui.cicada_main_window.CicadaMainWindow method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp.create_widgets">create_widgets() (cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.createActions">createActions() (cicada.gui.cicada_main_window.CicadaMainWindow method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.createMenus">createMenus() (cicada.gui.cicada_main_window.CicadaMainWindow method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel.data">data() (cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_overview.AnalysisState.deleteLater">deleteLater() (cicada.gui.cicada_analysis_overview.AnalysisState method)</a>
+</li>
+      <li><a href="preprocessing.html#cicada.preprocessing.convert_abf_to_nwb.ConvertAbfToNWB.detect_run_periods">detect_run_periods() (cicada.preprocessing.convert_abf_to_nwb.ConvertAbfToNWB method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="preprocessing.html#cicada.preprocessing.convert_abf_to_nwb.ConvertAbfToNWB.determine_ci_frames_indices">determine_ci_frames_indices() (cicada.preprocessing.convert_abf_to_nwb.ConvertAbfToNWB method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.session_show_filter_group.SessionsWidget.double_click_event">double_click_event() (cicada.gui.session_show_filter_group.SessionsWidget method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeView.drawBranches">drawBranches() (cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeView method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="E">E</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.EmittingErrStream">EmittingErrStream (class in cicada.gui.cicada_analysis_parameters_gui)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.EmittingStream">EmittingStream (class in cicada.gui.cicada_analysis_parameters_gui)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisPackage.errOutputWritten">errOutputWritten() (cicada.gui.cicada_analysis_parameters_gui.AnalysisPackage method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="F">F</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.FileDialogWidget">FileDialogWidget (class in cicada.gui.cicada_analysis_parameters_gui)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_tree_gui.fill_tree_item_with_dict">fill_tree_item_with_dict() (in module cicada.gui.cicada_analysis_tree_gui)</a>
+</li>
+      <li><a href="preprocessing.html#cicada.preprocessing.cicada_data_to_nwb.filter_list_according_to_keywords">filter_list_according_to_keywords() (in module cicada.preprocessing.cicada_data_to_nwb)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="preprocessing.html#cicada.preprocessing.cicada_data_to_nwb.filter_list_of_files">filter_list_of_files() (in module cicada.preprocessing.cicada_data_to_nwb)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.FinalMeta">FinalMeta (class in cicada.gui.cicada_analysis_parameters_gui)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel.flags">flags() (cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.session_show_filter_group.SessionsWidget.form_group">form_group() (cicada.gui.session_show_filter_group.SessionsWidget method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="G">G</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="preprocessing.html#cicada.preprocessing.utils.get_continous_time_periods">get_continous_time_periods() (in module cicada.preprocessing.utils)</a>
+</li>
+      <li><a href="analysis.html#cicada.analysis.cicada_analysis.CicadaAnalysis.get_data_identifiers">get_data_identifiers() (cicada.analysis.cicada_analysis.CicadaAnalysis method)</a>
+</li>
+      <li><a href="analysis.html#cicada.analysis.cicada_analysis.CicadaAnalysis.get_data_to_analyse">get_data_to_analyse() (cicada.analysis.cicada_analysis.CicadaAnalysis method)</a>
+
+      <ul>
+        <li><a href="gui.html#cicada.gui.session_show_filter_group.SessionsWidget.get_data_to_analyse">(cicada.gui.session_show_filter_group.SessionsWidget method)</a>
+</li>
+      </ul></li>
+      <li><a href="analysis.html#cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler.get_gui_widgets">get_gui_widgets() (cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.session_show_filter_group.SessionsWidget.get_items">get_items() (cicada.gui.session_show_filter_group.SessionsWidget method)</a>
+</li>
+      <li><a href="analysis.html#cicada.analysis.cicada_analysis.CicadaAnalysis.get_results_path">get_results_path() (cicada.analysis.cicada_analysis.CicadaAnalysis method)</a>
+</li>
+      <li><a href="analysis.html#cicada.analysis.cicada_analysis_format_wrapper.CicadaAnalysisFormatWrapper.get_segmentations">get_segmentations() (cicada.analysis.cicada_analysis_format_wrapper.CicadaAnalysisFormatWrapper method)</a>
+
+      <ul>
+        <li><a href="analysis.html#cicada.analysis.cicada_analysis_nwb_wrapper.CicadaAnalysisNwbWrapper.get_segmentations">(cicada.analysis.cicada_analysis_nwb_wrapper.CicadaAnalysisNwbWrapper method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.CheckBoxWidget.get_value">get_value() (cicada.gui.cicada_analysis_parameters_gui.CheckBoxWidget method)</a>
+
+      <ul>
+        <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.ComboBoxWidget.get_value">(cicada.gui.cicada_analysis_parameters_gui.ComboBoxWidget method)</a>
+</li>
+        <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.FileDialogWidget.get_value">(cicada.gui.cicada_analysis_parameters_gui.FileDialogWidget method)</a>
+</li>
+        <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.LineEditWidget.get_value">(cicada.gui.cicada_analysis_parameters_gui.LineEditWidget method)</a>
+</li>
+        <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.ListCheckboxWidget.get_value">(cicada.gui.cicada_analysis_parameters_gui.ListCheckboxWidget method)</a>
+</li>
+        <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.ParameterWidgetModel.get_value">(cicada.gui.cicada_analysis_parameters_gui.ParameterWidgetModel method)</a>
+</li>
+        <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.SliderWidget.get_value">(cicada.gui.cicada_analysis_parameters_gui.SliderWidget method)</a>
+</li>
+      </ul></li>
+      <li><a href="preprocessing.html#cicada.preprocessing.utils.group_by_param">group_by_param() (in module cicada.preprocessing.utils)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.session_show_filter_group.SessionsWidget.group_menu">group_menu() (cicada.gui.session_show_filter_group.SessionsWidget method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="H">H</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel.headerData">headerData() (cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="I">I</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel.index">index() (cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="preprocessing.html#cicada.preprocessing.utils.init_group_and_sort">init_group_and_sort() (in module cicada.preprocessing.utils)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeView.isIndexHidden">isIndexHidden() (cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeView method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="K">K</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_overview.AnalysisOverview.keyPressEvent">keyPressEvent() (cicada.gui.cicada_analysis_overview.AnalysisOverview method)</a>
+
+      <ul>
+        <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp.keyPressEvent">(cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp method)</a>
+</li>
+        <li><a href="gui.html#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeView.keyPressEvent">(cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeView method)</a>
+</li>
+        <li><a href="gui.html#cicada.gui.metadata_widget.MetaDataWidget.keyPressEvent">(cicada.gui.metadata_widget.MetaDataWidget method)</a>
+</li>
+        <li><a href="gui.html#cicada.gui.session_show_filter_group.SessionsListWidget.keyPressEvent">(cicada.gui.session_show_filter_group.SessionsListWidget method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="L">L</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.LineEditWidget">LineEditWidget (class in cicada.gui.cicada_analysis_parameters_gui)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.ListCheckboxWidget">ListCheckboxWidget (class in cicada.gui.cicada_analysis_parameters_gui)</a>
+</li>
+      <li><a href="analysis.html#cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler.load_analysis_argument_from_yaml_file">load_analysis_argument_from_yaml_file() (cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp.load_arguments">load_arguments() (cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.load_data_from_config">load_data_from_config() (cicada.gui.cicada_main_window.CicadaMainWindow method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.load_data_from_dir">load_data_from_dir() (cicada.gui.cicada_main_window.CicadaMainWindow method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.load_group">load_group() (cicada.gui.cicada_main_window.CicadaMainWindow method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.load_group_from_config">load_group_from_config() (cicada.gui.cicada_main_window.CicadaMainWindow method)</a>
+</li>
+      <li><a href="preprocessing.html#cicada.preprocessing.convert_processed_2d_series_to_nwb.ConvertProcessed2dSeriesToNWB.load_rasterplot_in_memory">load_rasterplot_in_memory() (cicada.preprocessing.convert_processed_2d_series_to_nwb.ConvertProcessed2dSeriesToNWB static method)</a>
+</li>
+      <li><a href="preprocessing.html#cicada.preprocessing.convert_ci_movie_to_nwb.ConvertCiMovieToNWB.load_tiff_movie_in_memory">load_tiff_movie_in_memory() (cicada.preprocessing.convert_ci_movie_to_nwb.ConvertCiMovieToNWB method)</a>
+</li>
+      <li><a href="preprocessing.html#cicada.preprocessing.convert_ci_movie_to_nwb.ConvertCiMovieToNWB.load_tiff_movie_in_memory_using_pil">load_tiff_movie_in_memory_using_pil() (cicada.preprocessing.convert_ci_movie_to_nwb.ConvertCiMovieToNWB method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="preprocessing.html#cicada.preprocessing.utils.merging_time_periods">merging_time_periods() (in module cicada.preprocessing.utils)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.metadata_widget.MetaDataWidget">MetaDataWidget (class in cicada.gui.metadata_widget)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.session_show_filter_group.SessionsWidget.more_menu">more_menu() (cicada.gui.session_show_filter_group.SessionsWidget method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_main_window.MusketeersWidget">MusketeersWidget (class in cicada.gui.cicada_main_window)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.MyQFrame">MyQFrame (class in cicada.gui.cicada_analysis_parameters_gui)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="N">N</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisPackage.normalOutputWritten">normalOutputWritten() (cicada.gui.cicada_analysis_parameters_gui.AnalysisPackage method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="O">O</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.session_show_filter_group.SessionsWidget.on_change">on_change() (cicada.gui.session_show_filter_group.SessionsWidget method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisPackage.on_close">on_close() (cicada.gui.cicada_analysis_parameters_gui.AnalysisPackage method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.on_group">on_group() (cicada.gui.cicada_main_window.CicadaMainWindow method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.on_sort">on_sort() (cicada.gui.cicada_main_window.CicadaMainWindow method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.open_new_dataset">open_new_dataset() (cicada.gui.cicada_main_window.CicadaMainWindow method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.openWindow">openWindow() (cicada.gui.cicada_main_window.CicadaMainWindow method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="P">P</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.ParameterWidgetModel">ParameterWidgetModel (class in cicada.gui.cicada_analysis_parameters_gui)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel.parent">parent() (cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.session_show_filter_group.SessionsWidget.populate">populate() (cicada.gui.session_show_filter_group.SessionsWidget method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_main_window.AllGroups.populate_list">populate_list() (cicada.gui.cicada_main_window.AllGroups method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.populate_menu">populate_menu() (cicada.gui.cicada_main_window.CicadaMainWindow method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisData.populate_session_list">populate_session_list() (cicada.gui.cicada_analysis_parameters_gui.AnalysisData method)</a>
+</li>
+      <li><a href="preprocessing.html#cicada.preprocessing.convert_abf_to_nwb.ConvertAbfToNWB.process_run_data">process_run_data() (cicada.preprocessing.convert_abf_to_nwb.ConvertAbfToNWB method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.ProgressBar">ProgressBar (class in cicada.gui.cicada_analysis_parameters_gui)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="Q">Q</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel">QAnalysisTreeModel (class in cicada.gui.cicada_analysis_tree_gui)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeView">QAnalysisTreeView (class in cicada.gui.cicada_analysis_tree_gui)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="R">R</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.RemainingTime">RemainingTime (class in cicada.gui.cicada_analysis_parameters_gui)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.session_show_filter_group.SessionsWidget.remove_data">remove_data() (cicada.gui.session_show_filter_group.SessionsWidget method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel.rowCount">rowCount() (cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.Worker.run">run() (cicada.gui.cicada_analysis_parameters_gui.Worker method)</a>
+</li>
+      <li><a href="analysis.html#cicada.analysis.cicada_analysis.CicadaAnalysis.run_analysis">run_analysis() (cicada.analysis.cicada_analysis.CicadaAnalysis method)</a>
+
+      <ul>
+        <li><a href="analysis.html#cicada.analysis.cicada_cells_count.CicadaCellsCount.run_analysis">(cicada.analysis.cicada_cells_count.CicadaCellsCount method)</a>
+</li>
+        <li><a href="analysis.html#cicada.analysis.cicada_connectivity_graph.CicadaConnectivityGraph.run_analysis">(cicada.analysis.cicada_connectivity_graph.CicadaConnectivityGraph method)</a>
+</li>
+        <li><a href="analysis.html#cicada.analysis.cicada_frames_count.CicadaFramesCount.run_analysis">(cicada.analysis.cicada_frames_count.CicadaFramesCount method)</a>
+</li>
+        <li><a href="analysis.html#cicada.analysis.cicada_hubs_analysis.CicadaHubsAnalysis.run_analysis">(cicada.analysis.cicada_hubs_analysis.CicadaHubsAnalysis method)</a>
+</li>
+        <li><a href="analysis.html#cicada.analysis.cicada_psth_analysis.CicadaPsthAnalysis.run_analysis">(cicada.analysis.cicada_psth_analysis.CicadaPsthAnalysis method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="S">S</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="analysis.html#cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler.save_analysis_arguments_to_yaml_file">save_analysis_arguments_to_yaml_file() (cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.session_show_filter_group.SessionsWidget.save_group">save_group() (cicada.gui.session_show_filter_group.SessionsWidget method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.session_show_filter_group.SessionsWidget.save_group_names">save_group_names() (cicada.gui.session_show_filter_group.SessionsWidget method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.save_last_data_location">save_last_data_location() (cicada.gui.cicada_main_window.CicadaMainWindow method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.session_show_filter_group.SessionsWidget.send_data_to_analysis_tree">send_data_to_analysis_tree() (cicada.gui.session_show_filter_group.SessionsWidget method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.session_show_filter_group.SessionsListWidget">SessionsListWidget (class in cicada.gui.session_show_filter_group)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.session_show_filter_group.SessionsWidget">SessionsWidget (class in cicada.gui.session_show_filter_group)</a>
+</li>
+      <li><a href="analysis.html#cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler.set_argument_value">set_argument_value() (cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler method)</a>
+</li>
+      <li><a href="analysis.html#cicada.analysis.cicada_analysis.CicadaAnalysis.set_arguments_for_gui">set_arguments_for_gui() (cicada.analysis.cicada_analysis.CicadaAnalysis method)</a>
+
+      <ul>
+        <li><a href="analysis.html#cicada.analysis.cicada_psth_analysis.CicadaPsthAnalysis.set_arguments_for_gui">(cicada.analysis.cicada_psth_analysis.CicadaPsthAnalysis method)</a>
+</li>
+      </ul></li>
+      <li><a href="analysis.html#cicada.analysis.cicada_analysis.CicadaAnalysis.set_data">set_data() (cicada.analysis.cicada_analysis.CicadaAnalysis method)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.MyQFrame.set_property_to_missing">set_property_to_missing() (cicada.gui.cicada_analysis_parameters_gui.MyQFrame method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.CheckBoxWidget.set_value">set_value() (cicada.gui.cicada_analysis_parameters_gui.CheckBoxWidget method)</a>
+
+      <ul>
+        <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.ComboBoxWidget.set_value">(cicada.gui.cicada_analysis_parameters_gui.ComboBoxWidget method)</a>
+</li>
+        <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.FileDialogWidget.set_value">(cicada.gui.cicada_analysis_parameters_gui.FileDialogWidget method)</a>
+</li>
+        <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.LineEditWidget.set_value">(cicada.gui.cicada_analysis_parameters_gui.LineEditWidget method)</a>
+</li>
+        <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.ListCheckboxWidget.set_value">(cicada.gui.cicada_analysis_parameters_gui.ListCheckboxWidget method)</a>
+</li>
+        <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.ParameterWidgetModel.set_value">(cicada.gui.cicada_analysis_parameters_gui.ParameterWidgetModel method)</a>
+</li>
+        <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.SliderWidget.set_value">(cicada.gui.cicada_analysis_parameters_gui.SliderWidget method)</a>
+</li>
+      </ul></li>
+      <li><a href="analysis.html#cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler.set_widgets_to_default_value">set_widgets_to_default_value() (cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.SliderWidget">SliderWidget (class in cicada.gui.cicada_analysis_parameters_gui)</a>
+</li>
+      <li><a href="preprocessing.html#cicada.preprocessing.utils.sort_by_param">sort_by_param() (in module cicada.preprocessing.utils)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.session_show_filter_group.SessionsWidget.sort_menu">sort_menu() (cicada.gui.session_show_filter_group.SessionsWidget method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="T">T</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.metadata_widget.TableWidget">TableWidget (class in cicada.gui.metadata_widget)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp.tabula_rasa">tabula_rasa() (cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp method)</a>
+
+      <ul>
+        <li><a href="gui.html#cicada.gui.metadata_widget.MetaDataWidget.tabula_rasa">(cicada.gui.metadata_widget.MetaDataWidget method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+<h2 id="U">U</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.session_show_filter_group.SessionsWidget.uncheck_all">uncheck_all() (cicada.gui.session_show_filter_group.SessionsWidget method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.uncheck_all_sort">uncheck_all_sort() (cicada.gui.cicada_main_window.CicadaMainWindow method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.uncheck_group">uncheck_group() (cicada.gui.cicada_main_window.CicadaMainWindow method)</a>
+</li>
+      <li><a href="gui.html#cicada.gui.session_show_filter_group.SessionsWidget.uncheck_selected">uncheck_selected() (cicada.gui.session_show_filter_group.SessionsWidget method)</a>
+</li>
+      <li><a href="analysis.html#cicada.analysis.cicada_analysis.CicadaAnalysis.update_original_data">update_original_data() (cicada.analysis.cicada_analysis.CicadaAnalysis method)</a>
+
+      <ul>
+        <li><a href="analysis.html#cicada.analysis.cicada_cells_count.CicadaCellsCount.update_original_data">(cicada.analysis.cicada_cells_count.CicadaCellsCount method)</a>
+</li>
+        <li><a href="analysis.html#cicada.analysis.cicada_connectivity_graph.CicadaConnectivityGraph.update_original_data">(cicada.analysis.cicada_connectivity_graph.CicadaConnectivityGraph method)</a>
+</li>
+        <li><a href="analysis.html#cicada.analysis.cicada_frames_count.CicadaFramesCount.update_original_data">(cicada.analysis.cicada_frames_count.CicadaFramesCount method)</a>
+</li>
+        <li><a href="analysis.html#cicada.analysis.cicada_hubs_analysis.CicadaHubsAnalysis.update_original_data">(cicada.analysis.cicada_hubs_analysis.CicadaHubsAnalysis method)</a>
+</li>
+        <li><a href="analysis.html#cicada.analysis.cicada_psth_analysis.CicadaPsthAnalysis.update_original_data">(cicada.analysis.cicada_psth_analysis.CicadaPsthAnalysis method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.session_show_filter_group.SessionsWidget.update_text_filter">update_text_filter() (cicada.gui.session_show_filter_group.SessionsWidget method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.Worker">Worker (class in cicada.gui.cicada_analysis_parameters_gui)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.EmittingErrStream.write">write() (cicada.gui.cicada_analysis_parameters_gui.EmittingErrStream method)</a>
+
+      <ul>
+        <li><a href="gui.html#cicada.gui.cicada_analysis_parameters_gui.EmittingStream.write">(cicada.gui.cicada_analysis_parameters_gui.EmittingStream method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, CICADA
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

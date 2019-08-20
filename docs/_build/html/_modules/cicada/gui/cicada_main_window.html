@@ -1,0 +1,898 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cicada.gui.cicada_main_window &mdash; CICADA 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> CICADA
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../preprocessing.html">Pre-processing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.cicada_data_to_nwb">Data to NWB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.cicada_preprocessing_run">Run preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_to_nwb">NWB file class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_suite_2p_rois_to_nwb">Suite 2P ROIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_processed_2d_series_to_nwb">2D series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_ci_movie_to_nwb">Calcium imaging movie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_abf_to_nwb">ABF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.utils">Utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_analysis">Main analysis class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_analysis_arguments_handler">Argument handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_analysis_format_wrapper">Format wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_analysis_nwb_wrapper">NWB wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_cells_count">Cells count</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_connectivity_graph">Connectivity graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_frames_count">Frames count</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_hubs_analysis">Hubs analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_psth_analysis">PSTH analysis</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gui.html">GUI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.cicada_main_window">Main Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.session_show_filter_group">Filter/group sessions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.metadata_widget">Display metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.cicada_analysis_tree_gui">Analysises list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.cicada_analysis_overview">Overview of analysises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.cicada_analysis_parameters_gui">Analysis parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/pappyhammer/cicada">See on Git</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">CICADA</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>cicada.gui.cicada_main_window</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for cicada.gui.cicada_main_window</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">qtpy</span> <span class="k">import</span> <span class="n">QtGui</span>
+<span class="kn">from</span> <span class="nn">qtpy</span> <span class="k">import</span> <span class="n">QtCore</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">deepcopy</span>
+<span class="kn">from</span> <span class="nn">pynwb</span> <span class="k">import</span> <span class="n">NWBHDF5IO</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
+<span class="kn">import</span> <span class="nn">cicada.preprocessing.utils</span> <span class="k">as</span> <span class="nn">utils</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">import</span> <span class="nn">gc</span>
+<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">islice</span>
+<span class="kn">from</span> <span class="nn">cicada.gui.cicada_analysis_tree_gui</span> <span class="k">import</span> <span class="n">AnalysisTreeApp</span>
+<span class="kn">from</span> <span class="nn">cicada.gui.cicada_analysis_overview</span> <span class="k">import</span> <span class="n">AnalysisOverview</span>
+<span class="kn">from</span> <span class="nn">cicada.gui.cicada_analysis_parameters_gui</span> <span class="k">import</span> <span class="n">AnalysisPackage</span>
+<span class="kn">from</span> <span class="nn">cicada.gui.session_show_filter_group</span> <span class="k">import</span> <span class="n">SessionsWidget</span>
+
+
+<div class="viewcode-block" id="CicadaMainWindow"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.CicadaMainWindow">[docs]</a><span class="k">class</span> <span class="nc">CicadaMainWindow</span><span class="p">(</span><span class="n">QMainWindow</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">createActions</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">createMenus</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object_created</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;CICADA&quot;</span><span class="p">)</span>
+
+        <span class="n">screenGeometry</span> <span class="o">=</span> <span class="n">QApplication</span><span class="o">.</span><span class="n">desktop</span><span class="p">()</span><span class="o">.</span><span class="n">screenGeometry</span><span class="p">()</span>
+        <span class="c1"># making sure the window is not bigger than the dimension of the screen</span>
+        <span class="n">width_window</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">1400</span><span class="p">,</span> <span class="n">screenGeometry</span><span class="o">.</span><span class="n">width</span><span class="p">())</span>
+        <span class="n">height_window</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">640</span><span class="p">,</span> <span class="n">screenGeometry</span><span class="o">.</span><span class="n">height</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">width_window</span><span class="p">,</span> <span class="n">height_window</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">param_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">param_group_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grouped</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sorted</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nwb_path_list</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="c1"># contains the data, if nwb format will contains instance of Nwb class</span>
+        <span class="c1"># the key is the identifier of the data file, value is the instance</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="c1"># self.setStyleSheet(</span>
+        <span class="c1">#     &quot;#menuWidget { &quot;</span>
+        <span class="c1">#     &quot; border-image: url(\&quot;cicada/gui/icons/rc/cicada_background.jpg\&quot;) 0 0 0 0 stretch stretch;&quot;</span>
+        <span class="c1">#     &quot;}&quot;)</span>
+        <span class="c1"># self.setStyleSheet(</span>
+        <span class="c1">#     &quot;#menuWidget { &quot;</span>
+        <span class="c1">#     &quot; background-image: url(\&quot;cicada/gui/icons/rc/neurons_stock_footage.jpg\&quot;); background-position: center;&quot;</span>
+        <span class="c1">#     &quot;}&quot;)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menuWidget</span><span class="p">()</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span>
+            <span class="s2">&quot;background-image:url(</span><span class="se">\&quot;</span><span class="s2">cicada/gui/icons/rc/sky_night.jpeg</span><span class="se">\&quot;</span><span class="s2">); background-position: center;&quot;</span><span class="p">)</span>
+        <span class="c1"># first we check if there is a last known location opened, then we load those files again:</span>
+        <span class="c1">#TODO: in the future, save the data displayed in the gui, that might come from different dir</span>
+        <span class="c1"># self.yaml_path = os.path.join(dir_name, file_name)</span>
+        <span class="c1"># with open(os.path.join(dir_name, file_name), &#39;r&#39;) as stream:</span>
+        <span class="c1">#     self.data = yaml.safe_load(stream)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">openWindow</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_data_from_config</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="CicadaMainWindow.load_group_from_config"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.load_group_from_config">[docs]</a>    <span class="k">def</span> <span class="nf">load_group_from_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load groups from a YAML file in the config folder&quot;&quot;&quot;</span>
+
+        <span class="n">group_file_name</span> <span class="o">=</span> <span class="s2">&quot;cicada/config/group.yaml&quot;</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">group_file_name</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">group_data</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">group_file_name</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">group_data</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">all_groups</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">group_data</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_data</span><span class="p">:</span>
+                <span class="n">keys_to_del</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_data</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                    <span class="n">missing_file</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="n">file</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nwb_path_list</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                            <span class="n">missing_file</span> <span class="o">=</span> <span class="kc">True</span>
+                    <span class="k">if</span> <span class="n">missing_file</span><span class="p">:</span>
+                        <span class="n">keys_to_del</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">keys_to_del</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">group_data</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">grouped_labels</span> <span class="o">=</span> <span class="p">[]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_data</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">grouped</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_data</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                    <span class="n">nwb_file_list</span> <span class="o">=</span> <span class="p">[]</span>
+                    <span class="k">for</span> <span class="n">file</span> <span class="ow">in</span> <span class="n">value</span><span class="p">:</span>
+                        <span class="n">io</span> <span class="o">=</span> <span class="n">NWBHDF5IO</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+                        <span class="n">nwb_file</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">data_dict</span><span class="p">[</span><span class="n">nwb_file</span><span class="o">.</span><span class="n">identifier</span><span class="p">]</span> <span class="o">=</span> <span class="n">nwb_file</span>
+                        <span class="n">nwb_file_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nwb_file</span><span class="o">.</span><span class="n">identifier</span><span class="p">)</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">grouped_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nwb_file_list</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">showGroupMenu</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">addGroupDataMenu</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">populate_menu</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">showGroupMenu</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">addGroupDataMenu</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">showGroupMenu</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">addGroupDataMenu</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="CicadaMainWindow.load_data_from_config"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.load_data_from_config">[docs]</a>    <span class="k">def</span> <span class="nf">load_data_from_config</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check if the last dir opened is saved in config and load it automatically&quot;&quot;&quot;</span>
+
+        <span class="n">config_file_name</span> <span class="o">=</span> <span class="s2">&quot;cicada/config/config.yaml&quot;</span>
+        <span class="n">config_dict</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_add_labels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">config_file_name</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_file_name</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+                <span class="n">config_dict</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;config_dict </span><span class="si">{config_dict}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">config_dict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="n">config_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;dir_name&quot;</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">load_data_from_dir</span><span class="p">(</span><span class="n">dir_name</span><span class="o">=</span><span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;dir_name&quot;</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;clear&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CicadaMainWindow.open_new_dataset"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.open_new_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">open_new_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Open a directory&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_add_labels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nwb_path_list</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grouped_labels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">QFileDialog</span><span class="o">.</span><span class="n">Options</span><span class="p">()</span>
+        <span class="n">dir_name</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="o">.</span><span class="n">getExistingDirectory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Select Directory&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_data_from_dir</span><span class="p">(</span><span class="n">dir_name</span><span class="o">=</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;clear&#39;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CicadaMainWindow.add_data"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.add_data">[docs]</a>    <span class="k">def</span> <span class="nf">add_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Open a directory&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">to_add_labels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">QFileDialog</span><span class="o">.</span><span class="n">Options</span><span class="p">()</span>
+        <span class="n">dir_name</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="o">.</span><span class="n">getExistingDirectory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Select Directory&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_data_from_dir</span><span class="p">(</span><span class="n">dir_name</span><span class="o">=</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;add&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CicadaMainWindow.load_data_from_dir"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.load_data_from_dir">[docs]</a>    <span class="k">def</span> <span class="nf">load_data_from_dir</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dir_name</span><span class="p">,</span> <span class="n">method</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load data (currently only NWB) from selected directory</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dir_name (str): Path to data</span>
+<span class="sd">            method (str): String to choose whether to add data to the existing dataset or open a new one,</span>
+<span class="sd">             takes two values : &#39;add&#39; or &#39;clear&#39;</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># TODO: deal with the different format</span>
+        <span class="c1"># TODO: decide if we should add those nwb to the ones already opened (if that&#39;s the case)</span>
+        <span class="c1">#  or erase the ones present and replace them by the new one.</span>
+        <span class="c1">#  probably best to have 2 options on the menu open new, and something like add data</span>
+        <span class="n">file_names</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># look for filenames in the first directory, if we don&#39;t break, it will go through all directories</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">dirpath</span><span class="p">,</span> <span class="n">dirnames</span><span class="p">,</span> <span class="n">local_filenames</span><span class="p">)</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="n">dir_name</span><span class="p">):</span>
+            <span class="n">file_names</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">local_filenames</span><span class="p">)</span>
+            <span class="k">break</span>
+        <span class="k">for</span> <span class="n">file_name</span> <span class="ow">in</span> <span class="n">file_names</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">file_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.nwb&quot;</span><span class="p">):</span>
+                <span class="n">io</span> <span class="o">=</span> <span class="n">NWBHDF5IO</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">file_name</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+                <span class="n">nwb_file</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">data_dict</span><span class="p">[</span><span class="n">nwb_file</span><span class="o">.</span><span class="n">identifier</span><span class="p">]</span> <span class="o">=</span> <span class="n">nwb_file</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">nwb_path_list</span><span class="p">[</span><span class="n">nwb_file</span><span class="o">.</span><span class="n">identifier</span><span class="p">]</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dir_name</span><span class="p">,</span> <span class="n">file_name</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">to_add_labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nwb_file</span><span class="o">.</span><span class="n">identifier</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">to_add_labels</span>
+        <span class="c1"># checking there is at least one data file loaded</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_dict</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;clear&#39;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">musketeers_widget</span><span class="o">.</span><span class="n">session_widget</span><span class="o">.</span><span class="n">populate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">,</span> <span class="n">method</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">load_group_from_config</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">musketeers_widget</span><span class="o">.</span><span class="n">session_widget</span><span class="o">.</span><span class="n">populate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">to_add_labels</span><span class="p">,</span> <span class="n">method</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">groupMenu</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+            <span class="c1"># then we save the last location opened in the yaml file in config</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">save_last_data_location</span><span class="p">(</span><span class="n">dir_name</span><span class="o">=</span><span class="n">dir_name</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CicadaMainWindow.save_last_data_location"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.save_last_data_location">[docs]</a>    <span class="k">def</span> <span class="nf">save_last_data_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dir_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Keep path to last data directory selected in a YAML in config</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dir_name (str): Path to data to be saved</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO think about where to keep the config yaml file</span>
+        <span class="n">config_file_name</span> <span class="o">=</span> <span class="s2">&quot;cicada/config/config.yaml&quot;</span>
+        <span class="n">config_dict</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">config_file_name</span><span class="p">):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_file_name</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+                <span class="n">config_dict</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">config_dict</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">config_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">config_dict</span><span class="p">[</span><span class="s2">&quot;dir_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">dir_name</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">config_file_name</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+            <span class="n">yaml</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">config_dict</span><span class="p">,</span> <span class="n">outfile</span><span class="p">,</span> <span class="n">default_flow_style</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CicadaMainWindow.populate_menu"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.populate_menu">[docs]</a>    <span class="k">def</span> <span class="nf">populate_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Populate the menu to load groups&quot;&quot;&quot;</span>
+        <span class="c1"># TODO : Performance issue ?</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">showGroupMenu</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addGroupDataMenu</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+        <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">group_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_data</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">counter</span> <span class="o">+=</span><span class="mi">1</span>
+            <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;self.groupAct&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">counter</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; = QAction(&quot;&#39;</span> <span class="o">+</span> <span class="n">group_name</span><span class="o">+</span><span class="s1">&#39;&quot;, self)&#39;</span><span class="p">)</span>
+            <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;self.groupAct&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">counter</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.triggered.connect(partial(self.load_group, group_name))&#39;</span><span class="p">)</span>
+            <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;self.groupAddAct&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">counter</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; = QAction(&quot;&#39;</span> <span class="o">+</span> <span class="n">group_name</span><span class="o">+</span><span class="s1">&#39;&quot;, self)&#39;</span><span class="p">)</span>
+            <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;self.groupAddAct&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">counter</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.triggered.connect(partial(self.add_group_data, group_name))&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">showGroupMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;self.groupAct&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">counter</span><span class="p">)))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">addGroupDataMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;self.groupAddAct&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">counter</span><span class="p">)))</span></div>
+
+<div class="viewcode-block" id="CicadaMainWindow.load_group"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.load_group">[docs]</a>    <span class="k">def</span> <span class="nf">load_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load a group of saved sessions</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            group_name (str) : Name of the group saved in YAML</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sorted</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grouped</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nwb_path_list</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">path_list</span> <span class="ow">in</span> <span class="p">{</span><span class="n">group_name</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_groups</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">group_name</span><span class="p">)}</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="n">path_list</span><span class="p">:</span>
+                <span class="n">io</span> <span class="o">=</span> <span class="n">NWBHDF5IO</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+                <span class="n">nwb_file</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nwb_file</span><span class="o">.</span><span class="n">identifier</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">nwb_path_list</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">nwb_file</span><span class="o">.</span><span class="n">identifier</span><span class="p">:</span> <span class="n">path</span><span class="p">})</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">musketeers_widget</span><span class="o">.</span><span class="n">session_widget</span><span class="o">.</span><span class="n">populate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">musketeers_widget</span><span class="o">.</span><span class="n">session_widget</span><span class="o">.</span><span class="n">update_text_filter</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groupMenu</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CicadaMainWindow.add_group_data"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.add_group_data">[docs]</a>    <span class="k">def</span> <span class="nf">add_group_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Add a group of saved sessions to the current list of session</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            group_name (str) : Name of the group saved in YAML</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sorted</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grouped</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels_to_add</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">all_groups</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">group_name</span><span class="p">):</span>
+            <span class="n">io</span> <span class="o">=</span> <span class="n">NWBHDF5IO</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+            <span class="n">nwb_file</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+            <span class="c1"># self.labels.append(nwb_file.identifier)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nwb_path_list</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">nwb_file</span><span class="o">.</span><span class="n">identifier</span><span class="p">:</span> <span class="n">path</span><span class="p">})</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">labels_to_add</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">nwb_file</span><span class="o">.</span><span class="n">identifier</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">musketeers_widget</span><span class="o">.</span><span class="n">session_widget</span><span class="o">.</span><span class="n">populate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">labels_to_add</span><span class="p">,</span> <span class="s1">&#39;add&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">musketeers_widget</span><span class="o">.</span><span class="n">session_widget</span><span class="o">.</span><span class="n">update_text_filter</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groupMenu</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CicadaMainWindow.createMenus"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.createMenus">[docs]</a>    <span class="k">def</span> <span class="nf">createMenus</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create menu bar and put some menu in it&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fileMenu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">(</span><span class="s2">&quot;&amp;File&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fileMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">openAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fileMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">addAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fileMenu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+        <span class="c1"># self.fileMenu.addAction(self.showSessionAct)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fileMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">exitAct</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">helpMenu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">(</span><span class="s2">&quot;&amp;Help&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">helpMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aboutAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">helpMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">aboutQtAct</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">viewMenu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">(</span><span class="s2">&quot;&amp;View&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">(</span><span class="s2">&quot;Sort by&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">viewMenu</span><span class="p">,</span> <span class="n">enabled</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groupMenu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">(</span><span class="s2">&quot;Group by&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">viewMenu</span><span class="p">,</span> <span class="n">enabled</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">showGroupMenu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">(</span><span class="s2">&quot;Load Group&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fileMenu</span><span class="p">,</span> <span class="n">enabled</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addGroupDataMenu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">(</span><span class="s1">&#39;Add Group&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fileMenu</span><span class="p">,</span> <span class="n">enabled</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fileMenu</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">showGroupMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fileMenu</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">addGroupDataMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fileMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seeAllGroupAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">viewMenu</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">groupMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">viewMenu</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="p">)</span>
+
+        <span class="c1"># Add filters to &quot;Sort by&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_sort_menu</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ageSortAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sexSortAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">genotypeSortAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">speciesSortAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subjectIDSortAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weightSortAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">birthSortAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fluorescenceSortAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imagesegSortAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rasterSortAct</span><span class="p">)</span>
+
+        <span class="c1"># Add filters to &quot;Group by&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_group_menu</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groupMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ageGroupAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groupMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sexGroupAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groupMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">genotypeGroupAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groupMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">speciesGroupAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groupMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subjectIDGroupAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groupMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weightGroupAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groupMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">birthGroupAct</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">groupMenu</span><span class="o">.</span><span class="n">addSeparator</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">groupMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fluorescenceGroupAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groupMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imagesegGroupAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groupMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rasterGroupAct</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">menuBar</span><span class="p">()</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fileMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menuBar</span><span class="p">()</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">viewMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">menuBar</span><span class="p">()</span><span class="o">.</span><span class="n">addMenu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">helpMenu</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CicadaMainWindow.create_group_menu"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.create_group_menu">[docs]</a>    <span class="k">def</span> <span class="nf">create_group_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create group menu&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ageGroupAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Age&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">checkable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ageGroupAct</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uncheck_group</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ageGroupAct</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_group</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sexGroupAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Sex&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">checkable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sexGroupAct</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uncheck_group</span><span class="p">,</span> <span class="s2">&quot;sex&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sexGroupAct</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_group</span><span class="p">,</span> <span class="s2">&quot;sex&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">genotypeGroupAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Genotype&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">checkable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">genotypeGroupAct</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uncheck_group</span><span class="p">,</span> <span class="s2">&quot;genotype&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">genotypeGroupAct</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_group</span><span class="p">,</span> <span class="s2">&quot;genotype&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">speciesGroupAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Species&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">checkable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">speciesGroupAct</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uncheck_group</span><span class="p">,</span> <span class="s2">&quot;species&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">speciesGroupAct</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_group</span><span class="p">,</span> <span class="s2">&quot;species&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">subjectIDGroupAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Subject ID&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">checkable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subjectIDGroupAct</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uncheck_group</span><span class="p">,</span> <span class="s2">&quot;subjectID&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subjectIDGroupAct</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_group</span><span class="p">,</span> <span class="s2">&quot;subject_id&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">weightGroupAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Weight&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">checkable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weightGroupAct</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uncheck_group</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weightGroupAct</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_group</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">birthGroupAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Birth&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">checkable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">birthGroupAct</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uncheck_group</span><span class="p">,</span> <span class="s2">&quot;birth&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">birthGroupAct</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_group</span><span class="p">,</span> <span class="s2">&quot;birth&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fluorescenceGroupAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Has fluorescence&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">checkable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fluorescenceGroupAct</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uncheck_group</span><span class="p">,</span> <span class="s2">&quot;fluorescence&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fluorescenceGroupAct</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_group</span><span class="p">,</span> <span class="s2">&quot;fluorescence&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">imagesegGroupAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Has image segmentation&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">checkable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">imagesegGroupAct</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uncheck_group</span><span class="p">,</span> <span class="s2">&quot;imageseg&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">imagesegGroupAct</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_group</span><span class="p">,</span> <span class="s2">&quot;imagesegmentation&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rasterGroupAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Has raster&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">checkable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rasterGroupAct</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">uncheck_group</span><span class="p">,</span> <span class="s2">&quot;raster&quot;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rasterGroupAct</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_group</span><span class="p">,</span> <span class="s2">&quot;raster&quot;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="CicadaMainWindow.create_sort_menu"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.create_sort_menu">[docs]</a>    <span class="k">def</span> <span class="nf">create_sort_menu</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create sort menu&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">ageSort</span> <span class="o">=</span> <span class="n">QCheckBox</span><span class="p">(</span><span class="s2">&quot;&amp;Age&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ageSortAct</span> <span class="o">=</span> <span class="n">QWidgetAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ageSortAct</span><span class="o">.</span><span class="n">setDefaultWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ageSort</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ageSort</span><span class="o">.</span><span class="n">stateChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_sort</span><span class="p">,</span><span class="s2">&quot;age&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">sexSort</span> <span class="o">=</span> <span class="n">QCheckBox</span><span class="p">(</span><span class="s2">&quot;&amp;Sex&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sexSortAct</span> <span class="o">=</span> <span class="n">QWidgetAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sexSortAct</span><span class="o">.</span><span class="n">setDefaultWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sexSort</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sexSort</span><span class="o">.</span><span class="n">stateChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_sort</span><span class="p">,</span><span class="s2">&quot;sex&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">genotypeSort</span> <span class="o">=</span> <span class="n">QCheckBox</span><span class="p">(</span><span class="s2">&quot;&amp;Genotype&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">genotypeSortAct</span> <span class="o">=</span> <span class="n">QWidgetAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">genotypeSortAct</span><span class="o">.</span><span class="n">setDefaultWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">genotypeSort</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">genotypeSort</span><span class="o">.</span><span class="n">stateChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_sort</span><span class="p">,</span><span class="s2">&quot;genotype&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">speciesSort</span> <span class="o">=</span> <span class="n">QCheckBox</span><span class="p">(</span><span class="s2">&quot;&amp;Species&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">speciesSortAct</span> <span class="o">=</span> <span class="n">QWidgetAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">speciesSortAct</span><span class="o">.</span><span class="n">setDefaultWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">speciesSort</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">speciesSort</span><span class="o">.</span><span class="n">stateChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_sort</span><span class="p">,</span><span class="s2">&quot;species&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">subjectIDSort</span> <span class="o">=</span> <span class="n">QCheckBox</span><span class="p">(</span><span class="s2">&quot;&amp;Subject ID&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subjectIDSortAct</span> <span class="o">=</span> <span class="n">QWidgetAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subjectIDSortAct</span><span class="o">.</span><span class="n">setDefaultWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">subjectIDSort</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subjectIDSort</span><span class="o">.</span><span class="n">stateChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_sort</span><span class="p">,</span><span class="s2">&quot;subject_id&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">weightSort</span> <span class="o">=</span> <span class="n">QCheckBox</span><span class="p">(</span><span class="s2">&quot;&amp;Weight&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weightSortAct</span> <span class="o">=</span> <span class="n">QWidgetAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weightSortAct</span><span class="o">.</span><span class="n">setDefaultWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weightSort</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weightSort</span><span class="o">.</span><span class="n">stateChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_sort</span><span class="p">,</span><span class="s2">&quot;weight&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">birthSort</span> <span class="o">=</span> <span class="n">QCheckBox</span><span class="p">(</span><span class="s2">&quot;&amp;Birth&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">birthSortAct</span> <span class="o">=</span> <span class="n">QWidgetAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">birthSortAct</span><span class="o">.</span><span class="n">setDefaultWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">birthSort</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">birthSort</span><span class="o">.</span><span class="n">stateChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_sort</span><span class="p">,</span><span class="s2">&quot;birth&quot;</span><span class="p">))</span>
+
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">fluorescenceSort</span> <span class="o">=</span> <span class="n">QCheckBox</span><span class="p">(</span><span class="s2">&quot;&amp;Has fluorescence&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fluorescenceSortAct</span> <span class="o">=</span> <span class="n">QWidgetAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fluorescenceSortAct</span><span class="o">.</span><span class="n">setDefaultWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fluorescenceSort</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fluorescenceSort</span><span class="o">.</span><span class="n">stateChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_sort</span><span class="p">,</span><span class="s2">&quot;fluorescence&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">imagesegSort</span> <span class="o">=</span> <span class="n">QCheckBox</span><span class="p">(</span><span class="s2">&quot;&amp;Has image segmentation&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">imagesegSortAct</span> <span class="o">=</span> <span class="n">QWidgetAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">imagesegSortAct</span><span class="o">.</span><span class="n">setDefaultWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">imagesegSort</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">imagesegSort</span><span class="o">.</span><span class="n">stateChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_sort</span><span class="p">,</span><span class="s2">&quot;imagesegmentation&quot;</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rasterSort</span> <span class="o">=</span> <span class="n">QCheckBox</span><span class="p">(</span><span class="s2">&quot;&amp;Has rasterplot&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rasterSortAct</span> <span class="o">=</span> <span class="n">QWidgetAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sortMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rasterSortAct</span><span class="o">.</span><span class="n">setDefaultWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rasterSort</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rasterSort</span><span class="o">.</span><span class="n">stateChanged</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">on_sort</span><span class="p">,</span><span class="s2">&quot;raster&quot;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="CicadaMainWindow.createActions"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.createActions">[docs]</a>    <span class="k">def</span> <span class="nf">createActions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create some QAction&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">openAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;&amp;Open new dataset...&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">shortcut</span><span class="o">=</span><span class="s2">&quot;Ctrl+O&quot;</span><span class="p">,</span> <span class="n">triggered</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">open_new_dataset</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">addAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;&amp;Add data to current dataset...&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">shortcut</span><span class="o">=</span><span class="s2">&quot;Ctrl+P&quot;</span><span class="p">,</span> <span class="n">triggered</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">add_data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exitAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;E&amp;xit&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">shortcut</span><span class="o">=</span><span class="s2">&quot;Ctrl+Q&quot;</span><span class="p">,</span> <span class="n">triggered</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">exitAct</span><span class="o">.</span><span class="n">setShortcutContext</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ApplicationShortcut</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aboutAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;&amp;About&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">triggered</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">about</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">aboutQtAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;About &amp;Qt&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">triggered</span><span class="o">=</span><span class="n">qApp</span><span class="o">.</span><span class="n">aboutQt</span><span class="p">)</span>
+        <span class="c1"># self.showSessionAct = QAction(&quot;&amp;Show session&quot;, self, triggered=self.openWindow)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">showGroupAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;&amp;Show all groups&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seeAllGroupAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s1">&#39;&amp;See all groups&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">triggered</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">see_all_groups</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span> <span class="nf">see_all_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_group_window</span> <span class="o">=</span> <span class="n">AllGroups</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">all_group_window</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object_created</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_group_window</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CicadaMainWindow.uncheck_all_sort"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.uncheck_all_sort">[docs]</a>    <span class="k">def</span> <span class="nf">uncheck_all_sort</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Uncheck all checkboxes in sort menu&quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">param_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ageSort</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sexSort</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">speciesSort</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">genotypeSort</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subjectIDSort</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weightSort</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">birthSort</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fluorescenceSort</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">imagesegSort</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rasterSort</span><span class="o">.</span><span class="n">setChecked</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CicadaMainWindow.uncheck_group"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.uncheck_group">[docs]</a>    <span class="k">def</span> <span class="nf">uncheck_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Uncheck group menu parameter</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            param (str): Parameter name to uncheck</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">param_group_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">param_value_list</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;age&#39;</span><span class="p">,</span> <span class="s1">&#39;sex&#39;</span><span class="p">,</span> <span class="s1">&#39;species&#39;</span><span class="p">,</span> <span class="s1">&#39;raster&#39;</span><span class="p">,</span> <span class="s1">&#39;genotype&#39;</span><span class="p">,</span> <span class="s1">&#39;subjectID&#39;</span><span class="p">,</span> <span class="s1">&#39;weight&#39;</span><span class="p">,</span> <span class="s1">&#39;birth&#39;</span><span class="p">,</span> <span class="s1">&#39;fluorescence&#39;</span><span class="p">,</span>
+                <span class="s1">&#39;imageseg&#39;</span><span class="p">,</span> <span class="s1">&#39;raster&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">param_value_list</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">param</span><span class="p">:</span>
+                <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;self.&#39;</span> <span class="o">+</span> <span class="n">value</span> <span class="o">+</span><span class="s1">&#39;GroupAct.setChecked(False)&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CicadaMainWindow.on_group"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.on_group">[docs]</a>    <span class="k">def</span> <span class="nf">on_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Give group list and parameters value to populate QListWidget</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            param (str): Parameter to group by</span>
+<span class="sd">            state (int): State of the checkbox</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">grouped</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="n">state</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># From unchecked to checked</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sorted</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">uncheck_all_sort</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">musketeers_widget</span><span class="o">.</span><span class="n">session_widget</span><span class="o">.</span><span class="n">update_text_filter</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">param</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_group_list</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">param_group_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">grouped_labels</span><span class="p">,</span> <span class="n">param_group_list</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">group_by_param</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nwb_path_list</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_group_list</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dict_group</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grouped_labels</span><span class="p">)):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dict_group</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">param_group_list</span><span class="p">[</span><span class="n">i</span><span class="p">]:</span> <span class="bp">self</span><span class="o">.</span><span class="n">grouped_labels</span><span class="p">[</span><span class="n">i</span><span class="p">]})</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">musketeers_widget</span><span class="o">.</span><span class="n">session_widget</span><span class="o">.</span><span class="n">form_group</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">grouped_labels</span><span class="p">,</span> <span class="n">param_group_list</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># From checked to unchecked</span>
+            <span class="k">if</span> <span class="n">param</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_group_list</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">param_group_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">param_group_list</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">param_group_list</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">grouped</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">musketeers_widget</span><span class="o">.</span><span class="n">session_widget</span><span class="o">.</span><span class="n">update_text_filter</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">musketeers_widget</span><span class="o">.</span><span class="n">session_widget</span><span class="o">.</span><span class="n">populate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CicadaMainWindow.on_sort"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.on_sort">[docs]</a>    <span class="k">def</span> <span class="nf">on_sort</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Give sorted list to populate QListWidget</span>
+<span class="sd">        Args:</span>
+<span class="sd">            param (str): Parameter to sort by</span>
+<span class="sd">            state (int): State of the checkbox</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">state</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># From unchecked to checked</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">grouped</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">uncheck_group</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">param</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_list</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">param_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># From checked to unchecked</span>
+            <span class="k">if</span> <span class="n">param</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_list</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">param_list</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">param_list</span> <span class="o">=</span> <span class="p">[]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">param_list</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">param</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sorted_labels</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">sort_by_param</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nwb_path_list</span><span class="o">.</span><span class="n">values</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_list</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">param_list</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sorted</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">sorted</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">musketeers_widget</span><span class="o">.</span><span class="n">session_widget</span><span class="o">.</span><span class="n">update_text_filter</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">musketeers_widget</span><span class="o">.</span><span class="n">session_widget</span><span class="o">.</span><span class="n">populate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sorted_labels</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CicadaMainWindow.about"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.about">[docs]</a>    <span class="k">def</span> <span class="nf">about</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Small about QMessageBox for the project&quot;&quot;&quot;</span>
+        <span class="n">QMessageBox</span><span class="o">.</span><span class="n">about</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;About CICADA&quot;</span><span class="p">,</span> <span class="s2">&quot;Always compassionately illuminate the one yogi.&quot;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="CicadaMainWindow.openWindow"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.openWindow">[docs]</a>    <span class="k">def</span> <span class="nf">openWindow</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Open all widgets in a CentralWidget and call some menus that needed those widgets&quot;&quot;&quot;</span>
+        <span class="c1"># self.showSessionAct.setEnabled(False)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">musketeers_widget</span> <span class="o">=</span> <span class="n">MusketeersWidget</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCentralWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">musketeers_widget</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saveGroupMenu</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s1">&#39;Save Group&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fileMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fileMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">saveGroupMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">saveGroupMenu</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">musketeers_widget</span><span class="o">.</span><span class="n">session_widget</span><span class="o">.</span><span class="n">save_group</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="CicadaMainWindow.closeEvent"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.closeEvent">[docs]</a>    <span class="k">def</span> <span class="nf">closeEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Close all analysises windows on main window close</span>
+<span class="sd">        (uses Garbage Collector to get a list of them and close them, might be a better and faster way)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">gc</span><span class="o">.</span><span class="n">get_objects</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">AnalysisPackage</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">isVisible</span><span class="p">():</span>
+                    <span class="n">obj</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">object_created</span><span class="p">:</span>
+            <span class="n">obj</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="AllGroups"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.AllGroups">[docs]</a><span class="k">class</span> <span class="nc">AllGroups</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">QWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;See all groups&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group_list</span> <span class="o">=</span> <span class="n">QListWidget</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">populate_list</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group_list</span><span class="o">.</span><span class="n">setSelectionMode</span><span class="p">(</span><span class="n">QAbstractItemView</span><span class="o">.</span><span class="n">ExtendedSelection</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group_list</span><span class="o">.</span><span class="n">setContextMenuPolicy</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">CustomContextMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group_list</span><span class="o">.</span><span class="n">customContextMenuRequested</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">showContextMenu</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">group_list</span><span class="o">.</span><span class="n">doubleClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">double_click_event</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">group_list</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hlayout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Load group&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">load_group</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s1">&#39;Add group&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">add_group</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hlayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">load_button</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hlayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">add_button</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hlayout</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">)</span>
+
+<div class="viewcode-block" id="AllGroups.populate_list"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.AllGroups.populate_list">[docs]</a>    <span class="k">def</span> <span class="nf">populate_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Populate the list containing all existing groups&quot;&quot;&quot;</span>
+        <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">group_name</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">all_groups</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;self.groupItem&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">counter</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; = QListWidgetItem()&#39;</span><span class="p">)</span>
+            <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;self.groupItem&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">counter</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.setText(&quot;&#39;</span> <span class="o">+</span> <span class="n">group_name</span> <span class="o">+</span> <span class="s1">&#39;&quot;)&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">group_list</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;self.groupItem&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">counter</span><span class="p">)))</span></div>
+
+    <span class="k">def</span> <span class="nf">double_click_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clicked_item</span><span class="p">):</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_list</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">clicked_item</span><span class="o">.</span><span class="n">row</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">load_group</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">add_group</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_list</span><span class="o">.</span><span class="n">selectedItems</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">add_group_data</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">load_group</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_list</span><span class="o">.</span><span class="n">selectedItems</span><span class="p">()</span>
+        <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">counter</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">load_group</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">add_group_data</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+            <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">showContextMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">global_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapToGlobal</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context_menu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context_menuAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Load group&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">triggered</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">load_group</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context_menuAct</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QIcon</span><span class="p">(</span><span class="s1">&#39;cicada/gui/icons/svg/question-mark.svg&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context_menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">context_menuAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context_menuAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Add group&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">triggered</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">load_group</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context_menuAct</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QIcon</span><span class="p">(</span><span class="s1">&#39;cicada/gui/icons/svg/question-mark.svg&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context_menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">context_menuAct</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context_menu</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">global_pos</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="MusketeersWidget"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.MusketeersWidget">[docs]</a><span class="k">class</span> <span class="nc">MusketeersWidget</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gather in a layout the 3 main sub-windows composing the gui: displaying the subject sessions,</span>
+<span class="sd">    the analysis tree and an overview of the running analysis</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">QWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+
+        <span class="n">to_analysis_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">()</span>
+        <span class="n">to_analysis_button</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;cicada&quot;</span><span class="p">,</span> <span class="s2">&quot;True&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_widget</span> <span class="o">=</span> <span class="n">SessionsWidget</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">,</span> <span class="n">to_analysis_button</span><span class="o">=</span><span class="n">to_analysis_button</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">session_widget</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">to_analysis_button</span><span class="p">)</span>
+
+        <span class="n">to_parameters_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">()</span>
+        <span class="n">to_parameters_button</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;cicada&quot;</span><span class="p">,</span> <span class="s2">&quot;True&quot;</span><span class="p">)</span>
+
+        <span class="n">analysis_tree_app</span> <span class="o">=</span> <span class="n">AnalysisTreeApp</span><span class="p">(</span><span class="n">to_parameters_button</span><span class="o">=</span><span class="n">to_parameters_button</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_widget</span><span class="o">.</span><span class="n">analysis_tree</span> <span class="o">=</span> <span class="n">analysis_tree_app</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">analysis_tree_app</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">to_parameters_button</span><span class="p">)</span>
+
+        <span class="c1"># analysis_param_widget = AnalysisParametersApp()</span>
+        <span class="n">analysis_overview_widget</span> <span class="o">=</span> <span class="n">AnalysisOverview</span><span class="p">(</span><span class="n">parent</span><span class="p">)</span>
+        <span class="n">analysis_tree_app</span><span class="o">.</span><span class="n">analysis_overview</span> <span class="o">=</span> <span class="n">analysis_overview_widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">analysis_overview_widget</span><span class="p">)</span>
+        <span class="c1"># analysis_tree_app.arguments_section_widget = analysis_param_widget</span>
+        <span class="c1"># useful to empty the arguments section when we click on the to_analysis_button</span>
+        <span class="c1"># self.session_widget.arguments_section_widget = analysis_param_widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">session_widget</span><span class="o">.</span><span class="n">analysis_overview_widget</span> <span class="o">=</span> <span class="n">analysis_overview_widget</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">)</span></div>
+
+<span class="c1">#</span>
+<span class="c1"># def catch_exceptions(t, val, tb):</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     Catch errors and show them in a QMessageBox without making all crash</span>
+<span class="c1">#     Args:</span>
+<span class="c1">#         t: Exception type</span>
+<span class="c1">#         val: Exception value</span>
+<span class="c1">#         tb:</span>
+<span class="c1">#</span>
+<span class="c1">#     Returns:</span>
+<span class="c1">#</span>
+<span class="c1">#     &quot;&quot;&quot;</span>
+<span class="c1">#     QMessageBox.critical(None,</span>
+<span class="c1">#                               &quot;An exception was raised&quot;,</span>
+<span class="c1">#                               &quot;Exception type: {} \n Value: {}&quot;.format(t,val))</span>
+<span class="c1">#     old_hook(t, val, tb)</span>
+
+<span class="c1"># Removing it for now</span>
+<span class="c1"># old_hook = sys.excepthook</span>
+<span class="c1">#</span>
+<span class="c1"># sys.excepthook = catch_exceptions</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+
+    <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    <span class="n">cicada</span> <span class="o">=</span> <span class="n">CicadaMainWindow</span><span class="p">()</span>
+    <span class="n">cicada</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">())</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, CICADA
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -1,0 +1,1012 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cicada.gui.metadata_widget &mdash; CICADA 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> CICADA
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../preprocessing.html">Pre-processing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.cicada_data_to_nwb">Data to NWB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.cicada_preprocessing_run">Run preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_to_nwb">NWB file class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_suite_2p_rois_to_nwb">Suite 2P ROIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_processed_2d_series_to_nwb">2D series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_ci_movie_to_nwb">Calcium imaging movie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_abf_to_nwb">ABF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.utils">Utils</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">Analysis</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_analysis">Main analysis class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_analysis_arguments_handler">Argument handler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_analysis_format_wrapper">Format wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_analysis_nwb_wrapper">NWB wrapper</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_cells_count">Cells count</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_connectivity_graph">Connectivity graph</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_frames_count">Frames count</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_hubs_analysis">Hubs analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_psth_analysis">PSTH analysis</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gui.html">GUI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.cicada_main_window">Main Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.session_show_filter_group">Filter/group sessions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.metadata_widget">Display metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.cicada_analysis_tree_gui">Analysises list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.cicada_analysis_overview">Overview of analysises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../gui.html#module-cicada.gui.cicada_analysis_parameters_gui">Analysis parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/pappyhammer/cicada">See on Git</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">CICADA</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content style-external-links">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>cicada.gui.metadata_widget</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for cicada.gui.metadata_widget</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">QAbstractItemModel</span><span class="p">,</span> <span class="n">QModelIndex</span><span class="p">,</span> <span class="n">Qt</span>
+<span class="kn">from</span> <span class="nn">qtpy.QtGui</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">qtpy</span> <span class="k">import</span> <span class="n">QtCore</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">randint</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">abc</span> <span class="k">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">pynwb</span> <span class="k">import</span> <span class="n">NWBHDF5IO</span><span class="p">,</span> <span class="n">get_manager</span><span class="p">,</span> <span class="n">NWBContainer</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">pynwb.core</span> <span class="k">import</span> <span class="n">LabelledDict</span>
+<span class="kn">from</span> <span class="nn">pynwb.file</span> <span class="k">import</span> <span class="n">NWBFile</span><span class="p">,</span> <span class="n">Subject</span><span class="p">,</span> <span class="n">ProcessingModule</span>
+<span class="kn">import</span> <span class="nn">hdmf</span>
+<span class="kn">from</span> <span class="nn">shutil</span> <span class="k">import</span> <span class="n">copyfile</span>
+
+
+<span class="c1"># Find all metadata in NWB</span>
+<span class="k">class</span> <span class="nc">NWBMetaDataFinder</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_path</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span> <span class="o">=</span> <span class="n">data_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_data_file</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata_from_data_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_general_metadata_in_nwb</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subject_metadata_from_data_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_subject_metadata_in_nwb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata_from_data_file</span><span class="p">[</span><span class="s1">&#39;subject&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">containers_from_data_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_containers_in_nwb</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">get_data_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">io_read</span> <span class="o">=</span> <span class="n">NWBHDF5IO</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+        <span class="n">data_file_to_get</span> <span class="o">=</span> <span class="n">io_read</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="n">io_read</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">data_file_to_get</span>
+
+    <span class="k">def</span> <span class="nf">get_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_from_data_file</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">get_subject_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">subject_metadata_from_data_file</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">get_general_metadata_in_nwb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">metadata_from_data_file</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;children&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;children&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;container_source&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;container_source&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;data_collection&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;data_collection&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;ec_electrodes&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;ec_electrodes&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;electrodes&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;electrodes&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;epoch_tags&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;epoch_tags&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;epochs&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;epochs&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;experiment_description&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;experiment_description&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;experimenter&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;experimenter&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;file_create_date&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;file_create_date&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;identifier&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;identifier&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;institution&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;institution&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;invalid_times&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;invalid_times&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;keywords&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;keywords&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;lab&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;lab&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;lab_meta_data&quot;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;lab_meta_data&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;modified&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;modified&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;name&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;namespace&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;namespace&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;neurodata_type&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;neurodata_type&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;notes&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;notes&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;parent&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;parent&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;pharmacology&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;pharmacology&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;protocol&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;protocol&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;related_publications&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;related_publications&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;session_description&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;session_description&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;session_id&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;session_id&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;session_start_time&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;session_start_time&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;slices&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;slices&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;source_script&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;source_script&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;source_script_file_name&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;source_script_file_name&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;stimulus_notes&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;stimulus_notes&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;stimulus_template&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;stimulus_template&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;subject&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;subject&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;surgery&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;surgery&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;sweep_table&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;sweep_table&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;timestamps_reference_time&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;timestamps_reference_time&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;trials&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;trials&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;units&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;units&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;virus&quot;</span><span class="p">:</span>  <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">,</span> <span class="s2">&quot;virus&quot;</span><span class="p">)}</span>
+
+        <span class="k">return</span> <span class="n">metadata_from_data_file</span>
+
+    <span class="k">def</span> <span class="nf">get_containers_in_nwb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">containers_from_data_file</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">check_containers</span><span class="p">(</span><span class="n">container</span><span class="p">):</span>
+            <span class="c1"># recursive research of all containers (with &#39;children&#39; field)</span>
+            <span class="n">children</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">container</span><span class="p">,</span> <span class="s1">&#39;children&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="n">children</span><span class="p">:</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">NWBContainer</span><span class="p">)</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">child</span><span class="p">,</span> <span class="n">Subject</span><span class="p">):</span>
+                    <span class="c1"># Subject is a NWBContainer but is already got somewhere else (see get_subject_metadata_in_nwb)</span>
+                    <span class="n">containers_from_data_file</span><span class="p">[</span><span class="n">child</span><span class="o">.</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">child</span>
+                    <span class="n">check_containers</span><span class="p">(</span><span class="n">child</span><span class="p">)</span>
+
+        <span class="n">check_containers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_file</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">containers_from_data_file</span>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">get_subject_metadata_in_nwb</span><span class="p">(</span><span class="n">subject</span><span class="p">):</span>
+        <span class="n">subject_metadata_from_data_file</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;age&quot;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="s2">&quot;age&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;genotype&quot;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="s2">&quot;genotype&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;sex&quot;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="s2">&quot;sex&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;species&quot;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="s2">&quot;species&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;subject_id&quot;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="s2">&quot;subject_id&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;weight&quot;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="s2">&quot;weight&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;date_of_birth&quot;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">subject</span><span class="p">,</span> <span class="s2">&quot;date_of_birth&quot;</span><span class="p">)}</span>
+
+        <span class="k">return</span> <span class="n">subject_metadata_from_data_file</span>
+
+
+<span class="c1"># Metadata formatting for GUI</span>
+<span class="k">class</span> <span class="nc">CicadaMetaDataContainer</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_path</span><span class="p">,</span> <span class="n">data_format</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span> <span class="o">=</span> <span class="n">data_path</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initiate_metadata_finder_wrapper</span><span class="p">(</span><span class="n">data_format</span><span class="o">=</span><span class="n">data_format</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">data_file</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata_handler</span> <span class="o">=</span> <span class="n">MetaDataHandler</span><span class="p">(</span><span class="n">cicada_metadata_container</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_metadata_for_gui</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_containers_for_gui</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">initiate_metadata_finder_wrapper</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_format</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">data_format</span> <span class="o">==</span> <span class="s2">&quot;nwb&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span> <span class="o">=</span> <span class="n">NWBMetaDataFinder</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_path</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">add_metadata_group_for_gui</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata_handler</span><span class="o">.</span><span class="n">add_group</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">set_metadata_for_gui</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="c1"># All metadata with names, value_types, value and description !</span>
+
+        <span class="n">container_source_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;container_source&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+                                     <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;container_source&quot;</span><span class="p">),</span>
+                                     <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Path to the container source&quot;</span><span class="p">}</span>
+
+        <span class="n">data_collection_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;data_collection&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+                                    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;data_collection&quot;</span><span class="p">),</span>
+                                    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Notes about data collection and analysis&quot;</span><span class="p">}</span>
+
+        <span class="n">electrodes_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;electrodes&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;dictionnary&quot;</span><span class="p">,</span>
+                               <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;electrodes&quot;</span><span class="p">),</span>
+                               <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;The ElectrodeTable that belongs to this NWBFile&quot;</span><span class="p">}</span>
+
+        <span class="n">epoch_tags_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;epoch_tags&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;set&quot;</span><span class="p">,</span>
+                               <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;epoch_tags&quot;</span><span class="p">),</span>
+                               <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;A sorted list of tags used across all epochs&quot;</span><span class="p">}</span>
+
+        <span class="n">epochs_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;epochs&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;dictionnary&quot;</span><span class="p">,</span>
+                           <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;epochs&quot;</span><span class="p">),</span>
+                           <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Epoch objects belonging to this NWBFile&quot;</span><span class="p">}</span>
+
+        <span class="n">experiment_description_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;experiment_description&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+                                           <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;experiment_description&quot;</span><span class="p">),</span>
+                                           <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;General description of the experiment&quot;</span><span class="p">}</span>
+
+        <span class="n">experimenter_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;experimenter&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+                                 <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;experimenter&quot;</span><span class="p">),</span>
+                                 <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Name of person who performed experiment&quot;</span><span class="p">}</span>
+
+        <span class="n">file_create_date_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;file_create_date&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;datetime&quot;</span><span class="p">,</span>
+                                     <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;file_create_date&quot;</span><span class="p">),</span>
+                                     <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;The date and time the file was created and subsequent&quot;</span>
+                                                    <span class="s2">&quot; modifications made&quot;</span><span class="p">}</span>
+
+        <span class="n">identifier_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;identifier&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+                               <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;identifier&quot;</span><span class="p">),</span>
+                               <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;A unique text identifier for the file&quot;</span><span class="p">}</span>
+
+        <span class="n">institution_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;institution&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;institution&quot;</span><span class="p">),</span>
+                                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Institution(s) where experiment is performed&quot;</span><span class="p">}</span>
+
+        <span class="n">invalid_times_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;invalid_times&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;dictionnary&quot;</span><span class="p">,</span>
+                                  <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;invalid_times&quot;</span><span class="p">),</span>
+                                  <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;A table containing times to be omitted from analysis&quot;</span><span class="p">}</span>
+
+        <span class="n">keywords_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;keywords&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;list&quot;</span><span class="p">,</span>
+                             <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;keywords&quot;</span><span class="p">),</span>
+                             <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Terms to search over&quot;</span><span class="p">}</span>
+
+        <span class="n">lab_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;lab&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;lab&quot;</span><span class="p">),</span>
+                        <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Lab where experiment was performed&quot;</span><span class="p">}</span>
+
+        <span class="n">lab_meta_data_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;lab_meta_data&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;dictionnary&quot;</span><span class="p">,</span>
+                                  <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;lab_meta_data&quot;</span><span class="p">),</span>
+                                  <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;An extension that contains lab-specific meta-data&quot;</span><span class="p">}</span>
+
+        <span class="n">modified_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;modified&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;bool&quot;</span><span class="p">,</span>
+                             <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;modified&quot;</span><span class="p">),</span>
+                             <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;No description&quot;</span><span class="p">}</span>
+
+        <span class="n">neurodata_type_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;neurodata_type&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+                                   <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;neurodata_type&quot;</span><span class="p">),</span>
+                                   <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;No description&quot;</span><span class="p">}</span>
+
+        <span class="n">notes_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;notes&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+                          <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;notes&quot;</span><span class="p">),</span>
+                          <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Notes about the experiment&quot;</span><span class="p">}</span>
+
+        <span class="n">pharmacology_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;pharmacology&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+                                 <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;pharmacology&quot;</span><span class="p">),</span>
+                                 <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Description of drugs used, including how and when they were&quot;</span>
+                                                <span class="s2">&quot; administered.</span><span class="se">\n</span><span class="s2">Anesthesia(s), painkiller(s), etc., plus dosage,&quot;</span>
+                                                <span class="s2">&quot; concentration, etc.&quot;</span><span class="p">}</span>
+
+        <span class="n">protocol_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;protocol&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+                             <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;protocol&quot;</span><span class="p">),</span>
+                             <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Experimental protocol, if applicable. E.g., include IACUC protocol&quot;</span><span class="p">}</span>
+
+        <span class="n">related_publications_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;related_publications&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+                                         <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;related_publications&quot;</span><span class="p">),</span>
+                                         <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Publication information.PMID, DOI, URL, etc. If multiple,</span><span class="se">\n</span><span class="s2">&quot;</span>
+                                                        <span class="s2">&quot;concatenate together and describe which is which. such as&quot;</span>
+                                                        <span class="s2">&quot; PMID, DOI, URL, etc&quot;</span><span class="p">}</span>
+
+        <span class="n">session_description_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;session_description&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+                                        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;session_description&quot;</span><span class="p">),</span>
+                                        <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;A description of the session where this data was generated&quot;</span><span class="p">}</span>
+
+        <span class="n">session_id_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;session_id&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+                               <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;session_id&quot;</span><span class="p">),</span>
+                               <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Lab-specific ID for the session&quot;</span><span class="p">}</span>
+
+        <span class="n">session_start_time_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;session_start_time&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;datetime&quot;</span><span class="p">,</span>
+                                       <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;session_start_time&quot;</span><span class="p">),</span>
+                                       <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;The start date and time of the recording session&quot;</span><span class="p">}</span>
+
+        <span class="n">slices_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;slices&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+                           <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;slices&quot;</span><span class="p">),</span>
+                           <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Description of slices, including information about preparation</span><span class="se">\n</span><span class="s2">&quot;</span>
+                                          <span class="s2">&quot;thickness, orientation, temperature and bath solution&quot;</span><span class="p">}</span>
+
+        <span class="n">source_script_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;source_script&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+                                  <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;source_script&quot;</span><span class="p">),</span>
+                                  <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Script file used to create this NWB file&quot;</span><span class="p">}</span>
+
+        <span class="n">source_script_file_name_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;source_script_file_name&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+                                            <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span>
+                                                <span class="s2">&quot;source_script_file_name&quot;</span><span class="p">),</span>
+                                            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Name of the source_script file&quot;</span><span class="p">}</span>
+
+        <span class="n">stimulus_notes_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;stimulus_notes&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+                                   <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;stimulus_notes&quot;</span><span class="p">),</span>
+                                   <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Notes about stimuli, such as how and where presented&quot;</span><span class="p">}</span>
+
+        <span class="n">surgery_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;surgery&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+                            <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;surgery&quot;</span><span class="p">),</span>
+                            <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Narrative description about surgery/surgeries,</span><span class="se">\n</span><span class="s2">&quot;</span>
+                                           <span class="s2">&quot;including date(s) and who performed surgery&quot;</span><span class="p">}</span>
+
+        <span class="n">sweep_table_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;sweep_table&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;class&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;sweep_table&quot;</span><span class="p">),</span>
+                                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;The SweepTable that belong to this NWBFile&quot;</span><span class="p">}</span>
+
+        <span class="n">timestamps_reference_time_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;timestamps_reference_time&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;datetime&quot;</span><span class="p">,</span>
+                                              <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span>
+                                                  <span class="s2">&quot;timestamps_reference_time&quot;</span><span class="p">),</span>
+                                              <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Date and time corresponding to time zero of all &quot;</span>
+                                                             <span class="s2">&quot;timestamps;</span><span class="se">\n</span><span class="s2">defaults to value of session_start_time&quot;</span><span class="p">}</span>
+
+        <span class="n">trials_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;trials&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;class&quot;</span><span class="p">,</span>
+                           <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;trials&quot;</span><span class="p">),</span>
+                           <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;A table containing trial data&quot;</span><span class="p">}</span>
+
+        <span class="n">units_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;units&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;class&quot;</span><span class="p">,</span>
+                          <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;units&quot;</span><span class="p">),</span>
+                          <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;A table containing unit metadata&quot;</span><span class="p">}</span>
+
+        <span class="n">virus_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;virus&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+                          <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_metadata</span><span class="p">(</span><span class="s2">&quot;virus&quot;</span><span class="p">),</span>
+                          <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Information about virus(es) used in experiments, including virus ID,</span><span class="se">\n</span><span class="s2">&quot;</span>
+                                         <span class="s2">&quot;source, date made, injection location, volume, etc.&quot;</span><span class="p">}</span>
+
+        <span class="c1"># Subject part :</span>
+
+        <span class="n">age_subject_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;age&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_subject_metadata</span><span class="p">(</span><span class="s2">&quot;age&quot;</span><span class="p">),</span>
+                                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;The age of the subject&quot;</span><span class="p">}</span>
+
+        <span class="n">description_subject_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+                                        <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_subject_metadata</span><span class="p">(</span><span class="s2">&quot;description&quot;</span><span class="p">),</span>
+                                        <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;A description of the subject&quot;</span><span class="p">}</span>
+
+        <span class="n">genotype_subject_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;genotype&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+                                     <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_subject_metadata</span><span class="p">(</span><span class="s2">&quot;genotype&quot;</span><span class="p">),</span>
+                                     <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;The genotype of the subject&quot;</span><span class="p">}</span>
+
+        <span class="n">sex_subject_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;sex&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+                                <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_subject_metadata</span><span class="p">(</span><span class="s2">&quot;sex&quot;</span><span class="p">),</span>
+                                <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;The sex of the subject&quot;</span><span class="p">}</span>
+
+        <span class="n">species_subject_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;species&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+                                    <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_subject_metadata</span><span class="p">(</span><span class="s2">&quot;species&quot;</span><span class="p">),</span>
+                                    <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;The species of the subject&quot;</span><span class="p">}</span>
+
+        <span class="n">subject_id_subject_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;subject_id&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+                                       <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_subject_metadata</span><span class="p">(</span><span class="s2">&quot;subject_id&quot;</span><span class="p">),</span>
+                                       <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;A unique identifier for the subject&quot;</span><span class="p">}</span>
+
+        <span class="n">weight_subject_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;weight&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;str&quot;</span><span class="p">,</span>
+                                   <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_subject_metadata</span><span class="p">(</span><span class="s2">&quot;weight&quot;</span><span class="p">),</span>
+                                   <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;The weight of the subject&quot;</span><span class="p">}</span>
+
+        <span class="n">date_of_birth_subject_metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;metadata_name&quot;</span><span class="p">:</span> <span class="s2">&quot;date_of_birth&quot;</span><span class="p">,</span> <span class="s2">&quot;value_type&quot;</span><span class="p">:</span> <span class="s2">&quot;datetime&quot;</span><span class="p">,</span>
+                                          <span class="s2">&quot;value&quot;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">get_subject_metadata</span><span class="p">(</span><span class="s2">&quot;date_of_birth&quot;</span><span class="p">),</span>
+                                          <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="s2">&quot;Datetime of date of birth.</span><span class="se">\n</span><span class="s2">May be supplied instead of age&quot;</span><span class="p">}</span>
+
+        <span class="c1"># Define groups to add :</span>
+
+        <span class="n">general_metadata</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">general_metadata</span><span class="p">[</span><span class="s2">&quot;group_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;general_metadata&#39;</span>
+        <span class="n">general_metadata</span><span class="p">[</span><span class="s2">&quot;widget_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;QTable&#39;</span>
+        <span class="n">general_metadata</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;metadata about session, laboratory ...&#39;</span>
+        <span class="n">general_metadata</span><span class="p">[</span><span class="s2">&quot;metadata_in_group&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">session_description_metadata</span><span class="p">,</span>
+                                                 <span class="n">identifier_metadata</span><span class="p">,</span>
+                                                 <span class="n">session_start_time_metadata</span><span class="p">,</span>
+                                                 <span class="n">file_create_date_metadata</span><span class="p">,</span>
+                                                 <span class="n">experimenter_metadata</span><span class="p">,</span>
+                                                 <span class="n">experiment_description_metadata</span><span class="p">,</span>
+                                                 <span class="n">session_id_metadata</span><span class="p">,</span>
+                                                 <span class="n">institution_metadata</span><span class="p">,</span>
+                                                 <span class="n">notes_metadata</span><span class="p">,</span>
+                                                 <span class="n">pharmacology_metadata</span><span class="p">,</span>
+                                                 <span class="n">protocol_metadata</span><span class="p">,</span>
+                                                 <span class="n">related_publications_metadata</span><span class="p">,</span>
+                                                 <span class="n">slices_metadata</span><span class="p">,</span>
+                                                 <span class="n">source_script_metadata</span><span class="p">,</span>
+                                                 <span class="n">source_script_file_name_metadata</span><span class="p">,</span>
+                                                 <span class="n">data_collection_metadata</span><span class="p">,</span>
+                                                 <span class="n">surgery_metadata</span><span class="p">,</span>
+                                                 <span class="n">virus_metadata</span><span class="p">,</span>
+                                                 <span class="n">stimulus_notes_metadata</span><span class="p">,</span>
+                                                 <span class="n">timestamps_reference_time_metadata</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_metadata_group_for_gui</span><span class="p">(</span><span class="o">**</span><span class="n">general_metadata</span><span class="p">)</span>
+
+        <span class="n">metadata_from_subject</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">metadata_from_subject</span><span class="p">[</span><span class="s2">&quot;group_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;metadata_from_subject&#39;</span>
+        <span class="n">metadata_from_subject</span><span class="p">[</span><span class="s2">&quot;widget_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;QTable&#39;</span>
+        <span class="n">metadata_from_subject</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;metadata about the subject&#39;</span>
+        <span class="n">metadata_from_subject</span><span class="p">[</span><span class="s2">&quot;metadata_in_group&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">age_subject_metadata</span><span class="p">,</span>
+                                                      <span class="n">description_subject_metadata</span><span class="p">,</span>
+                                                      <span class="n">genotype_subject_metadata</span><span class="p">,</span>
+                                                      <span class="n">sex_subject_metadata</span><span class="p">,</span>
+                                                      <span class="n">species_subject_metadata</span><span class="p">,</span>
+                                                      <span class="n">subject_id_subject_metadata</span><span class="p">,</span>
+                                                      <span class="n">weight_subject_metadata</span><span class="p">,</span>
+                                                      <span class="n">date_of_birth_subject_metadata</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">add_metadata_group_for_gui</span><span class="p">(</span><span class="o">**</span><span class="n">metadata_from_subject</span><span class="p">)</span>
+
+        <span class="c1"># TODO : for each of those following metadata, show them or not ? And how ?</span>
+        <span class="n">other_metadata</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">other_metadata</span><span class="p">[</span><span class="s2">&quot;group_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;other_metadata&#39;</span>
+        <span class="n">other_metadata</span><span class="p">[</span><span class="s2">&quot;widget_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;QTable&#39;</span>
+        <span class="n">other_metadata</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;metadata which are not affiliated to a group&#39;</span>
+        <span class="n">other_metadata</span><span class="p">[</span><span class="s2">&quot;metadata_in_group&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">keywords_metadata</span><span class="p">,</span>  <span class="c1"># ? but probably a list or str</span>
+                                               <span class="n">epochs_metadata</span><span class="p">,</span>  <span class="c1"># epoch object</span>
+                                               <span class="n">trials_metadata</span><span class="p">,</span>  <span class="c1"># table</span>
+                                               <span class="n">invalid_times_metadata</span><span class="p">,</span>  <span class="c1"># table</span>
+                                               <span class="n">units_metadata</span><span class="p">,</span>  <span class="c1"># table</span>
+                                               <span class="n">electrodes_metadata</span><span class="p">,</span>  <span class="c1"># table</span>
+                                               <span class="n">sweep_table_metadata</span><span class="p">,</span>  <span class="c1"># table</span>
+                                               <span class="n">neurodata_type_metadata</span><span class="p">,</span>  <span class="c1"># str</span>
+                                               <span class="n">modified_metadata</span><span class="p">,</span>  <span class="c1"># str</span>
+                                               <span class="n">container_source_metadata</span><span class="p">,</span>  <span class="c1"># str</span>
+                                               <span class="n">lab_meta_data_metadata</span><span class="p">,</span>  <span class="c1"># container</span>
+                                               <span class="n">epoch_tags_metadata</span><span class="p">]</span>  <span class="c1"># set</span>
+
+    <span class="k">def</span> <span class="nf">set_containers_for_gui</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># For all containers found, if they have metadata, show them in a QTable</span>
+        <span class="c1"># Create a special QTable for all containers whithout metadata</span>
+
+        <span class="n">containers_from_data_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_finder_wrapper</span><span class="o">.</span><span class="n">containers_from_data_file</span>
+
+        <span class="n">other_containers</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">other_containers</span><span class="p">[</span><span class="s1">&#39;group_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;other containers&#39;</span>
+        <span class="n">other_containers</span><span class="p">[</span><span class="s1">&#39;widget_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;QTable&#39;</span>
+        <span class="n">other_containers</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;other containers&#39;</span>
+        <span class="n">other_containers</span><span class="p">[</span><span class="s1">&#39;metadata_in_group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">container</span> <span class="ow">in</span> <span class="n">containers_from_data_file</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">container_metadata</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+            <span class="n">container_metadata</span><span class="p">[</span><span class="s1">&#39;group_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">name</span>
+            <span class="n">container_metadata</span><span class="p">[</span><span class="s1">&#39;widget_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;QTable&#39;</span>
+            <span class="n">container_metadata</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s2">&quot;     (type : &quot;</span> \
+                                                               <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">container</span><span class="p">))</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;)&quot;</span>
+            <span class="n">container_metadata</span><span class="p">[</span><span class="s1">&#39;metadata_in_group&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+
+            <span class="c1"># Try to get all metadata for this container</span>
+            <span class="k">for</span> <span class="n">field</span> <span class="ow">in</span> <span class="n">container</span><span class="o">.</span><span class="n">fields</span><span class="p">:</span>
+                <span class="n">field_class</span> <span class="o">=</span> <span class="n">container</span><span class="o">.</span><span class="n">fields</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">field</span><span class="p">)</span>  <span class="c1"># &#39;field&#39; is a string, corresponds to a &#39;fields&#39; attribute</span>
+                <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field_class</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">)):</span>
+                    <span class="n">container_metadata_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;metadata_name&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">field</span><span class="p">),</span> <span class="s1">&#39;value_type&#39;</span><span class="p">:</span>
+                                               <span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">field_class</span><span class="p">))</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="n">field_class</span><span class="p">,</span>
+                                               <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">field</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39; of &#39;</span> <span class="o">+</span> <span class="n">container</span><span class="o">.</span><span class="n">name</span><span class="p">}</span>
+                    <span class="n">container_metadata</span><span class="p">[</span><span class="s1">&#39;metadata_in_group&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">container_metadata_dict</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">container_metadata</span><span class="p">[</span><span class="s1">&#39;metadata_in_group&#39;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_metadata_group_for_gui</span><span class="p">(</span><span class="o">**</span><span class="n">container_metadata</span><span class="p">)</span>
+
+            <span class="c1"># When there isn&#39;t any metadata, put them in a QTable with all other containers</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">container_to_add</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;metadata_name&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">container</span><span class="o">.</span><span class="n">name</span><span class="p">),</span> <span class="s1">&#39;value_type&#39;</span><span class="p">:</span>
+                                    <span class="nb">str</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">container</span><span class="p">))</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">],</span>
+                                    <span class="s1">&#39;value&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">container</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)}</span>
+                <span class="n">other_containers</span><span class="p">[</span><span class="s1">&#39;metadata_in_group&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">container_to_add</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">other_containers</span><span class="p">[</span><span class="s1">&#39;metadata_in_group&#39;</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_metadata_group_for_gui</span><span class="p">(</span><span class="o">**</span><span class="n">other_containers</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">save_changes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">general_metadata</span><span class="p">,</span> <span class="n">subject_metadata</span><span class="p">):</span>
+        <span class="c1"># TODO : wrapper for save : only in NWB for the moment</span>
+
+        <span class="c1"># SaveModifiedNWB(self.data_path, general_metadata=general_metadata, subject_metadata=subject_metadata)</span>
+        <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">SaveModifiedNWB</span><span class="p">:</span>
+    <span class="c1"># IT DOESN&#39;T WORK !!!</span>
+    <span class="c1"># TODO: make it work</span>
+
+    <span class="c1"># I tried to open the initial NWB_file, add to it all metadata completed by the user on the GUI</span>
+    <span class="c1"># and then save the modified NWB_file in a new file. However there is a problem with all container objects like</span>
+    <span class="c1"># acquisition : when I try to save the file, they are not found ...</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nwb_path</span><span class="p">,</span> <span class="n">general_metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">subject_metadata</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">manager</span> <span class="o">=</span> <span class="n">get_manager</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nwb_path</span> <span class="o">=</span> <span class="n">nwb_path</span>
+
+        <span class="c1"># New path to save the modified NWB</span>
+        <span class="n">parent_dir</span><span class="p">,</span> <span class="n">file_name</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nwb_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">new_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parent_dir</span><span class="p">,</span> <span class="s2">&quot;new_&quot;</span> <span class="o">+</span> <span class="n">file_name</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">io_read</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">io_write</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nwb_file</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_nwb_file</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">general_metadata</span> <span class="o">=</span> <span class="n">general_metadata</span>  <span class="c1"># dictionnary with all general metadata fields and values</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">subject_metadata</span> <span class="o">=</span> <span class="n">subject_metadata</span>  <span class="c1"># dictionnary with all value metadata fields and values</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">modify_general_metadata</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">modify_subject_metadata</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">write_nwb</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">get_nwb_file</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">io_read</span> <span class="o">=</span> <span class="n">NWBHDF5IO</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nwb_path</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">manager</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="p">)</span>
+        <span class="n">nwb_file_to_get</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">io_read</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">nwb_file_to_get</span>
+
+    <span class="k">def</span> <span class="nf">modify_general_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Add general metadata if not already exists</span>
+        <span class="k">for</span> <span class="n">metadata_field</span><span class="p">,</span> <span class="n">metadata_value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">general_metadata</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nwb_file</span><span class="p">,</span> <span class="n">metadata_field</span><span class="p">,</span> <span class="n">metadata_value</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="n">metadata_field</span><span class="p">,</span> <span class="s2">&quot; : NO ! NO ! NO !&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">modify_subject_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Add subject metadata if not already exists</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nwb_file</span><span class="p">,</span> <span class="s1">&#39;subject&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">metadata_field</span><span class="p">,</span> <span class="n">metadata_value</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">subject_metadata</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nwb_file</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span> <span class="n">metadata_field</span><span class="p">,</span> <span class="n">metadata_value</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">metadata_field</span><span class="p">,</span> <span class="s2">&quot; : NO ! NO ! NO !&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">write_nwb</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># It seems that io.read need to be open to save data in file, so I try to save data in an other file</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">io_write</span> <span class="o">=</span> <span class="n">NWBHDF5IO</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">new_path</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="n">manager</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">manager</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">io_write</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nwb_file</span><span class="p">,</span> <span class="n">link_data</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">io_read</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">io_write</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+
+<span class="c1"># Associate metadata groups with widgets</span>
+<span class="k">class</span> <span class="nc">MetaDataHandler</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cicada_metadata_container</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groups_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cicada_metadata_container</span> <span class="o">=</span> <span class="n">cicada_metadata_container</span>
+
+    <span class="k">def</span> <span class="nf">add_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">metadata_group</span> <span class="o">=</span> <span class="n">MetaDataGroup</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">groups_dict</span><span class="p">[</span><span class="n">metadata_group</span><span class="o">.</span><span class="n">group_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata_group</span>
+
+    <span class="k">def</span> <span class="nf">get_all_metadata_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">all_metadata_groups</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">groups_dict</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">all_metadata_groups</span>
+
+    <span class="k">def</span> <span class="nf">get_gui_widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+        <span class="n">gui_widgets</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">all_metadata_groups</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_all_metadata_groups</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">metadata_group</span> <span class="ow">in</span> <span class="n">all_metadata_groups</span><span class="p">:</span>
+            <span class="n">gui_widget</span> <span class="o">=</span> <span class="n">metadata_group</span><span class="o">.</span><span class="n">get_gui_widget</span><span class="p">()</span>
+            <span class="k">if</span> <span class="n">gui_widget</span><span class="p">:</span>
+                <span class="n">gui_widgets</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">gui_widget</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gui_widgets</span>
+
+    <span class="k">def</span> <span class="nf">save_changes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">general_metadata_values</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="n">subject_metadata_values</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">metadata_group_name</span><span class="p">,</span> <span class="n">metadata_group</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">groups_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="k">for</span> <span class="n">metadata_name</span><span class="p">,</span> <span class="n">metadata</span> <span class="ow">in</span> <span class="n">metadata_group</span><span class="o">.</span><span class="n">metadata_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">metadata_group_name</span> <span class="o">==</span> <span class="s1">&#39;general_metadata&#39;</span><span class="p">:</span>
+                    <span class="n">general_metadata_values</span><span class="p">[</span><span class="n">metadata_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata_group</span><span class="o">.</span><span class="n">get_metadata_value_in_widget</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="n">metadata_group_name</span> <span class="o">==</span> <span class="s1">&#39;metadata_from_subject&#39;</span><span class="p">:</span>
+                    <span class="n">subject_metadata_values</span><span class="p">[</span><span class="n">metadata_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata_group</span><span class="o">.</span><span class="n">get_metadata_value_in_widget</span><span class="p">(</span><span class="n">metadata</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">cicada_metadata_container</span><span class="o">.</span><span class="n">save_changes</span><span class="p">(</span><span class="n">general_metadata_values</span><span class="p">,</span> <span class="n">subject_metadata_values</span><span class="p">)</span>
+
+
+<span class="c1"># One MetaData structure</span>
+<span class="k">class</span> <span class="nc">MetaData</span><span class="p">:</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx_position</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            **kwargs:</span>
+<span class="sd">                - metadata_name</span>
+<span class="sd">                - value_type</span>
+<span class="sd">                - value</span>
+<span class="sd">                - description</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">attribute_name</span><span class="p">,</span> <span class="n">attribute_value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute_name</span><span class="p">,</span> <span class="n">attribute_value</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">position_in_widget</span> <span class="o">=</span> <span class="n">idx_position</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">final_value</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">set_metadata_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">final_value</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">get_metadata_value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_metadata_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">MetaDataGroup</span><span class="p">:</span>  <span class="c1"># Necessary to add multiple metadata in one widget (QTable for example)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            **kwargs:</span>
+<span class="sd">                - group_name</span>
+<span class="sd">                - widget_type</span>
+<span class="sd">                - description</span>
+<span class="sd">                - metadata_in_group</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">for</span> <span class="n">attribute_name</span><span class="p">,</span> <span class="n">attribute_value</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attribute_name</span><span class="p">,</span> <span class="n">attribute_value</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">widget</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata_dict</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">idx_position</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Counter, add 1 each time a metadata is add to the group to define its position inside</span>
+
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;metadata_in_group&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">raw_metadata</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;metadata_in_group&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">add_metadata</span><span class="p">(</span><span class="o">**</span><span class="n">raw_metadata</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;No metadata found !&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Convert metadata from CicadaMetadataContainer in MetaData class and add it to metadata_dict</span>
+    <span class="k">def</span> <span class="nf">add_metadata</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">metadata_to_add</span> <span class="o">=</span> <span class="n">MetaData</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">idx_position</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata_dict</span><span class="p">[</span><span class="n">metadata_to_add</span><span class="o">.</span><span class="n">metadata_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">metadata_to_add</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">idx_position</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="k">def</span> <span class="nf">get_gui_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;widget_type&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;QTable&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">widget</span> <span class="o">=</span> <span class="n">TableWidget</span><span class="p">(</span><span class="n">metadata_group</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">widget</span>
+
+    <span class="k">def</span> <span class="nf">get_metadata_value_in_widget</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metadata</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">widget</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;widget_type&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;QTable&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">widget</span><span class="o">.</span><span class="n">get_value</span><span class="p">(</span><span class="n">metadata</span><span class="o">.</span><span class="n">position_in_widget</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">widget</span><span class="o">.</span><span class="n">get_value</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">get_group_description</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+
+<span class="c1"># Main widget</span>
+<div class="viewcode-block" id="MetaDataWidget"><a class="viewcode-back" href="../../../gui.html#cicada.gui.metadata_widget.MetaDataWidget">[docs]</a><span class="k">class</span> <span class="nc">MetaDataWidget</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">extension</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">QWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cicada_metadata_container</span> <span class="o">=</span> <span class="n">CicadaMetaDataContainer</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">extension</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata_handler</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">special_background_on</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current_style_sheet_background</span> <span class="o">=</span> <span class="s2">&quot;.QWidget{background-image:url(</span><span class="se">\&quot;\&quot;</span><span class="s2">); background-position: center;}&quot;</span>
+
+        <span class="c1"># Add the scroll bar</span>
+        <span class="c1"># ==============================</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span> <span class="o">=</span> <span class="n">QScrollArea</span><span class="p">()</span>
+        <span class="c1"># ScrollBarAlwaysOff = 1</span>
+        <span class="c1"># ScrollBarAlwaysOn = 2</span>
+        <span class="c1"># ScrollBarAsNeeded = 0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setVerticalScrollBarPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAsNeeded</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setHorizontalScrollBarPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAsNeeded</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setWidgetResizable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">scroll_area_widget_contents</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scroll_area_widget_contents</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scroll_area_widget_contents</span><span class="p">)</span>
+        <span class="c1"># ==============================</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_button</span> <span class="o">=</span> <span class="n">QPushButton</span><span class="p">(</span><span class="s2">&quot;Done&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_button</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_changes</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">save_button</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">main_layout</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_widgets</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">cicada_metadata_container</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<div class="viewcode-block" id="MetaDataWidget.tabula_rasa"><a class="viewcode-back" href="../../../gui.html#cicada.gui.metadata_widget.MetaDataWidget.tabula_rasa">[docs]</a>    <span class="k">def</span> <span class="nf">tabula_rasa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Erase the widgets and make an empty section</span>
+<span class="sd">        Returns:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># clearing the widget to update it</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scroll_area_widget_contents</span> <span class="o">=</span> <span class="n">QWidget</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scrollArea</span><span class="o">.</span><span class="n">setWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scroll_area_widget_contents</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scroll_area_widget_contents</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">scroll_area_widget_contents</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_style_sheet_background</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_button</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">create_widgets</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cicada_metadata_container</span><span class="p">):</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">cicada_metadata_container</span> <span class="o">=</span> <span class="n">cicada_metadata_container</span>
+
+        <span class="c1"># clearing the widget to update it</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tabula_rasa</span><span class="p">()</span>
+        <span class="c1"># ==============================</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata_handler</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cicada_metadata_container</span><span class="o">.</span><span class="n">metadata_handler</span>
+
+        <span class="c1"># list of instances of MetadataArgument</span>
+        <span class="n">gui_widgets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_handler</span><span class="o">.</span><span class="n">get_gui_widgets</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">gui_widget</span> <span class="ow">in</span> <span class="n">gui_widgets</span><span class="p">:</span>
+            <span class="c1"># print(f&quot;gui_widget {gui_widget}&quot;)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">gui_widget</span><span class="p">)</span>
+            <span class="c1"># See to check if gui_widget is an instance of QFrame to round the border only</span>
+            <span class="c1"># for QFrame instances</span>
+            <span class="n">gui_widget</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span>
+                <span class="s2">&quot;background-color:transparent; border-radius: 20px;&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="o">.</span><span class="n">addStretch</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">save_button</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="MetaDataWidget.keyPressEvent"><a class="viewcode-back" href="../../../gui.html#cicada.gui.metadata_widget.MetaDataWidget.keyPressEvent">[docs]</a>    <span class="k">def</span> <span class="nf">keyPressEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
+        <span class="n">available_background</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;michou_BG.jpg&quot;</span><span class="p">,</span> <span class="s2">&quot;michou_BG2.jp&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">event</span><span class="o">.</span><span class="n">key</span><span class="p">()</span> <span class="o">==</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">Key_A</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">special_background_on</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_style_sheet_background</span> <span class="o">=</span> \
+                    <span class="s2">&quot;.QWidget{background-image:url(</span><span class="se">\&quot;\&quot;</span><span class="s2">); background-position: center;}&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">scroll_area_widget_contents</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_style_sheet_background</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">special_background_on</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">pic_index</span> <span class="o">=</span> <span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">available_background</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="c1"># we add .QWidget so the background is specific to this widget and is not applied by other widgets</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">current_style_sheet_background</span> <span class="o">=</span> <span class="s2">&quot;.QWidget{background-image:url(</span><span class="se">\&quot;</span><span class="s2">cicada/gui/icons/rc/&quot;</span> <span class="o">+</span> \
+                                                      <span class="n">available_background</span><span class="p">[</span><span class="n">pic_index</span><span class="p">]</span> <span class="o">+</span> \
+                                                      <span class="s2">&quot;</span><span class="se">\&quot;</span><span class="s2">); background-position: center; background-repeat:no-repeat;}&quot;</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">scroll_area_widget_contents</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_style_sheet_background</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">special_background_on</span> <span class="o">=</span> <span class="kc">True</span></div>
+
+    <span class="k">def</span> <span class="nf">save_changes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_handler</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata_handler</span><span class="o">.</span><span class="n">save_changes</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="TableWidget"><a class="viewcode-back" href="../../../gui.html#cicada.gui.metadata_widget.TableWidget">[docs]</a><span class="k">class</span> <span class="nc">TableWidget</span><span class="p">(</span><span class="n">QFrame</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metadata_group</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="n">QWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata_group</span> <span class="o">=</span> <span class="n">metadata_group</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metadata_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_group</span><span class="o">.</span><span class="n">metadata_dict</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">table</span> <span class="o">=</span> <span class="n">QTableWidget</span><span class="p">()</span>
+
+        <span class="n">nb_rows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">metadata_dict</span><span class="p">)</span>
+        <span class="n">nb_columns</span> <span class="o">=</span> <span class="mi">4</span>
+        <span class="c1"># TODO : set nb_columns depending of metadata struct</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setRowCount</span><span class="p">(</span><span class="n">nb_rows</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setColumnCount</span><span class="p">(</span><span class="n">nb_columns</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setHorizontalHeaderLabels</span><span class="p">([</span><span class="s2">&quot;metadata name&quot;</span><span class="p">,</span> <span class="s2">&quot;value type&quot;</span><span class="p">,</span> <span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="s2">&quot;description&quot;</span><span class="p">])</span>
+
+        <span class="k">for</span> <span class="n">metadata_to_add</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_dict</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="n">position</span> <span class="o">=</span> <span class="n">metadata_to_add</span><span class="o">.</span><span class="n">position_in_widget</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">metadata_to_add</span><span class="o">.</span><span class="n">metadata_name</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">metadata_to_add</span><span class="o">.</span><span class="n">value_type</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">metadata_to_add</span><span class="o">.</span><span class="n">value</span><span class="p">)))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setItem</span><span class="p">(</span><span class="n">position</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">QTableWidgetItem</span><span class="p">(</span><span class="n">metadata_to_add</span><span class="o">.</span><span class="n">description</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">move</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="c1"># self.table.setVerticalScrollBarPolicy(0)</span>
+        <span class="c1"># self.table.setHorizontalScrollBarPolicy(0)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">resizeColumnsToContents</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">resizeRowsToContents</span><span class="p">()</span>
+
+        <span class="c1"># self.table.setFixedSize(</span>
+        <span class="c1">#     self.table.horizontalHeader().length() + self.table.verticalHeader().width() + 2,</span>
+        <span class="c1">#     self.table.verticalHeader().length() + self.table.horizontalHeader().height() + 2)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;session_data&quot;</span><span class="p">,</span> <span class="s2">&quot;True&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">nb_rows</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;set_height&quot;</span><span class="p">,</span> <span class="s2">&quot;tiny&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">nb_rows</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;set_height&quot;</span><span class="p">,</span> <span class="s2">&quot;small&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">nb_rows</span> <span class="o">&lt;=</span> <span class="mi">8</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;set_height&quot;</span><span class="p">,</span> <span class="s2">&quot;medium&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">nb_rows</span> <span class="o">&lt;=</span> <span class="mi">12</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;set_height&quot;</span><span class="p">,</span> <span class="s2">&quot;big&quot;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">setProperty</span><span class="p">(</span><span class="s2">&quot;set_height&quot;</span><span class="p">,</span> <span class="s2">&quot;gigantic&quot;</span><span class="p">)</span>
+
+        <span class="n">v_box</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metadata_group</span><span class="o">.</span><span class="n">get_group_description</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">description</span><span class="p">:</span>
+            <span class="n">q_label</span> <span class="o">=</span> <span class="n">QLabel</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+            <span class="n">q_label</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignCenter</span><span class="p">)</span>
+            <span class="n">q_label</span><span class="o">.</span><span class="n">setWindowFlags</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">FramelessWindowHint</span><span class="p">)</span>
+            <span class="n">q_label</span><span class="o">.</span><span class="n">setAttribute</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">WA_TranslucentBackground</span><span class="p">)</span>
+            <span class="n">v_box</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="n">q_label</span><span class="p">)</span>
+
+        <span class="n">h_box</span> <span class="o">=</span> <span class="n">QHBoxLayout</span><span class="p">()</span>
+        <span class="n">h_box</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="p">)</span>
+        <span class="n">v_box</span><span class="o">.</span><span class="n">addLayout</span><span class="p">(</span><span class="n">h_box</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">v_box</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metadata_position</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">table</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">metadata_position</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">text</span><span class="p">()</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">app</span> <span class="o">=</span> <span class="n">QApplication</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">)</span>
+    <span class="c1"># Change the path !</span>
+    <span class="c1"># ============================================</span>
+    <span class="n">file_path</span> <span class="o">=</span> <span class="s1">&#39;C:/Users/Public/nwb_files/p6_18_02_07_a002.nwb&#39;</span>
+    <span class="c1"># ============================================</span>
+    <span class="c1"># cicada_metadata_container = CicadaMetaDataContainer(file_path, &quot;nwb&quot;)</span>
+    <span class="n">widget</span> <span class="o">=</span> <span class="n">MetaDataWidget</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;nwb&#39;</span><span class="p">)</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    all_metadata = MetaDataFinder(nwb_file).get_all_metadata_in_nwb()</span>
+<span class="sd">    for metadata, value in all_metadata.items():</span>
+<span class="sd">        print(metadata + &#39;\n&#39;)</span>
+<span class="sd">    for metadata, value in all_metadata.items():</span>
+<span class="sd">        print(metadata + &#39; : &#39; + str(value) + &#39;\n&#39;)</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="n">app</span><span class="o">.</span><span class="n">exec_</span><span class="p">())</span>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, CICADA
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

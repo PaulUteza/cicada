@@ -17,15 +17,19 @@ class CicadaAnalysis(ABC):
     def __init__(self, name, short_description, family_id=None, long_description=None,
                  data_to_analyse=None, data_format=None, config_handler=None):
         """
-        A list of
-        :param name:
-        :param short_description: short string that describe what the analysis is about
-        used to be displayed in the GUI among other things
-        :param family_id: family_id indicated to which family of analysis this class belongs. If None, then
-        the analysis is a family in its own.
-        :param long_description: string
-        :param config_handler: Instance of ConfigHandler to have access to configuration
+
+        Args:
+            name:
+            short_description: short string that describe what the analysis is about
+             used to be displayed in the GUI among other things
+            family_id:  family_id indicated to which family of analysis this class belongs. If None, then
+             the analysis is a family in its own.
+            long_description:
+            data_to_analyse:
+            data_format:
+            config_handler: Instance of ConfigHandler to have access to configuration
         """
+
         super().__init__()
         # TODO: when the exploratory GUI will be built, think about passing in argument some sort of connector
         #  to the GUI in order to communicate with it and get the results displayed if needed
@@ -179,7 +183,7 @@ class CicadaAnalysis(ABC):
         self.add_argument_for_gui(**range_arg)
 
    
-   def get_data_to_analyse(self):
+    def get_data_to_analyse(self):
 
         """
 
