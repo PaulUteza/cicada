@@ -1,0 +1,460 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>cicada.preprocessing.convert_ci_movie_to_nwb &mdash; CICADA 1.0 documentation</title>
+  
+
+  
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../../../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script type="text/javascript" src="../../../_static/jquery.js"></script>
+        <script type="text/javascript" src="../../../_static/underscore.js"></script>
+        <script type="text/javascript" src="../../../_static/doctools.js"></script>
+        <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="search" type="application/opensearchdescription+xml"
+          title="Search within CICADA 1.0 documentation"
+          href="../../../_static/opensearch.xml"/>
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: white" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> CICADA
+          
+
+          
+          </a>
+
+          
+            
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../preprocessing.html">Pre-processing</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.cicada_data_to_nwb">Data to NWB</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.cicada_preprocessing_run">Run preprocessing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_to_nwb">NWB file class</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_suite_2p_rois_to_nwb">Suite 2P ROIs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_processed_2d_series_to_nwb">2D series</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_ci_movie_to_nwb">Calcium imaging movie</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_abf_to_nwb">ABF</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.utils">Utils</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">CICADA</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>cicada.preprocessing.convert_ci_movie_to_nwb</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for cicada.preprocessing.convert_ci_movie_to_nwb</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">cicada.preprocessing.convert_to_nwb</span> <span class="k">import</span> <span class="n">ConvertToNWB</span>
+<span class="kn">from</span> <span class="nn">PIL</span> <span class="k">import</span> <span class="n">ImageSequence</span>
+<span class="kn">from</span> <span class="nn">ScanImageTiffReader</span> <span class="k">import</span> <span class="n">ScanImageTiffReader</span>
+<span class="kn">import</span> <span class="nn">PIL</span>
+<span class="kn">import</span> <span class="nn">PIL.Image</span> <span class="k">as</span> <span class="nn">pil_image</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span> <span class="nn">pynwb.ophys</span> <span class="k">import</span> <span class="n">TwoPhotonSeries</span><span class="p">,</span> <span class="n">OpticalChannel</span><span class="p">,</span> <span class="n">CorrectedImageStack</span>
+<span class="kn">import</span> <span class="nn">yaml</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">hdf5storage</span>
+<span class="kn">from</span> <span class="nn">pynwb.base</span> <span class="k">import</span> <span class="n">TimeSeries</span>
+<span class="kn">from</span> <span class="nn">pynwb.device</span> <span class="k">import</span> <span class="n">Device</span>
+
+<div class="viewcode-block" id="ConvertCiMovieToNWB"><a class="viewcode-back" href="../../../preprocessing.html#cicada.preprocessing.convert_ci_movie_to_nwb.ConvertCiMovieToNWB">[docs]</a><span class="k">class</span> <span class="nc">ConvertCiMovieToNWB</span><span class="p">(</span><span class="n">ConvertToNWB</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class to convert Calcium Imaging movies to NWB&quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">nwb_file</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize some parameters</span>
+<span class="sd">        Args:</span>
+<span class="sd">             nwb_file (NWB.File) : NWB file object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">nwb_file</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ci_sampling_rate</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="c1"># dict with key an int representing the frame index after which add frames.</span>
+        <span class="c1"># the value is the number of frames to add (integer)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">frames_to_add</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+
+
+<div class="viewcode-block" id="ConvertCiMovieToNWB.load_tiff_movie_in_memory_using_pil"><a class="viewcode-back" href="../../../preprocessing.html#cicada.preprocessing.convert_ci_movie_to_nwb.ConvertCiMovieToNWB.load_tiff_movie_in_memory_using_pil">[docs]</a>    <span class="k">def</span> <span class="nf">load_tiff_movie_in_memory_using_pil</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tif_movie_file_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Load tiff movie from filename using PIL library</span>
+
+<span class="sd">            Args:</span>
+<span class="sd">                tif_movie_file_name (str) : Absolute path to tiff movie</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                tiff_movie (array) : Tiff movie as 3D-array</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">start_time_timer</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">im</span> <span class="o">=</span> <span class="n">pil_image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">tif_movie_file_name</span><span class="p">)</span>
+        <span class="n">n_frames</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">ImageSequence</span><span class="o">.</span><span class="n">Iterator</span><span class="p">(</span><span class="n">im</span><span class="p">)))</span>
+        <span class="n">dim_y</span><span class="p">,</span> <span class="n">dim_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">im</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;n_frames </span><span class="si">{n_frames}</span><span class="s2">, dim_x </span><span class="si">{dim_x}</span><span class="s2">, dim_y </span><span class="si">{dim_y}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frames_to_add</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">n_frames</span> <span class="o">+=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">frames_to_add</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+        <span class="n">tiff_movie</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_frames</span><span class="p">,</span> <span class="n">dim_y</span><span class="p">,</span> <span class="n">dim_x</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;uint16&quot;</span><span class="p">)</span>
+        <span class="n">frame_index</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">frame</span><span class="p">,</span> <span class="n">page</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ImageSequence</span><span class="o">.</span><span class="n">Iterator</span><span class="p">(</span><span class="n">im</span><span class="p">)):</span>
+            <span class="n">tiff_movie</span><span class="p">[</span><span class="n">frame_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
+            <span class="n">frame_index</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="c1"># adding blank frames</span>
+            <span class="k">if</span> <span class="n">frame</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">frames_to_add</span><span class="p">:</span>
+                <span class="n">frame_index</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frames_to_add</span><span class="p">[</span><span class="n">frame</span><span class="p">]</span>
+        <span class="n">stop_time_timer</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Time for loading movie: &quot;</span>
+              <span class="n">f</span><span class="s2">&quot;{np.round(stop_time_timer - start_time_timer, 3)} s&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tiff_movie</span></div>
+
+<div class="viewcode-block" id="ConvertCiMovieToNWB.load_tiff_movie_in_memory"><a class="viewcode-back" href="../../../preprocessing.html#cicada.preprocessing.convert_ci_movie_to_nwb.ConvertCiMovieToNWB.load_tiff_movie_in_memory">[docs]</a>    <span class="k">def</span> <span class="nf">load_tiff_movie_in_memory</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tif_movie_file_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">            Load tiff movie from filename using Scan Image Tiff</span>
+
+<span class="sd">            Args:</span>
+<span class="sd">                tif_movie_file_name (str) : Absolute path to tiff movie</span>
+
+<span class="sd">            Returns:</span>
+<span class="sd">                tiff_movie (array) : Tiff movie as 3D-array</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">tif_movie_file_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Loading movie&quot;</span><span class="p">)</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">if</span> <span class="s1">&#39;ci_recording_on_pause&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nwb_file</span><span class="o">.</span><span class="n">intervals</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_tiff_movie_in_memory_using_pil</span><span class="p">(</span><span class="n">tif_movie_file_name</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                    <span class="n">tiff_movie</span> <span class="o">=</span> <span class="n">ScanImageTiffReader</span><span class="p">(</span><span class="n">tif_movie_file_name</span><span class="p">)</span><span class="o">.</span><span class="n">data</span><span class="p">()</span>
+                    <span class="n">stop_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Time for loading movie with scan_image_tiff: &quot;</span>
+                          <span class="n">f</span><span class="s2">&quot;{np.round(stop_time - start_time, 3)} s&quot;</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_tiff_movie_in_memory_using_pil</span><span class="p">(</span><span class="n">tif_movie_file_name</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">tiff_movie</span></div>
+
+<div class="viewcode-block" id="ConvertCiMovieToNWB.convert"><a class="viewcode-back" href="../../../preprocessing.html#cicada.preprocessing.convert_ci_movie_to_nwb.ConvertCiMovieToNWB.convert">[docs]</a>    <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert the data and add to the nwb_file</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            **kwargs: arbitrary arguments</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># ### setting parameters ####</span>
+        <span class="n">formats_implemented</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;external&quot;</span><span class="p">,</span> <span class="s2">&quot;tiff&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;format&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;&#39;format&#39; argument should be pass to convert function in class </span><span class="si">{self.__class__.__name__}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;format&quot;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">formats_implemented</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;&#39;format&#39; argument should have one of these values </span><span class="si">{formats_implemented}</span><span class="s2"> &quot;</span>
+                            <span class="n">f</span><span class="s2">&quot;for the convert function in class </span><span class="si">{self.__class__.__name__}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">movie_format</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;format&quot;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;motion_corrected_file_name&quot;</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;&#39;motion_corrected_file_name&#39; attribute should be pass to convert &quot;</span>
+                            <span class="n">f</span><span class="s2">&quot;function in class </span><span class="si">{self.__class__.__name__}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">motion_corrected_file_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;motion_corrected_file_name&quot;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="s2">&quot;original_movie_file_name&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">original_movie_file_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;original_movie_file_name&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">original_movie_file_name</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="s2">&quot;xy_translation_file_name&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">xy_translation_file_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;xy_translation_file_name&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">xy_translation_file_name</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Open YAML file with metadata if existing then dump all data in a dict</span>
+        <span class="k">if</span> <span class="p">(</span><span class="s2">&quot;yaml_file_name&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">)</span> <span class="ow">and</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;yaml_file_name&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;yaml_file_name&quot;</span><span class="p">],</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">stream</span><span class="p">:</span>
+                <span class="n">yaml_data</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;&#39;yaml_file_name&#39; attribute should be pass to convert &quot;</span>
+                            <span class="n">f</span><span class="s2">&quot;function in class </span><span class="si">{self.__class__.__name__}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># a calcium imaging rate has to be given, either trought the yaml file, either as argument</span>
+        <span class="c1"># self.ci_sampling_rate can be obtained by the abf_converter</span>
+        <span class="k">if</span> <span class="s2">&quot;imaging_rate&quot;</span> <span class="ow">in</span> <span class="n">yaml_data</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ci_sampling_rate</span> <span class="o">=</span> <span class="n">yaml_data</span><span class="p">[</span><span class="s2">&quot;imaging_rate&quot;</span><span class="p">]</span>
+        <span class="k">elif</span> <span class="s2">&quot;ci_sampling_rate&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ci_sampling_rate</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;ci_sampling_rate&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;No &#39;imaging_rate&#39; provided for movie </span><span class="si">{motion_corrected_file_name}</span><span class="s2"> in the yaml file &quot;</span>
+                            <span class="n">f</span><span class="s2">&quot;</span><span class="si">{kwargs[&#39;yaml_file_name&#39;]}</span><span class="s2"> or throught argument &#39;ci_sampling_rate&#39; to function convert() &quot;</span>
+                            <span class="n">f</span><span class="s2">&quot;of the class </span><span class="si">{self.__class__.__name__}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;indicator&quot;</span> <span class="ow">in</span> <span class="n">yaml_data</span><span class="p">:</span>
+            <span class="n">indicator</span> <span class="o">=</span> <span class="n">yaml_data</span><span class="p">[</span><span class="s2">&quot;indicator&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;No &#39;indicator&#39; provided for movie </span><span class="si">{motion_corrected_file_name}</span><span class="s2"> in the yaml file &quot;</span>
+                            <span class="n">f</span><span class="s2">&quot;</span><span class="si">{kwargs[&#39;yaml_file_name&#39;]}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;excitation_lambda&quot;</span> <span class="ow">in</span> <span class="n">yaml_data</span><span class="p">:</span>
+            <span class="n">excitation_lambda</span> <span class="o">=</span> <span class="n">yaml_data</span><span class="p">[</span><span class="s2">&quot;excitation_lambda&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;No &#39;excitation_lambda&#39; provided for movie </span><span class="si">{motion_corrected_file_name}</span><span class="s2"> in the yaml file &quot;</span>
+                            <span class="n">f</span><span class="s2">&quot;</span><span class="si">{kwargs[&#39;yaml_file_name&#39;]}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;emission_lambda&quot;</span> <span class="ow">in</span> <span class="n">yaml_data</span><span class="p">:</span>
+            <span class="n">emission_lambda</span> <span class="o">=</span> <span class="n">yaml_data</span><span class="p">[</span><span class="s2">&quot;emission_lambda&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;No &#39;emission_lambda&#39; provided for movie </span><span class="si">{motion_corrected_file_name}</span><span class="s2"> in the yaml file &quot;</span>
+                            <span class="n">f</span><span class="s2">&quot;</span><span class="si">{kwargs[&#39;yaml_file_name&#39;]}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="s2">&quot;image_plane_location&quot;</span> <span class="ow">in</span> <span class="n">yaml_data</span><span class="p">:</span>
+            <span class="n">image_plane_location</span> <span class="o">=</span> <span class="n">yaml_data</span><span class="p">[</span><span class="s2">&quot;image_plane_location&quot;</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span>
+                <span class="n">f</span><span class="s2">&quot;No &#39;image_plane_location&#39; provided for movie </span><span class="si">{motion_corrected_file_name}</span><span class="s2"> in the yaml file &quot;</span>
+                <span class="n">f</span><span class="s2">&quot;</span><span class="si">{kwargs[&#39;yaml_file_name&#39;]}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">try</span> <span class="p">:</span>
+            <span class="k">if</span> <span class="s1">&#39;ci_recording_on_pause&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">nwb_file</span><span class="o">.</span><span class="n">intervals</span><span class="p">:</span>
+                <span class="n">pause_intervals</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nwb_file</span><span class="o">.</span><span class="n">intervals</span><span class="p">[</span><span class="s1">&#39;ci_recording_on_pause&#39;</span><span class="p">]</span>
+                <span class="n">pause_intervals_df</span> <span class="o">=</span> <span class="n">pause_intervals</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>
+                <span class="n">start_times</span> <span class="o">=</span> <span class="n">pause_intervals_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s2">&quot;start_time&quot;</span><span class="p">]</span>
+                <span class="n">stop_times</span> <span class="o">=</span> <span class="n">pause_intervals_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s2">&quot;stop_time&quot;</span><span class="p">]</span>
+
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">ci_frames_time_series</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nwb_file</span><span class="o">.</span><span class="n">get_acquisition</span><span class="p">(</span><span class="s2">&quot;ci_frames&quot;</span><span class="p">)</span>
+                    <span class="n">ci_frames</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">ci_frames_time_series</span><span class="o">.</span><span class="n">data</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+                    <span class="n">ci_frames_timestamps</span> <span class="o">=</span> <span class="n">ci_frames_time_series</span><span class="o">.</span><span class="n">timestamps</span><span class="p">[</span><span class="n">ci_frames</span><span class="p">]</span>
+                    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">start_time</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">start_times</span><span class="p">):</span>
+                        <span class="n">frame_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">a</span><span class="o">=</span><span class="n">ci_frames_timestamps</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="n">start_time</span><span class="p">)</span>
+                        <span class="n">n_frames_to_add</span> <span class="o">=</span> <span class="p">(</span><span class="n">stop_times</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ci_sampling_rate</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">frames_to_add</span><span class="p">[</span><span class="n">frame_index</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_frames_to_add</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                    <span class="k">pass</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
+        <span class="c1"># ### end setting parameters ####</span>
+
+        <span class="n">device</span> <span class="o">=</span> <span class="n">Device</span><span class="p">(</span><span class="s1">&#39;2P_device&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">nwb_file</span><span class="o">.</span><span class="n">add_device</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+        <span class="n">optical_channel</span> <span class="o">=</span> <span class="n">OpticalChannel</span><span class="p">(</span><span class="s1">&#39;my_optchan&#39;</span><span class="p">,</span> <span class="s1">&#39;description&#39;</span><span class="p">,</span> <span class="n">emission_lambda</span><span class="p">)</span>
+
+        <span class="n">imaging_plane</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">nwb_file</span><span class="o">.</span><span class="n">create_imaging_plane</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;my_imgpln&#39;</span><span class="p">,</span>
+                                                           <span class="n">optical_channel</span><span class="o">=</span><span class="n">optical_channel</span><span class="p">,</span>
+                                                           <span class="n">description</span><span class="o">=</span><span class="s1">&#39;a very interesting part of the brain&#39;</span><span class="p">,</span>
+                                                           <span class="n">device</span><span class="o">=</span><span class="n">device</span><span class="p">,</span>
+                                                           <span class="n">excitation_lambda</span><span class="o">=</span><span class="n">excitation_lambda</span><span class="p">,</span>
+                                                           <span class="n">imaging_rate</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ci_sampling_rate</span><span class="p">),</span>
+                                                           <span class="n">indicator</span><span class="o">=</span><span class="n">indicator</span><span class="p">,</span>
+                                                           <span class="n">location</span><span class="o">=</span><span class="n">image_plane_location</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">movie_format</span> <span class="o">!=</span> <span class="s2">&quot;external&quot;</span><span class="p">:</span>
+            <span class="n">tiff_movie</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_tiff_movie_in_memory</span><span class="p">(</span><span class="n">motion_corrected_file_name</span><span class="p">)</span>
+            <span class="n">dim_y</span><span class="p">,</span> <span class="n">dim_x</span> <span class="o">=</span> <span class="n">tiff_movie</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+            <span class="n">n_frames</span> <span class="o">=</span> <span class="n">tiff_movie</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="n">motion_corrected_img_series</span> <span class="o">=</span> <span class="n">TwoPhotonSeries</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;motion_corrected_ci_movie&#39;</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="p">[</span><span class="n">dim_x</span><span class="p">,</span> <span class="n">dim_y</span><span class="p">],</span>
+                                                          <span class="n">data</span><span class="o">=</span><span class="n">tiff_movie</span><span class="p">,</span>
+                                                          <span class="n">imaging_plane</span><span class="o">=</span><span class="n">imaging_plane</span><span class="p">,</span>
+                                                          <span class="n">starting_frame</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="n">movie_format</span><span class="p">,</span>
+                                                          <span class="n">rate</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ci_sampling_rate</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">original_movie_file_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">original_tiff_movie</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load_tiff_movie_in_memory</span><span class="p">(</span><span class="n">original_movie_file_name</span><span class="p">)</span>
+                <span class="n">dim_y</span><span class="p">,</span> <span class="n">dim_x</span> <span class="o">=</span> <span class="n">original_tiff_movie</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+                <span class="n">original_img_series</span> <span class="o">=</span> <span class="n">TwoPhotonSeries</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;original_ci_movie&#39;</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="p">[</span><span class="n">dim_x</span><span class="p">,</span> <span class="n">dim_y</span><span class="p">],</span>
+                                                      <span class="n">data</span><span class="o">=</span><span class="n">original_tiff_movie</span><span class="p">,</span>
+                                                      <span class="n">imaging_plane</span><span class="o">=</span><span class="n">imaging_plane</span><span class="p">,</span>
+                                                      <span class="n">starting_frame</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="n">movie_format</span><span class="p">,</span>
+                                                      <span class="n">rate</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ci_sampling_rate</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">im</span> <span class="o">=</span> <span class="n">PIL</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">motion_corrected_file_name</span><span class="p">)</span>
+            <span class="n">n_frames</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">ImageSequence</span><span class="o">.</span><span class="n">Iterator</span><span class="p">(</span><span class="n">im</span><span class="p">)))</span>
+            <span class="n">dim_y</span><span class="p">,</span> <span class="n">dim_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">im</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
+            <span class="n">motion_corrected_img_series</span> <span class="o">=</span> <span class="n">TwoPhotonSeries</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;motion_corrected_ci_movie&#39;</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="p">[</span><span class="n">dim_x</span><span class="p">,</span> <span class="n">dim_y</span><span class="p">],</span>
+                                                          <span class="n">external_file</span><span class="o">=</span><span class="p">[</span><span class="n">motion_corrected_file_name</span><span class="p">],</span>
+                                                          <span class="n">imaging_plane</span><span class="o">=</span><span class="n">imaging_plane</span><span class="p">,</span>
+                                                          <span class="n">starting_frame</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="n">movie_format</span><span class="p">,</span>
+                                                          <span class="n">rate</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ci_sampling_rate</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">original_movie_file_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">im</span> <span class="o">=</span> <span class="n">PIL</span><span class="o">.</span><span class="n">Image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">original_movie_file_name</span><span class="p">)</span>
+                <span class="n">dim_y</span><span class="p">,</span> <span class="n">dim_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">im</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span>
+                <span class="n">original_img_series</span> <span class="o">=</span> <span class="n">TwoPhotonSeries</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s1">&#39;original_ci_movie&#39;</span><span class="p">,</span>
+                                                      <span class="n">dimension</span><span class="o">=</span><span class="p">[</span><span class="n">dim_x</span><span class="p">,</span> <span class="n">dim_y</span><span class="p">],</span>
+                                                      <span class="n">external_file</span><span class="o">=</span><span class="p">[</span><span class="n">original_movie_file_name</span><span class="p">],</span>
+                                                      <span class="n">imaging_plane</span><span class="o">=</span><span class="n">imaging_plane</span><span class="p">,</span>
+                                                      <span class="n">starting_frame</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nb">format</span><span class="o">=</span><span class="n">movie_format</span><span class="p">,</span>
+                                                      <span class="n">rate</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ci_sampling_rate</span><span class="p">))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">nwb_file</span><span class="o">.</span><span class="n">add_acquisition</span><span class="p">(</span><span class="n">motion_corrected_img_series</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">original_movie_file_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">nwb_file</span><span class="o">.</span><span class="n">add_acquisition</span><span class="p">(</span><span class="n">original_img_series</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">xy_translation_file_name</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">xy_translation_file_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.mat&quot;</span><span class="p">):</span>
+                <span class="n">mvt_x_y</span> <span class="o">=</span> <span class="n">hdf5storage</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">xy_translation_file_name</span><span class="p">))</span>
+                <span class="n">x_shifts</span> <span class="o">=</span> <span class="n">mvt_x_y</span><span class="p">[</span><span class="s1">&#39;xshifts&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+                <span class="n">y_shifts</span> <span class="o">=</span> <span class="n">mvt_x_y</span><span class="p">[</span><span class="s1">&#39;yshifts&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">elif</span> <span class="n">xy_translation_file_name</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.npy&quot;</span><span class="p">):</span>
+                <span class="n">ops</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">xy_translation_file_name</span><span class="p">))</span>
+                <span class="n">ops</span> <span class="o">=</span> <span class="n">ops</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+                <span class="n">x_shifts</span> <span class="o">=</span> <span class="n">ops</span><span class="p">[</span><span class="s1">&#39;xoff&#39;</span><span class="p">]</span>
+                <span class="n">y_shifts</span> <span class="o">=</span> <span class="n">ops</span><span class="p">[</span><span class="s1">&#39;yoff&#39;</span><span class="p">]</span>
+            <span class="n">xy_translation</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_frames</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;int16&quot;</span><span class="p">)</span>
+            <span class="n">frame_index</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">frame</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x_shifts</span><span class="p">)):</span>
+                <span class="n">xy_translation</span><span class="p">[</span><span class="n">frame_index</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">x_shifts</span><span class="p">[</span><span class="n">frame</span><span class="p">]</span>
+                <span class="n">xy_translation</span><span class="p">[</span><span class="n">frame_index</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_shifts</span><span class="p">[</span><span class="n">frame</span><span class="p">]</span>
+                <span class="c1"># adding frames is necessary, in case the movie would be a concatenation of movie for exemple</span>
+                <span class="k">if</span> <span class="n">frame</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">frames_to_add</span><span class="p">:</span>
+                    <span class="n">frame_index</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">frames_to_add</span><span class="p">[</span><span class="n">frame</span><span class="p">]</span>
+            <span class="n">xy_translation_time_series</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;xy_translation&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">xy_translation</span><span class="p">)</span>
+            <span class="n">corrected_image_stack</span> <span class="o">=</span> <span class="n">CorrectedImageStack</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;CorrectedImageStack&quot;</span><span class="p">,</span>
+                                                        <span class="n">corrected</span><span class="o">=</span><span class="n">motion_corrected_img_series</span><span class="p">,</span>
+                                                        <span class="n">original</span><span class="o">=</span><span class="n">original_img_series</span><span class="p">,</span>
+                                                        <span class="n">xy_translation</span><span class="o">=</span><span class="n">xy_translation_time_series</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">nwb_file</span><span class="o">.</span><span class="n">add_acquisition</span><span class="p">(</span><span class="n">corrected_image_stack</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, CICADA
+
+    </p>
+  </div> 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

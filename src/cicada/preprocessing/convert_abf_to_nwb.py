@@ -41,7 +41,7 @@ class ConvertAbfToNWB(ConvertToNWB):
         again. The time interval containing this information is named "ci_recording_on_pause" and you can get it
         doing:
         if 'ci_recording_on_pause' in nwb_file.intervals:
-            pause_intervals = nwb_file.intervals['ci_recording_on_pause']
+        pause_intervals = nwb_file.intervals['ci_recording_on_pause']
 
         Args:
             **kwargs (dict) : kwargs is a dictionary, potentials keys and values types are:

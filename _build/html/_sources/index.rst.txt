@@ -1,3 +1,4 @@
+==================================
 Welcome to CICADA's documentation!
 ==================================
 
@@ -16,61 +17,19 @@ Vivamus lacinia nibh mauris, quis tristique odio dictum eu. Aliquam erat volutpa
 
 Donec sed ipsum blandit, consectetur neque vel, luctus diam. Morbi ullamcorper justo sit amet elit iaculis, ac pulvinar felis pellentesque. Ut laoreet velit eget neque pretium dictum. Maecenas neque massa, sollicitudin a massa et, condimentum mattis neque. Pellentesque et convallis enim, at lacinia dui. Cras et maximus nibh. Pellentesque id dapibus odio. Aliquam semper massa sit amet ex accumsan congue. Sed rutrum tempor elit at porta. Suspendisse ullamcorper eu dolor et imperdiet.
 
+.. topic:: Pre-processing
 
-.. autosummary::
-    :toctree:
+    Pre-processing part of CICADA
 
+.. toctree::
+    :maxdepth: 2
 
-Data to NWB
-===========
-
-.. automodule:: cicada.preprocessing.cicada_data_to_nwb
-    :members:
+    preprocessing
 
 
 
-Run preprocessing
-=================
 
-.. automodule:: cicada.preprocessing.cicada_preprocessing_run
-    :members:
-
-NWB file class
-==============
-
-.. automodule:: cicada.preprocessing.convert_to_nwb
-    :members:
-
-Suite 2P ROIs
-=============
-
-.. automodule:: cicada.preprocessing.convert_suite2p_rois_to_nwb
-    :members:
-
-2D series
-=========
-
-.. automodule:: cicada.preprocessing.convert_processed_2d_series_to_nwb
-    :members:
-
-Calcium imaging movie
-=====================
-
-.. automodule:: cicada.preprocessing.convert_ci_movie_to_nwb
-    :members:
-
-ABF
-===
-
-.. automodule:: cicada.preprocessing.convert_abf_to_nwb
-    :members:
-
-Utils
-=====
-
-.. automodule:: cicada.preprocessing.utils
-    :members:
-
+==================
 Indices and tables
 ==================
 * :ref:`genindex`
