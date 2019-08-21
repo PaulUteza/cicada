@@ -1,7 +1,6 @@
 import yaml
 import os
-import cicada.preprocessing.utils
-from cicada.preprocessing.utils import class_name_to_file_name
+from cicada.preprocessing.utils import class_name_to_file_name, get_subfiles, get_subdirs
 import importlib
 from pynwb import NWBHDF5IO
 from pynwb import NWBFile
@@ -41,7 +40,7 @@ def filter_list_of_files(dir_path, files, extensions, directory=None):
         # if directory is a list, it means we're going though a list of directory, following the depth order
         if isinstance(directory, str):
             directory = [directory]
-        files = utils.get_subfiles(os.path.join(dir_path, *directory))
+        files = get_subfiles(os.path.join(dir_path, *directory))
 
     if not extensions:
         filtered_list = [file for file in files if not file.startswith(".")]
@@ -188,8 +187,8 @@ def convert_data_to_nwb(data_to_convert_dir, default_convert_to_nwb_yml_file, nw
 
     """
     # Get all files and directories present in the path
-    files = utils.get_subfiles(data_to_convert_dir)
-    dirs = utils.get_subdirs(data_to_convert_dir)
+    files = get_subfiles(data_to_convert_dir)
+    dirs = get_subdirs(data_to_convert_dir)
     files = files + dirs
 
     default_config_data_for_conversion = None
@@ -274,7 +273,7 @@ def convert_data_to_nwb(data_to_convert_dir, default_convert_to_nwb_yml_file, nw
                                  default_convert_to_nwb_yml_file, files, data_to_convert_dir)
 
     # Create NWB file in the data folder
-    # nwb_name = utils.path_leaf(data_to_convert_dir) + ".nwb"
+    # nwb_name = path_leaf(data_to_convert_dir) + ".nwb"
     # adding the time of creation of the file, to make sure we don't erase another one
     time_str = datetime.now().strftime("%Y_%m_%d.%H-%M-%S")
     nwb_name = nwb_file.identifier + "_" + time_str + ".nwb"
