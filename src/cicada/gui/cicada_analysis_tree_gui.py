@@ -5,12 +5,8 @@ from sortedcontainers import SortedDict
 from cicada.preprocessing.utils import class_name_to_file_name
 from cicada.gui.cicada_analysis_parameters_gui import AnalysisPackage
 import importlib
-from threading import Thread
-import threading
 import sys
-from copy import copy, deepcopy
 from random import randint, choice
-import string
 
 """
 Interesting exemples:

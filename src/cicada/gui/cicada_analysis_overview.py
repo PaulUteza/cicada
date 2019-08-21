@@ -1,20 +1,15 @@
 from qtpy.QtWidgets import *
-from qtpy.QtCore import QAbstractItemModel, QModelIndex, Qt
-import numpy as np
+from qtpy.QtCore import Qt
 import os
 from qtpy import QtCore
-from qtpy.QtCore import QThread
 from random import randint
-# from cicada.gui.cicada_analysis_parameters_gui import AnalysisPackage
-import gc
 from functools import partial
 import subprocess
-from time import time, sleep
 import sys
 
 
 class AnalysisOverview(QWidget):
-
+    """Class containing the overview linked to an analysis"""
     def __init__(self, parent=None):
         QWidget.__init__(self, parent=parent)
 
@@ -44,7 +39,7 @@ class AnalysisOverview(QWidget):
 
     def add_analysis_overview(self, cicada_analysis, analysis_id, obj):
         """
-        Add a widget to track the corresponding analysis
+        Add widgets to track the corresponding analysis
         Args:
             cicada_analysis (CicadaAnalysis): CicadaAnalysis instance
             analysis_id (str): Randomly generated ID linked to the analysis
@@ -93,8 +88,15 @@ class AnalysisOverview(QWidget):
 
 
 class AnalysisState(QHBoxLayout):
-
+    """Class containing the name of the analysis and the subjects analysed"""
     def __init__(self, analysis_id, cicada_analysis, parent=None, without_bringing_to_front=False):
+        """
+
+        Args:
+            analysis_id (QWidget): Corresponding analysis widget object
+            cicada_analysis (CicadaAnalysis): Chosen analysis
+            without_bringing_to_front (bool): If true remove the change of color for the QLabel when hover state
+        """
         super().__init__(parent)
 
         self.q_scroll_bar = QScrollArea()
@@ -138,12 +140,21 @@ class AnalysisState(QHBoxLayout):
         # self.addStretch(1)
 
     def bring_to_front(self, window_id, event):
-        """Bring corresponding analysis window to the front (re-routed from the double click method)"""
+        """
+        Bring corresponding analysis window to the front (re-routed from the double click method)
+
+        Args:
+            window_id (QWidget) : Analysis Widget object
+            event (QEvent) : Double click event
+        """
         window_id.setWindowState(window_id.windowState() & ~QtCore.Qt.WindowMinimized | QtCore.Qt.WindowActive)
+        # For Windows/Linux
         window_id.activateWindow()
+        # For Mac
         window_id.raise_()
 
     def deleteLater(self):
+        """Re-implementation of the deleteLater method to properly delete the whole widget"""
         try:
             self.q_label_analysis_name.deleteLater()
             self.q_label_data_identifiers.deleteLater()
@@ -152,8 +163,13 @@ class AnalysisState(QHBoxLayout):
 
 
 class ResultsButton(QHBoxLayout):
-
+    """Class containing the button to open the result folder"""
     def __init__(self, cicada_analysis):
+        """
+
+        Args:
+            cicada_analysis (CicadaAnalysis): Chosen analysis
+        """
         super().__init__()
         self.result_button = QPushButton()
         self.result_button.setEnabled(False)
@@ -163,6 +179,7 @@ class ResultsButton(QHBoxLayout):
         self.result_button.clicked.connect(self.open_explorer)
 
     def open_explorer(self):
+        """Open the file explorer depending on the OS"""
         if self.result_path is None:
             pass
         else:
@@ -174,6 +191,7 @@ class ResultsButton(QHBoxLayout):
                 subprocess.run(['explorer', os.path.realpath(self.result_path)])
 
     def deleteLater(self):
+        """Re-implementation of the deleteLater method to properly delete the widget"""
         try:
             self.result_button.deleteLater()
         except RuntimeError:
