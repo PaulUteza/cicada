@@ -538,7 +538,7 @@ class CicadaMainWindow(QMainWindow):
         self.fileMenu.addAction(self.saveGroupMenu)
         self.saveGroupMenu.triggered.connect(self.musketeers_widget.session_widget.save_group)
 
-    def closeEvent(self, *args, **kwargs):
+    def closeEvent(self, event):
         """
         Close all analysises windows on main window close
         (uses Garbage Collector to get a list of them and close them, might be a better and faster way)
@@ -549,6 +549,11 @@ class CicadaMainWindow(QMainWindow):
                     obj.close()
         for obj in self.object_created:
             obj.close()
+        for obj in gc.get_objects():
+            if isinstance(obj, AnalysisPackage):
+                if not obj.quit:
+                    event.ignore()
+                    break
 
 
 class AllGroups(QWidget):

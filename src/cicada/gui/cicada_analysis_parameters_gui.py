@@ -1006,6 +1006,7 @@ class AnalysisPackage(QWidget):
             self.confirm_quit.setDefaultButton(QMessageBox.No)
             if self.confirm_quit.exec() == QMessageBox.Yes:
                 self.progress_bar.setEnabled(False)
+                self.quit = True
                 self.close()
                 for obj in gc.get_objects():
                     if isinstance(obj, Worker):
@@ -1023,6 +1024,7 @@ class AnalysisPackage(QWidget):
                                     eval('obj.' + attr + '.setParent(None)')
                                     eval('obj.' + attr + '.deleteLater()')
             else:
+                self.quit = False
                 event.ignore()
 
         else:
