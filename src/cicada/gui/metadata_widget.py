@@ -13,17 +13,77 @@ from pynwb.core import LabelledDict
 from pynwb.file import NWBFile, Subject, ProcessingModule
 import hdmf
 from shutil import copyfile
-
+from h5py import File
 
 # Find all metadata in NWB
 class NWBMetaDataFinder:
 
     def __init__(self, data_path):
+
         self.data_path = data_path
         self.data_file = self.get_data_file()
-        self.metadata_from_data_file = self.get_general_metadata_in_nwb()
-        self.subject_metadata_from_data_file = self.get_subject_metadata_in_nwb(self.metadata_from_data_file['subject'])
+        self.subject = getattr(self.data_file, 'subject', None)
         self.containers_from_data_file = self.get_containers_in_nwb()
+
+        self.general_metadata_list = ['session_description', 'identifier', 'session_start_time', 'file_create_date',
+                                      'timestamps_reference_time', 'experimenter', 'experiment_description',
+                                      'session_id', 'institution', 'keywords', 'notes', 'pharmacology', 'protocol',
+                                      'related_publications', 'slices', 'source_script', 'source_script_file_name',
+                                      'data_collection', 'surgery', 'virus', 'stimulus_notes', 'lab']
+
+        self.subject_metadata_list = ["age", "description", "genotype", "sex", "species", "subject_id",
+                                      "weight", "date_of_birth"]
+
+        self.description_metadata = {'session_description': 'a description of the session where this data was generated',
+                                     'identifier': 'a unique text identifier for the file',
+                                     'session_start_time': 'the start date and time of the recording session',
+                                     'file_create_date': 'the date and time the file was created and\n'
+                                                         'subsequent modifications made',
+                                     'timestamps_reference_time': 'date and time corresponding to time zero\n'
+                                                                  'of all timestamps; defaults to value of\n'
+                                                                  'session_start_time',
+                                     'experimenter': 'name of person who performed experiment',
+                                     'experiment_description': 'general description of the experiment',
+                                     'session_id': 'lab-specific ID for the session',
+                                     'institution': 'institution(s) where experiment is performed',
+                                     'keywords': 'Terms to search over',
+                                     'notes': 'Notes about the experiment',
+                                     'pharmacology': 'Description of drugs used, including how and when\n'
+                                                     'they were administered. Anesthesia(s), painkiller(s), etc.,\n'
+                                                     'plus dosage, concentration, etc.',
+                                     'protocol': 'Experimental protocol, if applicable. E.g., include IACUC protocol',
+                                     'related_publications': 'Publication information.PMID, DOI, URL, etc.\n'
+                                                             'If multiple, concatenate together and describe\n'
+                                                             'which is which. such as PMID, DOI, URL, etc',
+                                     'slices': 'Description of slices, including information about\n'
+                                               'preparation thickness, orientation, temperature and bath solution',
+                                     'source_script': 'Script file used to create this NWB file.',
+                                     'source_script_file_name': 'Name of the source_script file',
+                                     'data_collection': 'Notes about data collection and analysis',
+                                     'surgery': 'Narrative description about surgery/surgeries,\n'
+                                                'including date(s) and who performed surgery.',
+                                     'virus': 'Information about virus(es) used in experiments, including virus ID,\n'
+                                              'source, date made, injection location, volume, etc.',
+                                     'stimulus_notes': 'Notes about stimuli, such as how and where presented.',
+                                     'lab': 'lab where experiment was performed',
+                                     'age': 'the age of the subject',
+                                     'description': 'a description of the subject',
+                                     'genotype': 'the genotype of the subject',
+                                     'sex': 'the sex of the subject',
+                                     'species': 'the species of the subject',
+                                     'subject_id': 'a unique identifier for the subject',
+                                     'weight': 'the weight of the subject',
+                                     'date_of_birth': 'datetime of date of birth. May be supplied instead of age'}
+
+        self.type_metadata = {'session_description': 'str', 'identifier': 'str', 'session_start_time': 'datetime',
+                              'file_create_date': 'list', 'timestamps_reference_time': 'datetime',
+                              'experimenter': 'str', 'experiment_description': 'str', 'session_id': 'str',
+                              'institution': 'str', 'keywords': 'list', 'notes': 'str', 'pharmacology': 'str',
+                              'protocol': 'str', 'related_publications': 'str', 'slices': 'str', 'source_script': 'str',
+                              'source_script_file_name': 'str', 'data_collection': 'str', 'surgery': 'str',
+                              'virus': 'str', 'stimulus_notes': 'str', 'lab': 'str',
+                              'age': 'str', 'description': 'str', 'genotype': 'str', 'sex': 'str', 'species': 'str',
+                              'subject_id': 'str', 'weight': 'str', 'date_of_birth': 'datetime'}
 
     def get_data_file(self):
         io_read = NWBHDF5IO(self.data_path, 'r')
@@ -32,55 +92,16 @@ class NWBMetaDataFinder:
         return data_file_to_get
 
     def get_metadata(self, name):
-        return self.metadata_from_data_file[name]
+        return getattr(self.data_file, name, None)
 
     def get_subject_metadata(self, name):
-        return self.subject_metadata_from_data_file[name]
+        return getattr(self.subject, name, None)
 
-    def get_general_metadata_in_nwb(self):
-        metadata_from_data_file = {
-            "children":  getattr(self.data_file, "children"),
-            "container_source":  getattr(self.data_file, "container_source"),
-            "data_collection":  getattr(self.data_file, "data_collection"),
-            "ec_electrodes":  getattr(self.data_file, "ec_electrodes"),
-            "electrodes":  getattr(self.data_file, "electrodes"),
-            "epoch_tags":  getattr(self.data_file, "epoch_tags"),
-            "epochs":  getattr(self.data_file, "epochs"),
-            "experiment_description":  getattr(self.data_file, "experiment_description"),
-            "experimenter":  getattr(self.data_file, "experimenter"),
-            "file_create_date":  getattr(self.data_file, "file_create_date"),
-            "identifier":  getattr(self.data_file, "identifier"),
-            "institution":  getattr(self.data_file, "institution"),
-            "invalid_times":  getattr(self.data_file, "invalid_times"),
-            "keywords":  getattr(self.data_file, "keywords"),
-            "lab":  getattr(self.data_file, "lab"),
-            "lab_meta_data": getattr(self.data_file, "lab_meta_data"),
-            "modified":  getattr(self.data_file, "modified"),
-            "name":  getattr(self.data_file, "name"),
-            "namespace":  getattr(self.data_file, "namespace"),
-            "neurodata_type":  getattr(self.data_file, "neurodata_type"),
-            "notes":  getattr(self.data_file, "notes"),
-            "parent":  getattr(self.data_file, "parent"),
-            "pharmacology":  getattr(self.data_file, "pharmacology"),
-            "protocol":  getattr(self.data_file, "protocol"),
-            "related_publications":  getattr(self.data_file, "related_publications"),
-            "session_description":  getattr(self.data_file, "session_description"),
-            "session_id":  getattr(self.data_file, "session_id"),
-            "session_start_time":  getattr(self.data_file, "session_start_time"),
-            "slices":  getattr(self.data_file, "slices"),
-            "source_script":  getattr(self.data_file, "source_script"),
-            "source_script_file_name":  getattr(self.data_file, "source_script_file_name"),
-            "stimulus_notes":  getattr(self.data_file, "stimulus_notes"),
-            "stimulus_template":  getattr(self.data_file, "stimulus_template"),
-            "subject":  getattr(self.data_file, "subject"),
-            "surgery":  getattr(self.data_file, "surgery"),
-            "sweep_table":  getattr(self.data_file, "sweep_table"),
-            "timestamps_reference_time":  getattr(self.data_file, "timestamps_reference_time"),
-            "trials":  getattr(self.data_file, "trials"),
-            "units":  getattr(self.data_file, "units"),
-            "virus":  getattr(self.data_file, "virus")}
+    def get_metadata_description(self, name):
+        return self.description_metadata[name]
 
-        return metadata_from_data_file
+    def get_metadata_type(self, name):
+        return self.type_metadata[name]
 
     def get_containers_in_nwb(self):
 
@@ -99,20 +120,6 @@ class NWBMetaDataFinder:
 
         return containers_from_data_file
 
-    @staticmethod
-    def get_subject_metadata_in_nwb(subject):
-        subject_metadata_from_data_file = {
-            "age": getattr(subject, "age"),
-            "description": getattr(subject, "description"),
-            "genotype": getattr(subject, "genotype"),
-            "sex": getattr(subject, "sex"),
-            "species": getattr(subject, "species"),
-            "subject_id": getattr(subject, "subject_id"),
-            "weight": getattr(subject, "weight"),
-            "date_of_birth": getattr(subject, "date_of_birth")}
-
-        return subject_metadata_from_data_file
-
 
 # Metadata formatting for GUI
 class CicadaMetaDataContainer:
@@ -127,6 +134,9 @@ class CicadaMetaDataContainer:
         self.data_file = self.metadata_finder_wrapper.data_file
 
         self.metadata_handler = MetaDataHandler(cicada_metadata_container=self)
+
+        self.general_metadata_list = self.metadata_finder_wrapper.general_metadata_list
+        self.subject_metadata_list = self.metadata_finder_wrapper.subject_metadata_list
 
         self.set_metadata_for_gui()
         self.set_containers_for_gui()
@@ -143,248 +153,57 @@ class CicadaMetaDataContainer:
 
         # All metadata with names, value_types, value and description !
 
-        container_source_metadata = {"metadata_name": "container_source", "value_type": "str",
-                                     "value": self.metadata_finder_wrapper.get_metadata("container_source"),
-                                     "description": "Path to the container source"}
-
-        data_collection_metadata = {"metadata_name": "data_collection", "value_type": "str",
-                                    "value": self.metadata_finder_wrapper.get_metadata("data_collection"),
-                                    "description": "Notes about data collection and analysis"}
-
-        electrodes_metadata = {"metadata_name": "electrodes", "value_type": "dictionnary",
-                               "value": self.metadata_finder_wrapper.get_metadata("electrodes"),
-                               "description": "The ElectrodeTable that belongs to this NWBFile"}
-
-        epoch_tags_metadata = {"metadata_name": "epoch_tags", "value_type": "set",
-                               "value": self.metadata_finder_wrapper.get_metadata("epoch_tags"),
-                               "description": "A sorted list of tags used across all epochs"}
-
-        epochs_metadata = {"metadata_name": "epochs", "value_type": "dictionnary",
-                           "value": self.metadata_finder_wrapper.get_metadata("epochs"),
-                           "description": "Epoch objects belonging to this NWBFile"}
-
-        experiment_description_metadata = {"metadata_name": "experiment_description", "value_type": "str",
-                                           "value": self.metadata_finder_wrapper.get_metadata("experiment_description"),
-                                           "description": "General description of the experiment"}
-
-        experimenter_metadata = {"metadata_name": "experimenter", "value_type": "str",
-                                 "value": self.metadata_finder_wrapper.get_metadata("experimenter"),
-                                 "description": "Name of person who performed experiment"}
-
-        file_create_date_metadata = {"metadata_name": "file_create_date", "value_type": "datetime",
-                                     "value": self.metadata_finder_wrapper.get_metadata("file_create_date"),
-                                     "description": "The date and time the file was created and subsequent"
-                                                    " modifications made"}
-
-        identifier_metadata = {"metadata_name": "identifier", "value_type": "str",
-                               "value": self.metadata_finder_wrapper.get_metadata("identifier"),
-                               "description": "A unique text identifier for the file"}
-
-        institution_metadata = {"metadata_name": "institution", "value_type": "str",
-                                "value": self.metadata_finder_wrapper.get_metadata("institution"),
-                                "description": "Institution(s) where experiment is performed"}
-
-        invalid_times_metadata = {"metadata_name": "invalid_times", "value_type": "dictionnary",
-                                  "value": self.metadata_finder_wrapper.get_metadata("invalid_times"),
-                                  "description": "A table containing times to be omitted from analysis"}
-
-        keywords_metadata = {"metadata_name": "keywords", "value_type": "list",
-                             "value": self.metadata_finder_wrapper.get_metadata("keywords"),
-                             "description": "Terms to search over"}
-
-        lab_metadata = {"metadata_name": "lab", "value_type": "str",
-                        "value": self.metadata_finder_wrapper.get_metadata("lab"),
-                        "description": "Lab where experiment was performed"}
-
-        lab_meta_data_metadata = {"metadata_name": "lab_meta_data", "value_type": "dictionnary",
-                                  "value": self.metadata_finder_wrapper.get_metadata("lab_meta_data"),
-                                  "description": "An extension that contains lab-specific meta-data"}
-
-        modified_metadata = {"metadata_name": "modified", "value_type": "bool",
-                             "value": self.metadata_finder_wrapper.get_metadata("modified"),
-                             "description": "No description"}
-
-        neurodata_type_metadata = {"metadata_name": "neurodata_type", "value_type": "str",
-                                   "value": self.metadata_finder_wrapper.get_metadata("neurodata_type"),
-                                   "description": "No description"}
-
-        notes_metadata = {"metadata_name": "notes", "value_type": "str",
-                          "value": self.metadata_finder_wrapper.get_metadata("notes"),
-                          "description": "Notes about the experiment"}
-
-        pharmacology_metadata = {"metadata_name": "pharmacology", "value_type": "str",
-                                 "value": self.metadata_finder_wrapper.get_metadata("pharmacology"),
-                                 "description": "Description of drugs used, including how and when they were"
-                                                " administered.\nAnesthesia(s), painkiller(s), etc., plus dosage,"
-                                                " concentration, etc."}
-
-        protocol_metadata = {"metadata_name": "protocol", "value_type": "str",
-                             "value": self.metadata_finder_wrapper.get_metadata("protocol"),
-                             "description": "Experimental protocol, if applicable. E.g., include IACUC protocol"}
-
-        related_publications_metadata = {"metadata_name": "related_publications", "value_type": "str",
-                                         "value": self.metadata_finder_wrapper.get_metadata("related_publications"),
-                                         "description": "Publication information.PMID, DOI, URL, etc. If multiple,\n"
-                                                        "concatenate together and describe which is which. such as"
-                                                        " PMID, DOI, URL, etc"}
-
-        session_description_metadata = {"metadata_name": "session_description", "value_type": "str",
-                                        "value": self.metadata_finder_wrapper.get_metadata("session_description"),
-                                        "description": "A description of the session where this data was generated"}
-
-        session_id_metadata = {"metadata_name": "session_id", "value_type": "str",
-                               "value": self.metadata_finder_wrapper.get_metadata("session_id"),
-                               "description": "Lab-specific ID for the session"}
-
-        session_start_time_metadata = {"metadata_name": "session_start_time", "value_type": "datetime",
-                                       "value": self.metadata_finder_wrapper.get_metadata("session_start_time"),
-                                       "description": "The start date and time of the recording session"}
-
-        slices_metadata = {"metadata_name": "slices", "value_type": "str",
-                           "value": self.metadata_finder_wrapper.get_metadata("slices"),
-                           "description": "Description of slices, including information about preparation\n"
-                                          "thickness, orientation, temperature and bath solution"}
-
-        source_script_metadata = {"metadata_name": "source_script", "value_type": "str",
-                                  "value": self.metadata_finder_wrapper.get_metadata("source_script"),
-                                  "description": "Script file used to create this NWB file"}
-
-        source_script_file_name_metadata = {"metadata_name": "source_script_file_name", "value_type": "str",
-                                            "value": self.metadata_finder_wrapper.get_metadata(
-                                                "source_script_file_name"),
-                                            "description": "Name of the source_script file"}
-
-        stimulus_notes_metadata = {"metadata_name": "stimulus_notes", "value_type": "str",
-                                   "value": self.metadata_finder_wrapper.get_metadata("stimulus_notes"),
-                                   "description": "Notes about stimuli, such as how and where presented"}
-
-        surgery_metadata = {"metadata_name": "surgery", "value_type": "str",
-                            "value": self.metadata_finder_wrapper.get_metadata("surgery"),
-                            "description": "Narrative description about surgery/surgeries,\n"
-                                           "including date(s) and who performed surgery"}
-
-        sweep_table_metadata = {"metadata_name": "sweep_table", "value_type": "class",
-                                "value": self.metadata_finder_wrapper.get_metadata("sweep_table"),
-                                "description": "The SweepTable that belong to this NWBFile"}
-
-        timestamps_reference_time_metadata = {"metadata_name": "timestamps_reference_time", "value_type": "datetime",
-                                              "value": self.metadata_finder_wrapper.get_metadata(
-                                                  "timestamps_reference_time"),
-                                              "description": "Date and time corresponding to time zero of all "
-                                                             "timestamps;\ndefaults to value of session_start_time"}
-
-        trials_metadata = {"metadata_name": "trials", "value_type": "class",
-                           "value": self.metadata_finder_wrapper.get_metadata("trials"),
-                           "description": "A table containing trial data"}
-
-        units_metadata = {"metadata_name": "units", "value_type": "class",
-                          "value": self.metadata_finder_wrapper.get_metadata("units"),
-                          "description": "A table containing unit metadata"}
-
-        virus_metadata = {"metadata_name": "virus", "value_type": "str",
-                          "value": self.metadata_finder_wrapper.get_metadata("virus"),
-                          "description": "Information about virus(es) used in experiments, including virus ID,\n"
-                                         "source, date made, injection location, volume, etc."}
-
-        # Subject part :
-
-        age_subject_metadata = {"metadata_name": "age", "value_type": "str",
-                                "value": self.metadata_finder_wrapper.get_subject_metadata("age"),
-                                "description": "The age of the subject"}
-
-        description_subject_metadata = {"metadata_name": "description", "value_type": "str",
-                                        "value": self.metadata_finder_wrapper.get_subject_metadata("description"),
-                                        "description": "A description of the subject"}
-
-        genotype_subject_metadata = {"metadata_name": "genotype", "value_type": "str",
-                                     "value": self.metadata_finder_wrapper.get_subject_metadata("genotype"),
-                                     "description": "The genotype of the subject"}
-
-        sex_subject_metadata = {"metadata_name": "sex", "value_type": "str",
-                                "value": self.metadata_finder_wrapper.get_subject_metadata("sex"),
-                                "description": "The sex of the subject"}
-
-        species_subject_metadata = {"metadata_name": "species", "value_type": "str",
-                                    "value": self.metadata_finder_wrapper.get_subject_metadata("species"),
-                                    "description": "The species of the subject"}
-
-        subject_id_subject_metadata = {"metadata_name": "subject_id", "value_type": "str",
-                                       "value": self.metadata_finder_wrapper.get_subject_metadata("subject_id"),
-                                       "description": "A unique identifier for the subject"}
-
-        weight_subject_metadata = {"metadata_name": "weight", "value_type": "str",
-                                   "value": self.metadata_finder_wrapper.get_subject_metadata("weight"),
-                                   "description": "The weight of the subject"}
-
-        date_of_birth_subject_metadata = {"metadata_name": "date_of_birth", "value_type": "datetime",
-                                          "value": self.metadata_finder_wrapper.get_subject_metadata("date_of_birth"),
-                                          "description": "Datetime of date of birth.\nMay be supplied instead of age"}
-
-        # Define groups to add :
-
         general_metadata = dict()
         general_metadata["group_name"] = 'general_metadata'
         general_metadata["widget_type"] = 'QTable'
         general_metadata["description"] = 'metadata about session, laboratory ...'
-        general_metadata["metadata_in_group"] = [session_description_metadata,
-                                                 identifier_metadata,
-                                                 session_start_time_metadata,
-                                                 file_create_date_metadata,
-                                                 experimenter_metadata,
-                                                 experiment_description_metadata,
-                                                 session_id_metadata,
-                                                 institution_metadata,
-                                                 notes_metadata,
-                                                 pharmacology_metadata,
-                                                 protocol_metadata,
-                                                 related_publications_metadata,
-                                                 slices_metadata,
-                                                 source_script_metadata,
-                                                 source_script_file_name_metadata,
-                                                 data_collection_metadata,
-                                                 surgery_metadata,
-                                                 virus_metadata,
-                                                 stimulus_notes_metadata,
-                                                 timestamps_reference_time_metadata]
+        general_metadata["metadata_in_group"] = []
+
+        for metadata in self.general_metadata_list:
+
+            general_metadata_for_gui = {"metadata_name": metadata,
+                                        "value_type": self.metadata_finder_wrapper.get_metadata_type(metadata),
+                                        "value": self.metadata_finder_wrapper.get_metadata(metadata),
+                                        "description": self.metadata_finder_wrapper.get_metadata_description(metadata)}
+            general_metadata["metadata_in_group"].append(general_metadata_for_gui)
 
         self.add_metadata_group_for_gui(**general_metadata)
 
-        metadata_from_subject = dict()
-        metadata_from_subject["group_name"] = 'metadata_from_subject'
-        metadata_from_subject["widget_type"] = 'QTable'
-        metadata_from_subject["description"] = 'metadata about the subject'
-        metadata_from_subject["metadata_in_group"] = [age_subject_metadata,
-                                                      description_subject_metadata,
-                                                      genotype_subject_metadata,
-                                                      sex_subject_metadata,
-                                                      species_subject_metadata,
-                                                      subject_id_subject_metadata,
-                                                      weight_subject_metadata,
-                                                      date_of_birth_subject_metadata]
+        subject_metadata = dict()
+        subject_metadata["group_name"] = 'metadata_from_subject'
+        subject_metadata["widget_type"] = 'QTable'
+        subject_metadata["description"] = 'metadata about the subject'
+        subject_metadata["metadata_in_group"] = []
 
-        self.add_metadata_group_for_gui(**metadata_from_subject)
+        for metadata in self.subject_metadata_list:
+            subject_metadata_for_gui = {"metadata_name": metadata,
+                                        "value_type": self.metadata_finder_wrapper.get_metadata_type(metadata),
+                                        "value": self.metadata_finder_wrapper.get_subject_metadata(metadata),
+                                        "description": self.metadata_finder_wrapper.get_metadata_description(metadata)}
+            subject_metadata["metadata_in_group"].append(subject_metadata_for_gui)
+
+        self.add_metadata_group_for_gui(**subject_metadata)
 
         # TODO : for each of those following metadata, show them or not ? And how ?
-        other_metadata = dict()
-        other_metadata["group_name"] = 'other_metadata'
-        other_metadata["widget_type"] = 'QTable'
-        other_metadata["description"] = 'metadata which are not affiliated to a group'
-        other_metadata["metadata_in_group"] = [keywords_metadata,  # ? but probably a list or str
-                                               epochs_metadata,  # epoch object
-                                               trials_metadata,  # table
-                                               invalid_times_metadata,  # table
-                                               units_metadata,  # table
-                                               electrodes_metadata,  # table
-                                               sweep_table_metadata,  # table
-                                               neurodata_type_metadata,  # str
-                                               modified_metadata,  # str
-                                               container_source_metadata,  # str
-                                               lab_meta_data_metadata,  # container
-                                               epoch_tags_metadata]  # set
+        '''
+        - epochs_metadata  # epoch object
+        - trials_metadata  # table
+        - invalid_times_metadata  # table
+        - units_metadata  # table
+        - electrodes_metadata  # table
+        - sweep_table_metadata  # table
+        - neurodata_type_metadata  # str
+        - modified_metadata  # str
+        - container_source_metadata  # str
+        - lab_meta_data_metadata  # container
+        - epoch_tags_metadata  # set
+        '''
 
     def set_containers_for_gui(self):
         # For all containers found, if they have metadata, show them in a QTable
         # Create a special QTable for all containers whithout metadata
+
+        # TODO : add informations about dimension of data, ...
 
         containers_from_data_file = self.metadata_finder_wrapper.containers_from_data_file
 
@@ -426,68 +245,68 @@ class CicadaMetaDataContainer:
 
     def save_changes(self, general_metadata, subject_metadata):
         # TODO : wrapper for save : only in NWB for the moment
+        # sorted dict, print
 
-        # SaveModifiedNWB(self.data_path, general_metadata=general_metadata, subject_metadata=subject_metadata)
-        pass
+        SaveModifiedNWB(self.data_path, general_metadata=general_metadata, subject_metadata=subject_metadata)
 
 
 class SaveModifiedNWB:
-    # IT DOESN'T WORK !!!
-    # TODO: make it work
 
-    # I tried to open the initial NWB_file, add to it all metadata completed by the user on the GUI
-    # and then save the modified NWB_file in a new file. However there is a problem with all container objects like
-    # acquisition : when I try to save the file, they are not found ...
+    # TODO : make it work for other data type, not only str (see metadata_handler.save_changes)
 
     def __init__(self, nwb_path, general_metadata=None, subject_metadata=None):
-        self.manager = get_manager()
         self.nwb_path = nwb_path
 
         # New path to save the modified NWB
         parent_dir, file_name = os.path.split(self.nwb_path)
         self.new_path = os.path.join(parent_dir, "new_" + file_name)
+        if not os.path.exists(self.new_path):
+            copyfile(self.nwb_path, self.new_path)
 
-        self.io_read = None
-        self.io_write = None
-        self.nwb_file = self.get_nwb_file()
+        self.nwb_file = File(self.nwb_path, 'r+')
         self.general_metadata = general_metadata  # dictionnary with all general metadata fields and values
-        self.subject_metadata = subject_metadata  # dictionnary with all value metadata fields and values
+        self.subject_metadata = subject_metadata  # dictionnary with all subject metadata fields and values
 
-        self.modify_general_metadata()
-        self.modify_subject_metadata()
+        if general_metadata is not None:
+            self.modify_general_metadata()
+        if subject_metadata is not None:
+            self.modify_subject_metadata()
 
         self.write_nwb()
-
-    def get_nwb_file(self):
-        self.io_read = NWBHDF5IO(self.nwb_path, 'r', manager=self.manager)
-        nwb_file_to_get = self.io_read.read()
-        return nwb_file_to_get
 
     def modify_general_metadata(self):
         # Add general metadata if not already exists
         for metadata_field, metadata_value in self.general_metadata.items():
-            try:
-                setattr(self.nwb_file, metadata_field, metadata_value)
-            except AttributeError:
-                print(metadata_field, " : NO ! NO ! NO !")
+            original_metadata = getattr(self.nwb_file, metadata_field, None)
+            if metadata_value != original_metadata:
+                try:
+                    del self.nwb_file['general'][metadata_field]  # if exists already
+                except KeyError:
+                    # can't del because doesn't exists
+                    pass
+                self.nwb_file['general'].create_dataset(name=metadata_field, data=metadata_value)
 
     def modify_subject_metadata(self):
         # Add subject metadata if not already exists
-        if getattr(self.nwb_file, 'subject', None) is None:
+        subject = getattr(self.nwb_file, 'subject', None)
+        if subject is None:
             pass
         else:
             for metadata_field, metadata_value in self.subject_metadata.items():
-                try:
-                    setattr(self.nwb_file.subject, metadata_field, metadata_value)
-                except AttributeError:
-                    print(metadata_field, " : NO ! NO ! NO !")
+                original_metadata = getattr(subject, metadata_field, None)
+                if metadata_value != original_metadata:
+                    try:
+                        del self.nwb_file['subject'][metadata_field]  # if exists already
+                    except KeyError:
+                        # can't del because doesn't exists
+                        pass
+                    self.nwb_file['subject'].create_dataset(name=metadata_field, data=metadata_value)
 
     def write_nwb(self):
-        # It seems that io.read need to be open to save data in file, so I try to save data in an other file
-        self.io_write = NWBHDF5IO(self.new_path, 'a', manager=self.manager)
-        self.io_write.write(self.nwb_file, link_data=False)
-        self.io_read.close()
-        self.io_write.close()
+        self.nwb_file.close()
+
+        with NWBHDF5IO(self.nwb_path, 'r') as io_test:
+            io_test.read()
 
 
 # Associate metadata groups with widgets
@@ -520,10 +339,22 @@ class MetaDataHandler:
         subject_metadata_values = dict()
         for metadata_group_name, metadata_group in self.groups_dict.items():
             for metadata_name, metadata in metadata_group.metadata_dict.items():
-                if metadata_group_name == 'general_metadata':
-                    general_metadata_values[metadata_name] = metadata_group.get_metadata_value_in_widget(metadata)
-                elif metadata_group_name == 'metadata_from_subject':
-                    subject_metadata_values[metadata_name] = metadata_group.get_metadata_value_in_widget(metadata)
+                value = metadata_group.get_metadata_value_in_widget(metadata)
+                if value == 'None':
+                    value = None
+
+                if metadata_group_name == 'general_metadata' and value is not None:
+                    if metadata.value_type == 'str':
+                        general_metadata_values[metadata_name] = value
+                    # elif metadata.value_type == 'datetime':
+                    #     general_metadata_values[metadata_name] = datetime.strptime(value, '%Y-%m-%d %X.%f%z')
+
+                elif metadata_group_name == 'metadata_from_subject'and value is not None:
+                    if metadata.value_type == 'str':
+                        subject_metadata_values[metadata_name] = value
+                    # elif metadata.value_type == 'datetime':
+                    #     subject_metadata_values[metadata_name] = datetime.strptime(value, '%Y-%m-%d %X.%f%z')
+
         self.cicada_metadata_container.save_changes(general_metadata_values, subject_metadata_values)
 
 
@@ -780,7 +611,7 @@ if __name__ == "__main__":
     app = QApplication(sys.argv)
     # Change the path !
     # ============================================
-    file_path = 'C:/Users/Public/nwb_files/p6_18_02_07_a002.nwb'
+    file_path = 'C:/Users/Public/nwb_files/p6_18_02_07_a001.nwb'
     # ============================================
     # cicada_metadata_container = CicadaMetaDataContainer(file_path, "nwb")
     widget = MetaDataWidget(file_path, 'nwb')
