@@ -1,13 +1,6 @@
-import sys
 from qtpy.QtWidgets import *
 from qtpy import QtCore, QtGui
 from qtpy.QtCore import Qt
-import os
-from pynwb import NWBHDF5IO
-from functools import partial
-from cicada.preprocessing.utils import sort_by_param, group_by_param
-import cicada.preprocessing.utils as utils
-from cicada.gui.metadata_widget import MetaDataWidget
 import yaml
 import datetime
 from random import randint
@@ -42,6 +35,13 @@ class SessionsListWidget(QListWidget):
             self.session_widget.analysis_tree.set_data(data_to_analyse=data_to_analyse, data_format="nwb")
 
     def showContextMenu(self, pos):
+        """
+        Display a context menu at the cursor position. Allow the user to see informations about the selected sessions.
+
+        Args:
+            pos (QPoint): Coordinate of the cursor
+
+        """
         self.global_pos = self.mapToGlobal(pos)
         self.context_menu = QMenu()
         self.context_menuAct = QAction("Show info", self, triggered=self.show_info)
@@ -50,6 +50,7 @@ class SessionsListWidget(QListWidget):
         self.context_menu.exec(self.global_pos)
 
     def show_info(self):
+        """Open the metadata widget associated to the selected items"""
         item_list = self.selectedItems()
         for item in item_list:
             exec('self.' + item.text() + '_metadata = '
@@ -58,7 +59,7 @@ class SessionsListWidget(QListWidget):
             self.session_widget.parent.object_created.append(eval('self.' + item.text() + '_metadata'))
 
 class SessionsWidget(QWidget):
-
+    """Class containing the widget holding the list of loaded sessions"""
     def __init__(self, parent=None, to_analysis_button=None):
 
         super().__init__()
@@ -356,7 +357,10 @@ class SessionsWidget(QWidget):
             item = QListWidgetItem()  # delimiter
             if param[0] is None:
                 param[0] = "None"
-            item.setText('--------------------------' + str(param.pop(0)) + '---------------------------')
+            separator = '--------------------------------------------------------------'
+            separator = separator[len(str(param[0])):]
+            middle_separator = len(separator) // 2
+            item.setText(separator[middle_separator:] + str(param.pop(0)) + separator[middle_separator:])
             item.setFlags(QtCore.Qt.ItemIsEnabled)
             item.setFlags(item.flags() & ~QtCore.Qt.ItemIsSelectable)  # item should not be selectable
             self.q_list.addItem(item)
