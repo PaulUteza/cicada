@@ -15,7 +15,7 @@ class CicadaAnalysis(ABC):
 
     """
     def __init__(self, name, short_description, family_id=None, long_description=None,
-                 data_to_analyse=None, data_format=None, config_handler=None):
+                 data_to_analyse=None, data_format=None, config_handler=None, gui=True):
         """
 
         Args:
@@ -39,6 +39,7 @@ class CicadaAnalysis(ABC):
         self.progress_bar_analysis = None
         self.family_id = family_id
         self.name = name
+        self.gui = gui
         self.current_order_index = 0
         self._data_to_analyse = data_to_analyse
         self._data_format = data_format
@@ -69,7 +70,6 @@ class CicadaAnalysis(ABC):
 
         """
         return self._results_path
-        # return "H:/Documents/Patterning/CICADA/src/PSTH_2019_08_19.11-18-09"
 
     def create_results_directory(self, dir_path):
         """
@@ -135,7 +135,8 @@ class CicadaAnalysis(ABC):
         self.analysis_formats_wrapper.set_data(data_to_analyse)
         self._data_to_analyse = data_to_analyse
         self._data_format = data_format
-        self.set_arguments_for_gui()
+        if self.gui:
+            self.set_arguments_for_gui()
 
     @abstractmethod
     def check_data(self):
@@ -220,7 +221,10 @@ class CicadaAnalysis(ABC):
             new_set_value (float):  Value that should be set as the current value of the progress bar
 
         """
-        worker = QThread.currentThread()
-        worker.setProgress(name=worker.name, time_started=time_started, increment_value=increment_value,
-                           new_set_value=new_set_value)
+        if self.gui:
+            worker = QThread.currentThread()
+            worker.setProgress(name=worker.name, time_started=time_started, increment_value=increment_value,
+                               new_set_value=new_set_value)
+        else:
+            pass
 
