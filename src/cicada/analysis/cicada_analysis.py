@@ -215,11 +215,9 @@ class CicadaAnalysis(ABC):
         """
 
         Args:
-            time_started:
-            increment_value:
-            new_set_value:
-
-        Returns:
+            time_started (float): Start time of the analysis
+            increment_value (float): Value that should be added to the current value of the progress bar
+            new_set_value (float):  Value that should be set as the current value of the progress bar
 
         """
         worker = QThread.currentThread()

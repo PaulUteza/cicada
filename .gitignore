@@ -18,3 +18,5 @@ src/cicada/utils/__pycache__/
 src/cicada/utils/display/__pycache__/
 
 src/cicada/config/
+
+src/cicada/preprocessing/__pycache__/

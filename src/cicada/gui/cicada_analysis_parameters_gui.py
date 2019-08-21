@@ -2,15 +2,9 @@ from qtpy.QtWidgets import *
 from qtpy.QtCore import QAbstractItemModel, QModelIndex, Qt, QProcess
 from PyQt5 import QtCore as Core
 from qtpy import QtGui
-import math
 import numpy as np
 from qtpy import QtCore
 import sys
-from multiprocessing.pool import ThreadPool
-from multiprocessing import Process
-from threading import Thread
-import threading
-import logging
 from random import randint
 import gc
 from abc import ABC, abstractmethod
@@ -609,6 +603,7 @@ class SliderWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
 
 
 class AnalysisParametersApp(QWidget):
+    """Class containing the parameters widgets"""
     def __init__(self, thread_name, progress_bar, height_main_window, parent=None):
         QWidget.__init__(self, parent=parent)
         self.name = thread_name
@@ -660,7 +655,6 @@ class AnalysisParametersApp(QWidget):
     def load_arguments(self):
         """
         Will open a FileDialog to select a yaml file used to load arguments used for a previous analysis
-        Returns:
 
         """
         file_dialog = QFileDialog(self, "Loading arguments")
@@ -691,7 +685,6 @@ class AnalysisParametersApp(QWidget):
     def tabula_rasa(self):
         """
         Erase the widgets and make an empty section
-        Returns:
 
         """
         # clearing the widget to update it
@@ -705,9 +698,7 @@ class AnalysisParametersApp(QWidget):
         """
 
         Args:
-            cicada_analysis:
-
-        Returns:
+            cicada_analysis (CicadaAnalysis): Chosen analysis
 
         """
         self.cicada_analysis = cicada_analysis
@@ -748,9 +739,11 @@ class AnalysisParametersApp(QWidget):
                 self.special_background_on = True
 
     def reset_arguments(self):
+        """Reset all arguments to default value"""
         self.analysis_arguments_handler.set_widgets_to_default_value()
 
     def run_analysis(self):
+        """Check if the parameters are valid and then create a thread which will run the analysis"""
         if self.analysis_arguments_handler is None:
             return
 
@@ -771,11 +764,12 @@ class AnalysisParametersApp(QWidget):
 
 
 class EmittingStream(QtCore.QObject):
+    """Class managing the std.out redirection"""
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.parent = parent
         self.terminal = sys.stdout
-        self.textWritten = Core.pyqtSignal(str)
+        self.textWritten = QtCore.Signal(str)
 
     def write(self, text):
         """
@@ -798,11 +792,13 @@ class EmittingStream(QtCore.QObject):
 
 
 class EmittingErrStream(QtCore.QObject):
+    """Class managing the std.err redirection"""
     def __init__(self, parent=None):
         super().__init__(parent=parent)
         self.parent = parent
         self.terminal = sys.stderr
-        self.errWritten = Core.pyqtSignal(str)
+        self.errWritten = QtCore.Signal(str)
+
 
     def write(self, text):
         """
@@ -893,8 +889,16 @@ class AnalysisData(QWidget):
 
 
 class AnalysisPackage(QWidget):
+    """Widget containing the whole analysis window"""
 
-    def __init__(self, cicada_analysis, analysis_name, analysis_description, name, parent=None):
+    def __init__(self, cicada_analysis, analysis_name, name, parent=None):
+        """
+
+        Args:
+            cicada_analysis (CicadaAnalysis): Chosen analysis
+            analysis_name (str): Analysis name
+            name (str): Analysis ID
+        """
         QWidget.__init__(self, parent=parent)
         super().__init__()
         self.name = name
@@ -918,7 +922,7 @@ class AnalysisPackage(QWidget):
         self.text_output.show()
         sys.stdout = EmittingStream(self)
         # Comment to debug, else we will get unhandled python exception
-        sys.stderr = EmittingErrStream(self)
+        # sys.stderr = EmittingErrStream(self)
         self.scrollAreaErr = QScrollArea()
         self.scrollAreaErr.setWidgetResizable(True)
         self.scrollAreaErr.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
@@ -958,10 +962,11 @@ class AnalysisPackage(QWidget):
 
     def normalOutputWritten(self, text, path):
         """
-        Append text to the QLabel.
+        Append std.out text to the QLabel and create a log file.
 
         Args:
             text (str): Output of the standard output in python interpreter
+            path (str): path where we will output the log file
         """
         if self.name in text:
             text = text.replace(self.name, "\n")
@@ -976,10 +981,12 @@ class AnalysisPackage(QWidget):
 
     def errOutputWritten(self, text, path):
         """
-        Append text to the QLabel.
+        Append std.err text to the QLabel and create an err file.
 
         Args:
             text (str): Output of the standard output in python interpreter
+            path (str): path where we will output the err file
+
         """
 
         if self.name in text:
@@ -995,7 +1002,14 @@ class AnalysisPackage(QWidget):
 
 
     def on_close(self, event):
-        """ Need to delete the overview widget associated to this analysis"""
+        """
+        Check if an analysis is still on going and prompt the user to let him know then ask whether he still wants to
+        close. If yes, delete the associated overview and stop the thread
+
+        Args:
+            event (QEvent): Qt Event triggered when attempting to close the window
+
+        """
         # TODO : Check if an analysis is running if the thread is running
         if (self.progress_bar.value() < 100 and self.progress_bar.isEnabled()):
             self.confirm_quit = QMessageBox()
@@ -1028,6 +1042,7 @@ class AnalysisPackage(QWidget):
                 event.ignore()
 
         else:
+            self.quit = True
             for obj in gc.get_objects():
                 if isinstance(obj, AnalysisOverview):
                     # sys.stderr.write(str(dir(obj)))
@@ -1035,32 +1050,59 @@ class AnalysisPackage(QWidget):
                         if self.name in attr:
                             if "layout" in attr:
                                 eval('obj.layout.removeItem( obj.' + attr + ')')
-
                             else:
                                 eval('obj.' + attr + '.setParent(None)')
                                 eval('obj.' + attr + '.deleteLater()')
 
 
 class Worker(QtCore.QThread):
+    """Thread to manage multiple analysises at the same time"""
+
+    # Signals to update the progress bar in the analysis window and overview
     updateProgress = QtCore.Signal(float, float, float)
     updateProgress2 = QtCore.Signal(str, float, float, float)
 
     def __init__(self, name, cicada_analysis, analysis_arguments_handler):
+        """
+
+        Args:
+            name (str): Analysis ID, should be unique
+            cicada_analysis (CicadaAnalysis): the analysis run in the thread
+            analysis_arguments_handler:
+        """
         QtCore.QThread.__init__(self)
         self.name = name
         self.cicada_analysis = cicada_analysis
-        self.results_path = self.cicada_analysis.get_results_path()
         self.analysis_arguments_handler = analysis_arguments_handler
 
     def run(self):
-        self.results_path = self.cicada_analysis.get_results_path()
+        """Run the analysis"""
         self.analysis_arguments_handler.run_analysis()
 
     def setProgress(self, name, time_started, increment_value=0, new_set_value=0):
+        """
+        Emit the new value of the progress bar and time remaining
+
+        Args:
+            name (str): Analysis ID
+            time_started (float): Start time of the analysis
+            increment_value (float): Value that should be added to the current value of the progress bar
+            new_set_value (float):  Value that should be set as the current value of the progress bar
+
+
+        """
         self.updateProgress.emit(time_started, increment_value, new_set_value)
         self.updateProgress2.emit(name, time_started, increment_value, new_set_value)
 
     def set_results_path(self, results_path):
+        """
+        Set the selected path to the results in the "Open result folder" button in the corresponding overview
+
+        Args:
+            results_path (str): Path to the results
+
+        """
+        # TODO : Get rid of the garbage collector
         for obj in gc.get_objects():
             if isinstance(obj, AnalysisOverview):
                 if eval('obj.' + self.name + '_button.result_path') is None:
@@ -1070,16 +1112,26 @@ class Worker(QtCore.QThread):
                     pass
 
 class ProgressBar(QProgressBar):
-
+    """Class containing the progress bar of the current analysis"""
     def __init__(self, remaining_time_label, parent=None):
+
         QProgressBar.__init__(self, parent=parent)
         self.setMinimum(0)
         self.progress = self
         self.remaining_time_label = remaining_time_label
 
     def update_progress_bar(self, time_started, increment_value=0, new_set_value=0):
+        """
+        Update the progress bar in the analysis widget and the corresponding remaining time
+        Args:
+            time_started (float): Start time of the analysis
+            increment_value (float): Value that should be added to the current value of the progress bar
+            new_set_value (float):  Value that should be set as the current value of the progress bar
+
+        Returns:
+
+        """
         self.current_thread = QThread.currentThread()
-        # sys.stderr.write(current_thread.name)
         self.setEnabled(True)
         if new_set_value:
             self.setValue(new_set_value)
@@ -1090,8 +1142,18 @@ class ProgressBar(QProgressBar):
         if self.isEnabled() and self.value() != 0:
             self.remaining_time_label.update_remaining_time(self.value(), time_started)
 
-    def update_progress_bar_overview(self, name, time_started, increment_value=0, new_set_value=0):
-        # eval('AnalysisOverview.' + name + '_progress_bar.setValue(50)')
+    def update_progress_bar_overview(self, name, increment_value=0, new_set_value=0):
+        """
+        Update the overview progress bar
+
+        Args:
+            name (str): Analysis ID
+            time_started (float): Start time of the analysis
+            increment_value (float): Value that should be added to the current value of the progress bar
+            new_set_value (float):  Value that should be set as the current value of the progress bar
+
+        """
+        # TODO : Remove Garbage collector use
         for obj in gc.get_objects():
             if isinstance(obj, AnalysisOverview):
                 try:
@@ -1111,7 +1173,7 @@ class ProgressBar(QProgressBar):
 
 
 class RemainingTime(QLabel):
-
+    """Class containing the remaining time of the analysis"""
     def __init__(self, parent=None):
         QLabel.__init__(self, parent=parent)
         self.setMinimumSize(0, 0)
@@ -1119,10 +1181,39 @@ class RemainingTime(QLabel):
         self.setText("Time remaining : ")
 
     def update_remaining_time(self, progress_value, time_started):
-        # sys.stderr.write("\n Time elapsed:" + str(time()-time_started))
-        remaining_time = ((time() - time_started) * 100) / progress_value
-        self.setText("Time remaining : " + str("%.2f" % (time() - time_started)) + "/" + str("%.2f" % remaining_time))
+        """
+        Update the remaining time
+        Args:
+            progress_value (float): Current progress bar value
+            time_started (float): Start time of the analysis
 
+        """
+        remaining_time = ((time() - time_started) * 100) / progress_value
+        time_elapsed = time() - time_started
+        remaining_time_text = self.correct_time_converter(remaining_time)
+        time_elapsed_text = self.correct_time_converter(time_elapsed)
+        self.setText("Time remaining : " + time_elapsed_text + "/" + remaining_time_text)
+
+
+    @staticmethod
+    def correct_time_converter(time):
+        """
+        Convert a float in a correct duration value
+        Args:
+            time (float): Float value to be converted in a correct duration with MM.SS
+
+        Returns:
+            time_text (str): String of the correct duration
+        """
+        minutes = int(time)
+        seconds = int(time * 100) - minutes * 100
+        minutes_to_add = seconds // 60
+        seconds_remaining = seconds % 60
+        seconds_remaining_text = str(seconds_remaining)
+        if len(seconds_remaining_text) == 1:
+            seconds_remaining_text = "0" + seconds_remaining_text
+        time_text = str(minutes + minutes_to_add) + "." + seconds_remaining_text
+        return time_text
 
 def clearvbox(self, L=False):
     if not L:

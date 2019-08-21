@@ -9,7 +9,6 @@ from functools import partial
 import cicada.preprocessing.utils as utils
 import yaml
 import gc
-from itertools import islice
 from cicada.gui.cicada_analysis_tree_gui import AnalysisTreeApp
 from cicada.gui.cicada_analysis_overview import AnalysisOverview
 from cicada.gui.cicada_analysis_parameters_gui import AnalysisPackage
@@ -17,6 +16,7 @@ from cicada.gui.session_show_filter_group import SessionsWidget
 
 
 class CicadaMainWindow(QMainWindow):
+    """Main window of the GUI"""
     def __init__(self):
         super().__init__()
         self.createActions()
@@ -211,7 +211,7 @@ class CicadaMainWindow(QMainWindow):
 
     def load_group(self, group_name):
         """
-        Load a group of saved sessions
+        Load a group of saved sessions, it will clear the current session list
 
         Args:
             group_name (str) : Name of the group saved in YAML
@@ -431,6 +431,7 @@ class CicadaMainWindow(QMainWindow):
 
 
     def see_all_groups(self):
+        """Display a widget with all existing groups"""
         self.all_group_window = AllGroups(self)
         self.all_group_window.show()
         self.object_created.append(self.all_group_window)
@@ -557,7 +558,7 @@ class CicadaMainWindow(QMainWindow):
 
 
 class AllGroups(QWidget):
-
+    """Class containing the widget used to display all created group found"""
     def __init__(self, parent=None):
         QWidget.__init__(self)
         self.layout = QVBoxLayout()
@@ -590,15 +591,23 @@ class AllGroups(QWidget):
             self.group_list.addItem(eval('self.groupItem' + str(counter)))
 
     def double_click_event(self, clicked_item):
+        """
+        Get item which was double clicked and call the function to load the group
+
+        Args:
+            clicked_item (QModelIndex): Qt index which correspond to the clicked index
+        """
         item = self.group_list.item(clicked_item.row())
         self.parent.load_group(item.text())
 
     def add_group(self):
+        """Add all selected groups to the current session list"""
         items = self.group_list.selectedItems()
         for item in items:
             self.parent.add_group_data(item.text())
 
     def load_group(self):
+        """Load all selected groups in the session list (clear the existing sessions from the list)"""
         items = self.group_list.selectedItems()
         counter = 0
         for item in items:
@@ -609,6 +618,14 @@ class AllGroups(QWidget):
             counter += 1
 
     def showContextMenu(self, pos):
+        """
+        Display a context menu at the cursor position. Allow the user to add or load the group at the given position.
+
+        Args:
+            pos (QPoint): Coordinate of the cursor
+
+
+        """
         self.global_pos = self.mapToGlobal(pos)
         self.context_menu = QMenu()
         self.context_menuAct = QAction("Load group", self, triggered=self.load_group)
@@ -655,27 +672,7 @@ class MusketeersWidget(QWidget):
         self.session_widget.analysis_overview_widget = analysis_overview_widget
         self.setLayout(self.layout)
 
-#
-# def catch_exceptions(t, val, tb):
-#     """
-#     Catch errors and show them in a QMessageBox without making all crash
-#     Args:
-#         t: Exception type
-#         val: Exception value
-#         tb:
-#
-#     Returns:
-#
-#     """
-#     QMessageBox.critical(None,
-#                               "An exception was raised",
-#                               "Exception type: {} \n Value: {}".format(t,val))
-#     old_hook(t, val, tb)
 
-# Removing it for now
-# old_hook = sys.excepthook
-#
-# sys.excepthook = catch_exceptions
 
 if __name__ == "__main__":
 

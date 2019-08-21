@@ -399,7 +399,7 @@ class AnalysisTreeApp(QWidget):
             # Create analysis window
             analysis_package = AnalysisPackage(cicada_analysis=self.copied_data,
                                                analysis_name=str(tree_item.item_data[0]),
-                                               analysis_description=str(tree_item.item_data[1]), name=random_id)
+                                               name=random_id)
             setattr(self, random_id, analysis_package)
             self.created_analysis.append(getattr(self, random_id))
 
