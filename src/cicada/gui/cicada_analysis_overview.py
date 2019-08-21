@@ -166,7 +166,12 @@ class ResultsButton(QHBoxLayout):
         if self.result_path is None:
             pass
         else:
-            subprocess.run(['explorer', os.path.realpath(self.result_path)])
+            if sys.platform == 'darwin':
+                subprocess.run(['open', '--', os.path.realpath(self.result_path)])
+            elif sys.platform == 'linux2':
+                subprocess.run(['xdg-open', '--', os.path.realpath(self.result_path)])
+            elif sys.platform == 'win32':
+                subprocess.run(['explorer', os.path.realpath(self.result_path)])
 
     def deleteLater(self):
         try:
