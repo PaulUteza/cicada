@@ -1060,7 +1060,7 @@ class Worker(QtCore.QThread):
 
     # Signals to update the progress bar in the analysis window and overview
     updateProgress = QtCore.Signal(float, float, float)
-    updateProgress2 = QtCore.Signal(str, float, float, float)
+    updateProgress2 = QtCore.Signal(str, float, float)
 
     def __init__(self, name, cicada_analysis, analysis_arguments_handler):
         """
@@ -1092,7 +1092,7 @@ class Worker(QtCore.QThread):
 
         """
         self.updateProgress.emit(time_started, increment_value, new_set_value)
-        self.updateProgress2.emit(name, time_started, increment_value, new_set_value)
+        self.updateProgress2.emit(name, increment_value, new_set_value)
 
     def set_results_path(self, results_path):
         """

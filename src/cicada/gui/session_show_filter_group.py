@@ -1,5 +1,6 @@
 from qtpy.QtWidgets import *
 from qtpy import QtCore, QtGui
+from cicada.gui.metadata_widget import MetaDataWidget
 from qtpy.QtCore import Qt
 import yaml
 import datetime

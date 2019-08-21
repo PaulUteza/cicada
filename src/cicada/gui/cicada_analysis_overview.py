@@ -1,6 +1,7 @@
 from qtpy.QtWidgets import *
 from qtpy.QtCore import Qt
 import os
+import platform
 from qtpy import QtCore
 from random import randint
 from functools import partial
@@ -158,6 +159,7 @@ class AnalysisState(QHBoxLayout):
         try:
             self.q_label_analysis_name.deleteLater()
             self.q_label_data_identifiers.deleteLater()
+            self.q_scroll_bar.deleteLater()
         except RuntimeError:
             pass
 
@@ -166,7 +168,6 @@ class ResultsButton(QHBoxLayout):
     """Class containing the button to open the result folder"""
     def __init__(self, cicada_analysis):
         """
-
         Args:
             cicada_analysis (CicadaAnalysis): Chosen analysis
         """
@@ -183,11 +184,15 @@ class ResultsButton(QHBoxLayout):
         if self.result_path is None:
             pass
         else:
-            if sys.platform == 'darwin':
+            if platform.system() == 'Darwin':
                 subprocess.run(['open', '--', os.path.realpath(self.result_path)])
-            elif sys.platform == 'linux2':
-                subprocess.run(['xdg-open', '--', os.path.realpath(self.result_path)])
-            elif sys.platform == 'win32':
+            elif platform.system() == 'Linux':
+                subprocess.run(['xdg-open', '--', os.path.abspath(self.result_path)])
+                # subprocess.run(['xdg-open', '--', self.result_path])
+                # subprocess.run(['xdg-open', '--', os.path.abspath(self.result_path)])
+                # subprocess.run(['nautilus --browser', self.result_path])
+
+            elif platform.system() == 'Windows':
                 subprocess.run(['explorer', os.path.realpath(self.result_path)])
 
     def deleteLater(self):
