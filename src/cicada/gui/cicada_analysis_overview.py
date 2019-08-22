@@ -187,9 +187,9 @@ class ResultsButton(QHBoxLayout):
             if platform.system() == 'Darwin':
                 subprocess.run(['open', '--', os.path.realpath(self.result_path)])
             elif platform.system() == 'Linux':
-                subprocess.run(['xdg-open', '--', os.path.abspath(self.result_path)])
-                # subprocess.run(['xdg-open', '--', self.result_path])
-                # subprocess.run(['xdg-open', '--', os.path.abspath(self.result_path)])
+                # subprocess.run(['xdg-open', os.path.abspath(self.result_path)])
+                subprocess.run(['xdg-open', self.result_path])
+                # nautilus doesn't work
                 # subprocess.run(['nautilus --browser', self.result_path])
 
             elif platform.system() == 'Windows':
