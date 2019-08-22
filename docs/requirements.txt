@@ -5,3 +5,14 @@ PyYAML
 pynwb
 scanimage-tiff-reader
 Pillow
+pyabf
+h5py
+hdf5storage
+pathlib
+scipy
+matplotlib
+shapely
+functools
+ntpath
+PySide
+PyQt5
