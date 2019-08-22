@@ -2,6 +2,8 @@ from cicada.analysis.cicada_analysis import CicadaAnalysis
 from cicada.utils.display.cells_map_utils import CellsCoord
 import sys
 from time import sleep, time
+import numpy as np
+from shapely.geometry import MultiPoint, LineString
 
 class CicadaCellsMapAnalysis(CicadaAnalysis):
     def __init__(self):
@@ -66,13 +68,13 @@ class CicadaCellsMapAnalysis(CicadaAnalysis):
         #             "multiple_choices": True}
         #
         # self.add_argument_for_gui(**format_arg)
-        #
-        # # not mandatory, because one of the element will be selected by the GUI
-        # segmentation_arg = {"arg_name": "segmentation", "choices": self.analysis_formats_wrapper.get_segmentations(),
-        #                     "description": "Segmentation to use", "mandatory": False,
-        #                     "multiple_choices": False}
-        #
-        # self.add_argument_for_gui(**segmentation_arg)
+
+        # not mandatory, because one of the element will be selected by the GUI
+        segmentation_arg = {"arg_name": "segmentation", "choices": self.analysis_formats_wrapper.get_segmentations(),
+                            "description": "Segmentation to use", "mandatory": False,
+                            "multiple_choices": False}
+
+        self.add_argument_for_gui(**segmentation_arg)
 
     def update_original_data(self):
         """
@@ -88,8 +90,56 @@ class CicadaCellsMapAnalysis(CicadaAnalysis):
         :return:
         """
         CicadaAnalysis.run_analysis(self, **kwargs)
-        # TODO: create a CellsCoord object using Nwb Rois format
-        # start_time = time()
 
-        # self.update_progressbar(start_time, 1)
+        if self._data_format != "nwb":
+            print(f"Format others than nwb not supported yet")
+            return
 
+        self.run_nwb_format_analysis(**kwargs)
+
+    def run_nwb_format_analysis(self, **kwargs):
+        start_time = time()
+        n_sessions = len(self._data_to_analyse)
+
+        segmentation_dict = kwargs['segmentation']
+
+        for session_index, session_data in enumerate(self._data_to_analyse):
+            session_identifier = session_data.identifier
+            mod = session_data.modules['ophys']
+            plane_seg = mod[segmentation_dict[session_identifier]].get_plane_segmentation('my_plane_seg')
+
+            if 'pixel_mask' not in plane_seg:
+                print(f"pixel_mask not available in for {session_data.identifier} "
+                      f"in {segmentation_dict[session_identifier]}")
+                self.update_progressbar(start_time, 100 / n_sessions)
+                continue
+
+            # TODO: use pixel_mask instead of using the coord of the contour of the cell
+            #  means changing the way coord_cell works
+            coord_list = []
+            for cell in np.arange(len(plane_seg['pixel_mask'])):
+                pixels_coord = plane_seg['pixel_mask'][cell]
+                list_points_coord = [(pix[0], pix[1]) for pix in pixels_coord]
+                convex_hull = MultiPoint(list_points_coord).convex_hull
+                if isinstance(convex_hull, LineString):
+                    coord_shapely = MultiPoint(list_points_coord).convex_hull.coords
+                else:
+                    coord_shapely = MultiPoint(list_points_coord).convex_hull.exterior.coords
+                coord_list.append(np.array(coord_shapely).transpose())
+
+            cells_coord = CellsCoord(coord_list, nb_col=200, nb_lines=200, from_suite_2p=True)
+
+            cells_coord.plot_cells_map(path_results=self.get_results_path(),
+                                          data_id=session_identifier, show_polygons=False,
+                                          fill_polygons=False,
+                                          title_option="all_cells", connections_dict=None,
+                                          cells_groups=None,
+                                          img_on_background=None,
+                                          cells_groups_colors=None,
+                                          cells_groups_edge_colors=None,
+                                          with_edge=True, cells_groups_alpha=None,
+                                          dont_fill_cells_not_in_groups=False,
+                                          with_cell_numbers=True, save_formats=["png", "pdf"],
+                                          save_plot=True, return_fig=False)
+
+            self.update_progressbar(start_time, 100 / n_sessions)

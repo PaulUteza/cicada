@@ -83,6 +83,12 @@ def load_nwb_file():
 
     ps = mod['segmentation_suite2p'].get_plane_segmentation('my_plane_seg')
 
+    print(f"ps['pixel_mask'] {ps['pixel_mask'][0]}")
+    # img_mask1 = ps['image_mask'][0]
+    # pix_mask1 = ps['pixel_mask'][0]
+    # img_mask2 = ps['image_mask'][1]
+    # pix_mask2 = ps['pixel_mask'][1]
+
     rrs = mod['fluorescence_suite2p'].get_roi_response_series()
 
     # get the data...
@@ -91,7 +97,8 @@ def load_nwb_file():
     rrs_rois = rrs.rois
 
 
-    print(f"rrs_data.shape {rrs_data.shape}")
+    # print(f"rrs_data.shape {rrs_data.shape}")
+    print(f"rrs_rois {rrs_rois}")
     # plt.plot(rrs_data[0])
     # plt.show()
 
@@ -104,7 +111,7 @@ def cicada_pre_processing_main():
     """
     # interesting page: https://nwb-schema.readthedocs.io/en/latest/format.html#sec-labmetadata
     # IntervalSeries: used for interval periods
-    test_paul_code = True
+    test_paul_code = False
 
     if not test_paul_code:
         # create_nwb_file(format_movie="tiff")  # "tiff"
