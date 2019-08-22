@@ -3,4 +3,5 @@ numpy
 qtpy
 PyYAML
 pynwb
-ScanImageTiffReader
+scanimage-tiff-reader
+Pillow
