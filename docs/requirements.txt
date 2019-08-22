@@ -13,3 +13,4 @@ scipy
 matplotlib
 shapely
 PyQt5
+sortedcontainers
