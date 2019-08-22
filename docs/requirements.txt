@@ -1,5 +1,4 @@
 sphinxcontrib.images
-numpy
 qtpy
 PyYAML
 pynwb
