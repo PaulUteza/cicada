@@ -38,14 +38,12 @@ extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.coverage',
               'sphinx.ext.napoleon',
               'sphinx_rtd_theme',
-              'sphinx.ext.autosummary',
               'sphinx.ext.viewcode',
               'sphinx.ext.doctest',
               'sphinx.ext.intersphinx',
               ]
 
 autodoc_default_flags = ['members']
-autosummary_generate = True
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
