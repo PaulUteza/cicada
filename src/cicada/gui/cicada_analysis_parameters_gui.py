@@ -607,6 +607,7 @@ class AnalysisParametersApp(QWidget):
     def __init__(self, thread_name, progress_bar, height_main_window, parent=None):
         QWidget.__init__(self, parent=parent)
         self.name = thread_name
+        self.thread_list = []
         self.progress_bar = progress_bar
         self.setFixedHeight(int(height_main_window * 0.70))
         self.special_background_on = False
@@ -755,9 +756,11 @@ class AnalysisParametersApp(QWidget):
         self.run_analysis_button.setEnabled(False)
         # self.thread_list.append(Worker())
         self.worker = Worker(self.name, self.cicada_analysis, self.analysis_arguments_handler)
+        self.thread_list.append(self.worker)
         self.worker.updateProgress.connect(self.progress_bar.update_progress_bar)
         self.worker.updateProgress2.connect(self.progress_bar.update_progress_bar_overview)
         self.worker.start()
+
         # p = Thread(target=self.analysis_arguments_handler.run_analysis, daemon=True)
         # p.setName(self.name)
         # p.start()
@@ -783,7 +786,6 @@ class EmittingStream(QtCore.QObject):
         thread_text = text + str(current_thread.name)
         self.terminal.write(str(text))
         dir_path = current_thread.cicada_analysis.get_results_path()
-        current_thread.set_results_path(dir_path)
         self.parent.normalOutputWritten(thread_text, dir_path)
 
 
@@ -814,7 +816,6 @@ class EmittingErrStream(QtCore.QObject):
         thread_text = text + str(current_thread.name)
         self.terminal.write(str(text))
         dir_path = current_thread.cicada_analysis.get_results_path()
-        current_thread.set_results_path(dir_path)
         self.parent.errOutputWritten(thread_text, dir_path)
 
     def flush(self):
@@ -902,6 +903,7 @@ class AnalysisPackage(QWidget):
         QWidget.__init__(self, parent=parent)
         super().__init__()
         self.name = name
+        self.quit = True
         self.closeEvent = self.on_close
         height_window = 750
         self.resize(1000, height_window)
@@ -1010,42 +1012,51 @@ class AnalysisPackage(QWidget):
             event (QEvent): Qt Event triggered when attempting to close the window
 
         """
-        # TODO : Check if an analysis is running if the thread is running
-        if (self.progress_bar.value() < 100 and self.progress_bar.isEnabled()):
-            self.confirm_quit = QMessageBox()
-            self.confirm_quit.setWindowTitle("CICADA")
-            self.confirm_quit.setText("The analysis is still ongoing, do you still want to quit ?")
-            self.confirm_quit.setStandardButtons(QMessageBox.Yes)
-            self.confirm_quit.addButton(QMessageBox.No)
-            self.confirm_quit.setDefaultButton(QMessageBox.No)
-            if self.confirm_quit.exec() == QMessageBox.Yes:
-                self.progress_bar.setEnabled(False)
-                self.quit = True
-                self.close()
-                for obj in gc.get_objects():
-                    if isinstance(obj, Worker):
-                        if obj.name == self.name:
-                            obj.terminate()
-                for obj in gc.get_objects():
-                    if isinstance(obj, AnalysisOverview):
-                        # sys.stderr.write(str(dir(obj)))
-                        for attr in dir(obj):
-                            if self.name in attr:
-                                if "layout" in attr:
-                                    eval('obj.layout.removeItem( obj.' + attr + ')')
+        thread_found = False
+        for thread in self.arguments_section_widget.thread_list:
+            if thread.name == self.name:
+                thread_found = True
+                if thread.run_state:
+                    self.confirm_quit = QMessageBox()
+                    self.confirm_quit.setWindowTitle("CICADA")
+                    self.confirm_quit.setText("The analysis is still ongoing, do you still want to quit ?")
+                    self.confirm_quit.setStandardButtons(QMessageBox.Yes)
+                    self.confirm_quit.addButton(QMessageBox.No)
+                    self.confirm_quit.setDefaultButton(QMessageBox.No)
+                    if self.confirm_quit.exec() == QMessageBox.Yes:
+                        self.progress_bar.setEnabled(False)
+                        self.quit = True
+                        self.close()
+                        thread.terminate()
+                        for obj in gc.get_objects():
+                            if isinstance(obj, AnalysisOverview):
+                                for attr in dir(obj):
+                                    if self.name in attr:
+                                        if "layout" in attr:
+                                            eval('obj.layout.removeItem( obj.' + attr + ')')
 
-                                else:
-                                    eval('obj.' + attr + '.setParent(None)')
-                                    eval('obj.' + attr + '.deleteLater()')
-            else:
-                self.quit = False
-                event.ignore()
+                                        else:
+                                            eval('obj.' + attr + '.setParent(None)')
+                                            eval('obj.' + attr + '.deleteLater()')
+                    else:
+                        self.quit = False
+                        event.ignore()
 
-        else:
+                else:
+                    self.quit = True
+                    for obj in gc.get_objects():
+                        if isinstance(obj, AnalysisOverview):
+                            for attr in dir(obj):
+                                if self.name in attr:
+                                    if "layout" in attr:
+                                        eval('obj.layout.removeItem( obj.' + attr + ')')
+                                    else:
+                                        eval('obj.' + attr + '.setParent(None)')
+                                        eval('obj.' + attr + '.deleteLater()')
+        if not thread_found:
             self.quit = True
             for obj in gc.get_objects():
                 if isinstance(obj, AnalysisOverview):
-                    # sys.stderr.write(str(dir(obj)))
                     for attr in dir(obj):
                         if self.name in attr:
                             if "layout" in attr:
@@ -1053,7 +1064,6 @@ class AnalysisPackage(QWidget):
                             else:
                                 eval('obj.' + attr + '.setParent(None)')
                                 eval('obj.' + attr + '.deleteLater()')
-
 
 class Worker(QtCore.QThread):
     """Thread to manage multiple analysises at the same time"""
@@ -1072,14 +1082,19 @@ class Worker(QtCore.QThread):
         """
         QtCore.QThread.__init__(self)
         self.name = name
+        self.run_state = False
         self.cicada_analysis = cicada_analysis
         self.analysis_arguments_handler = analysis_arguments_handler
 
     def run(self):
         """Run the analysis"""
+        self.run_state = True
         self.analysis_arguments_handler.run_analysis()
+        self.set_results_path(self.cicada_analysis.get_results_path())
+        self.setProgress(self.name, new_set_value=100)
+        self.run_state = False
 
-    def setProgress(self, name, time_started, increment_value=0, new_set_value=0):
+    def setProgress(self, name, time_started=0, increment_value=0, new_set_value=0):
         """
         Emit the new value of the progress bar and time remaining
 
@@ -1109,15 +1124,19 @@ class Worker(QtCore.QThread):
                     exec('obj.' + self.name + '_button.result_path = "' + results_path + '"')
                     eval('obj.' + self.name + '_button.result_button.setEnabled(True)')
                 else:
+                    sys.stderr.write('NOT SET')
                     pass
 
 class ProgressBar(QProgressBar):
     """Class containing the progress bar of the current analysis"""
     def __init__(self, remaining_time_label, parent=None):
+        """
 
+        Args:
+            remaining_time_label: Associated analysis remaining time
+        """
         QProgressBar.__init__(self, parent=parent)
         self.setMinimum(0)
-        self.progress = self
         self.remaining_time_label = remaining_time_label
 
     def update_progress_bar(self, time_started, increment_value=0, new_set_value=0):
@@ -1133,14 +1152,17 @@ class ProgressBar(QProgressBar):
         """
         self.current_thread = QThread.currentThread()
         self.setEnabled(True)
-        if new_set_value:
+        if new_set_value != 0:
             self.setValue(new_set_value)
 
-        if increment_value:
+        if increment_value != 0:
             self.setValue(self.value() + increment_value)
 
         if self.isEnabled() and self.value() != 0:
-            self.remaining_time_label.update_remaining_time(self.value(), time_started)
+            if self.value() == 100:
+                self.remaining_time_label.update_remaining_time(self.value(), time_started, True)
+            else:
+                self.remaining_time_label.update_remaining_time(self.value(), time_started)
 
     def update_progress_bar_overview(self, name, increment_value=0, new_set_value=0):
         """
@@ -1158,11 +1180,12 @@ class ProgressBar(QProgressBar):
             if isinstance(obj, AnalysisOverview):
                 try:
                     eval('obj.' + name + '_progress_bar.setEnabled(True)')
-                    if new_set_value:
+                    if new_set_value != 0:
                         eval('obj.' + name + '_progress_bar.setValue(new_set_value)')
 
-                    if increment_value:
-                        eval('obj.' + name + '_progress_bar.setValue(self.value() + increment_value)')
+                    if increment_value != 0:
+                        eval('obj.' + name + '_progress_bar.setValue(obj.' + name +
+                             '_progress_bar.value() + increment_value)')
 
                     if eval('obj.' + name + '_progress_bar.isEnabled()') and eval(
                             'obj.' + name + '_progress_bar.value()') != 0:
@@ -1180,20 +1203,23 @@ class RemainingTime(QLabel):
         self.setMaximumSize(self.size())
         self.setText("Time remaining : ")
 
-    def update_remaining_time(self, progress_value, time_started):
+    def update_remaining_time(self, progress_value, time_started, done=False):
         """
         Update the remaining time
         Args:
             progress_value (float): Current progress bar value
             time_started (float): Start time of the analysis
+            done (bool): True if the analysis is done and false if still running
 
         """
-        remaining_time = ((time() - time_started) * 100) / progress_value
-        time_elapsed = time() - time_started
-        remaining_time_text = self.correct_time_converter(remaining_time)
-        time_elapsed_text = self.correct_time_converter(time_elapsed)
-        self.setText("Time remaining : " + time_elapsed_text + "/" + remaining_time_text)
-
+        if not done:
+            remaining_time = ((time() - time_started) * 100) / progress_value
+            time_elapsed = time() - time_started
+            remaining_time_text = self.correct_time_converter(remaining_time)
+            time_elapsed_text = self.correct_time_converter(time_elapsed)
+            self.setText("Time remaining : " + time_elapsed_text + "/" + remaining_time_text)
+        else:
+            self.setText("Analysis done")
 
     @staticmethod
     def correct_time_converter(time):
