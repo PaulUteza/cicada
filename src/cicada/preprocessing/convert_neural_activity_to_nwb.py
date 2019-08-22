@@ -1,4 +1,4 @@
-from convert_to_nwb import ConvertToNWB
+from cicada.preprocessing.convert_to_nwb import ConvertToNWB
 import hdf5storage
 import numpy as np
 from pynwb.ophys import Fluorescence

@@ -344,7 +344,8 @@ class AnalysisTreeApp(QWidget):
         super().__init__()
         self.dataView = None
         self.analysis_tree_model = None
-        self.created_analysis = []
+        self.created_analysis_package_object = []
+
         # used in self.doubleClickedItem()
         self.copied_data = None
 
@@ -397,7 +398,7 @@ class AnalysisTreeApp(QWidget):
                                                analysis_name=str(tree_item.item_data[0]),
                                                name=random_id)
             setattr(self, random_id, analysis_package)
-            self.created_analysis.append(getattr(self, random_id))
+            self.created_analysis_package_object.append(analysis_package)
 
             self.analysis_overview.add_analysis_overview(self.copied_data, random_id,
                                                          getattr(self, random_id))

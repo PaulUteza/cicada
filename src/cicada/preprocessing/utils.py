@@ -3,6 +3,7 @@ import sys
 import ntpath
 import numpy as np
 from itertools import groupby
+import collections
 from operator import itemgetter
 from pynwb import NWBHDF5IO, NWBContainer
 from pynwb.file import Subject
@@ -260,3 +261,25 @@ def sort_by_param(nwb_path_list, param_list):
     sorted_list = sorted(result, key=lambda x: (x is None, x))
     nwb_sorted_list = [nwb[len(sorted_list[0])-1] for nwb in sorted_list]
     return nwb_sorted_list
+
+
+def flatten(list):
+    """
+    Flatten a nested list no matter the nesting level
+
+
+    Args:
+        list (list): List to flatten
+
+    Returns:
+        List without nest
+
+    Examples:
+        >>> flatten([1,2,[[3,4],5],[7]])
+        [1,2,3,4,5,7]
+    """
+
+    if isinstance(list, collections.Iterable) and not isinstance(list, (str, bytes)):
+        return [a for i in list for a in flatten(i)]
+    else:
+        return [list]

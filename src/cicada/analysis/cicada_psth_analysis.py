@@ -1,5 +1,4 @@
 from cicada.analysis.cicada_analysis import CicadaAnalysis
-from tqdm import tqdm
 import sys
 from qtpy.QtCore import Signal
 from qtpy import QtCore

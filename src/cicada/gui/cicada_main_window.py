@@ -544,17 +544,25 @@ class CicadaMainWindow(QMainWindow):
         Close all analysises windows on main window close
         (uses Garbage Collector to get a list of them and close them, might be a better and faster way)
         """
-        for obj in gc.get_objects():
-            if isinstance(obj, AnalysisPackage):
-                if obj.isVisible():
-                    obj.close()
+        # for obj in gc.get_objects():
+        #     if isinstance(obj, AnalysisPackage):
+        #         if obj.isVisible():
+        #             obj.close()
+        self.object_created = utils.flatten(self.object_created)
         for obj in self.object_created:
-            obj.close()
-        for obj in gc.get_objects():
             if isinstance(obj, AnalysisPackage):
                 if not obj.quit:
                     event.ignore()
                     break
+                if obj.isVisible():
+                    obj.close()
+            else:
+                obj.close()
+        # for obj in gc.get_objects():
+        #     if isinstance(obj, AnalysisPackage):
+        #         if not obj.quit:
+        #             event.ignore()
+        #             break
 
 
 class AllGroups(QWidget):
@@ -644,7 +652,7 @@ class MusketeersWidget(QWidget):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent=parent)
         self.layout = QHBoxLayout()
-
+        self.parent = parent
         to_analysis_button = QPushButton()
         to_analysis_button.setProperty("cicada", "True")
 
@@ -657,6 +665,7 @@ class MusketeersWidget(QWidget):
         to_parameters_button.setProperty("cicada", "True")
 
         analysis_tree_app = AnalysisTreeApp(to_parameters_button=to_parameters_button)
+        self.parent.object_created.append(analysis_tree_app.created_analysis_package_object)
         self.session_widget.analysis_tree = analysis_tree_app
         self.layout.addWidget(analysis_tree_app)
 
