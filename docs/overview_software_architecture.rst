@@ -22,8 +22,9 @@ Graphical User Interface
 The GUI uses QT through QtPy which wrapps PyQt5 and PySide. 
 
 The GUI is composed of 3 main modules. (screenshot to add)
+
 1. A list that displays the loaded recorded sessions to analyse (`SessionsWidget <https://cicada-cossart.readthedocs.io/en/latest/gui.html#module-cicada.gui.session_show_filter_group>`_).
 
 2. A tree that displays the available analyses, updated depending on the data to analyse. (`AnalysisTreeApp <https://cicada-cossart.readthedocs.io/en/latest/gui.html#module-cicada.gui.cicada_analysis_tree_guianalysis>`_) 
 
-3. A panel that allows to set arguments for the given analysis and to follow the status of the analysis. (`AnalysisParametersApp <https://cicada-cossart.readthedocs.io/en/latest/gui.html#module-cicada.gui.cicada_analysis_parameters_gui>`_>
+3. A pop-up panel that allows to set arguments for the given analysis and to follow the status of the analysis. (`AnalysisParametersApp <https://cicada-cossart.readthedocs.io/en/latest/gui.html#module-cicada.gui.cicada_analysis_parameters_gui>`_). A corresponding overwiew of the opened panels is available on the main window (AnalysisOverview)
