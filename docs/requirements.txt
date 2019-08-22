@@ -12,5 +12,4 @@ pathlib
 scipy
 matplotlib
 shapely
-functools
 PyQt5
