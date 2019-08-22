@@ -34,6 +34,7 @@ release = '1.0'
 # ones.
 extensions = ['sphinx.ext.autodoc',
               'sphinx.ext.extlinks',
+              'sphinxcontrib.images',
               'sphinx.ext.coverage',
               'sphinx.ext.napoleon',
               'sphinx_rtd_theme',

@@ -59,3 +59,11 @@ Utils
 
 .. automodule:: cicada.preprocessing.utils
     :members:
+
+Annexe
+######
+
+.. thumbnail:: img/preprocessing.png
+    :alt: UML graph of preprocessing module
+
+    UML graph of the preprocessing module

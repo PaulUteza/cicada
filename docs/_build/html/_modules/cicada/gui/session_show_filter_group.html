@@ -25,6 +25,9 @@
         <script type="text/javascript" src="../../../_static/underscore.js"></script>
         <script type="text/javascript" src="../../../_static/doctools.js"></script>
         <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script type="text/javascript" src="../../../_static/sphinxcontrib-images\LightBox2\lightbox2\js\jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="../../../_static/sphinxcontrib-images\LightBox2\lightbox2\js\lightbox.min.js"></script>
+        <script type="text/javascript" src="../../../_static/sphinxcontrib-images\LightBox2\lightbox2-customize\jquery-noconflict.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -33,6 +36,7 @@
   
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sphinxcontrib-images\LightBox2\lightbox2\css\lightbox.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
@@ -79,6 +83,8 @@
             
             
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">How to install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html">How to use</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../preprocessing.html">Pre-processing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.cicada_data_to_nwb">Data to NWB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.cicada_preprocessing_run">Run preprocessing</a></li>
@@ -88,6 +94,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_ci_movie_to_nwb">Calcium imaging movie</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_abf_to_nwb">ABF</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.utils">Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#annexe">Annexe</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">Analysis</a><ul>
@@ -100,6 +107,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_frames_count">Frames count</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_hubs_analysis">Hubs analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_psth_analysis">PSTH analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#annexe">Annexe</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gui.html">GUI</a><ul>
@@ -175,16 +183,9 @@
            <div itemprop="articleBody">
             
   <h1>Source code for cicada.gui.session_show_filter_group</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="o">*</span>
+<span></span><span class="kn">from</span> <span class="nn">qtpy.QtWidgets</span> <span class="k">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">qtpy</span> <span class="k">import</span> <span class="n">QtCore</span><span class="p">,</span> <span class="n">QtGui</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">Qt</span>
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">from</span> <span class="nn">pynwb</span> <span class="k">import</span> <span class="n">NWBHDF5IO</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
-<span class="kn">from</span> <span class="nn">cicada.preprocessing.utils</span> <span class="k">import</span> <span class="n">sort_by_param</span><span class="p">,</span> <span class="n">group_by_param</span>
-<span class="kn">import</span> <span class="nn">cicada.preprocessing.utils</span> <span class="k">as</span> <span class="nn">utils</span>
-<span class="kn">from</span> <span class="nn">cicada.gui.metadata_widget</span> <span class="k">import</span> <span class="n">MetaDataWidget</span>
 <span class="kn">import</span> <span class="nn">yaml</span>
 <span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">randint</span>
@@ -218,24 +219,32 @@
             <span class="n">data_to_analyse</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">session_widget</span><span class="o">.</span><span class="n">get_data_to_analyse</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">session_widget</span><span class="o">.</span><span class="n">analysis_tree</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="n">data_to_analyse</span><span class="o">=</span><span class="n">data_to_analyse</span><span class="p">,</span> <span class="n">data_format</span><span class="o">=</span><span class="s2">&quot;nwb&quot;</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">showContextMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+<div class="viewcode-block" id="SessionsListWidget.showContextMenu"><a class="viewcode-back" href="../../../gui.html#cicada.gui.session_show_filter_group.SessionsListWidget.showContextMenu">[docs]</a>    <span class="k">def</span> <span class="nf">showContextMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Display a context menu at the cursor position. Allow the user to see informations about the selected sessions.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            pos (QPoint): Coordinate of the cursor</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">global_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapToGlobal</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">context_menu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">context_menuAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Show info&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">triggered</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">show_info</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">context_menuAct</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QIcon</span><span class="p">(</span><span class="s1">&#39;cicada/gui/icons/svg/question-mark.svg&#39;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">context_menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">context_menuAct</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">context_menu</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">global_pos</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context_menu</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">global_pos</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">show_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="SessionsListWidget.show_info"><a class="viewcode-back" href="../../../gui.html#cicada.gui.session_show_filter_group.SessionsListWidget.show_info">[docs]</a>    <span class="k">def</span> <span class="nf">show_info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Open the metadata widget associated to the selected items&quot;&quot;&quot;</span>
         <span class="n">item_list</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectedItems</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">item_list</span><span class="p">:</span>
             <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;self.&#39;</span> <span class="o">+</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_metadata = &#39;</span>
                                          <span class="s1">&#39;MetaDataWidget(self.session_widget.parent.nwb_path_list.get(item.text()),&#39;</span>
                                          <span class="s1">&#39; &quot;nwb&quot;)&#39;</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">session_widget</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">object_created</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;self.&#39;</span> <span class="o">+</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_metadata&#39;</span><span class="p">))</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">session_widget</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">object_created</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;self.&#39;</span> <span class="o">+</span> <span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;_metadata&#39;</span><span class="p">))</span></div></div>
 
 <div class="viewcode-block" id="SessionsWidget"><a class="viewcode-back" href="../../../gui.html#cicada.gui.session_show_filter_group.SessionsWidget">[docs]</a><span class="k">class</span> <span class="nc">SessionsWidget</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
-
+    <span class="sd">&quot;&quot;&quot;Class containing the widget holding the list of loaded sessions&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">to_analysis_button</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
@@ -533,7 +542,10 @@
             <span class="n">item</span> <span class="o">=</span> <span class="n">QListWidgetItem</span><span class="p">()</span>  <span class="c1"># delimiter</span>
             <span class="k">if</span> <span class="n">param</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">param</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;None&quot;</span>
-            <span class="n">item</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s1">&#39;--------------------------&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;---------------------------&#39;</span><span class="p">)</span>
+            <span class="n">separator</span> <span class="o">=</span> <span class="s1">&#39;--------------------------------------------------------------&#39;</span>
+            <span class="n">separator</span> <span class="o">=</span> <span class="n">separator</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">param</span><span class="p">[</span><span class="mi">0</span><span class="p">])):]</span>
+            <span class="n">middle_separator</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">separator</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span>
+            <span class="n">item</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="n">separator</span><span class="p">[</span><span class="n">middle_separator</span><span class="p">:]</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">param</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span> <span class="o">+</span> <span class="n">separator</span><span class="p">[</span><span class="n">middle_separator</span><span class="p">:])</span>
             <span class="n">item</span><span class="o">.</span><span class="n">setFlags</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsEnabled</span><span class="p">)</span>
             <span class="n">item</span><span class="o">.</span><span class="n">setFlags</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">flags</span><span class="p">()</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">QtCore</span><span class="o">.</span><span class="n">Qt</span><span class="o">.</span><span class="n">ItemIsSelectable</span><span class="p">)</span>  <span class="c1"># item should not be selectable</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">q_list</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>

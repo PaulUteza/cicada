@@ -25,6 +25,9 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script type="text/javascript" src="_static/sphinxcontrib-images\LightBox2\lightbox2\js\jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="_static/sphinxcontrib-images\LightBox2\lightbox2\js\lightbox.min.js"></script>
+        <script type="text/javascript" src="_static/sphinxcontrib-images\LightBox2\lightbox2-customize\jquery-noconflict.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -33,10 +36,11 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/sphinxcontrib-images\LightBox2\lightbox2\css\lightbox.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Analysis" href="analysis.html" />
-    <link rel="prev" title="Welcome to CICADA’s documentation!" href="index.html" /> 
+    <link rel="prev" title="How to use" href="tutorial.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -81,6 +85,8 @@
             
             
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">How to install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">How to use</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Pre-processing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-cicada.preprocessing.cicada_data_to_nwb">Data to NWB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cicada.preprocessing.cicada_preprocessing_run">Run preprocessing</a></li>
@@ -90,6 +96,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#module-cicada.preprocessing.convert_ci_movie_to_nwb">Calcium imaging movie</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cicada.preprocessing.convert_abf_to_nwb">ABF</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cicada.preprocessing.utils">Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#annexe">Annexe</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="analysis.html">Analysis</a><ul>
@@ -102,6 +109,16 @@
 <li class="toctree-l2"><a class="reference internal" href="analysis.html#module-cicada.analysis.cicada_frames_count">Frames count</a></li>
 <li class="toctree-l2"><a class="reference internal" href="analysis.html#module-cicada.analysis.cicada_hubs_analysis">Hubs analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="analysis.html#module-cicada.analysis.cicada_psth_analysis">PSTH analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#annexe">Annexe</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gui.html">GUI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gui.html#module-cicada.gui.cicada_main_window">Main Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui.html#module-cicada.gui.session_show_filter_group">Filter/group sessions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui.html#module-cicada.gui.metadata_widget">Display metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui.html#module-cicada.gui.cicada_analysis_tree_gui">Analysises list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui.html#module-cicada.gui.cicada_analysis_overview">Overview of analysises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui.html#module-cicada.gui.cicada_analysis_parameters_gui">Analysis parameters</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/pappyhammer/cicada">See on Git</a></li>
@@ -169,12 +186,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <table class="longtable docutils align-default">
+  <table border="1" class="longtable docutils">
 <colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
+<col width="10%" />
+<col width="90%" />
 </colgroup>
-<tbody>
+<tbody valign="top">
 </tbody>
 </table>
 <div class="section" id="pre-processing">
@@ -184,72 +201,89 @@
 <span id="data-to-nwb"></span><h2>Data to NWB<a class="headerlink" href="#module-cicada.preprocessing.cicada_data_to_nwb" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="cicada.preprocessing.cicada_data_to_nwb.convert_data_to_nwb">
-<code class="sig-prename descclassname">cicada.preprocessing.cicada_data_to_nwb.</code><code class="sig-name descname">convert_data_to_nwb</code><span class="sig-paren">(</span><em class="sig-param">data_to_convert_dir</em>, <em class="sig-param">default_convert_to_nwb_yml_file</em>, <em class="sig-param">nwb_files_dir</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/cicada_data_to_nwb.html#convert_data_to_nwb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.cicada_data_to_nwb.convert_data_to_nwb" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">cicada.preprocessing.cicada_data_to_nwb.</code><code class="descname">convert_data_to_nwb</code><span class="sig-paren">(</span><em>data_to_convert_dir</em>, <em>default_convert_to_nwb_yml_file</em>, <em>nwb_files_dir</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/cicada_data_to_nwb.html#convert_data_to_nwb"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.cicada_data_to_nwb.convert_data_to_nwb" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert all default_config_data_for_conversion located in dir_path and put it in NWB format then create the file.
 Use the yaml file contains in dir_path to convert the default_config_data_for_conversion.
 A yaml file with in its name session_data and one with subject_data must be in directory.
 Otherwise nothing will happend.
 A yaml file with abf in its name will need to be present to convert the abf default_config_data_for_conversion.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data_to_convert_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Absolute path to the directory containing all data</p></li>
-<li><p><strong>default_convert_to_nwb_yml_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Absolute path to the default YAML file to convert an NWB file</p></li>
-<li><p><strong>nwb_files_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Absolute path to the directory where to save the nwb file created</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>data_to_convert_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Absolute path to the directory containing all data</li>
+<li><strong>default_convert_to_nwb_yml_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Absolute path to the default YAML file to convert an NWB file</li>
+<li><strong>nwb_files_dir</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Absolute path to the directory where to save the nwb file created</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="cicada.preprocessing.cicada_data_to_nwb.create_convert_class">
-<code class="sig-prename descclassname">cicada.preprocessing.cicada_data_to_nwb.</code><code class="sig-name descname">create_convert_class</code><span class="sig-paren">(</span><em class="sig-param">class_name</em>, <em class="sig-param">config_dict</em>, <em class="sig-param">converter_dict</em>, <em class="sig-param">nwb_file</em>, <em class="sig-param">yaml_path</em>, <em class="sig-param">files</em>, <em class="sig-param">dir_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/cicada_data_to_nwb.html#create_convert_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.cicada_data_to_nwb.create_convert_class" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>class_name</strong> – </p></li>
-<li><p><strong>config_dict</strong> – </p></li>
-<li><p><strong>converter_dict</strong> – </p></li>
-<li><p><strong>nwb_file</strong> – </p></li>
-<li><p><strong>yaml_path</strong> – </p></li>
-<li><p><strong>files</strong> – </p></li>
-<li><p><strong>dir_path</strong> – </p></li>
+<code class="descclassname">cicada.preprocessing.cicada_data_to_nwb.</code><code class="descname">create_convert_class</code><span class="sig-paren">(</span><em>class_name</em>, <em>config_dict</em>, <em>converter_dict</em>, <em>nwb_file</em>, <em>yaml_path</em>, <em>files</em>, <em>dir_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/cicada_data_to_nwb.html#create_convert_class"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.cicada_data_to_nwb.create_convert_class" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>class_name</strong> – </li>
+<li><strong>config_dict</strong> – </li>
+<li><strong>converter_dict</strong> – </li>
+<li><strong>nwb_file</strong> – </li>
+<li><strong>yaml_path</strong> – </li>
+<li><strong>files</strong> – </li>
+<li><strong>dir_path</strong> – </li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 <p>Returns:</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="cicada.preprocessing.cicada_data_to_nwb.create_nwb_file">
-<code class="sig-prename descclassname">cicada.preprocessing.cicada_data_to_nwb.</code><code class="sig-name descname">create_nwb_file</code><span class="sig-paren">(</span><em class="sig-param">subject_data_yaml_file</em>, <em class="sig-param">session_data_yaml_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/cicada_data_to_nwb.html#create_nwb_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.cicada_data_to_nwb.create_nwb_file" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">cicada.preprocessing.cicada_data_to_nwb.</code><code class="descname">create_nwb_file</code><span class="sig-paren">(</span><em>subject_data_yaml_file</em>, <em>session_data_yaml_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/cicada_data_to_nwb.html#create_nwb_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.cicada_data_to_nwb.create_nwb_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create an NWB file object using all metadata containing in YAML file</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>subject_data_yaml_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Absolute path to YAML file containing the subject metadata</p></li>
-<li><p><strong>session_data_yaml_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Absolute path to YAML file containing the session metadata</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>subject_data_yaml_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Absolute path to YAML file containing the subject metadata</li>
+<li><strong>session_data_yaml_file</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Absolute path to YAML file containing the session metadata</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="cicada.preprocessing.cicada_data_to_nwb.filter_list_according_to_keywords">
-<code class="sig-prename descclassname">cicada.preprocessing.cicada_data_to_nwb.</code><code class="sig-name descname">filter_list_according_to_keywords</code><span class="sig-paren">(</span><em class="sig-param">list_to_filter</em>, <em class="sig-param">keywords</em>, <em class="sig-param">keywords_to_exclude</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/cicada_data_to_nwb.html#filter_list_according_to_keywords"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.cicada_data_to_nwb.filter_list_according_to_keywords" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">cicada.preprocessing.cicada_data_to_nwb.</code><code class="descname">filter_list_according_to_keywords</code><span class="sig-paren">(</span><em>list_to_filter</em>, <em>keywords</em>, <em>keywords_to_exclude</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/cicada_data_to_nwb.html#filter_list_according_to_keywords"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.cicada_data_to_nwb.filter_list_according_to_keywords" title="Permalink to this definition">¶</a></dt>
 <dd><p>Conditional loop to remove all files or directories not containing the keywords
 # or containing excluded keywords. Inplace list modification</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>list_to_filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List containing all files/directories to be filtered</p></li>
-<li><p><strong>keywords</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – If the list doesn’t contain the keyword, remove it from list</p></li>
-<li><p><strong>keywords_to_exclude</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – If the list contains the keyword, remove it from list</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>list_to_filter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List containing all files/directories to be filtered</li>
+<li><strong>keywords</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – If the list doesn’t contain the keyword, remove it from list</li>
+<li><strong>keywords_to_exclude</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – If the list contains the keyword, remove it from list</li>
 </ul>
-</dd>
-</dl>
-<dl>
-<dt>Exemples:</dt><dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">filter_list_of_files</span><span class="p">([</span><span class="s2">&quot;file1.py&quot;</span><span class="p">,</span> <span class="s2">&quot;file2.c&quot;</span><span class="p">,</span> <span class="s2">&quot;file2.h&quot;</span><span class="p">],</span><span class="s2">&quot;2&quot;</span><span class="p">,</span><span class="s2">&quot;h&quot;</span><span class="p">))</span>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>Exemples:</dt>
+<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">filter_list_of_files</span><span class="p">([</span><span class="s2">&quot;file1.py&quot;</span><span class="p">,</span> <span class="s2">&quot;file2.c&quot;</span><span class="p">,</span> <span class="s2">&quot;file2.h&quot;</span><span class="p">],</span><span class="s2">&quot;2&quot;</span><span class="p">,</span><span class="s2">&quot;h&quot;</span><span class="p">))</span>
 <span class="go">[&quot;file2.c&quot;]</span>
 </pre></div>
 </div>
@@ -259,21 +293,26 @@ A yaml file with abf in its name will need to be present to convert the abf defa
 
 <dl class="function">
 <dt id="cicada.preprocessing.cicada_data_to_nwb.filter_list_of_files">
-<code class="sig-prename descclassname">cicada.preprocessing.cicada_data_to_nwb.</code><code class="sig-name descname">filter_list_of_files</code><span class="sig-paren">(</span><em class="sig-param">dir_path</em>, <em class="sig-param">files</em>, <em class="sig-param">extensions</em>, <em class="sig-param">directory=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/cicada_data_to_nwb.html#filter_list_of_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.cicada_data_to_nwb.filter_list_of_files" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">cicada.preprocessing.cicada_data_to_nwb.</code><code class="descname">filter_list_of_files</code><span class="sig-paren">(</span><em>dir_path</em>, <em>files</em>, <em>extensions</em>, <em>directory=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/cicada_data_to_nwb.html#filter_list_of_files"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.cicada_data_to_nwb.filter_list_of_files" title="Permalink to this definition">¶</a></dt>
 <dd><p>Take a list of file names and either no extensions (empty list or None) and remove the directory that starts by
 “.” or a list of extension and remove the files that are not with this extension. It returns a new list</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>dir_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – path in which the files ares</p></li>
-<li><p><strong>files</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of files to be filtered</p></li>
-<li><p><strong>extensions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – File extension to use as a filter</p></li>
-<li><p><strong>directory</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – directory in which looking for files with a given extensions or return files in this directory</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>dir_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – path in which the files ares</li>
+<li><strong>files</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of files to be filtered</li>
+<li><strong>extensions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – File extension to use as a filter</li>
+<li><strong>directory</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – directory in which looking for files with a given extensions or return files in this directory</li>
 </ul>
-</dd>
-</dl>
-<dl>
-<dt>Exemples:</dt><dd><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">filter_list_of_files</span><span class="p">([</span><span class="s2">&quot;file1.py&quot;</span><span class="p">,</span> <span class="s2">&quot;file2.c&quot;</span><span class="p">,</span> <span class="s2">&quot;file3.h&quot;</span><span class="p">],</span><span class="s2">&quot;py&quot;</span><span class="p">))</span>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="docutils">
+<dt>Exemples:</dt>
+<dd><div class="first last highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">filter_list_of_files</span><span class="p">([</span><span class="s2">&quot;file1.py&quot;</span><span class="p">,</span> <span class="s2">&quot;file2.c&quot;</span><span class="p">,</span> <span class="s2">&quot;file3.h&quot;</span><span class="p">],</span><span class="s2">&quot;py&quot;</span><span class="p">))</span>
 <span class="go">[&quot;file1.py&quot;]</span>
 </pre></div>
 </div>
@@ -289,17 +328,20 @@ A yaml file with abf in its name will need to be present to convert the abf defa
 <span id="nwb-file-class"></span><h2>NWB file class<a class="headerlink" href="#module-cicada.preprocessing.convert_to_nwb" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="cicada.preprocessing.convert_to_nwb.ConvertToNWB">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.preprocessing.convert_to_nwb.</code><code class="sig-name descname">ConvertToNWB</code><span class="sig-paren">(</span><em class="sig-param">nwb_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_to_nwb.html#ConvertToNWB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_to_nwb.ConvertToNWB" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.preprocessing.convert_to_nwb.</code><code class="descname">ConvertToNWB</code><span class="sig-paren">(</span><em>nwb_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_to_nwb.html#ConvertToNWB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_to_nwb.ConvertToNWB" title="Permalink to this definition">¶</a></dt>
 <dd><p>NWB file object class</p>
 <dl class="method">
 <dt id="cicada.preprocessing.convert_to_nwb.ConvertToNWB.convert">
-<code class="sig-name descname">convert</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_to_nwb.html#ConvertToNWB.convert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_to_nwb.ConvertToNWB.convert" title="Permalink to this definition">¶</a></dt>
+<code class="descname">convert</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_to_nwb.html#ConvertToNWB.convert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_to_nwb.ConvertToNWB.convert" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert the data and add to the nwb_file</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>**kwargs</strong> – arbitrary arguments</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>**kwargs</strong> – arbitrary arguments</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -309,20 +351,23 @@ A yaml file with abf in its name will need to be present to convert the abf defa
 <span id="suite-2p-rois"></span><h2>Suite 2P ROIs<a class="headerlink" href="#module-cicada.preprocessing.convert_suite_2p_rois_to_nwb" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="cicada.preprocessing.convert_suite_2p_rois_to_nwb.ConvertSuite2pRoisToNWB">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.preprocessing.convert_suite_2p_rois_to_nwb.</code><code class="sig-name descname">ConvertSuite2pRoisToNWB</code><span class="sig-paren">(</span><em class="sig-param">nwb_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_suite_2p_rois_to_nwb.html#ConvertSuite2pRoisToNWB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_suite_2p_rois_to_nwb.ConvertSuite2pRoisToNWB" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.preprocessing.convert_suite_2p_rois_to_nwb.</code><code class="descname">ConvertSuite2pRoisToNWB</code><span class="sig-paren">(</span><em>nwb_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_suite_2p_rois_to_nwb.html#ConvertSuite2pRoisToNWB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_suite_2p_rois_to_nwb.ConvertSuite2pRoisToNWB" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class to convert ROIs data from Suite2P to NWB
 if raw_traces from Suite2p are available they are loaded.
 Otherwise if the movie is available, build the raw_traces.
 create_roi_response_series</p>
 <dl class="method">
 <dt id="cicada.preprocessing.convert_suite_2p_rois_to_nwb.ConvertSuite2pRoisToNWB.convert">
-<code class="sig-name descname">convert</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_suite_2p_rois_to_nwb.html#ConvertSuite2pRoisToNWB.convert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_suite_2p_rois_to_nwb.ConvertSuite2pRoisToNWB.convert" title="Permalink to this definition">¶</a></dt>
+<code class="descname">convert</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_suite_2p_rois_to_nwb.html#ConvertSuite2pRoisToNWB.convert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_suite_2p_rois_to_nwb.ConvertSuite2pRoisToNWB.convert" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert the data and add to the nwb_file</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>**kwargs</strong> – arbitrary arguments</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>**kwargs</strong> – arbitrary arguments</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -332,39 +377,46 @@ create_roi_response_series</p>
 <span id="d-series"></span><h2>2D series<a class="headerlink" href="#module-cicada.preprocessing.convert_processed_2d_series_to_nwb" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="cicada.preprocessing.convert_processed_2d_series_to_nwb.ConvertProcessed2dSeriesToNWB">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.preprocessing.convert_processed_2d_series_to_nwb.</code><code class="sig-name descname">ConvertProcessed2dSeriesToNWB</code><span class="sig-paren">(</span><em class="sig-param">nwb_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_processed_2d_series_to_nwb.html#ConvertProcessed2dSeriesToNWB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_processed_2d_series_to_nwb.ConvertProcessed2dSeriesToNWB" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.preprocessing.convert_processed_2d_series_to_nwb.</code><code class="descname">ConvertProcessed2dSeriesToNWB</code><span class="sig-paren">(</span><em>nwb_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_processed_2d_series_to_nwb.html#ConvertProcessed2dSeriesToNWB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_processed_2d_series_to_nwb.ConvertProcessed2dSeriesToNWB" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class to convert 2D series to NWB</p>
 <dl class="method">
 <dt id="cicada.preprocessing.convert_processed_2d_series_to_nwb.ConvertProcessed2dSeriesToNWB.convert">
-<code class="sig-name descname">convert</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_processed_2d_series_to_nwb.html#ConvertProcessed2dSeriesToNWB.convert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_processed_2d_series_to_nwb.ConvertProcessed2dSeriesToNWB.convert" title="Permalink to this definition">¶</a></dt>
+<code class="descname">convert</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_processed_2d_series_to_nwb.html#ConvertProcessed2dSeriesToNWB.convert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_processed_2d_series_to_nwb.ConvertProcessed2dSeriesToNWB.convert" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert the data and add to the nwb_file</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>**kwargs</strong> – arbitrary arguments</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>**kwargs</strong> – arbitrary arguments</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
-<dl class="method">
+<dl class="staticmethod">
 <dt id="cicada.preprocessing.convert_processed_2d_series_to_nwb.ConvertProcessed2dSeriesToNWB.load_rasterplot_in_memory">
-<em class="property">static </em><code class="sig-name descname">load_rasterplot_in_memory</code><span class="sig-paren">(</span><em class="sig-param">rasterplot_file_name</em>, <em class="sig-param">matlab_string</em>, <em class="sig-param">frames_to_add=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_processed_2d_series_to_nwb.html#ConvertProcessed2dSeriesToNWB.load_rasterplot_in_memory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_processed_2d_series_to_nwb.ConvertProcessed2dSeriesToNWB.load_rasterplot_in_memory" title="Permalink to this definition">¶</a></dt>
+<em class="property">static </em><code class="descname">load_rasterplot_in_memory</code><span class="sig-paren">(</span><em>rasterplot_file_name</em>, <em>matlab_string</em>, <em>frames_to_add=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_processed_2d_series_to_nwb.html#ConvertProcessed2dSeriesToNWB.load_rasterplot_in_memory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_processed_2d_series_to_nwb.ConvertProcessed2dSeriesToNWB.load_rasterplot_in_memory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get 2D series data from file</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>rasterplot_file_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Absolute path to file containing 2D series</p></li>
-<li><p><strong>matlab_string</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Key to the data from matlab and npz files</p></li>
-<li><p><strong>frames_to_add</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Key is the frame where you add blank frames and value is the number of frames to add</p></li>
-<li><p><strong>is None.</strong> (<em>Default</em>) – </p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>rasterplot_file_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Absolute path to file containing 2D series</li>
+<li><strong>matlab_string</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Key to the data from matlab and npz files</li>
+<li><strong>frames_to_add</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Key is the frame where you add blank frames and value is the number of frames to add</li>
+<li><strong>is None.</strong> (<em>Default</em>) – </li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Raster data as a 2d array</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>raster (np.array)</p>
-</dd>
-</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Raster data as a 2d array</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">raster (np.array)</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -374,51 +426,56 @@ create_roi_response_series</p>
 <span id="calcium-imaging-movie"></span><h2>Calcium imaging movie<a class="headerlink" href="#module-cicada.preprocessing.convert_ci_movie_to_nwb" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="cicada.preprocessing.convert_ci_movie_to_nwb.ConvertCiMovieToNWB">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.preprocessing.convert_ci_movie_to_nwb.</code><code class="sig-name descname">ConvertCiMovieToNWB</code><span class="sig-paren">(</span><em class="sig-param">nwb_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_ci_movie_to_nwb.html#ConvertCiMovieToNWB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_ci_movie_to_nwb.ConvertCiMovieToNWB" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.preprocessing.convert_ci_movie_to_nwb.</code><code class="descname">ConvertCiMovieToNWB</code><span class="sig-paren">(</span><em>nwb_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_ci_movie_to_nwb.html#ConvertCiMovieToNWB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_ci_movie_to_nwb.ConvertCiMovieToNWB" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class to convert Calcium Imaging movies to NWB</p>
 <dl class="method">
 <dt id="cicada.preprocessing.convert_ci_movie_to_nwb.ConvertCiMovieToNWB.convert">
-<code class="sig-name descname">convert</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_ci_movie_to_nwb.html#ConvertCiMovieToNWB.convert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_ci_movie_to_nwb.ConvertCiMovieToNWB.convert" title="Permalink to this definition">¶</a></dt>
+<code class="descname">convert</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_ci_movie_to_nwb.html#ConvertCiMovieToNWB.convert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_ci_movie_to_nwb.ConvertCiMovieToNWB.convert" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert the data and add to the nwb_file</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>**kwargs</strong> – arbitrary arguments</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>**kwargs</strong> – arbitrary arguments</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.preprocessing.convert_ci_movie_to_nwb.ConvertCiMovieToNWB.load_tiff_movie_in_memory">
-<code class="sig-name descname">load_tiff_movie_in_memory</code><span class="sig-paren">(</span><em class="sig-param">tif_movie_file_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_ci_movie_to_nwb.html#ConvertCiMovieToNWB.load_tiff_movie_in_memory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_ci_movie_to_nwb.ConvertCiMovieToNWB.load_tiff_movie_in_memory" title="Permalink to this definition">¶</a></dt>
+<code class="descname">load_tiff_movie_in_memory</code><span class="sig-paren">(</span><em>tif_movie_file_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_ci_movie_to_nwb.html#ConvertCiMovieToNWB.load_tiff_movie_in_memory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_ci_movie_to_nwb.ConvertCiMovieToNWB.load_tiff_movie_in_memory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load tiff movie from filename using Scan Image Tiff</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>tif_movie_file_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Absolute path to tiff movie</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tiff movie as 3D-array</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>tiff_movie (array)</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>tif_movie_file_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Absolute path to tiff movie</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Tiff movie as 3D-array</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">tiff_movie (array)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.preprocessing.convert_ci_movie_to_nwb.ConvertCiMovieToNWB.load_tiff_movie_in_memory_using_pil">
-<code class="sig-name descname">load_tiff_movie_in_memory_using_pil</code><span class="sig-paren">(</span><em class="sig-param">tif_movie_file_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_ci_movie_to_nwb.html#ConvertCiMovieToNWB.load_tiff_movie_in_memory_using_pil"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_ci_movie_to_nwb.ConvertCiMovieToNWB.load_tiff_movie_in_memory_using_pil" title="Permalink to this definition">¶</a></dt>
+<code class="descname">load_tiff_movie_in_memory_using_pil</code><span class="sig-paren">(</span><em>tif_movie_file_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_ci_movie_to_nwb.html#ConvertCiMovieToNWB.load_tiff_movie_in_memory_using_pil"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_ci_movie_to_nwb.ConvertCiMovieToNWB.load_tiff_movie_in_memory_using_pil" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load tiff movie from filename using PIL library</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>tif_movie_file_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Absolute path to tiff movie</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Tiff movie as 3D-array</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>tiff_movie (array)</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>tif_movie_file_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Absolute path to tiff movie</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Tiff movie as 3D-array</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">tiff_movie (array)</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -428,11 +485,11 @@ create_roi_response_series</p>
 <span id="abf"></span><h2>ABF<a class="headerlink" href="#module-cicada.preprocessing.convert_abf_to_nwb" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="cicada.preprocessing.convert_abf_to_nwb.ConvertAbfToNWB">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.preprocessing.convert_abf_to_nwb.</code><code class="sig-name descname">ConvertAbfToNWB</code><span class="sig-paren">(</span><em class="sig-param">nwb_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_abf_to_nwb.html#ConvertAbfToNWB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_abf_to_nwb.ConvertAbfToNWB" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.preprocessing.convert_abf_to_nwb.</code><code class="descname">ConvertAbfToNWB</code><span class="sig-paren">(</span><em>nwb_file</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_abf_to_nwb.html#ConvertAbfToNWB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_abf_to_nwb.ConvertAbfToNWB" title="Permalink to this definition">¶</a></dt>
 <dd><p>Class to convert ABF data to NWB</p>
 <dl class="method">
 <dt id="cicada.preprocessing.convert_abf_to_nwb.ConvertAbfToNWB.convert">
-<code class="sig-name descname">convert</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_abf_to_nwb.html#ConvertAbfToNWB.convert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_abf_to_nwb.ConvertAbfToNWB.convert" title="Permalink to this definition">¶</a></dt>
+<code class="descname">convert</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_abf_to_nwb.html#ConvertAbfToNWB.convert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_abf_to_nwb.ConvertAbfToNWB.convert" title="Permalink to this definition">¶</a></dt>
 <dd><p>The goal of this function is to extract from an Axon Binary Format (ABF) file its content
 and make it accessible through the NWB file.
 The content can be: LFP signal, piezzo signal, speed of the animal on the treadmill. All, None or a few
@@ -447,47 +504,55 @@ again. The time interval containing this information is named “ci_recording_on
 doing:
 if ‘ci_recording_on_pause’ in nwb_file.intervals:
 pause_intervals = nwb_file.intervals[‘ci_recording_on_pause’]</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – kwargs is a dictionary, potentials keys and values types are:</p></li>
-<li><p><strong>abf_yaml_file_name</strong> – mandatory parameter. The value is a string representing the path</p></li>
-<li><p><strong>file_name of the yaml file associated to this abf file. In the abf</strong> (<em>and</em>) – </p></li>
-<li><p><strong>frames_channel</strong> – mandatory parameter. The value is an int representing the channel</p></li>
-<li><p><strong>the abf in which is the frames timestamps data.</strong> (<em>of</em>) – </p></li>
-<li><p><strong>abf_file_name</strong> – mandatory parameter. The value is a string representing the path</p></li>
-<li><p><strong>file_name of the abf file.</strong> (<em>and</em>) – </p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>**kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – kwargs is a dictionary, potentials keys and values types are:</li>
+<li><strong>abf_yaml_file_name</strong> – mandatory parameter. The value is a string representing the path</li>
+<li><strong>file_name of the yaml file associated to this abf file. In the abf</strong> (<em>and</em>) – </li>
+<li><strong>frames_channel</strong> – mandatory parameter. The value is an int representing the channel</li>
+<li><strong>the abf in which is the frames timestamps data.</strong> (<em>of</em>) – </li>
+<li><strong>abf_file_name</strong> – mandatory parameter. The value is a string representing the path</li>
+<li><strong>file_name of the abf file.</strong> (<em>and</em>) – </li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.preprocessing.convert_abf_to_nwb.ConvertAbfToNWB.detect_run_periods">
-<code class="sig-name descname">detect_run_periods</code><span class="sig-paren">(</span><em class="sig-param">run_data</em>, <em class="sig-param">min_speed</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_abf_to_nwb.html#ConvertAbfToNWB.detect_run_periods"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_abf_to_nwb.ConvertAbfToNWB.detect_run_periods" title="Permalink to this definition">¶</a></dt>
+<code class="descname">detect_run_periods</code><span class="sig-paren">(</span><em>run_data</em>, <em>min_speed</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_abf_to_nwb.html#ConvertAbfToNWB.detect_run_periods"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_abf_to_nwb.ConvertAbfToNWB.detect_run_periods" title="Permalink to this definition">¶</a></dt>
 <dd><p>Using the data from the abf regarding the speed of the animal on the treadmill, return the speed in cm/s
 at each timestamps as well as period when the animal is moving (using min_speed threshold)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>run_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – Data from the subject run</p></li>
-<li><p><strong>min_speed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Minimum speed</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>run_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – Data from the subject run</li>
+<li><strong>min_speed</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Minimum speed</li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>List of movements periods
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">List of movements periods
 speed_during_movement_periods (list) : List of subject speed during movements
 speed_by_time (list) : List of subject speed by time</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>mvt_periods (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a>)</p>
-</dd>
-</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">mvt_periods (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a>)</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.preprocessing.convert_abf_to_nwb.ConvertAbfToNWB.determine_ci_frames_indices">
-<code class="sig-name descname">determine_ci_frames_indices</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_abf_to_nwb.html#ConvertAbfToNWB.determine_ci_frames_indices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_abf_to_nwb.ConvertAbfToNWB.determine_ci_frames_indices" title="Permalink to this definition">¶</a></dt>
+<code class="descname">determine_ci_frames_indices</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_abf_to_nwb.html#ConvertAbfToNWB.determine_ci_frames_indices"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_abf_to_nwb.ConvertAbfToNWB.determine_ci_frames_indices" title="Permalink to this definition">¶</a></dt>
 <dd><p>Using the frames data channel, estimate the timestamps of each frame of the calcium imaging movie.
 If there are breaks between each recording (the movie being a concatenation of different movies), then
 there is an option to either skip those non registered frames that will be skept in all other data (lfp, piezzo,
@@ -497,14 +562,17 @@ the abf file</p>
 
 <dl class="method">
 <dt id="cicada.preprocessing.convert_abf_to_nwb.ConvertAbfToNWB.process_run_data">
-<code class="sig-name descname">process_run_data</code><span class="sig-paren">(</span><em class="sig-param">run_channel</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_abf_to_nwb.html#ConvertAbfToNWB.process_run_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_abf_to_nwb.ConvertAbfToNWB.process_run_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">process_run_data</code><span class="sig-paren">(</span><em>run_channel</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/convert_abf_to_nwb.html#ConvertAbfToNWB.process_run_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.convert_abf_to_nwb.ConvertAbfToNWB.process_run_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Using the information in run_channel, will add to the nwb_file the speed of the subject at each acquisition
 frame of the movie in cm/s</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>run_channel</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Run channel</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>run_channel</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Run channel</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -514,7 +582,7 @@ frame of the movie in cm/s</p>
 <span id="utils"></span><h2>Utils<a class="headerlink" href="#module-cicada.preprocessing.utils" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
 <dt id="cicada.preprocessing.utils.class_name_to_file_name">
-<code class="sig-prename descclassname">cicada.preprocessing.utils.</code><code class="sig-name descname">class_name_to_file_name</code><span class="sig-paren">(</span><em class="sig-param">class_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/utils.html#class_name_to_file_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.utils.class_name_to_file_name" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">cicada.preprocessing.utils.</code><code class="descname">class_name_to_file_name</code><span class="sig-paren">(</span><em>class_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/utils.html#class_name_to_file_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.utils.class_name_to_file_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Transform the string representing a class_name, by removing the upper case letters, and inserting
 before them an underscore if 2 upper case letters don’t follow. Underscore are also inserted before numbers
 ex: ConvertAbfToNWB -&gt; convert_abf_to_nwb
@@ -524,7 +592,7 @@ ex: ConvertAbfToNWB -&gt; convert_abf_to_nwb
 
 <dl class="function">
 <dt id="cicada.preprocessing.utils.get_continous_time_periods">
-<code class="sig-prename descclassname">cicada.preprocessing.utils.</code><code class="sig-name descname">get_continous_time_periods</code><span class="sig-paren">(</span><em class="sig-param">binary_array</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/utils.html#get_continous_time_periods"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.utils.get_continous_time_periods" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">cicada.preprocessing.utils.</code><code class="descname">get_continous_time_periods</code><span class="sig-paren">(</span><em>binary_array</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/utils.html#get_continous_time_periods"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.utils.get_continous_time_periods" title="Permalink to this definition">¶</a></dt>
 <dd><p>take a binary array and return a list of tuples representing the first and last position(included) of continuous
 positive period
 :param binary_array:
@@ -533,47 +601,55 @@ positive period
 
 <dl class="function">
 <dt id="cicada.preprocessing.utils.group_by_param">
-<code class="sig-prename descclassname">cicada.preprocessing.utils.</code><code class="sig-name descname">group_by_param</code><span class="sig-paren">(</span><em class="sig-param">nwb_path_list</em>, <em class="sig-param">param_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/utils.html#group_by_param"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.utils.group_by_param" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">cicada.preprocessing.utils.</code><code class="descname">group_by_param</code><span class="sig-paren">(</span><em>nwb_path_list</em>, <em>param_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/utils.html#group_by_param"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.utils.group_by_param" title="Permalink to this definition">¶</a></dt>
 <dd><p>Group NWB files depending on a list of parameters</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>nwb_path_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of absolute path to NWB files</p></li>
-<li><p><strong>param_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of parameters to group by</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>nwb_path_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of absolute path to NWB files</li>
+<li><strong>param_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of parameters to group by</li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>List of NWB files grouped
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">List of NWB files grouped
 param_value_list (list) : List of values of the parameter that decided each group</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>grouped_list (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a>)</p>
-</dd>
-</dl>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">grouped_list (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a>)</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="cicada.preprocessing.utils.init_group_and_sort">
-<code class="sig-prename descclassname">cicada.preprocessing.utils.</code><code class="sig-name descname">init_group_and_sort</code><span class="sig-paren">(</span><em class="sig-param">nwb_path_list</em>, <em class="sig-param">param_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/utils.html#init_group_and_sort"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.utils.init_group_and_sort" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>nwb_path_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of absolute path to NWB files</p></li>
-<li><p><strong>param_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of parameters to sort/group by</p></li>
+<code class="descclassname">cicada.preprocessing.utils.</code><code class="descname">init_group_and_sort</code><span class="sig-paren">(</span><em>nwb_path_list</em>, <em>param_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/utils.html#init_group_and_sort"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.utils.init_group_and_sort" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>nwb_path_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of absolute path to NWB files</li>
+<li><strong>param_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of parameters to sort/group by</li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>values of param used to sort/group by</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>result (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a>)</p>
-</dd>
-</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">values of param used to sort/group by</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">result (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a>)</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="function">
 <dt id="cicada.preprocessing.utils.merging_time_periods">
-<code class="sig-prename descclassname">cicada.preprocessing.utils.</code><code class="sig-name descname">merging_time_periods</code><span class="sig-paren">(</span><em class="sig-param">time_periods</em>, <em class="sig-param">min_time_between_periods</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/utils.html#merging_time_periods"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.utils.merging_time_periods" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">cicada.preprocessing.utils.</code><code class="descname">merging_time_periods</code><span class="sig-paren">(</span><em>time_periods</em>, <em>min_time_between_periods</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/utils.html#merging_time_periods"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.utils.merging_time_periods" title="Permalink to this definition">¶</a></dt>
 <dd><p>Take a list of pair of values representing intervals (periods) and a merging thresholdd represented by
 min_time_between_periods. If the time between 2 periods are under this threshold, then we merge those periods.
 It returns a new list of periods.
@@ -585,25 +661,42 @@ the value being included in the period.
 
 <dl class="function">
 <dt id="cicada.preprocessing.utils.sort_by_param">
-<code class="sig-prename descclassname">cicada.preprocessing.utils.</code><code class="sig-name descname">sort_by_param</code><span class="sig-paren">(</span><em class="sig-param">nwb_path_list</em>, <em class="sig-param">param_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/utils.html#sort_by_param"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.utils.sort_by_param" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">cicada.preprocessing.utils.</code><code class="descname">sort_by_param</code><span class="sig-paren">(</span><em>nwb_path_list</em>, <em>param_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/preprocessing/utils.html#sort_by_param"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.preprocessing.utils.sort_by_param" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sort NWB files depending on a list of parameters</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>nwb_path_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of absolute path to NWB files</p></li>
-<li><p><strong>param_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of parameters to sort by</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>nwb_path_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of absolute path to NWB files</li>
+<li><strong>param_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of parameters to sort by</li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>List of NWB files sorted</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>nwb_sorted_list (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a>)</p>
-</dd>
-</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">List of NWB files sorted</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">nwb_sorted_list (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)">list</a>)</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>
+<div class="section" id="annexe">
+<h2>Annexe<a class="headerlink" href="#annexe" title="Permalink to this headline">¶</a></h2>
+<a class=""
+               data-lightbox="group-1689c336-9e8b-4a90-9358-c16e86f0bb5d"
+               href="_images/preprocessing.png"
+               title="UML graph of the preprocessing module"
+               data-title="UML graph of the preprocessing module"
+               ><img src="_images/preprocessing.png"
+                     class=""
+                     width="100%"
+                     height="auto"
+                     alt="UML graph of preprocessing module"/>
+                </a></div>
 </div>
 
 
@@ -617,7 +710,7 @@ the value being included in the period.
         <a href="analysis.html" class="btn btn-neutral float-right" title="Analysis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to CICADA’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="tutorial.html" class="btn btn-neutral float-left" title="How to use" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

@@ -25,6 +25,9 @@
         <script type="text/javascript" src="../../../_static/underscore.js"></script>
         <script type="text/javascript" src="../../../_static/doctools.js"></script>
         <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script type="text/javascript" src="../../../_static/sphinxcontrib-images\LightBox2\lightbox2\js\jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="../../../_static/sphinxcontrib-images\LightBox2\lightbox2\js\lightbox.min.js"></script>
+        <script type="text/javascript" src="../../../_static/sphinxcontrib-images\LightBox2\lightbox2-customize\jquery-noconflict.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -33,6 +36,7 @@
   
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sphinxcontrib-images\LightBox2\lightbox2\css\lightbox.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
@@ -79,6 +83,8 @@
             
             
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">How to install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html">How to use</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../preprocessing.html">Pre-processing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.cicada_data_to_nwb">Data to NWB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.cicada_preprocessing_run">Run preprocessing</a></li>
@@ -88,6 +94,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_ci_movie_to_nwb">Calcium imaging movie</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_abf_to_nwb">ABF</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.utils">Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#annexe">Annexe</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">Analysis</a><ul>
@@ -100,6 +107,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_frames_count">Frames count</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_hubs_analysis">Hubs analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_psth_analysis">PSTH analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#annexe">Annexe</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gui.html">GUI</a><ul>
@@ -179,19 +187,13 @@
 <span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">QAbstractItemModel</span><span class="p">,</span> <span class="n">QModelIndex</span><span class="p">,</span> <span class="n">Qt</span><span class="p">,</span> <span class="n">QProcess</span>
 <span class="kn">from</span> <span class="nn">PyQt5</span> <span class="k">import</span> <span class="n">QtCore</span> <span class="k">as</span> <span class="n">Core</span>
 <span class="kn">from</span> <span class="nn">qtpy</span> <span class="k">import</span> <span class="n">QtGui</span>
-<span class="kn">import</span> <span class="nn">math</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">qtpy</span> <span class="k">import</span> <span class="n">QtCore</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">multiprocessing.pool</span> <span class="k">import</span> <span class="n">ThreadPool</span>
-<span class="kn">from</span> <span class="nn">multiprocessing</span> <span class="k">import</span> <span class="n">Process</span>
-<span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Thread</span>
-<span class="kn">import</span> <span class="nn">threading</span>
-<span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">randint</span>
 <span class="kn">import</span> <span class="nn">gc</span>
 <span class="kn">from</span> <span class="nn">abc</span> <span class="k">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
-<span class="kn">from</span> <span class="nn">cicada.gui.cicada_analysis_overview</span> <span class="k">import</span> <span class="n">AnalysisOverview</span><span class="p">,</span> <span class="n">AnalysisState</span>
+<span class="kn">from</span> <span class="nn">cicada.gui.cicada_analysis_overview</span> <span class="k">import</span> <span class="n">AnalysisOverview</span><span class="p">,</span> <span class="n">AnalysisState</span><span class="p">,</span> <span class="n">ResultsButton</span>
 <span class="kn">from</span> <span class="nn">qtpy.QtCore</span> <span class="k">import</span> <span class="n">QThread</span>
 <span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
@@ -786,6 +788,7 @@
 
 
 <div class="viewcode-block" id="AnalysisParametersApp"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp">[docs]</a><span class="k">class</span> <span class="nc">AnalysisParametersApp</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class containing the parameters widgets&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">thread_name</span><span class="p">,</span> <span class="n">progress_bar</span><span class="p">,</span> <span class="n">height_main_window</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">QWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">thread_name</span>
@@ -837,7 +840,6 @@
 <div class="viewcode-block" id="AnalysisParametersApp.load_arguments"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp.load_arguments">[docs]</a>    <span class="k">def</span> <span class="nf">load_arguments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Will open a FileDialog to select a yaml file used to load arguments used for a previous analysis</span>
-<span class="sd">        Returns:</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">file_dialog</span> <span class="o">=</span> <span class="n">QFileDialog</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;Loading arguments&quot;</span><span class="p">)</span>
@@ -868,7 +870,6 @@
 <div class="viewcode-block" id="AnalysisParametersApp.tabula_rasa"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp.tabula_rasa">[docs]</a>    <span class="k">def</span> <span class="nf">tabula_rasa</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Erase the widgets and make an empty section</span>
-<span class="sd">        Returns:</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># clearing the widget to update it</span>
@@ -882,9 +883,7 @@
         <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            cicada_analysis:</span>
-
-<span class="sd">        Returns:</span>
+<span class="sd">            cicada_analysis (CicadaAnalysis): Chosen analysis</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cicada_analysis</span> <span class="o">=</span> <span class="n">cicada_analysis</span>
@@ -924,10 +923,12 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">scroll_area_widget_contents</span><span class="o">.</span><span class="n">setStyleSheet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">current_style_sheet_background</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">special_background_on</span> <span class="o">=</span> <span class="kc">True</span></div>
 
-    <span class="k">def</span> <span class="nf">reset_arguments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arguments_handler</span><span class="o">.</span><span class="n">set_widgets_to_default_value</span><span class="p">()</span>
+<div class="viewcode-block" id="AnalysisParametersApp.reset_arguments"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp.reset_arguments">[docs]</a>    <span class="k">def</span> <span class="nf">reset_arguments</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reset all arguments to default value&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arguments_handler</span><span class="o">.</span><span class="n">set_widgets_to_default_value</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">run_analysis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="AnalysisParametersApp.run_analysis"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp.run_analysis">[docs]</a>    <span class="k">def</span> <span class="nf">run_analysis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Check if the parameters are valid and then create a thread which will run the analysis&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arguments_handler</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span>
 
@@ -941,18 +942,19 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">worker</span> <span class="o">=</span> <span class="n">Worker</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">cicada_analysis</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arguments_handler</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">worker</span><span class="o">.</span><span class="n">updateProgress</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">update_progress_bar</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">worker</span><span class="o">.</span><span class="n">updateProgress2</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">update_progress_bar_overview</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">worker</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">worker</span><span class="o">.</span><span class="n">start</span><span class="p">()</span></div></div>
         <span class="c1"># p = Thread(target=self.analysis_arguments_handler.run_analysis, daemon=True)</span>
         <span class="c1"># p.setName(self.name)</span>
         <span class="c1"># p.start()</span>
 
 
 <div class="viewcode-block" id="EmittingStream"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.EmittingStream">[docs]</a><span class="k">class</span> <span class="nc">EmittingStream</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QObject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class managing the std.out redirection&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">terminal</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">textWritten</span> <span class="o">=</span> <span class="n">Core</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">textWritten</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Signal</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
 
 <div class="viewcode-block" id="EmittingStream.write"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.EmittingStream.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -966,6 +968,7 @@
         <span class="n">thread_text</span> <span class="o">=</span> <span class="n">text</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">current_thread</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">terminal</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
         <span class="n">dir_path</span> <span class="o">=</span> <span class="n">current_thread</span><span class="o">.</span><span class="n">cicada_analysis</span><span class="o">.</span><span class="n">get_results_path</span><span class="p">()</span>
+        <span class="n">current_thread</span><span class="o">.</span><span class="n">set_results_path</span><span class="p">(</span><span class="n">dir_path</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">normalOutputWritten</span><span class="p">(</span><span class="n">thread_text</span><span class="p">,</span> <span class="n">dir_path</span><span class="p">)</span></div>
 
 
@@ -974,11 +977,13 @@
 
 
 <div class="viewcode-block" id="EmittingErrStream"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.EmittingErrStream">[docs]</a><span class="k">class</span> <span class="nc">EmittingErrStream</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QObject</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Class managing the std.err redirection&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">terminal</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">errWritten</span> <span class="o">=</span> <span class="n">Core</span><span class="o">.</span><span class="n">pyqtSignal</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">errWritten</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Signal</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+
 
 <div class="viewcode-block" id="EmittingErrStream.write"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.EmittingErrStream.write">[docs]</a>    <span class="k">def</span> <span class="nf">write</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -994,6 +999,7 @@
         <span class="n">thread_text</span> <span class="o">=</span> <span class="n">text</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">current_thread</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">terminal</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">text</span><span class="p">))</span>
         <span class="n">dir_path</span> <span class="o">=</span> <span class="n">current_thread</span><span class="o">.</span><span class="n">cicada_analysis</span><span class="o">.</span><span class="n">get_results_path</span><span class="p">()</span>
+        <span class="n">current_thread</span><span class="o">.</span><span class="n">set_results_path</span><span class="p">(</span><span class="n">dir_path</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">errOutputWritten</span><span class="p">(</span><span class="n">thread_text</span><span class="p">,</span> <span class="n">dir_path</span><span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">flush</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1068,8 +1074,16 @@
 
 
 <div class="viewcode-block" id="AnalysisPackage"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisPackage">[docs]</a><span class="k">class</span> <span class="nc">AnalysisPackage</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Widget containing the whole analysis window&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cicada_analysis</span><span class="p">,</span> <span class="n">analysis_name</span><span class="p">,</span> <span class="n">analysis_description</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cicada_analysis</span><span class="p">,</span> <span class="n">analysis_name</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            cicada_analysis (CicadaAnalysis): Chosen analysis</span>
+<span class="sd">            analysis_name (str): Analysis name</span>
+<span class="sd">            name (str): Analysis ID</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">QWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
@@ -1092,7 +1106,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">text_output</span><span class="o">.</span><span class="n">setAlignment</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">AlignTop</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">text_output</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">stdout</span> <span class="o">=</span> <span class="n">EmittingStream</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
-        <span class="n">sys</span><span class="o">.</span><span class="n">stderr</span> <span class="o">=</span> <span class="n">EmittingErrStream</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="c1"># Comment to debug, else we will get unhandled python exception</span>
+        <span class="c1"># sys.stderr = EmittingErrStream(self)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scrollAreaErr</span> <span class="o">=</span> <span class="n">QScrollArea</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scrollAreaErr</span><span class="o">.</span><span class="n">setWidgetResizable</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">scrollAreaErr</span><span class="o">.</span><span class="n">setVerticalScrollBarPolicy</span><span class="p">(</span><span class="n">Qt</span><span class="o">.</span><span class="n">ScrollBarAsNeeded</span><span class="p">)</span>
@@ -1132,10 +1147,11 @@
 
 <div class="viewcode-block" id="AnalysisPackage.normalOutputWritten"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisPackage.normalOutputWritten">[docs]</a>    <span class="k">def</span> <span class="nf">normalOutputWritten</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Append text to the QLabel.</span>
+<span class="sd">        Append std.out text to the QLabel and create a log file.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            text (str): Output of the standard output in python interpreter</span>
+<span class="sd">            path (str): path where we will output the log file</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
             <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1150,10 +1166,12 @@
 
 <div class="viewcode-block" id="AnalysisPackage.errOutputWritten"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisPackage.errOutputWritten">[docs]</a>    <span class="k">def</span> <span class="nf">errOutputWritten</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Append text to the QLabel.</span>
+<span class="sd">        Append std.err text to the QLabel and create an err file.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            text (str): Output of the standard output in python interpreter</span>
+<span class="sd">            path (str): path where we will output the err file</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">text</span><span class="p">:</span>
@@ -1169,7 +1187,15 @@
 
 
 <div class="viewcode-block" id="AnalysisPackage.on_close"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.AnalysisPackage.on_close">[docs]</a>    <span class="k">def</span> <span class="nf">on_close</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Need to delete the overview widget associated to this analysis&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Check if an analysis is still on going and prompt the user to let him know then ask whether he still wants to</span>
+<span class="sd">        close. If yes, delete the associated overview and stop the thread</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            event (QEvent): Qt Event triggered when attempting to close the window</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO : Check if an analysis is running if the thread is running</span>
         <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">100</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">isEnabled</span><span class="p">()):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">confirm_quit</span> <span class="o">=</span> <span class="n">QMessageBox</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">confirm_quit</span><span class="o">.</span><span class="n">setWindowTitle</span><span class="p">(</span><span class="s2">&quot;CICADA&quot;</span><span class="p">)</span>
@@ -1179,6 +1205,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">confirm_quit</span><span class="o">.</span><span class="n">setDefaultButton</span><span class="p">(</span><span class="n">QMessageBox</span><span class="o">.</span><span class="n">No</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">confirm_quit</span><span class="o">.</span><span class="n">exec</span><span class="p">()</span> <span class="o">==</span> <span class="n">QMessageBox</span><span class="o">.</span><span class="n">Yes</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">progress_bar</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">quit</span> <span class="o">=</span> <span class="kc">True</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
                 <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">gc</span><span class="o">.</span><span class="n">get_objects</span><span class="p">():</span>
                     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Worker</span><span class="p">):</span>
@@ -1195,8 +1222,12 @@
                                 <span class="k">else</span><span class="p">:</span>
                                     <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;obj.&#39;</span> <span class="o">+</span> <span class="n">attr</span> <span class="o">+</span> <span class="s1">&#39;.setParent(None)&#39;</span><span class="p">)</span>
                                     <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;obj.&#39;</span> <span class="o">+</span> <span class="n">attr</span> <span class="o">+</span> <span class="s1">&#39;.deleteLater()&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">quit</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">event</span><span class="o">.</span><span class="n">ignore</span><span class="p">()</span>
 
         <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">quit</span> <span class="o">=</span> <span class="kc">True</span>
             <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">gc</span><span class="o">.</span><span class="n">get_objects</span><span class="p">():</span>
                 <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">AnalysisOverview</span><span class="p">):</span>
                     <span class="c1"># sys.stderr.write(str(dir(obj)))</span>
@@ -1204,43 +1235,88 @@
                         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">in</span> <span class="n">attr</span><span class="p">:</span>
                             <span class="k">if</span> <span class="s2">&quot;layout&quot;</span> <span class="ow">in</span> <span class="n">attr</span><span class="p">:</span>
                                 <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;obj.layout.removeItem( obj.&#39;</span> <span class="o">+</span> <span class="n">attr</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span><span class="p">)</span>
-
                             <span class="k">else</span><span class="p">:</span>
                                 <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;obj.&#39;</span> <span class="o">+</span> <span class="n">attr</span> <span class="o">+</span> <span class="s1">&#39;.setParent(None)&#39;</span><span class="p">)</span>
                                 <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;obj.&#39;</span> <span class="o">+</span> <span class="n">attr</span> <span class="o">+</span> <span class="s1">&#39;.deleteLater()&#39;</span><span class="p">)</span></div></div>
 
 
 <div class="viewcode-block" id="Worker"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.Worker">[docs]</a><span class="k">class</span> <span class="nc">Worker</span><span class="p">(</span><span class="n">QtCore</span><span class="o">.</span><span class="n">QThread</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Thread to manage multiple analysises at the same time&quot;&quot;&quot;</span>
+
+    <span class="c1"># Signals to update the progress bar in the analysis window and overview</span>
     <span class="n">updateProgress</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Signal</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
     <span class="n">updateProgress2</span> <span class="o">=</span> <span class="n">QtCore</span><span class="o">.</span><span class="n">Signal</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">cicada_analysis</span><span class="p">,</span> <span class="n">analysis_arguments_handler</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): Analysis ID, should be unique</span>
+<span class="sd">            cicada_analysis (CicadaAnalysis): the analysis run in the thread</span>
+<span class="sd">            analysis_arguments_handler:</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">QtCore</span><span class="o">.</span><span class="n">QThread</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">cicada_analysis</span> <span class="o">=</span> <span class="n">cicada_analysis</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">results_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cicada_analysis</span><span class="o">.</span><span class="n">get_results_path</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arguments_handler</span> <span class="o">=</span> <span class="n">analysis_arguments_handler</span>
 
 <div class="viewcode-block" id="Worker.run"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.Worker.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">results_path</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">cicada_analysis</span><span class="o">.</span><span class="n">get_results_path</span><span class="p">()</span>
+        <span class="sd">&quot;&quot;&quot;Run the analysis&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arguments_handler</span><span class="o">.</span><span class="n">run_analysis</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">setProgress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">time_started</span><span class="p">,</span> <span class="n">increment_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">new_set_value</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="Worker.setProgress"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.Worker.setProgress">[docs]</a>    <span class="k">def</span> <span class="nf">setProgress</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">time_started</span><span class="p">,</span> <span class="n">increment_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">new_set_value</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Emit the new value of the progress bar and time remaining</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): Analysis ID</span>
+<span class="sd">            time_started (float): Start time of the analysis</span>
+<span class="sd">            increment_value (float): Value that should be added to the current value of the progress bar</span>
+<span class="sd">            new_set_value (float):  Value that should be set as the current value of the progress bar</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">updateProgress</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">time_started</span><span class="p">,</span> <span class="n">increment_value</span><span class="p">,</span> <span class="n">new_set_value</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">updateProgress2</span><span class="o">.</span><span class="n">emit</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">time_started</span><span class="p">,</span> <span class="n">increment_value</span><span class="p">,</span> <span class="n">new_set_value</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="Worker.set_results_path"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.Worker.set_results_path">[docs]</a>    <span class="k">def</span> <span class="nf">set_results_path</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">results_path</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set the selected path to the results in the &quot;Open result folder&quot; button in the corresponding overview</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            results_path (str): Path to the results</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO : Get rid of the garbage collector</span>
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">gc</span><span class="o">.</span><span class="n">get_objects</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">AnalysisOverview</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;obj.&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_button.result_path&#39;</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;obj.&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_button.result_path = &quot;&#39;</span> <span class="o">+</span> <span class="n">results_path</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">)</span>
+                    <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;obj.&#39;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_button.result_button.setEnabled(True)&#39;</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">pass</span></div></div>
 
 <div class="viewcode-block" id="ProgressBar"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.ProgressBar">[docs]</a><span class="k">class</span> <span class="nc">ProgressBar</span><span class="p">(</span><span class="n">QProgressBar</span><span class="p">):</span>
-
+    <span class="sd">&quot;&quot;&quot;Class containing the progress bar of the current analysis&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">remaining_time_label</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
         <span class="n">QProgressBar</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setMinimum</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">progress</span> <span class="o">=</span> <span class="bp">self</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">remaining_time_label</span> <span class="o">=</span> <span class="n">remaining_time_label</span>
 
-    <span class="k">def</span> <span class="nf">update_progress_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_started</span><span class="p">,</span> <span class="n">increment_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">new_set_value</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="ProgressBar.update_progress_bar"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.ProgressBar.update_progress_bar">[docs]</a>    <span class="k">def</span> <span class="nf">update_progress_bar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_started</span><span class="p">,</span> <span class="n">increment_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">new_set_value</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the progress bar in the analysis widget and the corresponding remaining time</span>
+<span class="sd">        Args:</span>
+<span class="sd">            time_started (float): Start time of the analysis</span>
+<span class="sd">            increment_value (float): Value that should be added to the current value of the progress bar</span>
+<span class="sd">            new_set_value (float):  Value that should be set as the current value of the progress bar</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">current_thread</span> <span class="o">=</span> <span class="n">QThread</span><span class="o">.</span><span class="n">currentThread</span><span class="p">()</span>
-        <span class="c1"># sys.stderr.write(current_thread.name)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setEnabled</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">new_set_value</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="n">new_set_value</span><span class="p">)</span>
@@ -1249,10 +1325,20 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">setValue</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">+</span> <span class="n">increment_value</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">isEnabled</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">remaining_time_label</span><span class="o">.</span><span class="n">update_remaining_time</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">(),</span> <span class="n">time_started</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">remaining_time_label</span><span class="o">.</span><span class="n">update_remaining_time</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">value</span><span class="p">(),</span> <span class="n">time_started</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">update_progress_bar_overview</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">time_started</span><span class="p">,</span> <span class="n">increment_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">new_set_value</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-        <span class="c1"># eval(&#39;AnalysisOverview.&#39; + name + &#39;_progress_bar.setValue(50)&#39;)</span>
+<div class="viewcode-block" id="ProgressBar.update_progress_bar_overview"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.ProgressBar.update_progress_bar_overview">[docs]</a>    <span class="k">def</span> <span class="nf">update_progress_bar_overview</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">increment_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">new_set_value</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the overview progress bar</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): Analysis ID</span>
+<span class="sd">            time_started (float): Start time of the analysis</span>
+<span class="sd">            increment_value (float): Value that should be added to the current value of the progress bar</span>
+<span class="sd">            new_set_value (float):  Value that should be set as the current value of the progress bar</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO : Remove Garbage collector use</span>
         <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">gc</span><span class="o">.</span><span class="n">get_objects</span><span class="p">():</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">AnalysisOverview</span><span class="p">):</span>
                 <span class="k">try</span><span class="p">:</span>
@@ -1268,22 +1354,51 @@
                         <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;obj.&#39;</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">&#39;_progress_bar.setEnabled(True)&#39;</span><span class="p">)</span>
 
                 <span class="k">except</span><span class="p">:</span>
-                    <span class="k">pass</span></div>
+                    <span class="k">pass</span></div></div>
 
 
 <div class="viewcode-block" id="RemainingTime"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.RemainingTime">[docs]</a><span class="k">class</span> <span class="nc">RemainingTime</span><span class="p">(</span><span class="n">QLabel</span><span class="p">):</span>
-
+    <span class="sd">&quot;&quot;&quot;Class containing the remaining time of the analysis&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">QLabel</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">parent</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setMinimumSize</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setMaximumSize</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">())</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Time remaining : &quot;</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">update_remaining_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progress_value</span><span class="p">,</span> <span class="n">time_started</span><span class="p">):</span>
-        <span class="c1"># sys.stderr.write(&quot;\n Time elapsed:&quot; + str(time()-time_started))</span>
-        <span class="n">remaining_time</span> <span class="o">=</span> <span class="p">((</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">time_started</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span> <span class="o">/</span> <span class="n">progress_value</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Time remaining : &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">time_started</span><span class="p">))</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%.2f</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">remaining_time</span><span class="p">))</span></div>
+<div class="viewcode-block" id="RemainingTime.update_remaining_time"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.RemainingTime.update_remaining_time">[docs]</a>    <span class="k">def</span> <span class="nf">update_remaining_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">progress_value</span><span class="p">,</span> <span class="n">time_started</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Update the remaining time</span>
+<span class="sd">        Args:</span>
+<span class="sd">            progress_value (float): Current progress bar value</span>
+<span class="sd">            time_started (float): Start time of the analysis</span>
 
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">remaining_time</span> <span class="o">=</span> <span class="p">((</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">time_started</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span> <span class="o">/</span> <span class="n">progress_value</span>
+        <span class="n">time_elapsed</span> <span class="o">=</span> <span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">time_started</span>
+        <span class="n">remaining_time_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">correct_time_converter</span><span class="p">(</span><span class="n">remaining_time</span><span class="p">)</span>
+        <span class="n">time_elapsed_text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">correct_time_converter</span><span class="p">(</span><span class="n">time_elapsed</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setText</span><span class="p">(</span><span class="s2">&quot;Time remaining : &quot;</span> <span class="o">+</span> <span class="n">time_elapsed_text</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="n">remaining_time_text</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="RemainingTime.correct_time_converter"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_parameters_gui.RemainingTime.correct_time_converter">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">correct_time_converter</span><span class="p">(</span><span class="n">time</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Convert a float in a correct duration value</span>
+<span class="sd">        Args:</span>
+<span class="sd">            time (float): Float value to be converted in a correct duration with MM.SS</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            time_text (str): String of the correct duration</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">minutes</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+        <span class="n">seconds</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span> <span class="o">-</span> <span class="n">minutes</span> <span class="o">*</span> <span class="mi">100</span>
+        <span class="n">minutes_to_add</span> <span class="o">=</span> <span class="n">seconds</span> <span class="o">//</span> <span class="mi">60</span>
+        <span class="n">seconds_remaining</span> <span class="o">=</span> <span class="n">seconds</span> <span class="o">%</span> <span class="mi">60</span>
+        <span class="n">seconds_remaining_text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">seconds_remaining</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">seconds_remaining_text</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">seconds_remaining_text</span> <span class="o">=</span> <span class="s2">&quot;0&quot;</span> <span class="o">+</span> <span class="n">seconds_remaining_text</span>
+        <span class="n">time_text</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">minutes</span> <span class="o">+</span> <span class="n">minutes_to_add</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">seconds_remaining_text</span>
+        <span class="k">return</span> <span class="n">time_text</span></div></div>
 
 <span class="k">def</span> <span class="nf">clearvbox</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">L</span><span class="p">:</span>

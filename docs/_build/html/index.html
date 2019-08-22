@@ -25,6 +25,9 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script type="text/javascript" src="_static/sphinxcontrib-images\LightBox2\lightbox2\js\jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="_static/sphinxcontrib-images\LightBox2\lightbox2\js\lightbox.min.js"></script>
+        <script type="text/javascript" src="_static/sphinxcontrib-images\LightBox2\lightbox2-customize\jquery-noconflict.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -33,9 +36,10 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/sphinxcontrib-images\LightBox2\lightbox2\css\lightbox.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Pre-processing" href="preprocessing.html" /> 
+    <link rel="next" title="How to install" href="install.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -80,6 +84,8 @@
             
             
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">How to install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">How to use</a></li>
 <li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Pre-processing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="preprocessing.html#module-cicada.preprocessing.cicada_data_to_nwb">Data to NWB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="preprocessing.html#module-cicada.preprocessing.cicada_preprocessing_run">Run preprocessing</a></li>
@@ -89,6 +95,7 @@
 <li class="toctree-l2"><a class="reference internal" href="preprocessing.html#module-cicada.preprocessing.convert_ci_movie_to_nwb">Calcium imaging movie</a></li>
 <li class="toctree-l2"><a class="reference internal" href="preprocessing.html#module-cicada.preprocessing.convert_abf_to_nwb">ABF</a></li>
 <li class="toctree-l2"><a class="reference internal" href="preprocessing.html#module-cicada.preprocessing.utils">Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#annexe">Annexe</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="analysis.html">Analysis</a><ul>
@@ -101,6 +108,7 @@
 <li class="toctree-l2"><a class="reference internal" href="analysis.html#module-cicada.analysis.cicada_frames_count">Frames count</a></li>
 <li class="toctree-l2"><a class="reference internal" href="analysis.html#module-cicada.analysis.cicada_hubs_analysis">Hubs analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="analysis.html#module-cicada.analysis.cicada_psth_analysis">PSTH analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#annexe">Annexe</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="gui.html">GUI</a><ul>
@@ -186,12 +194,14 @@
 <p>Curabitur rhoncus, tellus vel feugiat pellentesque, quam lectus tristique sapien, sed scelerisque leo nulla in elit. Cras pulvinar metus sodales consectetur pharetra. Vestibulum ut posuere libero, ut sodales quam. Vestibulum lobortis enim quis leo laoreet, vitae semper ipsum pellentesque. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Etiam a enim felis. Praesent lorem ligula, bibendum eu diam in, consequat pharetra dui. Curabitur et nisi felis.</p>
 <p>Vivamus lacinia nibh mauris, quis tristique odio dictum eu. Aliquam erat volutpat. Nunc consequat eu elit at porta. Donec mattis et eros at congue. Maecenas tempus ut massa non egestas. Praesent aliquet nec orci in sollicitudin. Aliquam ac convallis leo. Phasellus mauris eros, efficitur a vestibulum eu, elementum maximus lectus.</p>
 <p>Donec sed ipsum blandit, consectetur neque vel, luctus diam. Morbi ullamcorper justo sit amet elit iaculis, ac pulvinar felis pellentesque. Ut laoreet velit eget neque pretium dictum. Maecenas neque massa, sollicitudin a massa et, condimentum mattis neque. Pellentesque et convallis enim, at lacinia dui. Cras et maximus nibh. Pellentesque id dapibus odio. Aliquam semper massa sit amet ex accumsan congue. Sed rutrum tempor elit at porta. Suspendisse ullamcorper eu dolor et imperdiet.</p>
-<div class="topic">
-<p class="topic-title first">Pre-processing</p>
-<p>Pre-processing part of CICADA</p>
 </div>
+</div>
+<div class="section" id="contents">
+<h1>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h1>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="install.html">How to install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">How to use</a></li>
 <li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Pre-processing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="preprocessing.html#module-cicada.preprocessing.cicada_data_to_nwb">Data to NWB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="preprocessing.html#module-cicada.preprocessing.cicada_preprocessing_run">Run preprocessing</a></li>
@@ -201,6 +211,7 @@
 <li class="toctree-l2"><a class="reference internal" href="preprocessing.html#module-cicada.preprocessing.convert_ci_movie_to_nwb">Calcium imaging movie</a></li>
 <li class="toctree-l2"><a class="reference internal" href="preprocessing.html#module-cicada.preprocessing.convert_abf_to_nwb">ABF</a></li>
 <li class="toctree-l2"><a class="reference internal" href="preprocessing.html#module-cicada.preprocessing.utils">Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#annexe">Annexe</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="analysis.html">Analysis</a><ul>
@@ -213,6 +224,7 @@
 <li class="toctree-l2"><a class="reference internal" href="analysis.html#module-cicada.analysis.cicada_frames_count">Frames count</a></li>
 <li class="toctree-l2"><a class="reference internal" href="analysis.html#module-cicada.analysis.cicada_hubs_analysis">Hubs analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="analysis.html#module-cicada.analysis.cicada_psth_analysis">PSTH analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#annexe">Annexe</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="gui.html">GUI</a><ul>
@@ -228,13 +240,12 @@
 </ul>
 </div>
 </div>
-</div>
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
 </ul>
 </div>
 
@@ -246,7 +257,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="preprocessing.html" class="btn btn-neutral float-right" title="Pre-processing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="install.html" class="btn btn-neutral float-right" title="How to install" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
     </div>

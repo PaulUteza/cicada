@@ -25,6 +25,9 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script type="text/javascript" src="_static/sphinxcontrib-images\LightBox2\lightbox2\js\jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="_static/sphinxcontrib-images\LightBox2\lightbox2\js\lightbox.min.js"></script>
+        <script type="text/javascript" src="_static/sphinxcontrib-images\LightBox2\lightbox2-customize\jquery-noconflict.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -33,6 +36,7 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/sphinxcontrib-images\LightBox2\lightbox2\css\lightbox.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Analysis" href="analysis.html" /> 
@@ -80,6 +84,8 @@
             
             
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">How to install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">How to use</a></li>
 <li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Pre-processing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="preprocessing.html#module-cicada.preprocessing.cicada_data_to_nwb">Data to NWB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="preprocessing.html#module-cicada.preprocessing.cicada_preprocessing_run">Run preprocessing</a></li>
@@ -101,6 +107,7 @@
 <li class="toctree-l2"><a class="reference internal" href="analysis.html#module-cicada.analysis.cicada_frames_count">Frames count</a></li>
 <li class="toctree-l2"><a class="reference internal" href="analysis.html#module-cicada.analysis.cicada_hubs_analysis">Hubs analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="analysis.html#module-cicada.analysis.cicada_psth_analysis">PSTH analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analysis.html#annexe">Annexe</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">GUI</a><ul>
@@ -177,12 +184,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <table class="longtable docutils align-default">
+  <table border="1" class="longtable docutils">
 <colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
+<col width="10%" />
+<col width="90%" />
 </colgroup>
-<tbody>
+<tbody valign="top">
 </tbody>
 </table>
 <div class="section" id="gui">
@@ -192,127 +199,183 @@
 <span id="main-window"></span><h2>Main Window<a class="headerlink" href="#module-cicada.gui.cicada_main_window" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="cicada.gui.cicada_main_window.AllGroups">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.cicada_main_window.</code><code class="sig-name descname">AllGroups</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#AllGroups"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.AllGroups" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<em class="property">class </em><code class="descclassname">cicada.gui.cicada_main_window.</code><code class="descname">AllGroups</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#AllGroups"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.AllGroups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class containing the widget used to display all created group found</p>
+<dl class="method">
+<dt id="cicada.gui.cicada_main_window.AllGroups.add_group">
+<code class="descname">add_group</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#AllGroups.add_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.AllGroups.add_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add all selected groups to the current session list</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cicada.gui.cicada_main_window.AllGroups.double_click_event">
+<code class="descname">double_click_event</code><span class="sig-paren">(</span><em>clicked_item</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#AllGroups.double_click_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.AllGroups.double_click_event" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get item which was double clicked and call the function to load the group</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>clicked_item</strong> (<em>QModelIndex</em>) – Qt index which correspond to the clicked index</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="cicada.gui.cicada_main_window.AllGroups.load_group">
+<code class="descname">load_group</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#AllGroups.load_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.AllGroups.load_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load all selected groups in the session list (clear the existing sessions from the list)</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="cicada.gui.cicada_main_window.AllGroups.populate_list">
-<code class="sig-name descname">populate_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#AllGroups.populate_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.AllGroups.populate_list" title="Permalink to this definition">¶</a></dt>
+<code class="descname">populate_list</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#AllGroups.populate_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.AllGroups.populate_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Populate the list containing all existing groups</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cicada.gui.cicada_main_window.AllGroups.showContextMenu">
+<code class="descname">showContextMenu</code><span class="sig-paren">(</span><em>pos</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#AllGroups.showContextMenu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.AllGroups.showContextMenu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display a context menu at the cursor position. Allow the user to add or load the group at the given position.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pos</strong> (<em>QPoint</em>) – Coordinate of the cursor</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="cicada.gui.cicada_main_window.CicadaMainWindow">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.cicada_main_window.</code><code class="sig-name descname">CicadaMainWindow</code><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<em class="property">class </em><code class="descclassname">cicada.gui.cicada_main_window.</code><code class="descname">CicadaMainWindow</code><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main window of the GUI</p>
+<dl class="method">
 <dt id="cicada.gui.cicada_main_window.CicadaMainWindow.about">
-<code class="sig-name descname">about</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.about"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.about" title="Permalink to this definition">¶</a></dt>
+<code class="descname">about</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.about"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.about" title="Permalink to this definition">¶</a></dt>
 <dd><p>Small about QMessageBox for the project</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_main_window.CicadaMainWindow.add_data">
-<code class="sig-name descname">add_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.add_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.add_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">add_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.add_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.add_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open a directory</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_main_window.CicadaMainWindow.add_group_data">
-<code class="sig-name descname">add_group_data</code><span class="sig-paren">(</span><em class="sig-param">group_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.add_group_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.add_group_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">add_group_data</code><span class="sig-paren">(</span><em>group_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.add_group_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.add_group_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a group of saved sessions to the current list of session</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>group_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Name of the group saved in YAML</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>group_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Name of the group saved in YAML</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_main_window.CicadaMainWindow.closeEvent">
-<code class="sig-name descname">closeEvent</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.closeEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.closeEvent" title="Permalink to this definition">¶</a></dt>
+<code class="descname">closeEvent</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.closeEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.closeEvent" title="Permalink to this definition">¶</a></dt>
 <dd><p>Close all analysises windows on main window close
 (uses Garbage Collector to get a list of them and close them, might be a better and faster way)</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_main_window.CicadaMainWindow.createActions">
-<code class="sig-name descname">createActions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.createActions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.createActions" title="Permalink to this definition">¶</a></dt>
+<code class="descname">createActions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.createActions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.createActions" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create some QAction</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_main_window.CicadaMainWindow.createMenus">
-<code class="sig-name descname">createMenus</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.createMenus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.createMenus" title="Permalink to this definition">¶</a></dt>
+<code class="descname">createMenus</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.createMenus"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.createMenus" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create menu bar and put some menu in it</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_main_window.CicadaMainWindow.create_group_menu">
-<code class="sig-name descname">create_group_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.create_group_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.create_group_menu" title="Permalink to this definition">¶</a></dt>
+<code class="descname">create_group_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.create_group_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.create_group_menu" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create group menu</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_main_window.CicadaMainWindow.create_sort_menu">
-<code class="sig-name descname">create_sort_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.create_sort_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.create_sort_menu" title="Permalink to this definition">¶</a></dt>
+<code class="descname">create_sort_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.create_sort_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.create_sort_menu" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create sort menu</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_main_window.CicadaMainWindow.load_data_from_config">
-<code class="sig-name descname">load_data_from_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.load_data_from_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.load_data_from_config" title="Permalink to this definition">¶</a></dt>
+<code class="descname">load_data_from_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.load_data_from_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.load_data_from_config" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if the last dir opened is saved in config and load it automatically</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_main_window.CicadaMainWindow.load_data_from_dir">
-<code class="sig-name descname">load_data_from_dir</code><span class="sig-paren">(</span><em class="sig-param">dir_name</em>, <em class="sig-param">method</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.load_data_from_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.load_data_from_dir" title="Permalink to this definition">¶</a></dt>
+<code class="descname">load_data_from_dir</code><span class="sig-paren">(</span><em>dir_name</em>, <em>method</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.load_data_from_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.load_data_from_dir" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load data (currently only NWB) from selected directory</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>dir_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Path to data</p></li>
-<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – String to choose whether to add data to the existing dataset or open a new one,
-takes two values : ‘add’ or ‘clear’</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>dir_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Path to data</li>
+<li><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – String to choose whether to add data to the existing dataset or open a new one,
+takes two values : ‘add’ or ‘clear’</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_main_window.CicadaMainWindow.load_group">
-<code class="sig-name descname">load_group</code><span class="sig-paren">(</span><em class="sig-param">group_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.load_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.load_group" title="Permalink to this definition">¶</a></dt>
-<dd><p>Load a group of saved sessions</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>group_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Name of the group saved in YAML</p>
-</dd>
-</dl>
+<code class="descname">load_group</code><span class="sig-paren">(</span><em>group_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.load_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.load_group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load a group of saved sessions, it will clear the current session list</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>group_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Name of the group saved in YAML</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_main_window.CicadaMainWindow.load_group_from_config">
-<code class="sig-name descname">load_group_from_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.load_group_from_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.load_group_from_config" title="Permalink to this definition">¶</a></dt>
+<code class="descname">load_group_from_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.load_group_from_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.load_group_from_config" title="Permalink to this definition">¶</a></dt>
 <dd><p>Load groups from a YAML file in the config folder</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_main_window.CicadaMainWindow.on_group">
-<code class="sig-name descname">on_group</code><span class="sig-paren">(</span><em class="sig-param">param</em>, <em class="sig-param">state</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.on_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.on_group" title="Permalink to this definition">¶</a></dt>
+<code class="descname">on_group</code><span class="sig-paren">(</span><em>param</em>, <em>state</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.on_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.on_group" title="Permalink to this definition">¶</a></dt>
 <dd><p>Give group list and parameters value to populate QListWidget</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>param</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Parameter to group by</p></li>
-<li><p><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – State of the checkbox</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>param</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Parameter to group by</li>
+<li><strong>state</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – State of the checkbox</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_main_window.CicadaMainWindow.on_sort">
-<code class="sig-name descname">on_sort</code><span class="sig-paren">(</span><em class="sig-param">param</em>, <em class="sig-param">state</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.on_sort"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.on_sort" title="Permalink to this definition">¶</a></dt>
+<code class="descname">on_sort</code><span class="sig-paren">(</span><em>param</em>, <em>state</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.on_sort"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.on_sort" title="Permalink to this definition">¶</a></dt>
 <dd><p>Give sorted list to populate QListWidget
 :param param: Parameter to sort by
 :type param: str
@@ -322,55 +385,67 @@ takes two values : ‘add’ or ‘clear’</p></li>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_main_window.CicadaMainWindow.openWindow">
-<code class="sig-name descname">openWindow</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.openWindow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.openWindow" title="Permalink to this definition">¶</a></dt>
+<code class="descname">openWindow</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.openWindow"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.openWindow" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open all widgets in a CentralWidget and call some menus that needed those widgets</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_main_window.CicadaMainWindow.open_new_dataset">
-<code class="sig-name descname">open_new_dataset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.open_new_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.open_new_dataset" title="Permalink to this definition">¶</a></dt>
+<code class="descname">open_new_dataset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.open_new_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.open_new_dataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Open a directory</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_main_window.CicadaMainWindow.populate_menu">
-<code class="sig-name descname">populate_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.populate_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.populate_menu" title="Permalink to this definition">¶</a></dt>
+<code class="descname">populate_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.populate_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.populate_menu" title="Permalink to this definition">¶</a></dt>
 <dd><p>Populate the menu to load groups</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_main_window.CicadaMainWindow.save_last_data_location">
-<code class="sig-name descname">save_last_data_location</code><span class="sig-paren">(</span><em class="sig-param">dir_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.save_last_data_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.save_last_data_location" title="Permalink to this definition">¶</a></dt>
+<code class="descname">save_last_data_location</code><span class="sig-paren">(</span><em>dir_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.save_last_data_location"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.save_last_data_location" title="Permalink to this definition">¶</a></dt>
 <dd><p>Keep path to last data directory selected in a YAML in config</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>dir_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Path to data to be saved</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>dir_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Path to data to be saved</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="cicada.gui.cicada_main_window.CicadaMainWindow.see_all_groups">
+<code class="descname">see_all_groups</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.see_all_groups"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.see_all_groups" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display a widget with all existing groups</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_main_window.CicadaMainWindow.uncheck_all_sort">
-<code class="sig-name descname">uncheck_all_sort</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.uncheck_all_sort"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.uncheck_all_sort" title="Permalink to this definition">¶</a></dt>
+<code class="descname">uncheck_all_sort</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.uncheck_all_sort"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.uncheck_all_sort" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uncheck all checkboxes in sort menu</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_main_window.CicadaMainWindow.uncheck_group">
-<code class="sig-name descname">uncheck_group</code><span class="sig-paren">(</span><em class="sig-param">param=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.uncheck_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.uncheck_group" title="Permalink to this definition">¶</a></dt>
+<code class="descname">uncheck_group</code><span class="sig-paren">(</span><em>param=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#CicadaMainWindow.uncheck_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.CicadaMainWindow.uncheck_group" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uncheck group menu parameter</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>param</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Parameter name to uncheck</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>param</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Parameter name to uncheck</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="cicada.gui.cicada_main_window.MusketeersWidget">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.cicada_main_window.</code><code class="sig-name descname">MusketeersWidget</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#MusketeersWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.MusketeersWidget" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.gui.cicada_main_window.</code><code class="descname">MusketeersWidget</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_main_window.html#MusketeersWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_main_window.MusketeersWidget" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gather in a layout the 3 main sub-windows composing the gui: displaying the subject sessions,
 the analysis tree and an overview of the running analysis</p>
 </dd></dl>
@@ -380,158 +455,193 @@ the analysis tree and an overview of the running analysis</p>
 <span id="filter-group-sessions"></span><h2>Filter/group sessions<a class="headerlink" href="#module-cicada.gui.session_show_filter_group" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="cicada.gui.session_show_filter_group.SessionsListWidget">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.session_show_filter_group.</code><code class="sig-name descname">SessionsListWidget</code><span class="sig-paren">(</span><em class="sig-param">session_widget</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsListWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsListWidget" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.gui.session_show_filter_group.</code><code class="descname">SessionsListWidget</code><span class="sig-paren">(</span><em>session_widget</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsListWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsListWidget" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="cicada.gui.session_show_filter_group.SessionsListWidget.keyPressEvent">
-<code class="sig-name descname">keyPressEvent</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QKeyEvent</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsListWidget.keyPressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsListWidget.keyPressEvent" title="Permalink to this definition">¶</a></dt>
+<code class="descname">keyPressEvent</code><span class="sig-paren">(</span><em>self</em>, <em>QKeyEvent</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsListWidget.keyPressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsListWidget.keyPressEvent" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
+
+<dl class="method">
+<dt id="cicada.gui.session_show_filter_group.SessionsListWidget.showContextMenu">
+<code class="descname">showContextMenu</code><span class="sig-paren">(</span><em>pos</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsListWidget.showContextMenu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsListWidget.showContextMenu" title="Permalink to this definition">¶</a></dt>
+<dd><p>Display a context menu at the cursor position. Allow the user to see informations about the selected sessions.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pos</strong> (<em>QPoint</em>) – Coordinate of the cursor</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="cicada.gui.session_show_filter_group.SessionsListWidget.show_info">
+<code class="descname">show_info</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsListWidget.show_info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsListWidget.show_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open the metadata widget associated to the selected items</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="cicada.gui.session_show_filter_group.SessionsWidget">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.session_show_filter_group.</code><code class="sig-name descname">SessionsWidget</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em>, <em class="sig-param">to_analysis_button=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<em class="property">class </em><code class="descclassname">cicada.gui.session_show_filter_group.</code><code class="descname">SessionsWidget</code><span class="sig-paren">(</span><em>parent=None</em>, <em>to_analysis_button=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class containing the widget holding the list of loaded sessions</p>
+<dl class="method">
 <dt id="cicada.gui.session_show_filter_group.SessionsWidget.check_all">
-<code class="sig-name descname">check_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.check_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.check_all" title="Permalink to this definition">¶</a></dt>
+<code class="descname">check_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.check_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.check_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check all items</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.session_show_filter_group.SessionsWidget.check_menu">
-<code class="sig-name descname">check_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.check_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.check_menu" title="Permalink to this definition">¶</a></dt>
+<code class="descname">check_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.check_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.check_menu" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create menu to check or uncheck all/none/selected items</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.session_show_filter_group.SessionsWidget.check_selected">
-<code class="sig-name descname">check_selected</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.check_selected"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.check_selected" title="Permalink to this definition">¶</a></dt>
+<code class="descname">check_selected</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.check_selected"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.check_selected" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check selected item(s)</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.session_show_filter_group.SessionsWidget.double_click_event">
-<code class="sig-name descname">double_click_event</code><span class="sig-paren">(</span><em class="sig-param">clicked_item</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.double_click_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.double_click_event" title="Permalink to this definition">¶</a></dt>
+<code class="descname">double_click_event</code><span class="sig-paren">(</span><em>clicked_item</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.double_click_event"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.double_click_event" title="Permalink to this definition">¶</a></dt>
 <dd><p>Handle double click on item in QListWidget.
 Check or uncheck an item or a group on double click.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>clicked_item</strong> – Double clicked item</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>clicked_item</strong> – Double clicked item</td>
+</tr>
+</tbody>
+</table>
 <p>Returns:</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.session_show_filter_group.SessionsWidget.form_group">
-<code class="sig-name descname">form_group</code><span class="sig-paren">(</span><em class="sig-param">labels, param=['-']</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.form_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.form_group" title="Permalink to this definition">¶</a></dt>
+<code class="descname">form_group</code><span class="sig-paren">(</span><em>labels, param=['-']</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.form_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.form_group" title="Permalink to this definition">¶</a></dt>
 <dd><p>Form group of items and display their group name</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – Session identifiers</p></li>
-<li><p><strong>param</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Parameter used to create the groups</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – Session identifiers</li>
+<li><strong>param</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Parameter used to create the groups</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.session_show_filter_group.SessionsWidget.get_data_to_analyse">
-<code class="sig-name descname">get_data_to_analyse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.get_data_to_analyse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.get_data_to_analyse" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_data_to_analyse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.get_data_to_analyse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.get_data_to_analyse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get data to analyse</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.session_show_filter_group.SessionsWidget.get_items">
-<code class="sig-name descname">get_items</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.get_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.get_items" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_items</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.get_items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.get_items" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns list of items
 :returns: list of items</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.session_show_filter_group.SessionsWidget.group_menu">
-<code class="sig-name descname">group_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.group_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.group_menu" title="Permalink to this definition">¶</a></dt>
+<code class="descname">group_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.group_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.group_menu" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create group menu</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.session_show_filter_group.SessionsWidget.more_menu">
-<code class="sig-name descname">more_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.more_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.more_menu" title="Permalink to this definition">¶</a></dt>
+<code class="descname">more_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.more_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.more_menu" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create more menu</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.session_show_filter_group.SessionsWidget.on_change">
-<code class="sig-name descname">on_change</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.on_change"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.on_change" title="Permalink to this definition">¶</a></dt>
+<code class="descname">on_change</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.on_change"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.on_change" title="Permalink to this definition">¶</a></dt>
 <dd><p>Handle change in selection</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.session_show_filter_group.SessionsWidget.populate">
-<code class="sig-name descname">populate</code><span class="sig-paren">(</span><em class="sig-param">labels</em>, <em class="sig-param">method='clear'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.populate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.populate" title="Permalink to this definition">¶</a></dt>
+<code class="descname">populate</code><span class="sig-paren">(</span><em>labels</em>, <em>method='clear'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.populate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.populate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Populate the QListWidget with sessions labels</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – Sessions identifiers</p></li>
-<li><p><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – In case we don’t want to clear the QListWidget</p></li>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>labels</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – Sessions identifiers</li>
+<li><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – In case we don’t want to clear the QListWidget</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.session_show_filter_group.SessionsWidget.remove_data">
-<code class="sig-name descname">remove_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.remove_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.remove_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">remove_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.remove_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.remove_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove selected item(s) from QListWidget</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.session_show_filter_group.SessionsWidget.save_group">
-<code class="sig-name descname">save_group</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.save_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.save_group" title="Permalink to this definition">¶</a></dt>
+<code class="descname">save_group</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.save_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.save_group" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save sessions in a group</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.session_show_filter_group.SessionsWidget.save_group_names">
-<code class="sig-name descname">save_group_names</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.save_group_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.save_group_names" title="Permalink to this definition">¶</a></dt>
+<code class="descname">save_group_names</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.save_group_names"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.save_group_names" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save group in a YAML with a certain name</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.session_show_filter_group.SessionsWidget.send_data_to_analysis_tree">
-<code class="sig-name descname">send_data_to_analysis_tree</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.send_data_to_analysis_tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.send_data_to_analysis_tree" title="Permalink to this definition">¶</a></dt>
+<code class="descname">send_data_to_analysis_tree</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.send_data_to_analysis_tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.send_data_to_analysis_tree" title="Permalink to this definition">¶</a></dt>
 <dd><p>Send data to the analysis tree function</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.session_show_filter_group.SessionsWidget.sort_menu">
-<code class="sig-name descname">sort_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.sort_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.sort_menu" title="Permalink to this definition">¶</a></dt>
+<code class="descname">sort_menu</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.sort_menu"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.sort_menu" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create sort menu</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.session_show_filter_group.SessionsWidget.uncheck_all">
-<code class="sig-name descname">uncheck_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.uncheck_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.uncheck_all" title="Permalink to this definition">¶</a></dt>
+<code class="descname">uncheck_all</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.uncheck_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.uncheck_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uncheck all items</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.session_show_filter_group.SessionsWidget.uncheck_selected">
-<code class="sig-name descname">uncheck_selected</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.uncheck_selected"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.uncheck_selected" title="Permalink to this definition">¶</a></dt>
+<code class="descname">uncheck_selected</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.uncheck_selected"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.uncheck_selected" title="Permalink to this definition">¶</a></dt>
 <dd><p>Uncheck selected item(s)</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.session_show_filter_group.SessionsWidget.update_text_filter">
-<code class="sig-name descname">update_text_filter</code><span class="sig-paren">(</span><em class="sig-param">param_group=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.update_text_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.update_text_filter" title="Permalink to this definition">¶</a></dt>
+<code class="descname">update_text_filter</code><span class="sig-paren">(</span><em>param_group=''</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/session_show_filter_group.html#SessionsWidget.update_text_filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.session_show_filter_group.SessionsWidget.update_text_filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update the QLabel to display the sort/group state</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>param_group</strong> – Parameter used to form group</p>
-</dd>
-</dl>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>param_group</strong> – Parameter used to form group</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -541,15 +651,15 @@ Check or uncheck an item or a group on double click.</p>
 <span id="display-metadata"></span><h2>Display metadata<a class="headerlink" href="#module-cicada.gui.metadata_widget" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="cicada.gui.metadata_widget.MetaDataWidget">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.metadata_widget.</code><code class="sig-name descname">MetaDataWidget</code><span class="sig-paren">(</span><em class="sig-param">file_path</em>, <em class="sig-param">extension</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/metadata_widget.html#MetaDataWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.metadata_widget.MetaDataWidget" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.gui.metadata_widget.</code><code class="descname">MetaDataWidget</code><span class="sig-paren">(</span><em>file_path</em>, <em>extension</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/metadata_widget.html#MetaDataWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.metadata_widget.MetaDataWidget" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="cicada.gui.metadata_widget.MetaDataWidget.keyPressEvent">
-<code class="sig-name descname">keyPressEvent</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QKeyEvent</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/metadata_widget.html#MetaDataWidget.keyPressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.metadata_widget.MetaDataWidget.keyPressEvent" title="Permalink to this definition">¶</a></dt>
+<code class="descname">keyPressEvent</code><span class="sig-paren">(</span><em>self</em>, <em>QKeyEvent</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/metadata_widget.html#MetaDataWidget.keyPressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.metadata_widget.MetaDataWidget.keyPressEvent" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.metadata_widget.MetaDataWidget.tabula_rasa">
-<code class="sig-name descname">tabula_rasa</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/metadata_widget.html#MetaDataWidget.tabula_rasa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.metadata_widget.MetaDataWidget.tabula_rasa" title="Permalink to this definition">¶</a></dt>
+<code class="descname">tabula_rasa</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/metadata_widget.html#MetaDataWidget.tabula_rasa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.metadata_widget.MetaDataWidget.tabula_rasa" title="Permalink to this definition">¶</a></dt>
 <dd><p>Erase the widgets and make an empty section
 Returns:</p>
 </dd></dl>
@@ -558,7 +668,7 @@ Returns:</p>
 
 <dl class="class">
 <dt id="cicada.gui.metadata_widget.TableWidget">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.metadata_widget.</code><code class="sig-name descname">TableWidget</code><span class="sig-paren">(</span><em class="sig-param">metadata_group</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/metadata_widget.html#TableWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.metadata_widget.TableWidget" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.gui.metadata_widget.</code><code class="descname">TableWidget</code><span class="sig-paren">(</span><em>metadata_group</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/metadata_widget.html#TableWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.metadata_widget.TableWidget" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </div>
@@ -566,72 +676,116 @@ Returns:</p>
 <span id="analysises-list"></span><h2>Analysises list<a class="headerlink" href="#module-cicada.gui.cicada_analysis_tree_gui" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="cicada.gui.cicada_analysis_tree_gui.AnalysisTreeApp">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.cicada_analysis_tree_gui.</code><code class="sig-name descname">AnalysisTreeApp</code><span class="sig-paren">(</span><em class="sig-param">to_parameters_button=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#AnalysisTreeApp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.AnalysisTreeApp" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<em class="property">class </em><code class="descclassname">cicada.gui.cicada_analysis_tree_gui.</code><code class="descname">AnalysisTreeApp</code><span class="sig-paren">(</span><em>to_parameters_button=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#AnalysisTreeApp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.AnalysisTreeApp" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="method">
+<dt id="cicada.gui.cicada_analysis_tree_gui.AnalysisTreeApp.create_tree_model">
+<code class="descname">create_tree_model</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#AnalysisTreeApp.create_tree_model"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.AnalysisTreeApp.create_tree_model" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create the tree model
+Returns: the tree model, an instance of QAnalysisTreeModel</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cicada.gui.cicada_analysis_tree_gui.AnalysisTreeApp.doubleClickedItem">
+<code class="descname">doubleClickedItem</code><span class="sig-paren">(</span><em>idx</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#AnalysisTreeApp.doubleClickedItem"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.AnalysisTreeApp.doubleClickedItem" title="Permalink to this definition">¶</a></dt>
+<dd><p>Method called when the user double click in the tree
+:param idx: Index of the branch clicked</p>
+<p>Returns:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cicada.gui.cicada_analysis_tree_gui.AnalysisTreeApp.init_ui">
+<code class="descname">init_ui</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#AnalysisTreeApp.init_ui"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.AnalysisTreeApp.init_ui" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set some of the elements used to build the tree
+Returns:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cicada.gui.cicada_analysis_tree_gui.AnalysisTreeApp.load_arguments_parameters_section">
+<code class="descname">load_arguments_parameters_section</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#AnalysisTreeApp.load_arguments_parameters_section"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.AnalysisTreeApp.load_arguments_parameters_section" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used to load the parameters section with widgets, based on the current selection in the tree.
+If the selection is not on any valid tree item, nothing will happen
+Returns: None</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cicada.gui.cicada_analysis_tree_gui.AnalysisTreeApp.set_data">
+<code class="descname">set_data</code><span class="sig-paren">(</span><em>data_to_analyse</em>, <em>data_format</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#AnalysisTreeApp.set_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.AnalysisTreeApp.set_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Give to the tree the data that the analysis classes will be given to analyze.
+Allows the tree to inactivate the analyses for which the data don’t fulfill the requierements
+:param data_to_analyse: a list of data in a given format (could be nwb or other)
+:param data_format: format of the data, must be a string. So far only “nwb” is supported</p>
+<p>Returns: None</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.cicada_analysis_tree_gui.</code><code class="sig-name descname">QAnalysisTreeModel</code><span class="sig-paren">(</span><em class="sig-param">tree_item</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#QAnalysisTreeModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.gui.cicada_analysis_tree_gui.</code><code class="descname">QAnalysisTreeModel</code><span class="sig-paren">(</span><em>tree_item</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#QAnalysisTreeModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel.columnCount">
-<code class="sig-name descname">columnCount</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">parent: QModelIndex = QModelIndex()</em><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#QAnalysisTreeModel.columnCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel.columnCount" title="Permalink to this definition">¶</a></dt>
+<code class="descname">columnCount</code><span class="sig-paren">(</span><em>self</em>, <em>parent: QModelIndex = QModelIndex()</em><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#QAnalysisTreeModel.columnCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel.columnCount" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel.data">
-<code class="sig-name descname">data</code><span class="sig-paren">(</span><em class="sig-param">index</em>, <em class="sig-param">role</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#QAnalysisTreeModel.data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel.data" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>index</strong> – </p></li>
-<li><p><strong>role</strong> – </p></li>
+<code class="descname">data</code><span class="sig-paren">(</span><em>index</em>, <em>role</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#QAnalysisTreeModel.data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel.data" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>index</strong> – </li>
+<li><strong>role</strong> – </li>
 </ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-</dl>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"></p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel.flags">
-<code class="sig-name descname">flags</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QModelIndex</em><span class="sig-paren">)</span> &#x2192; Qt.ItemFlags<a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#QAnalysisTreeModel.flags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel.flags" title="Permalink to this definition">¶</a></dt>
+<code class="descname">flags</code><span class="sig-paren">(</span><em>self</em>, <em>QModelIndex</em><span class="sig-paren">)</span> &#x2192; Qt.ItemFlags<a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#QAnalysisTreeModel.flags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel.flags" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel.headerData">
-<code class="sig-name descname">headerData</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">int</em>, <em class="sig-param">Qt.Orientation</em>, <em class="sig-param">role: int = Qt.DisplayRole</em><span class="sig-paren">)</span> &#x2192; Any<a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#QAnalysisTreeModel.headerData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel.headerData" title="Permalink to this definition">¶</a></dt>
+<code class="descname">headerData</code><span class="sig-paren">(</span><em>self</em>, <em>int</em>, <em>Qt.Orientation</em>, <em>role: int = Qt.DisplayRole</em><span class="sig-paren">)</span> &#x2192; Any<a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#QAnalysisTreeModel.headerData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel.headerData" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel.index">
-<code class="sig-name descname">index</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">int</em>, <em class="sig-param">int</em>, <em class="sig-param">parent: QModelIndex = QModelIndex()</em><span class="sig-paren">)</span> &#x2192; QModelIndex<a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#QAnalysisTreeModel.index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel.index" title="Permalink to this definition">¶</a></dt>
+<code class="descname">index</code><span class="sig-paren">(</span><em>self</em>, <em>int</em>, <em>int</em>, <em>parent: QModelIndex = QModelIndex()</em><span class="sig-paren">)</span> &#x2192; QModelIndex<a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#QAnalysisTreeModel.index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel.index" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel.parent">
-<code class="sig-name descname">parent</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QModelIndex</em><span class="sig-paren">)</span> &#x2192; QModelIndex<a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#QAnalysisTreeModel.parent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel.parent" title="Permalink to this definition">¶</a></dt>
+<code class="descname">parent</code><span class="sig-paren">(</span><em>self</em>, <em>QModelIndex</em><span class="sig-paren">)</span> &#x2192; QModelIndex<a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#QAnalysisTreeModel.parent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel.parent" title="Permalink to this definition">¶</a></dt>
 <dd><p>parent(self) -&gt; QObject</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel.rowCount">
-<code class="sig-name descname">rowCount</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">parent: QModelIndex = QModelIndex()</em><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#QAnalysisTreeModel.rowCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel.rowCount" title="Permalink to this definition">¶</a></dt>
+<code class="descname">rowCount</code><span class="sig-paren">(</span><em>self</em>, <em>parent: QModelIndex = QModelIndex()</em><span class="sig-paren">)</span> &#x2192; int<a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#QAnalysisTreeModel.rowCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeModel.rowCount" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeView">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.cicada_analysis_tree_gui.</code><code class="sig-name descname">QAnalysisTreeView</code><span class="sig-paren">(</span><em class="sig-param">tree_item</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#QAnalysisTreeView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeView" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.gui.cicada_analysis_tree_gui.</code><code class="descname">QAnalysisTreeView</code><span class="sig-paren">(</span><em>tree_item</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#QAnalysisTreeView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeView" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeView.drawBranches">
-<code class="sig-name descname">drawBranches</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QPainter</em>, <em class="sig-param">QRect</em>, <em class="sig-param">QModelIndex</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#QAnalysisTreeView.drawBranches"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeView.drawBranches" title="Permalink to this definition">¶</a></dt>
+<code class="descname">drawBranches</code><span class="sig-paren">(</span><em>self</em>, <em>QPainter</em>, <em>QRect</em>, <em>QModelIndex</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#QAnalysisTreeView.drawBranches"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeView.drawBranches" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeView.isIndexHidden">
-<code class="sig-name descname">isIndexHidden</code><span class="sig-paren">(</span><em class="sig-param">q_model_index</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#QAnalysisTreeView.isIndexHidden"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeView.isIndexHidden" title="Permalink to this definition">¶</a></dt>
+<code class="descname">isIndexHidden</code><span class="sig-paren">(</span><em>q_model_index</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#QAnalysisTreeView.isIndexHidden"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeView.isIndexHidden" title="Permalink to this definition">¶</a></dt>
 <dd><p>Avoid to select the line that display the family name
 :param q_model_index:
 :return:</p>
@@ -639,25 +793,19 @@ Returns:</p>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeView.keyPressEvent">
-<code class="sig-name descname">keyPressEvent</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QKeyEvent</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#QAnalysisTreeView.keyPressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeView.keyPressEvent" title="Permalink to this definition">¶</a></dt>
+<code class="descname">keyPressEvent</code><span class="sig-paren">(</span><em>self</em>, <em>QKeyEvent</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#QAnalysisTreeView.keyPressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeView.keyPressEvent" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="cicada.gui.cicada_analysis_tree_gui.fill_tree_item_with_dict">
-<code class="sig-prename descclassname">cicada.gui.cicada_analysis_tree_gui.</code><code class="sig-name descname">fill_tree_item_with_dict</code><span class="sig-paren">(</span><em class="sig-param">root_tree</em>, <em class="sig-param">instances_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#fill_tree_item_with_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.fill_tree_item_with_dict" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>root_tree</strong> – </p></li>
-<li><p><strong>instances_dict</strong> – </p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p></p>
-</dd>
-</dl>
+<code class="descclassname">cicada.gui.cicada_analysis_tree_gui.</code><code class="descname">fill_tree_item_with_dict</code><span class="sig-paren">(</span><em>root_tree</em>, <em>instances_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_tree_gui.html#fill_tree_item_with_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_tree_gui.fill_tree_item_with_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Recursive function that fills the root_tree according to data in instances_dict.
+:param root_tree: instance of TreeItem
+:param instances_dict: Contains instance of cicada_analysis, in a hierarchy similar to the one we want
+the tree to be
+:return:</p>
 </dd></dl>
 
 </div>
@@ -665,11 +813,12 @@ Returns:</p>
 <span id="overview-of-analysises"></span><h2>Overview of analysises<a class="headerlink" href="#module-cicada.gui.cicada_analysis_overview" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="cicada.gui.cicada_analysis_overview.AnalysisOverview">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.cicada_analysis_overview.</code><code class="sig-name descname">AnalysisOverview</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_overview.html#AnalysisOverview"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_overview.AnalysisOverview" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<em class="property">class </em><code class="descclassname">cicada.gui.cicada_analysis_overview.</code><code class="descname">AnalysisOverview</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_overview.html#AnalysisOverview"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_overview.AnalysisOverview" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class containing the overview linked to an analysis</p>
+<dl class="method">
 <dt id="cicada.gui.cicada_analysis_overview.AnalysisOverview.add_analysis_overview">
-<code class="sig-name descname">add_analysis_overview</code><span class="sig-paren">(</span><em class="sig-param">cicada_analysis</em>, <em class="sig-param">analysis_id</em>, <em class="sig-param">obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_overview.html#AnalysisOverview.add_analysis_overview"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_overview.AnalysisOverview.add_analysis_overview" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add a widget to track the corresponding analysis
+<code class="descname">add_analysis_overview</code><span class="sig-paren">(</span><em>cicada_analysis</em>, <em>analysis_id</em>, <em>obj</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_overview.html#AnalysisOverview.add_analysis_overview"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_overview.AnalysisOverview.add_analysis_overview" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add widgets to track the corresponding analysis
 :param cicada_analysis: CicadaAnalysis instance
 :type cicada_analysis: CicadaAnalysis
 :param analysis_id: Randomly generated ID linked to the analysis
@@ -680,24 +829,56 @@ Returns:</p>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_analysis_overview.AnalysisOverview.keyPressEvent">
-<code class="sig-name descname">keyPressEvent</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QKeyEvent</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_overview.html#AnalysisOverview.keyPressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_overview.AnalysisOverview.keyPressEvent" title="Permalink to this definition">¶</a></dt>
+<code class="descname">keyPressEvent</code><span class="sig-paren">(</span><em>self</em>, <em>QKeyEvent</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_overview.html#AnalysisOverview.keyPressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_overview.AnalysisOverview.keyPressEvent" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="cicada.gui.cicada_analysis_overview.AnalysisState">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.cicada_analysis_overview.</code><code class="sig-name descname">AnalysisState</code><span class="sig-paren">(</span><em class="sig-param">analysis_id</em>, <em class="sig-param">cicada_analysis</em>, <em class="sig-param">parent=None</em>, <em class="sig-param">without_bringing_to_front=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_overview.html#AnalysisState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_overview.AnalysisState" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<em class="property">class </em><code class="descclassname">cicada.gui.cicada_analysis_overview.</code><code class="descname">AnalysisState</code><span class="sig-paren">(</span><em>analysis_id</em>, <em>cicada_analysis</em>, <em>parent=None</em>, <em>without_bringing_to_front=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_overview.html#AnalysisState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_overview.AnalysisState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class containing the name of the analysis and the subjects analysed</p>
+<dl class="method">
 <dt id="cicada.gui.cicada_analysis_overview.AnalysisState.bring_to_front">
-<code class="sig-name descname">bring_to_front</code><span class="sig-paren">(</span><em class="sig-param">window_id</em>, <em class="sig-param">event</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_overview.html#AnalysisState.bring_to_front"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_overview.AnalysisState.bring_to_front" title="Permalink to this definition">¶</a></dt>
+<code class="descname">bring_to_front</code><span class="sig-paren">(</span><em>window_id</em>, <em>event</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_overview.html#AnalysisState.bring_to_front"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_overview.AnalysisState.bring_to_front" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bring corresponding analysis window to the front (re-routed from the double click method)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>window_id</strong> (<em>QWidget</em>) – Analysis Widget object</li>
+<li><strong>event</strong> (<em>QEvent</em>) – Double click event</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_analysis_overview.AnalysisState.deleteLater">
-<code class="sig-name descname">deleteLater</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_overview.html#AnalysisState.deleteLater"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_overview.AnalysisState.deleteLater" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descname">deleteLater</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_overview.html#AnalysisState.deleteLater"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_overview.AnalysisState.deleteLater" title="Permalink to this definition">¶</a></dt>
+<dd><p>Re-implementation of the deleteLater method to properly delete the whole widget</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="cicada.gui.cicada_analysis_overview.ResultsButton">
+<em class="property">class </em><code class="descclassname">cicada.gui.cicada_analysis_overview.</code><code class="descname">ResultsButton</code><span class="sig-paren">(</span><em>cicada_analysis</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_overview.html#ResultsButton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_overview.ResultsButton" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class containing the button to open the result folder</p>
+<dl class="method">
+<dt id="cicada.gui.cicada_analysis_overview.ResultsButton.deleteLater">
+<code class="descname">deleteLater</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_overview.html#ResultsButton.deleteLater"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_overview.ResultsButton.deleteLater" title="Permalink to this definition">¶</a></dt>
+<dd><p>Re-implementation of the deleteLater method to properly delete the widget</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cicada.gui.cicada_analysis_overview.ResultsButton.open_explorer">
+<code class="descname">open_explorer</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_overview.html#ResultsButton.open_explorer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_overview.ResultsButton.open_explorer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Open the file explorer depending on the OS</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -706,10 +887,10 @@ Returns:</p>
 <span id="analysis-parameters"></span><h2>Analysis parameters<a class="headerlink" href="#module-cicada.gui.cicada_analysis_parameters_gui" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.AnalysisData">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="sig-name descname">AnalysisData</code><span class="sig-paren">(</span><em class="sig-param">cicada_analysis</em>, <em class="sig-param">arguments_section_widget</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#AnalysisData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.AnalysisData" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="descname">AnalysisData</code><span class="sig-paren">(</span><em>cicada_analysis</em>, <em>arguments_section_widget</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#AnalysisData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.AnalysisData" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.AnalysisData.populate_session_list">
-<code class="sig-name descname">populate_session_list</code><span class="sig-paren">(</span><em class="sig-param">session_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#AnalysisData.populate_session_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.AnalysisData.populate_session_list" title="Permalink to this definition">¶</a></dt>
+<code class="descname">populate_session_list</code><span class="sig-paren">(</span><em>session_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#AnalysisData.populate_session_list"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.AnalysisData.populate_session_list" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add all session to the QListWidget
 :param session_list: List of all sessions’ identifier
 :type session_list: list</p>
@@ -719,85 +900,122 @@ Returns:</p>
 
 <dl class="class">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.AnalysisPackage">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="sig-name descname">AnalysisPackage</code><span class="sig-paren">(</span><em class="sig-param">cicada_analysis</em>, <em class="sig-param">analysis_name</em>, <em class="sig-param">analysis_description</em>, <em class="sig-param">name</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#AnalysisPackage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.AnalysisPackage" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<em class="property">class </em><code class="descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="descname">AnalysisPackage</code><span class="sig-paren">(</span><em>cicada_analysis</em>, <em>analysis_name</em>, <em>name</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#AnalysisPackage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.AnalysisPackage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Widget containing the whole analysis window</p>
+<dl class="method">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.AnalysisPackage.errOutputWritten">
-<code class="sig-name descname">errOutputWritten</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#AnalysisPackage.errOutputWritten"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.AnalysisPackage.errOutputWritten" title="Permalink to this definition">¶</a></dt>
-<dd><p>Append text to the QLabel.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>text</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Output of the standard output in python interpreter</p>
-</dd>
-</dl>
+<code class="descname">errOutputWritten</code><span class="sig-paren">(</span><em>text</em>, <em>path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#AnalysisPackage.errOutputWritten"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.AnalysisPackage.errOutputWritten" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append std.err text to the QLabel and create an err file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>text</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Output of the standard output in python interpreter</li>
+<li><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – path where we will output the err file</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.AnalysisPackage.normalOutputWritten">
-<code class="sig-name descname">normalOutputWritten</code><span class="sig-paren">(</span><em class="sig-param">text</em>, <em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#AnalysisPackage.normalOutputWritten"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.AnalysisPackage.normalOutputWritten" title="Permalink to this definition">¶</a></dt>
-<dd><p>Append text to the QLabel.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>text</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Output of the standard output in python interpreter</p>
-</dd>
-</dl>
+<code class="descname">normalOutputWritten</code><span class="sig-paren">(</span><em>text</em>, <em>path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#AnalysisPackage.normalOutputWritten"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.AnalysisPackage.normalOutputWritten" title="Permalink to this definition">¶</a></dt>
+<dd><p>Append std.out text to the QLabel and create a log file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>text</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Output of the standard output in python interpreter</li>
+<li><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – path where we will output the log file</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.AnalysisPackage.on_close">
-<code class="sig-name descname">on_close</code><span class="sig-paren">(</span><em class="sig-param">event</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#AnalysisPackage.on_close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.AnalysisPackage.on_close" title="Permalink to this definition">¶</a></dt>
-<dd><p>Need to delete the overview widget associated to this analysis</p>
+<code class="descname">on_close</code><span class="sig-paren">(</span><em>event</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#AnalysisPackage.on_close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.AnalysisPackage.on_close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if an analysis is still on going and prompt the user to let him know then ask whether he still wants to
+close. If yes, delete the associated overview and stop the thread</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>event</strong> (<em>QEvent</em>) – Qt Event triggered when attempting to close the window</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="sig-name descname">AnalysisParametersApp</code><span class="sig-paren">(</span><em class="sig-param">thread_name</em>, <em class="sig-param">progress_bar</em>, <em class="sig-param">height_main_window</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#AnalysisParametersApp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<em class="property">class </em><code class="descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="descname">AnalysisParametersApp</code><span class="sig-paren">(</span><em>thread_name</em>, <em>progress_bar</em>, <em>height_main_window</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#AnalysisParametersApp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class containing the parameters widgets</p>
+<dl class="method">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp.create_widgets">
-<code class="sig-name descname">create_widgets</code><span class="sig-paren">(</span><em class="sig-param">cicada_analysis</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#AnalysisParametersApp.create_widgets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp.create_widgets" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>cicada_analysis</strong> – </p>
-</dd>
-</dl>
-<p>Returns:</p>
+<code class="descname">create_widgets</code><span class="sig-paren">(</span><em>cicada_analysis</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#AnalysisParametersApp.create_widgets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp.create_widgets" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>cicada_analysis</strong> (<a class="reference internal" href="analysis.html#cicada.analysis.cicada_analysis.CicadaAnalysis" title="cicada.analysis.cicada_analysis.CicadaAnalysis"><em>CicadaAnalysis</em></a>) – Chosen analysis</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp.keyPressEvent">
-<code class="sig-name descname">keyPressEvent</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">QKeyEvent</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#AnalysisParametersApp.keyPressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp.keyPressEvent" title="Permalink to this definition">¶</a></dt>
+<code class="descname">keyPressEvent</code><span class="sig-paren">(</span><em>self</em>, <em>QKeyEvent</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#AnalysisParametersApp.keyPressEvent"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp.keyPressEvent" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp.load_arguments">
-<code class="sig-name descname">load_arguments</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#AnalysisParametersApp.load_arguments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp.load_arguments" title="Permalink to this definition">¶</a></dt>
-<dd><p>Will open a FileDialog to select a yaml file used to load arguments used for a previous analysis
-Returns:</p>
+<code class="descname">load_arguments</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#AnalysisParametersApp.load_arguments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp.load_arguments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Will open a FileDialog to select a yaml file used to load arguments used for a previous analysis</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp.reset_arguments">
+<code class="descname">reset_arguments</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#AnalysisParametersApp.reset_arguments"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp.reset_arguments" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reset all arguments to default value</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp.run_analysis">
+<code class="descname">run_analysis</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#AnalysisParametersApp.run_analysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp.run_analysis" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check if the parameters are valid and then create a thread which will run the analysis</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp.tabula_rasa">
-<code class="sig-name descname">tabula_rasa</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#AnalysisParametersApp.tabula_rasa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp.tabula_rasa" title="Permalink to this definition">¶</a></dt>
-<dd><p>Erase the widgets and make an empty section
-Returns:</p>
+<code class="descname">tabula_rasa</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#AnalysisParametersApp.tabula_rasa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.AnalysisParametersApp.tabula_rasa" title="Permalink to this definition">¶</a></dt>
+<dd><p>Erase the widgets and make an empty section</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="class">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.CheckBoxWidget">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="sig-name descname">CheckBoxWidget</code><span class="sig-paren">(</span><em class="sig-param">analysis_arg</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#CheckBoxWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.CheckBoxWidget" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="descname">CheckBoxWidget</code><span class="sig-paren">(</span><em>analysis_arg</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#CheckBoxWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.CheckBoxWidget" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.CheckBoxWidget.get_value">
-<code class="sig-name descname">get_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#CheckBoxWidget.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.CheckBoxWidget.get_value" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#CheckBoxWidget.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.CheckBoxWidget.get_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the value of the widget
 Returns:</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.CheckBoxWidget.set_value">
-<code class="sig-name descname">set_value</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#CheckBoxWidget.set_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.CheckBoxWidget.set_value" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_value</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#CheckBoxWidget.set_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.CheckBoxWidget.set_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the widget value to the value passed
 Returns:</p>
 </dd></dl>
@@ -806,17 +1024,17 @@ Returns:</p>
 
 <dl class="class">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.ComboBoxWidget">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="sig-name descname">ComboBoxWidget</code><span class="sig-paren">(</span><em class="sig-param">analysis_arg</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#ComboBoxWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.ComboBoxWidget" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="descname">ComboBoxWidget</code><span class="sig-paren">(</span><em>analysis_arg</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#ComboBoxWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.ComboBoxWidget" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.ComboBoxWidget.get_value">
-<code class="sig-name descname">get_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#ComboBoxWidget.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.ComboBoxWidget.get_value" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#ComboBoxWidget.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.ComboBoxWidget.get_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the value of the widget
 Returns:</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.ComboBoxWidget.set_value">
-<code class="sig-name descname">set_value</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#ComboBoxWidget.set_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.ComboBoxWidget.set_value" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_value</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#ComboBoxWidget.set_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.ComboBoxWidget.set_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set a new value.
 Either value is None and nothing will happen
 If value is a list instance,
@@ -828,10 +1046,11 @@ If value is a list instance,
 
 <dl class="class">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.EmittingErrStream">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="sig-name descname">EmittingErrStream</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#EmittingErrStream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.EmittingErrStream" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<em class="property">class </em><code class="descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="descname">EmittingErrStream</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#EmittingErrStream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.EmittingErrStream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class managing the std.err redirection</p>
+<dl class="method">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.EmittingErrStream.write">
-<code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param">text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#EmittingErrStream.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.EmittingErrStream.write" title="Permalink to this definition">¶</a></dt>
+<code class="descname">write</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#EmittingErrStream.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.EmittingErrStream.write" title="Permalink to this definition">¶</a></dt>
 <dd><p>Override of the write function used to display output
 :param text: Python output from stdout
 :type text: str</p>
@@ -841,10 +1060,11 @@ If value is a list instance,
 
 <dl class="class">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.EmittingStream">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="sig-name descname">EmittingStream</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#EmittingStream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.EmittingStream" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<em class="property">class </em><code class="descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="descname">EmittingStream</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#EmittingStream"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.EmittingStream" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class managing the std.out redirection</p>
+<dl class="method">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.EmittingStream.write">
-<code class="sig-name descname">write</code><span class="sig-paren">(</span><em class="sig-param">text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#EmittingStream.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.EmittingStream.write" title="Permalink to this definition">¶</a></dt>
+<code class="descname">write</code><span class="sig-paren">(</span><em>text</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#EmittingStream.write"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.EmittingStream.write" title="Permalink to this definition">¶</a></dt>
 <dd><p>Override of the write function used to display output
 :param text: Python output from stdout
 :type text: str</p>
@@ -854,19 +1074,19 @@ If value is a list instance,
 
 <dl class="class">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.FileDialogWidget">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="sig-name descname">FileDialogWidget</code><span class="sig-paren">(</span><em class="sig-param">analysis_arg</em>, <em class="sig-param">directory_only</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#FileDialogWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.FileDialogWidget" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="descname">FileDialogWidget</code><span class="sig-paren">(</span><em>analysis_arg</em>, <em>directory_only</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#FileDialogWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.FileDialogWidget" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a widget that will contain a button to open a FileDialog and a label to display the file or directory choosen
 A label will also explain what this parameter do</p>
 <dl class="method">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.FileDialogWidget.get_value">
-<code class="sig-name descname">get_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#FileDialogWidget.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.FileDialogWidget.get_value" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#FileDialogWidget.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.FileDialogWidget.get_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the value of the widget
 Returns:</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.FileDialogWidget.set_value">
-<code class="sig-name descname">set_value</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#FileDialogWidget.set_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.FileDialogWidget.set_value" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_value</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#FileDialogWidget.set_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.FileDialogWidget.set_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the widget value to the value passed
 Returns:</p>
 </dd></dl>
@@ -875,22 +1095,22 @@ Returns:</p>
 
 <dl class="class">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.FinalMeta">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="sig-name descname">FinalMeta</code><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#FinalMeta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.FinalMeta" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="descname">FinalMeta</code><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#FinalMeta"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.FinalMeta" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="class">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.LineEditWidget">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="sig-name descname">LineEditWidget</code><span class="sig-paren">(</span><em class="sig-param">analysis_arg</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#LineEditWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.LineEditWidget" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="descname">LineEditWidget</code><span class="sig-paren">(</span><em>analysis_arg</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#LineEditWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.LineEditWidget" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.LineEditWidget.get_value">
-<code class="sig-name descname">get_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#LineEditWidget.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.LineEditWidget.get_value" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#LineEditWidget.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.LineEditWidget.get_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the value of the widget
 Returns:</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.LineEditWidget.set_value">
-<code class="sig-name descname">set_value</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#LineEditWidget.set_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.LineEditWidget.set_value" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_value</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#LineEditWidget.set_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.LineEditWidget.set_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the widget value to the value passed
 Returns:</p>
 </dd></dl>
@@ -899,18 +1119,18 @@ Returns:</p>
 
 <dl class="class">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.ListCheckboxWidget">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="sig-name descname">ListCheckboxWidget</code><span class="sig-paren">(</span><em class="sig-param">analysis_arg</em>, <em class="sig-param">choices_attr_name</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#ListCheckboxWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.ListCheckboxWidget" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="descname">ListCheckboxWidget</code><span class="sig-paren">(</span><em>analysis_arg</em>, <em>choices_attr_name</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#ListCheckboxWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.ListCheckboxWidget" title="Permalink to this definition">¶</a></dt>
 <dd><p>Allows multiple choices</p>
 <dl class="method">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.ListCheckboxWidget.get_value">
-<code class="sig-name descname">get_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#ListCheckboxWidget.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.ListCheckboxWidget.get_value" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#ListCheckboxWidget.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.ListCheckboxWidget.get_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the value of the widget
 Returns:</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.ListCheckboxWidget.set_value">
-<code class="sig-name descname">set_value</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#ListCheckboxWidget.set_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.ListCheckboxWidget.set_value" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_value</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#ListCheckboxWidget.set_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.ListCheckboxWidget.set_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the value.
 :param value: value is either a string or integer or float, or a list. If a list, then item whose value matches
 :param one of the elements in the list will be checkeds:</p>
@@ -921,10 +1141,10 @@ Returns:</p>
 
 <dl class="class">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.MyQFrame">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="sig-name descname">MyQFrame</code><span class="sig-paren">(</span><em class="sig-param">analysis_arg</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#MyQFrame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.MyQFrame" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="descname">MyQFrame</code><span class="sig-paren">(</span><em>analysis_arg</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#MyQFrame"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.MyQFrame" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.MyQFrame.change_mandatory_property">
-<code class="sig-name descname">change_mandatory_property</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#MyQFrame.change_mandatory_property"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.MyQFrame.change_mandatory_property" title="Permalink to this definition">¶</a></dt>
+<code class="descname">change_mandatory_property</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#MyQFrame.change_mandatory_property"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.MyQFrame.change_mandatory_property" title="Permalink to this definition">¶</a></dt>
 <dd><p>Changing the property allowing to change the style sheet depending on the mandatory aspect of the argument
 :param value:</p>
 <p>Returns:</p>
@@ -932,7 +1152,7 @@ Returns:</p>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.MyQFrame.set_property_to_missing">
-<code class="sig-name descname">set_property_to_missing</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#MyQFrame.set_property_to_missing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.MyQFrame.set_property_to_missing" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_property_to_missing</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#MyQFrame.set_property_to_missing"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.MyQFrame.set_property_to_missing" title="Permalink to this definition">¶</a></dt>
 <dd><p>Allows the change the stylesheet and indicate the user that a
 Returns:</p>
 </dd></dl>
@@ -941,17 +1161,17 @@ Returns:</p>
 
 <dl class="class">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.ParameterWidgetModel">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="sig-name descname">ParameterWidgetModel</code><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#ParameterWidgetModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.ParameterWidgetModel" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="descname">ParameterWidgetModel</code><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#ParameterWidgetModel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.ParameterWidgetModel" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.ParameterWidgetModel.get_value">
-<em class="property">abstract </em><code class="sig-name descname">get_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#ParameterWidgetModel.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.ParameterWidgetModel.get_value" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#ParameterWidgetModel.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.ParameterWidgetModel.get_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the value of the widget
 Returns:</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.ParameterWidgetModel.set_value">
-<em class="property">abstract </em><code class="sig-name descname">set_value</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#ParameterWidgetModel.set_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.ParameterWidgetModel.set_value" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_value</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#ParameterWidgetModel.set_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.ParameterWidgetModel.set_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the widget value to the value passed
 Returns:</p>
 </dd></dl>
@@ -960,27 +1180,90 @@ Returns:</p>
 
 <dl class="class">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.ProgressBar">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="sig-name descname">ProgressBar</code><span class="sig-paren">(</span><em class="sig-param">remaining_time_label</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#ProgressBar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.ProgressBar" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<em class="property">class </em><code class="descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="descname">ProgressBar</code><span class="sig-paren">(</span><em>remaining_time_label</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#ProgressBar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.ProgressBar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class containing the progress bar of the current analysis</p>
+<dl class="method">
+<dt id="cicada.gui.cicada_analysis_parameters_gui.ProgressBar.update_progress_bar">
+<code class="descname">update_progress_bar</code><span class="sig-paren">(</span><em>time_started</em>, <em>increment_value=0</em>, <em>new_set_value=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#ProgressBar.update_progress_bar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.ProgressBar.update_progress_bar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the progress bar in the analysis widget and the corresponding remaining time
+:param time_started: Start time of the analysis
+:type time_started: float
+:param increment_value: Value that should be added to the current value of the progress bar
+:type increment_value: float
+:param new_set_value: Value that should be set as the current value of the progress bar
+:type new_set_value: float</p>
+<p>Returns:</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cicada.gui.cicada_analysis_parameters_gui.ProgressBar.update_progress_bar_overview">
+<code class="descname">update_progress_bar_overview</code><span class="sig-paren">(</span><em>name</em>, <em>increment_value=0</em>, <em>new_set_value=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#ProgressBar.update_progress_bar_overview"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.ProgressBar.update_progress_bar_overview" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the overview progress bar</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Analysis ID</li>
+<li><strong>time_started</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Start time of the analysis</li>
+<li><strong>increment_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Value that should be added to the current value of the progress bar</li>
+<li><strong>new_set_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Value that should be set as the current value of the progress bar</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.RemainingTime">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="sig-name descname">RemainingTime</code><span class="sig-paren">(</span><em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#RemainingTime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.RemainingTime" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<em class="property">class </em><code class="descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="descname">RemainingTime</code><span class="sig-paren">(</span><em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#RemainingTime"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.RemainingTime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class containing the remaining time of the analysis</p>
+<dl class="staticmethod">
+<dt id="cicada.gui.cicada_analysis_parameters_gui.RemainingTime.correct_time_converter">
+<em class="property">static </em><code class="descname">correct_time_converter</code><span class="sig-paren">(</span><em>time</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#RemainingTime.correct_time_converter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.RemainingTime.correct_time_converter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a float in a correct duration value
+:param time: Float value to be converted in a correct duration with MM.SS
+:type time: float</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">String of the correct duration</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body">time_text (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>)</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="cicada.gui.cicada_analysis_parameters_gui.RemainingTime.update_remaining_time">
+<code class="descname">update_remaining_time</code><span class="sig-paren">(</span><em>progress_value</em>, <em>time_started</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#RemainingTime.update_remaining_time"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.RemainingTime.update_remaining_time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update the remaining time
+:param progress_value: Current progress bar value
+:type progress_value: float
+:param time_started: Start time of the analysis
+:type time_started: float</p>
+</dd></dl>
+
+</dd></dl>
 
 <dl class="class">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.SliderWidget">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="sig-name descname">SliderWidget</code><span class="sig-paren">(</span><em class="sig-param">analysis_arg</em>, <em class="sig-param">parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#SliderWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.SliderWidget" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="descname">SliderWidget</code><span class="sig-paren">(</span><em>analysis_arg</em>, <em>parent=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#SliderWidget"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.SliderWidget" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.SliderWidget.get_value">
-<code class="sig-name descname">get_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#SliderWidget.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.SliderWidget.get_value" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#SliderWidget.get_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.SliderWidget.get_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the value of the widget
 Returns:</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.SliderWidget.set_value">
-<code class="sig-name descname">set_value</code><span class="sig-paren">(</span><em class="sig-param">value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#SliderWidget.set_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.SliderWidget.set_value" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_value</code><span class="sig-paren">(</span><em>value</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#SliderWidget.set_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.SliderWidget.set_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the widget value to the value passed
 Returns:</p>
 </dd></dl>
@@ -989,11 +1272,47 @@ Returns:</p>
 
 <dl class="class">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.Worker">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="sig-name descname">Worker</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">cicada_analysis</em>, <em class="sig-param">analysis_arguments_handler</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#Worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.Worker" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="method">
+<em class="property">class </em><code class="descclassname">cicada.gui.cicada_analysis_parameters_gui.</code><code class="descname">Worker</code><span class="sig-paren">(</span><em>name</em>, <em>cicada_analysis</em>, <em>analysis_arguments_handler</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#Worker"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.Worker" title="Permalink to this definition">¶</a></dt>
+<dd><p>Thread to manage multiple analysises at the same time</p>
+<dl class="method">
 <dt id="cicada.gui.cicada_analysis_parameters_gui.Worker.run">
-<code class="sig-name descname">run</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#Worker.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.Worker.run" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descname">run</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#Worker.run"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.Worker.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run the analysis</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cicada.gui.cicada_analysis_parameters_gui.Worker.setProgress">
+<code class="descname">setProgress</code><span class="sig-paren">(</span><em>name</em>, <em>time_started</em>, <em>increment_value=0</em>, <em>new_set_value=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#Worker.setProgress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.Worker.setProgress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Emit the new value of the progress bar and time remaining</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Analysis ID</li>
+<li><strong>time_started</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Start time of the analysis</li>
+<li><strong>increment_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Value that should be added to the current value of the progress bar</li>
+<li><strong>new_set_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Value that should be set as the current value of the progress bar</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="cicada.gui.cicada_analysis_parameters_gui.Worker.set_results_path">
+<code class="descname">set_results_path</code><span class="sig-paren">(</span><em>results_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/gui/cicada_analysis_parameters_gui.html#Worker.set_results_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.gui.cicada_analysis_parameters_gui.Worker.set_results_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the selected path to the results in the “Open result folder” button in the corresponding overview</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>results_path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Path to the results</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 

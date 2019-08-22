@@ -25,6 +25,9 @@
         <script type="text/javascript" src="../../../_static/underscore.js"></script>
         <script type="text/javascript" src="../../../_static/doctools.js"></script>
         <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script type="text/javascript" src="../../../_static/sphinxcontrib-images\LightBox2\lightbox2\js\jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="../../../_static/sphinxcontrib-images\LightBox2\lightbox2\js\lightbox.min.js"></script>
+        <script type="text/javascript" src="../../../_static/sphinxcontrib-images\LightBox2\lightbox2-customize\jquery-noconflict.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -33,6 +36,7 @@
   
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sphinxcontrib-images\LightBox2\lightbox2\css\lightbox.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
@@ -79,6 +83,8 @@
             
             
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">How to install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html">How to use</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../preprocessing.html">Pre-processing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.cicada_data_to_nwb">Data to NWB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.cicada_preprocessing_run">Run preprocessing</a></li>
@@ -88,6 +94,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_ci_movie_to_nwb">Calcium imaging movie</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_abf_to_nwb">ABF</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.utils">Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#annexe">Annexe</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">Analysis</a><ul>
@@ -100,6 +107,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_frames_count">Frames count</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_hubs_analysis">Hubs analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_psth_analysis">PSTH analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#annexe">Annexe</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gui.html">GUI</a><ul>
@@ -186,7 +194,6 @@
 <span class="kn">import</span> <span class="nn">cicada.preprocessing.utils</span> <span class="k">as</span> <span class="nn">utils</span>
 <span class="kn">import</span> <span class="nn">yaml</span>
 <span class="kn">import</span> <span class="nn">gc</span>
-<span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">islice</span>
 <span class="kn">from</span> <span class="nn">cicada.gui.cicada_analysis_tree_gui</span> <span class="k">import</span> <span class="n">AnalysisTreeApp</span>
 <span class="kn">from</span> <span class="nn">cicada.gui.cicada_analysis_overview</span> <span class="k">import</span> <span class="n">AnalysisOverview</span>
 <span class="kn">from</span> <span class="nn">cicada.gui.cicada_analysis_parameters_gui</span> <span class="k">import</span> <span class="n">AnalysisPackage</span>
@@ -194,6 +201,7 @@
 
 
 <div class="viewcode-block" id="CicadaMainWindow"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.CicadaMainWindow">[docs]</a><span class="k">class</span> <span class="nc">CicadaMainWindow</span><span class="p">(</span><span class="n">QMainWindow</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Main window of the GUI&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">createActions</span><span class="p">()</span>
@@ -388,7 +396,7 @@
 
 <div class="viewcode-block" id="CicadaMainWindow.load_group"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.load_group">[docs]</a>    <span class="k">def</span> <span class="nf">load_group</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group_name</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Load a group of saved sessions</span>
+<span class="sd">        Load a group of saved sessions, it will clear the current session list</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            group_name (str) : Name of the group saved in YAML</span>
@@ -607,10 +615,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">seeAllGroupAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s1">&#39;&amp;See all groups&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">triggered</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">see_all_groups</span><span class="p">)</span></div>
 
 
-    <span class="k">def</span> <span class="nf">see_all_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="CicadaMainWindow.see_all_groups"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.see_all_groups">[docs]</a>    <span class="k">def</span> <span class="nf">see_all_groups</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Display a widget with all existing groups&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">all_group_window</span> <span class="o">=</span> <span class="n">AllGroups</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">all_group_window</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">object_created</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_group_window</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">object_created</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">all_group_window</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="CicadaMainWindow.uncheck_all_sort"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.uncheck_all_sort">[docs]</a>    <span class="k">def</span> <span class="nf">uncheck_all_sort</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Uncheck all checkboxes in sort menu&quot;&quot;&quot;</span>
@@ -715,7 +724,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">fileMenu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">saveGroupMenu</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">saveGroupMenu</span><span class="o">.</span><span class="n">triggered</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">musketeers_widget</span><span class="o">.</span><span class="n">session_widget</span><span class="o">.</span><span class="n">save_group</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="CicadaMainWindow.closeEvent"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.closeEvent">[docs]</a>    <span class="k">def</span> <span class="nf">closeEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="CicadaMainWindow.closeEvent"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.CicadaMainWindow.closeEvent">[docs]</a>    <span class="k">def</span> <span class="nf">closeEvent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">event</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Close all analysises windows on main window close</span>
 <span class="sd">        (uses Garbage Collector to get a list of them and close them, might be a better and faster way)</span>
@@ -725,11 +734,16 @@
                 <span class="k">if</span> <span class="n">obj</span><span class="o">.</span><span class="n">isVisible</span><span class="p">():</span>
                     <span class="n">obj</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">object_created</span><span class="p">:</span>
-            <span class="n">obj</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div></div>
+            <span class="n">obj</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">obj</span> <span class="ow">in</span> <span class="n">gc</span><span class="o">.</span><span class="n">get_objects</span><span class="p">():</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">AnalysisPackage</span><span class="p">):</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">obj</span><span class="o">.</span><span class="n">quit</span><span class="p">:</span>
+                    <span class="n">event</span><span class="o">.</span><span class="n">ignore</span><span class="p">()</span>
+                    <span class="k">break</span></div></div>
 
 
 <div class="viewcode-block" id="AllGroups"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.AllGroups">[docs]</a><span class="k">class</span> <span class="nc">AllGroups</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
-
+    <span class="sd">&quot;&quot;&quot;Class containing the widget used to display all created group found&quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">QWidget</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">layout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
@@ -761,16 +775,24 @@
             <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;self.groupItem&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">counter</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.setText(&quot;&#39;</span> <span class="o">+</span> <span class="n">group_name</span> <span class="o">+</span> <span class="s1">&#39;&quot;)&#39;</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">group_list</span><span class="o">.</span><span class="n">addItem</span><span class="p">(</span><span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;self.groupItem&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">counter</span><span class="p">)))</span></div>
 
-    <span class="k">def</span> <span class="nf">double_click_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clicked_item</span><span class="p">):</span>
-        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_list</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">clicked_item</span><span class="o">.</span><span class="n">row</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">load_group</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+<div class="viewcode-block" id="AllGroups.double_click_event"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.AllGroups.double_click_event">[docs]</a>    <span class="k">def</span> <span class="nf">double_click_event</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">clicked_item</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get item which was double clicked and call the function to load the group</span>
 
-    <span class="k">def</span> <span class="nf">add_group</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="sd">        Args:</span>
+<span class="sd">            clicked_item (QModelIndex): Qt index which correspond to the clicked index</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_list</span><span class="o">.</span><span class="n">item</span><span class="p">(</span><span class="n">clicked_item</span><span class="o">.</span><span class="n">row</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">load_group</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="AllGroups.add_group"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.AllGroups.add_group">[docs]</a>    <span class="k">def</span> <span class="nf">add_group</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add all selected groups to the current session list&quot;&quot;&quot;</span>
         <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_list</span><span class="o">.</span><span class="n">selectedItems</span><span class="p">()</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">add_group_data</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">add_group_data</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">())</span></div>
 
-    <span class="k">def</span> <span class="nf">load_group</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="AllGroups.load_group"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.AllGroups.load_group">[docs]</a>    <span class="k">def</span> <span class="nf">load_group</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load all selected groups in the session list (clear the existing sessions from the list)&quot;&quot;&quot;</span>
         <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">group_list</span><span class="o">.</span><span class="n">selectedItems</span><span class="p">()</span>
         <span class="n">counter</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
@@ -778,9 +800,17 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">load_group</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">add_group_data</span><span class="p">(</span><span class="n">item</span><span class="o">.</span><span class="n">text</span><span class="p">())</span>
-            <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">counter</span> <span class="o">+=</span> <span class="mi">1</span></div>
 
-    <span class="k">def</span> <span class="nf">showContextMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+<div class="viewcode-block" id="AllGroups.showContextMenu"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.AllGroups.showContextMenu">[docs]</a>    <span class="k">def</span> <span class="nf">showContextMenu</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Display a context menu at the cursor position. Allow the user to add or load the group at the given position.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            pos (QPoint): Coordinate of the cursor</span>
+
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">global_pos</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mapToGlobal</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">context_menu</span> <span class="o">=</span> <span class="n">QMenu</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">context_menuAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Load group&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">triggered</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">load_group</span><span class="p">)</span>
@@ -789,7 +819,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">context_menuAct</span> <span class="o">=</span> <span class="n">QAction</span><span class="p">(</span><span class="s2">&quot;Add group&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="p">,</span> <span class="n">triggered</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">load_group</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">context_menuAct</span><span class="o">.</span><span class="n">setIcon</span><span class="p">(</span><span class="n">QtGui</span><span class="o">.</span><span class="n">QIcon</span><span class="p">(</span><span class="s1">&#39;cicada/gui/icons/svg/question-mark.svg&#39;</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">context_menu</span><span class="o">.</span><span class="n">addAction</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">context_menuAct</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">context_menu</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">global_pos</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">context_menu</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">global_pos</span><span class="p">)</span></div></div>
 
 <div class="viewcode-block" id="MusketeersWidget"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_main_window.MusketeersWidget">[docs]</a><span class="k">class</span> <span class="nc">MusketeersWidget</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -827,27 +857,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">session_widget</span><span class="o">.</span><span class="n">analysis_overview_widget</span> <span class="o">=</span> <span class="n">analysis_overview_widget</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">layout</span><span class="p">)</span></div>
 
-<span class="c1">#</span>
-<span class="c1"># def catch_exceptions(t, val, tb):</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     Catch errors and show them in a QMessageBox without making all crash</span>
-<span class="c1">#     Args:</span>
-<span class="c1">#         t: Exception type</span>
-<span class="c1">#         val: Exception value</span>
-<span class="c1">#         tb:</span>
-<span class="c1">#</span>
-<span class="c1">#     Returns:</span>
-<span class="c1">#</span>
-<span class="c1">#     &quot;&quot;&quot;</span>
-<span class="c1">#     QMessageBox.critical(None,</span>
-<span class="c1">#                               &quot;An exception was raised&quot;,</span>
-<span class="c1">#                               &quot;Exception type: {} \n Value: {}&quot;.format(t,val))</span>
-<span class="c1">#     old_hook(t, val, tb)</span>
 
-<span class="c1"># Removing it for now</span>
-<span class="c1"># old_hook = sys.excepthook</span>
-<span class="c1">#</span>
-<span class="c1"># sys.excepthook = catch_exceptions</span>
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
 

@@ -25,6 +25,9 @@
         <script type="text/javascript" src="../../../_static/underscore.js"></script>
         <script type="text/javascript" src="../../../_static/doctools.js"></script>
         <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script type="text/javascript" src="../../../_static/sphinxcontrib-images\LightBox2\lightbox2\js\jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="../../../_static/sphinxcontrib-images\LightBox2\lightbox2\js\lightbox.min.js"></script>
+        <script type="text/javascript" src="../../../_static/sphinxcontrib-images\LightBox2\lightbox2-customize\jquery-noconflict.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -33,6 +36,7 @@
   
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sphinxcontrib-images\LightBox2\lightbox2\css\lightbox.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
@@ -79,6 +83,8 @@
             
             
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">How to install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html">How to use</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../preprocessing.html">Pre-processing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.cicada_data_to_nwb">Data to NWB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.cicada_preprocessing_run">Run preprocessing</a></li>
@@ -88,6 +94,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_ci_movie_to_nwb">Calcium imaging movie</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_abf_to_nwb">ABF</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.utils">Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#annexe">Annexe</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">Analysis</a><ul>
@@ -100,6 +107,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_frames_count">Frames count</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_hubs_analysis">Hubs analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_psth_analysis">PSTH analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#annexe">Annexe</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gui.html">GUI</a><ul>
@@ -388,12 +396,18 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">analysis_arguments_handler</span><span class="o">.</span><span class="n">save_analysis_arguments_to_yaml_file</span><span class="p">(</span><span class="n">path_dir</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_results_path</span><span class="p">,</span>
                                                                                  <span class="n">yaml_file_name</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span></div>
 
-    <span class="c1"># TODO: do a function that return a structure (home-made class ?) that will be used by the GUI to know</span>
-    <span class="c1">#  which argument to pass to run_analysis, their types, if mandatory and their range among other things</span>
+<div class="viewcode-block" id="CicadaAnalysis.update_progressbar"><a class="viewcode-back" href="../../../analysis.html#cicada.analysis.cicada_analysis.CicadaAnalysis.update_progressbar">[docs]</a>    <span class="k">def</span> <span class="nf">update_progressbar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_started</span><span class="p">,</span> <span class="n">increment_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">new_set_value</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">update_progressbar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">time_started</span><span class="p">,</span> <span class="n">increment_value</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">new_set_value</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="sd">        Args:</span>
+<span class="sd">            time_started (float): Start time of the analysis</span>
+<span class="sd">            increment_value (float): Value that should be added to the current value of the progress bar</span>
+<span class="sd">            new_set_value (float):  Value that should be set as the current value of the progress bar</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">worker</span> <span class="o">=</span> <span class="n">QThread</span><span class="o">.</span><span class="n">currentThread</span><span class="p">()</span>
-        <span class="n">worker</span><span class="o">.</span><span class="n">setProgress</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">worker</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">time_started</span><span class="o">=</span><span class="n">time_started</span><span class="p">,</span> <span class="n">increment_value</span><span class="o">=</span><span class="n">increment_value</span><span class="p">,</span> <span class="n">new_set_value</span><span class="o">=</span><span class="n">new_set_value</span><span class="p">)</span></div>
+        <span class="n">worker</span><span class="o">.</span><span class="n">setProgress</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">worker</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">time_started</span><span class="o">=</span><span class="n">time_started</span><span class="p">,</span> <span class="n">increment_value</span><span class="o">=</span><span class="n">increment_value</span><span class="p">,</span>
+                           <span class="n">new_set_value</span><span class="o">=</span><span class="n">new_set_value</span><span class="p">)</span></div></div>
 
 </pre></div>
 

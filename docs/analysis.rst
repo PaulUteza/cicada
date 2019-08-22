@@ -64,3 +64,11 @@ PSTH analysis
 
 .. automodule:: cicada.analysis.cicada_psth_analysis
     :members:
+
+Annexe
+######
+
+.. thumbnail:: img/analysis.png
+    :alt: UML graph of analysis module
+
+    UML graph of the analysis module

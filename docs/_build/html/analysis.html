@@ -25,6 +25,9 @@
         <script type="text/javascript" src="_static/underscore.js"></script>
         <script type="text/javascript" src="_static/doctools.js"></script>
         <script type="text/javascript" src="_static/language_data.js"></script>
+        <script type="text/javascript" src="_static/sphinxcontrib-images\LightBox2\lightbox2\js\jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="_static/sphinxcontrib-images\LightBox2\lightbox2\js\lightbox.min.js"></script>
+        <script type="text/javascript" src="_static/sphinxcontrib-images\LightBox2\lightbox2-customize\jquery-noconflict.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -33,8 +36,10 @@
   
   <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="_static/sphinxcontrib-images\LightBox2\lightbox2\css\lightbox.css" type="text/css" />
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="GUI" href="gui.html" />
     <link rel="prev" title="Pre-processing" href="preprocessing.html" /> 
 </head>
 
@@ -80,6 +85,8 @@
             
             
               <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">How to install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">How to use</a></li>
 <li class="toctree-l1"><a class="reference internal" href="preprocessing.html">Pre-processing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="preprocessing.html#module-cicada.preprocessing.cicada_data_to_nwb">Data to NWB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="preprocessing.html#module-cicada.preprocessing.cicada_preprocessing_run">Run preprocessing</a></li>
@@ -89,6 +96,7 @@
 <li class="toctree-l2"><a class="reference internal" href="preprocessing.html#module-cicada.preprocessing.convert_ci_movie_to_nwb">Calcium imaging movie</a></li>
 <li class="toctree-l2"><a class="reference internal" href="preprocessing.html#module-cicada.preprocessing.convert_abf_to_nwb">ABF</a></li>
 <li class="toctree-l2"><a class="reference internal" href="preprocessing.html#module-cicada.preprocessing.utils">Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="preprocessing.html#annexe">Annexe</a></li>
 </ul>
 </li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Analysis</a><ul>
@@ -101,6 +109,16 @@
 <li class="toctree-l2"><a class="reference internal" href="#module-cicada.analysis.cicada_frames_count">Frames count</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cicada.analysis.cicada_hubs_analysis">Hubs analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cicada.analysis.cicada_psth_analysis">PSTH analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#annexe">Annexe</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="gui.html">GUI</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="gui.html#module-cicada.gui.cicada_main_window">Main Window</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui.html#module-cicada.gui.session_show_filter_group">Filter/group sessions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui.html#module-cicada.gui.metadata_widget">Display metadata</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui.html#module-cicada.gui.cicada_analysis_tree_gui">Analysises list</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui.html#module-cicada.gui.cicada_analysis_overview">Overview of analysises</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gui.html#module-cicada.gui.cicada_analysis_parameters_gui">Analysis parameters</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/pappyhammer/cicada">See on Git</a></li>
@@ -168,12 +186,12 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <table class="longtable docutils align-default">
+  <table border="1" class="longtable docutils">
 <colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
+<col width="10%" />
+<col width="90%" />
 </colgroup>
-<tbody>
+<tbody valign="top">
 </tbody>
 </table>
 <div class="section" id="analysis">
@@ -183,25 +201,29 @@
 <span id="main-analysis-class"></span><h2>Main analysis class<a class="headerlink" href="#module-cicada.analysis.cicada_analysis" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="cicada.analysis.cicada_analysis.CicadaAnalysis">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.analysis.cicada_analysis.</code><code class="sig-name descname">CicadaAnalysis</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">short_description</em>, <em class="sig-param">family_id=None</em>, <em class="sig-param">long_description=None</em>, <em class="sig-param">data_to_analyse=None</em>, <em class="sig-param">data_format=None</em>, <em class="sig-param">config_handler=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis.html#CicadaAnalysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis.CicadaAnalysis" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.analysis.cicada_analysis.</code><code class="descname">CicadaAnalysis</code><span class="sig-paren">(</span><em>name</em>, <em>short_description</em>, <em>family_id=None</em>, <em>long_description=None</em>, <em>data_to_analyse=None</em>, <em>data_format=None</em>, <em>config_handler=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis.html#CicadaAnalysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis.CicadaAnalysis" title="Permalink to this definition">¶</a></dt>
 <dd><p>An abstract class that should be inherit in order to create a specific analyse</p>
 <dl class="method">
 <dt id="cicada.analysis.cicada_analysis.CicadaAnalysis.add_argument_for_gui">
-<code class="sig-name descname">add_argument_for_gui</code><span class="sig-paren">(</span><em class="sig-param">with_incremental_order=True</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis.html#CicadaAnalysis.add_argument_for_gui"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis.CicadaAnalysis.add_argument_for_gui" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>**kwargs</strong> – </p></li>
-<li><p><strong>with_incremental_order</strong> – boolean, if True means the order of the argument will be the same as when added</p></li>
+<code class="descname">add_argument_for_gui</code><span class="sig-paren">(</span><em>with_incremental_order=True</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis.html#CicadaAnalysis.add_argument_for_gui"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis.CicadaAnalysis.add_argument_for_gui" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>**kwargs</strong> – </li>
+<li><strong>with_incremental_order</strong> – boolean, if True means the order of the argument will be the same as when added</li>
 </ul>
-</dd>
-</dl>
+</td>
+</tr>
+</tbody>
+</table>
 <p>Returns:</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.analysis.cicada_analysis.CicadaAnalysis.check_data">
-<em class="property">abstract </em><code class="sig-name descname">check_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis.html#CicadaAnalysis.check_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis.CicadaAnalysis.check_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">check_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis.html#CicadaAnalysis.check_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis.CicadaAnalysis.check_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check the data given one initiating the class and return True if the data given allows the analysis
 implemented, False otherwise.
 :return: a boolean</p>
@@ -209,7 +231,7 @@ implemented, False otherwise.
 
 <dl class="method">
 <dt id="cicada.analysis.cicada_analysis.CicadaAnalysis.create_results_directory">
-<code class="sig-name descname">create_results_directory</code><span class="sig-paren">(</span><em class="sig-param">dir_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis.html#CicadaAnalysis.create_results_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis.CicadaAnalysis.create_results_directory" title="Permalink to this definition">¶</a></dt>
+<code class="descname">create_results_directory</code><span class="sig-paren">(</span><em>dir_path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis.html#CicadaAnalysis.create_results_directory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis.CicadaAnalysis.create_results_directory" title="Permalink to this definition">¶</a></dt>
 <dd><p>Will create a directory in dir_path with the name of analysis and time at which the directory is created
 so it can be unique. The attribute _results_path will be updated with the path of this new directory
 :param dir_path: path of the dir in which create the results dir</p>
@@ -218,31 +240,34 @@ so it can be unique. The attribute _results_path will be updated with the path o
 
 <dl class="method">
 <dt id="cicada.analysis.cicada_analysis.CicadaAnalysis.get_data_identifiers">
-<code class="sig-name descname">get_data_identifiers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis.html#CicadaAnalysis.get_data_identifiers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis.CicadaAnalysis.get_data_identifiers" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_data_identifiers</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis.html#CicadaAnalysis.get_data_identifiers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis.CicadaAnalysis.get_data_identifiers" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a list of string representing each data to analyse
 Returns:</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.analysis.cicada_analysis.CicadaAnalysis.get_data_to_analyse">
-<code class="sig-name descname">get_data_to_analyse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis.html#CicadaAnalysis.get_data_to_analyse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis.CicadaAnalysis.get_data_to_analyse" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>a list of the data to analyse</p>
-</dd>
-</dl>
+<code class="descname">get_data_to_analyse</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis.html#CicadaAnalysis.get_data_to_analyse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis.CicadaAnalysis.get_data_to_analyse" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">a list of the data to analyse</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.analysis.cicada_analysis.CicadaAnalysis.get_results_path">
-<code class="sig-name descname">get_results_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis.html#CicadaAnalysis.get_results_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis.CicadaAnalysis.get_results_path" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_results_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis.html#CicadaAnalysis.get_results_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis.CicadaAnalysis.get_results_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the path when the results from the analysis will be saved or None if it doesn’t exist yet
 Returns:</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.analysis.cicada_analysis.CicadaAnalysis.run_analysis">
-<em class="property">abstract </em><code class="sig-name descname">run_analysis</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis.html#CicadaAnalysis.run_analysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis.CicadaAnalysis.run_analysis" title="Permalink to this definition">¶</a></dt>
+<code class="descname">run_analysis</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis.html#CicadaAnalysis.run_analysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis.CicadaAnalysis.run_analysis" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the analysis
 :param kwargs:
 :return:</p>
@@ -250,7 +275,7 @@ Returns:</p>
 
 <dl class="method">
 <dt id="cicada.analysis.cicada_analysis.CicadaAnalysis.set_arguments_for_gui">
-<code class="sig-name descname">set_arguments_for_gui</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis.html#CicadaAnalysis.set_arguments_for_gui"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis.CicadaAnalysis.set_arguments_for_gui" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_arguments_for_gui</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis.html#CicadaAnalysis.set_arguments_for_gui"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis.CicadaAnalysis.set_arguments_for_gui" title="Permalink to this definition">¶</a></dt>
 <dd><p>Need to be implemented in order to be used through the graphical interface.
 super().set_arguments_for_gui() should be call first to instantiate an AnalysisArgumentsHandler and
 create the attribution for results_path
@@ -259,7 +284,7 @@ create the attribution for results_path
 
 <dl class="method">
 <dt id="cicada.analysis.cicada_analysis.CicadaAnalysis.set_data">
-<code class="sig-name descname">set_data</code><span class="sig-paren">(</span><em class="sig-param">data_to_analyse</em>, <em class="sig-param">data_format='nwb'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis.html#CicadaAnalysis.set_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis.CicadaAnalysis.set_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_data</code><span class="sig-paren">(</span><em>data_to_analyse</em>, <em>data_format='nwb'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis.html#CicadaAnalysis.set_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis.CicadaAnalysis.set_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>A list of
 :param data_to_analyse: list of data_structure
 :param data_format: indicate the type of data structure. for NWB, NIX</p>
@@ -267,9 +292,27 @@ create the attribution for results_path
 
 <dl class="method">
 <dt id="cicada.analysis.cicada_analysis.CicadaAnalysis.update_original_data">
-<code class="sig-name descname">update_original_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis.html#CicadaAnalysis.update_original_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis.CicadaAnalysis.update_original_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">update_original_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis.html#CicadaAnalysis.update_original_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis.CicadaAnalysis.update_original_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>To be called if the data to analyse should be updated after the analysis has been run.
 :return: boolean: return True if the data has been modified</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="cicada.analysis.cicada_analysis.CicadaAnalysis.update_progressbar">
+<code class="descname">update_progressbar</code><span class="sig-paren">(</span><em>time_started</em>, <em>increment_value=0</em>, <em>new_set_value=0</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis.html#CicadaAnalysis.update_progressbar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis.CicadaAnalysis.update_progressbar" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>time_started</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Start time of the analysis</li>
+<li><strong>increment_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Value that should be added to the current value of the progress bar</li>
+<li><strong>new_set_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Value that should be set as the current value of the progress bar</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </dd></dl>
@@ -279,26 +322,26 @@ create the attribution for results_path
 <span id="argument-handler"></span><h2>Argument handler<a class="headerlink" href="#module-cicada.analysis.cicada_analysis_arguments_handler" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.analysis.cicada_analysis_arguments_handler.</code><code class="sig-name descname">AnalysisArgumentsHandler</code><span class="sig-paren">(</span><em class="sig-param">cicada_analysis</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis_arguments_handler.html#AnalysisArgumentsHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.analysis.cicada_analysis_arguments_handler.</code><code class="descname">AnalysisArgumentsHandler</code><span class="sig-paren">(</span><em>cicada_analysis</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis_arguments_handler.html#AnalysisArgumentsHandler"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler" title="Permalink to this definition">¶</a></dt>
 <dd><p>Handle the AnalysisArgument instances for a given CicadaAnalysis instance.
 Allows to create the widgets and get the values to pass to run_analysis() of the CicadaAnalysis instance.</p>
 <dl class="method">
 <dt id="cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler.check_arguments_validity">
-<code class="sig-name descname">check_arguments_validity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis_arguments_handler.html#AnalysisArgumentsHandler.check_arguments_validity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler.check_arguments_validity" title="Permalink to this definition">¶</a></dt>
+<code class="descname">check_arguments_validity</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis_arguments_handler.html#AnalysisArgumentsHandler.check_arguments_validity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler.check_arguments_validity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check if all mandatory arguments have been filled
 Returns: True if we can run the analysis</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler.get_gui_widgets">
-<code class="sig-name descname">get_gui_widgets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis_arguments_handler.html#AnalysisArgumentsHandler.get_gui_widgets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler.get_gui_widgets" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_gui_widgets</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis_arguments_handler.html#AnalysisArgumentsHandler.get_gui_widgets"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler.get_gui_widgets" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the list of widgets necessary to fill the arguments for the cicada analysis associated
 Returns:</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler.load_analysis_argument_from_yaml_file">
-<code class="sig-name descname">load_analysis_argument_from_yaml_file</code><span class="sig-paren">(</span><em class="sig-param">file_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis_arguments_handler.html#AnalysisArgumentsHandler.load_analysis_argument_from_yaml_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler.load_analysis_argument_from_yaml_file" title="Permalink to this definition">¶</a></dt>
+<code class="descname">load_analysis_argument_from_yaml_file</code><span class="sig-paren">(</span><em>file_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis_arguments_handler.html#AnalysisArgumentsHandler.load_analysis_argument_from_yaml_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler.load_analysis_argument_from_yaml_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the analysis argument value based on the value in the yaml file.
 The
 :param file_name:</p>
@@ -307,7 +350,7 @@ The
 
 <dl class="method">
 <dt id="cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler.save_analysis_arguments_to_yaml_file">
-<code class="sig-name descname">save_analysis_arguments_to_yaml_file</code><span class="sig-paren">(</span><em class="sig-param">path_dir</em>, <em class="sig-param">yaml_file_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis_arguments_handler.html#AnalysisArgumentsHandler.save_analysis_arguments_to_yaml_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler.save_analysis_arguments_to_yaml_file" title="Permalink to this definition">¶</a></dt>
+<code class="descname">save_analysis_arguments_to_yaml_file</code><span class="sig-paren">(</span><em>path_dir</em>, <em>yaml_file_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis_arguments_handler.html#AnalysisArgumentsHandler.save_analysis_arguments_to_yaml_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler.save_analysis_arguments_to_yaml_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the arguments value to a yaml file.
 The first key will represent the argument name
 then the value will be a dict with the argument details such as the type etc…
@@ -318,7 +361,7 @@ then the value will be a dict with the argument details such as the type etc…
 
 <dl class="method">
 <dt id="cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler.set_argument_value">
-<code class="sig-name descname">set_argument_value</code><span class="sig-paren">(</span><em class="sig-param">arg_name</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis_arguments_handler.html#AnalysisArgumentsHandler.set_argument_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler.set_argument_value" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_argument_value</code><span class="sig-paren">(</span><em>arg_name</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis_arguments_handler.html#AnalysisArgumentsHandler.set_argument_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler.set_argument_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set an argument values, will be use to run analysis
 :param arg_name:
 :param **kwargs:</p>
@@ -327,7 +370,7 @@ then the value will be a dict with the argument details such as the type etc…
 
 <dl class="method">
 <dt id="cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler.set_widgets_to_default_value">
-<code class="sig-name descname">set_widgets_to_default_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis_arguments_handler.html#AnalysisArgumentsHandler.set_widgets_to_default_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler.set_widgets_to_default_value" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_widgets_to_default_value</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis_arguments_handler.html#AnalysisArgumentsHandler.set_widgets_to_default_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis_arguments_handler.AnalysisArgumentsHandler.set_widgets_to_default_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the widgets to the default value of their AnalysisArgument
 Returns:</p>
 </dd></dl>
@@ -339,11 +382,11 @@ Returns:</p>
 <span id="format-wrapper"></span><h2>Format wrapper<a class="headerlink" href="#module-cicada.analysis.cicada_analysis_format_wrapper" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="cicada.analysis.cicada_analysis_format_wrapper.CicadaAnalysisFormatWrapper">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.analysis.cicada_analysis_format_wrapper.</code><code class="sig-name descname">CicadaAnalysisFormatWrapper</code><span class="sig-paren">(</span><em class="sig-param">data_to_analyse</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis_format_wrapper.html#CicadaAnalysisFormatWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis_format_wrapper.CicadaAnalysisFormatWrapper" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.analysis.cicada_analysis_format_wrapper.</code><code class="descname">CicadaAnalysisFormatWrapper</code><span class="sig-paren">(</span><em>data_to_analyse</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis_format_wrapper.html#CicadaAnalysisFormatWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis_format_wrapper.CicadaAnalysisFormatWrapper" title="Permalink to this definition">¶</a></dt>
 <dd><p>An abstract class that should be inherit in order to create a specific format wrapper</p>
 <dl class="method">
 <dt id="cicada.analysis.cicada_analysis_format_wrapper.CicadaAnalysisFormatWrapper.get_segmentations">
-<em class="property">abstract </em><code class="sig-name descname">get_segmentations</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis_format_wrapper.html#CicadaAnalysisFormatWrapper.get_segmentations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis_format_wrapper.CicadaAnalysisFormatWrapper.get_segmentations" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_segmentations</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis_format_wrapper.html#CicadaAnalysisFormatWrapper.get_segmentations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis_format_wrapper.CicadaAnalysisFormatWrapper.get_segmentations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns: a dict with key being the id of the cicada_analysis and the
 value is a string representing the segmentation name</p>
 </dd></dl>
@@ -355,11 +398,11 @@ value is a string representing the segmentation name</p>
 <span id="nwb-wrapper"></span><h2>NWB wrapper<a class="headerlink" href="#module-cicada.analysis.cicada_analysis_nwb_wrapper" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="cicada.analysis.cicada_analysis_nwb_wrapper.CicadaAnalysisNwbWrapper">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.analysis.cicada_analysis_nwb_wrapper.</code><code class="sig-name descname">CicadaAnalysisNwbWrapper</code><span class="sig-paren">(</span><em class="sig-param">data_to_analyse=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis_nwb_wrapper.html#CicadaAnalysisNwbWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis_nwb_wrapper.CicadaAnalysisNwbWrapper" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.analysis.cicada_analysis_nwb_wrapper.</code><code class="descname">CicadaAnalysisNwbWrapper</code><span class="sig-paren">(</span><em>data_to_analyse=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis_nwb_wrapper.html#CicadaAnalysisNwbWrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis_nwb_wrapper.CicadaAnalysisNwbWrapper" title="Permalink to this definition">¶</a></dt>
 <dd><p>Allows to communicate with the nwb format</p>
 <dl class="method">
 <dt id="cicada.analysis.cicada_analysis_nwb_wrapper.CicadaAnalysisNwbWrapper.get_segmentations">
-<code class="sig-name descname">get_segmentations</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis_nwb_wrapper.html#CicadaAnalysisNwbWrapper.get_segmentations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis_nwb_wrapper.CicadaAnalysisNwbWrapper.get_segmentations" title="Permalink to this definition">¶</a></dt>
+<code class="descname">get_segmentations</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_analysis_nwb_wrapper.html#CicadaAnalysisNwbWrapper.get_segmentations"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_analysis_nwb_wrapper.CicadaAnalysisNwbWrapper.get_segmentations" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns: a dict with key being the id of the cicada_analysis and the
 value is a string representing the segmentation name</p>
 </dd></dl>
@@ -371,10 +414,10 @@ value is a string representing the segmentation name</p>
 <span id="cells-count"></span><h2>Cells count<a class="headerlink" href="#module-cicada.analysis.cicada_cells_count" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="cicada.analysis.cicada_cells_count.CicadaCellsCount">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.analysis.cicada_cells_count.</code><code class="sig-name descname">CicadaCellsCount</code><a class="reference internal" href="_modules/cicada/analysis/cicada_cells_count.html#CicadaCellsCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_cells_count.CicadaCellsCount" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.analysis.cicada_cells_count.</code><code class="descname">CicadaCellsCount</code><a class="reference internal" href="_modules/cicada/analysis/cicada_cells_count.html#CicadaCellsCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_cells_count.CicadaCellsCount" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="cicada.analysis.cicada_cells_count.CicadaCellsCount.check_data">
-<code class="sig-name descname">check_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_cells_count.html#CicadaCellsCount.check_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_cells_count.CicadaCellsCount.check_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">check_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_cells_count.html#CicadaCellsCount.check_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_cells_count.CicadaCellsCount.check_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check the data given one initiating the class and return True if the data given allows the analysis
 implemented, False otherwise.
 :return: a boolean</p>
@@ -382,7 +425,7 @@ implemented, False otherwise.
 
 <dl class="method">
 <dt id="cicada.analysis.cicada_cells_count.CicadaCellsCount.run_analysis">
-<code class="sig-name descname">run_analysis</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_cells_count.html#CicadaCellsCount.run_analysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_cells_count.CicadaCellsCount.run_analysis" title="Permalink to this definition">¶</a></dt>
+<code class="descname">run_analysis</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_cells_count.html#CicadaCellsCount.run_analysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_cells_count.CicadaCellsCount.run_analysis" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the analysis: just printing the number of cells in each session
 :param kwargs:
 :return:</p>
@@ -390,7 +433,7 @@ implemented, False otherwise.
 
 <dl class="method">
 <dt id="cicada.analysis.cicada_cells_count.CicadaCellsCount.update_original_data">
-<code class="sig-name descname">update_original_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_cells_count.html#CicadaCellsCount.update_original_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_cells_count.CicadaCellsCount.update_original_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">update_original_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_cells_count.html#CicadaCellsCount.update_original_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_cells_count.CicadaCellsCount.update_original_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>To be called if the data to analyse should be updated after the analysis has been run.
 :return: boolean: return True if the data has been modified</p>
 </dd></dl>
@@ -402,10 +445,10 @@ implemented, False otherwise.
 <span id="connectivity-graph"></span><h2>Connectivity graph<a class="headerlink" href="#module-cicada.analysis.cicada_connectivity_graph" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="cicada.analysis.cicada_connectivity_graph.CicadaConnectivityGraph">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.analysis.cicada_connectivity_graph.</code><code class="sig-name descname">CicadaConnectivityGraph</code><a class="reference internal" href="_modules/cicada/analysis/cicada_connectivity_graph.html#CicadaConnectivityGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_connectivity_graph.CicadaConnectivityGraph" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.analysis.cicada_connectivity_graph.</code><code class="descname">CicadaConnectivityGraph</code><a class="reference internal" href="_modules/cicada/analysis/cicada_connectivity_graph.html#CicadaConnectivityGraph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_connectivity_graph.CicadaConnectivityGraph" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="cicada.analysis.cicada_connectivity_graph.CicadaConnectivityGraph.check_data">
-<code class="sig-name descname">check_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_connectivity_graph.html#CicadaConnectivityGraph.check_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_connectivity_graph.CicadaConnectivityGraph.check_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">check_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_connectivity_graph.html#CicadaConnectivityGraph.check_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_connectivity_graph.CicadaConnectivityGraph.check_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check the data given one initiating the class and return True if the data given allows the analysis
 implemented, False otherwise.
 :return: a boolean</p>
@@ -413,7 +456,7 @@ implemented, False otherwise.
 
 <dl class="method">
 <dt id="cicada.analysis.cicada_connectivity_graph.CicadaConnectivityGraph.run_analysis">
-<code class="sig-name descname">run_analysis</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_connectivity_graph.html#CicadaConnectivityGraph.run_analysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_connectivity_graph.CicadaConnectivityGraph.run_analysis" title="Permalink to this definition">¶</a></dt>
+<code class="descname">run_analysis</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_connectivity_graph.html#CicadaConnectivityGraph.run_analysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_connectivity_graph.CicadaConnectivityGraph.run_analysis" title="Permalink to this definition">¶</a></dt>
 <dd><p>test
 :param kwargs:
 :return:</p>
@@ -421,7 +464,7 @@ implemented, False otherwise.
 
 <dl class="method">
 <dt id="cicada.analysis.cicada_connectivity_graph.CicadaConnectivityGraph.update_original_data">
-<code class="sig-name descname">update_original_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_connectivity_graph.html#CicadaConnectivityGraph.update_original_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_connectivity_graph.CicadaConnectivityGraph.update_original_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">update_original_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_connectivity_graph.html#CicadaConnectivityGraph.update_original_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_connectivity_graph.CicadaConnectivityGraph.update_original_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>To be called if the data to analyse should be updated after the analysis has been run.
 :return: boolean: return True if the data has been modified</p>
 </dd></dl>
@@ -433,10 +476,10 @@ implemented, False otherwise.
 <span id="frames-count"></span><h2>Frames count<a class="headerlink" href="#module-cicada.analysis.cicada_frames_count" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="cicada.analysis.cicada_frames_count.CicadaFramesCount">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.analysis.cicada_frames_count.</code><code class="sig-name descname">CicadaFramesCount</code><a class="reference internal" href="_modules/cicada/analysis/cicada_frames_count.html#CicadaFramesCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_frames_count.CicadaFramesCount" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.analysis.cicada_frames_count.</code><code class="descname">CicadaFramesCount</code><a class="reference internal" href="_modules/cicada/analysis/cicada_frames_count.html#CicadaFramesCount"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_frames_count.CicadaFramesCount" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="cicada.analysis.cicada_frames_count.CicadaFramesCount.check_data">
-<code class="sig-name descname">check_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_frames_count.html#CicadaFramesCount.check_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_frames_count.CicadaFramesCount.check_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">check_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_frames_count.html#CicadaFramesCount.check_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_frames_count.CicadaFramesCount.check_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check the data given one initiating the class and return True if the data given allows the analysis
 implemented, False otherwise.
 :return: a boolean</p>
@@ -444,7 +487,7 @@ implemented, False otherwise.
 
 <dl class="method">
 <dt id="cicada.analysis.cicada_frames_count.CicadaFramesCount.run_analysis">
-<code class="sig-name descname">run_analysis</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_frames_count.html#CicadaFramesCount.run_analysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_frames_count.CicadaFramesCount.run_analysis" title="Permalink to this definition">¶</a></dt>
+<code class="descname">run_analysis</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_frames_count.html#CicadaFramesCount.run_analysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_frames_count.CicadaFramesCount.run_analysis" title="Permalink to this definition">¶</a></dt>
 <dd><p>Run the analysis: just printing the number of cells in each session
 :param kwargs:
 :return:</p>
@@ -452,7 +495,7 @@ implemented, False otherwise.
 
 <dl class="method">
 <dt id="cicada.analysis.cicada_frames_count.CicadaFramesCount.update_original_data">
-<code class="sig-name descname">update_original_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_frames_count.html#CicadaFramesCount.update_original_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_frames_count.CicadaFramesCount.update_original_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">update_original_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_frames_count.html#CicadaFramesCount.update_original_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_frames_count.CicadaFramesCount.update_original_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>To be called if the data to analyse should be updated after the analysis has been run.
 :return: boolean: return True if the data has been modified</p>
 </dd></dl>
@@ -464,10 +507,10 @@ implemented, False otherwise.
 <span id="hubs-analysis"></span><h2>Hubs analysis<a class="headerlink" href="#module-cicada.analysis.cicada_hubs_analysis" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="cicada.analysis.cicada_hubs_analysis.CicadaHubsAnalysis">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.analysis.cicada_hubs_analysis.</code><code class="sig-name descname">CicadaHubsAnalysis</code><a class="reference internal" href="_modules/cicada/analysis/cicada_hubs_analysis.html#CicadaHubsAnalysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_hubs_analysis.CicadaHubsAnalysis" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.analysis.cicada_hubs_analysis.</code><code class="descname">CicadaHubsAnalysis</code><a class="reference internal" href="_modules/cicada/analysis/cicada_hubs_analysis.html#CicadaHubsAnalysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_hubs_analysis.CicadaHubsAnalysis" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="cicada.analysis.cicada_hubs_analysis.CicadaHubsAnalysis.check_data">
-<code class="sig-name descname">check_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_hubs_analysis.html#CicadaHubsAnalysis.check_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_hubs_analysis.CicadaHubsAnalysis.check_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">check_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_hubs_analysis.html#CicadaHubsAnalysis.check_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_hubs_analysis.CicadaHubsAnalysis.check_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check the data given one initiating the class and return True if the data given allows the analysis
 implemented, False otherwise.
 :return: a boolean</p>
@@ -475,7 +518,7 @@ implemented, False otherwise.
 
 <dl class="method">
 <dt id="cicada.analysis.cicada_hubs_analysis.CicadaHubsAnalysis.run_analysis">
-<code class="sig-name descname">run_analysis</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_hubs_analysis.html#CicadaHubsAnalysis.run_analysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_hubs_analysis.CicadaHubsAnalysis.run_analysis" title="Permalink to this definition">¶</a></dt>
+<code class="descname">run_analysis</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_hubs_analysis.html#CicadaHubsAnalysis.run_analysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_hubs_analysis.CicadaHubsAnalysis.run_analysis" title="Permalink to this definition">¶</a></dt>
 <dd><p>test
 :param kwargs:
 :return:</p>
@@ -483,7 +526,7 @@ implemented, False otherwise.
 
 <dl class="method">
 <dt id="cicada.analysis.cicada_hubs_analysis.CicadaHubsAnalysis.update_original_data">
-<code class="sig-name descname">update_original_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_hubs_analysis.html#CicadaHubsAnalysis.update_original_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_hubs_analysis.CicadaHubsAnalysis.update_original_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">update_original_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_hubs_analysis.html#CicadaHubsAnalysis.update_original_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_hubs_analysis.CicadaHubsAnalysis.update_original_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>To be called if the data to analyse should be updated after the analysis has been run.
 :return: boolean: return True if the data has been modified</p>
 </dd></dl>
@@ -495,10 +538,10 @@ implemented, False otherwise.
 <span id="psth-analysis"></span><h2>PSTH analysis<a class="headerlink" href="#module-cicada.analysis.cicada_psth_analysis" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="cicada.analysis.cicada_psth_analysis.CicadaPsthAnalysis">
-<em class="property">class </em><code class="sig-prename descclassname">cicada.analysis.cicada_psth_analysis.</code><code class="sig-name descname">CicadaPsthAnalysis</code><a class="reference internal" href="_modules/cicada/analysis/cicada_psth_analysis.html#CicadaPsthAnalysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_psth_analysis.CicadaPsthAnalysis" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">cicada.analysis.cicada_psth_analysis.</code><code class="descname">CicadaPsthAnalysis</code><a class="reference internal" href="_modules/cicada/analysis/cicada_psth_analysis.html#CicadaPsthAnalysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_psth_analysis.CicadaPsthAnalysis" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="method">
 <dt id="cicada.analysis.cicada_psth_analysis.CicadaPsthAnalysis.check_data">
-<code class="sig-name descname">check_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_psth_analysis.html#CicadaPsthAnalysis.check_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_psth_analysis.CicadaPsthAnalysis.check_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">check_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_psth_analysis.html#CicadaPsthAnalysis.check_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_psth_analysis.CicadaPsthAnalysis.check_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Check the data given one initiating the class and return True if the data given allows the analysis
 implemented, False otherwise.
 :return: a boolean</p>
@@ -506,7 +549,7 @@ implemented, False otherwise.
 
 <dl class="method">
 <dt id="cicada.analysis.cicada_psth_analysis.CicadaPsthAnalysis.run_analysis">
-<code class="sig-name descname">run_analysis</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_psth_analysis.html#CicadaPsthAnalysis.run_analysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_psth_analysis.CicadaPsthAnalysis.run_analysis" title="Permalink to this definition">¶</a></dt>
+<code class="descname">run_analysis</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_psth_analysis.html#CicadaPsthAnalysis.run_analysis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_psth_analysis.CicadaPsthAnalysis.run_analysis" title="Permalink to this definition">¶</a></dt>
 <dd><p>test
 :param kwargs:
 :return:</p>
@@ -514,13 +557,13 @@ implemented, False otherwise.
 
 <dl class="method">
 <dt id="cicada.analysis.cicada_psth_analysis.CicadaPsthAnalysis.set_arguments_for_gui">
-<code class="sig-name descname">set_arguments_for_gui</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_psth_analysis.html#CicadaPsthAnalysis.set_arguments_for_gui"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_psth_analysis.CicadaPsthAnalysis.set_arguments_for_gui" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_arguments_for_gui</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_psth_analysis.html#CicadaPsthAnalysis.set_arguments_for_gui"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_psth_analysis.CicadaPsthAnalysis.set_arguments_for_gui" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns:</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="cicada.analysis.cicada_psth_analysis.CicadaPsthAnalysis.update_original_data">
-<code class="sig-name descname">update_original_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_psth_analysis.html#CicadaPsthAnalysis.update_original_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_psth_analysis.CicadaPsthAnalysis.update_original_data" title="Permalink to this definition">¶</a></dt>
+<code class="descname">update_original_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cicada/analysis/cicada_psth_analysis.html#CicadaPsthAnalysis.update_original_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#cicada.analysis.cicada_psth_analysis.CicadaPsthAnalysis.update_original_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>To be called if the data to analyse should be updated after the analysis has been run.
 :return: boolean: return True if the data has been modified</p>
 </dd></dl>
@@ -528,6 +571,19 @@ implemented, False otherwise.
 </dd></dl>
 
 </div>
+<div class="section" id="annexe">
+<h2>Annexe<a class="headerlink" href="#annexe" title="Permalink to this headline">¶</a></h2>
+<a class=""
+               data-lightbox="group-93d33bd5-9e22-43ff-8a9a-df0682601450"
+               href="_images/analysis.png"
+               title="UML graph of the analysis module"
+               data-title="UML graph of the analysis module"
+               ><img src="_images/analysis.png"
+                     class=""
+                     width="100%"
+                     height="auto"
+                     alt="UML graph of analysis module"/>
+                </a></div>
 </div>
 
 
@@ -537,6 +593,8 @@ implemented, False otherwise.
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="gui.html" class="btn btn-neutral float-right" title="GUI" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="preprocessing.html" class="btn btn-neutral float-left" title="Pre-processing" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

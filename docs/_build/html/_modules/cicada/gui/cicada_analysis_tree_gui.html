@@ -25,6 +25,9 @@
         <script type="text/javascript" src="../../../_static/underscore.js"></script>
         <script type="text/javascript" src="../../../_static/doctools.js"></script>
         <script type="text/javascript" src="../../../_static/language_data.js"></script>
+        <script type="text/javascript" src="../../../_static/sphinxcontrib-images\LightBox2\lightbox2\js\jquery-1.11.0.min.js"></script>
+        <script type="text/javascript" src="../../../_static/sphinxcontrib-images\LightBox2\lightbox2\js\lightbox.min.js"></script>
+        <script type="text/javascript" src="../../../_static/sphinxcontrib-images\LightBox2\lightbox2-customize\jquery-noconflict.js"></script>
     
     <script type="text/javascript" src="../../../_static/js/theme.js"></script>
 
@@ -33,6 +36,7 @@
   
   <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/sphinxcontrib-images\LightBox2\lightbox2\css\lightbox.css" type="text/css" />
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" /> 
 </head>
@@ -79,6 +83,8 @@
             
             
               <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">How to install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial.html">How to use</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../preprocessing.html">Pre-processing</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.cicada_data_to_nwb">Data to NWB</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.cicada_preprocessing_run">Run preprocessing</a></li>
@@ -88,6 +94,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_ci_movie_to_nwb">Calcium imaging movie</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.convert_abf_to_nwb">ABF</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#module-cicada.preprocessing.utils">Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../preprocessing.html#annexe">Annexe</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../analysis.html">Analysis</a><ul>
@@ -100,6 +107,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_frames_count">Frames count</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_hubs_analysis">Hubs analysis</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#module-cicada.analysis.cicada_psth_analysis">PSTH analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../../analysis.html#annexe">Annexe</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gui.html">GUI</a><ul>
@@ -182,14 +190,8 @@
 <span class="kn">from</span> <span class="nn">cicada.preprocessing.utils</span> <span class="k">import</span> <span class="n">class_name_to_file_name</span>
 <span class="kn">from</span> <span class="nn">cicada.gui.cicada_analysis_parameters_gui</span> <span class="k">import</span> <span class="n">AnalysisPackage</span>
 <span class="kn">import</span> <span class="nn">importlib</span>
-<span class="kn">from</span> <span class="nn">threading</span> <span class="k">import</span> <span class="n">Thread</span>
-<span class="kn">import</span> <span class="nn">threading</span>
 <span class="kn">import</span> <span class="nn">sys</span>
-<span class="kn">from</span> <span class="nn">copy</span> <span class="k">import</span> <span class="n">copy</span><span class="p">,</span> <span class="n">deepcopy</span>
 <span class="kn">from</span> <span class="nn">random</span> <span class="k">import</span> <span class="n">randint</span><span class="p">,</span> <span class="n">choice</span>
-<span class="kn">import</span> <span class="nn">string</span>
-
-
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Interesting exemples:</span>
@@ -198,6 +200,7 @@
 <span class="sd">https://stackoverflow.com/questions/45035515/qtreeview-change-icon-on-row-icon-click</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
+
 
 <span class="k">class</span> <span class="nc">TreeItem</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="c1"># TODO: add a function that allows to update all analyses function contained in the tree</span>
@@ -294,7 +297,7 @@
 
 
 <div class="viewcode-block" id="QAnalysisTreeView"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_tree_gui.QAnalysisTreeView">[docs]</a><span class="k">class</span> <span class="nc">QAnalysisTreeView</span><span class="p">(</span><span class="n">QTreeView</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree_item</span><span class="p">,</span> <span class="n">parent</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tree_item</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">QTreeView</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="c1"># in case we want to hide the header</span>
         <span class="c1"># self.setHeaderHidden(True)</span>
@@ -346,6 +349,7 @@
                     <span class="n">f</span><span class="s2">&quot;background-position: center; &quot;</span>
                     <span class="n">f</span><span class="s2">&quot;background-repeat:no-repeat;&quot;</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">special_background_on</span> <span class="o">=</span> <span class="kc">True</span></div>
+
     <span class="c1"># def mouseMoveEvent(self, event):</span>
     <span class="c1">#     print(&quot;mouse&quot;)</span>
 
@@ -516,30 +520,50 @@
 
 <div class="viewcode-block" id="AnalysisTreeApp"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_tree_gui.AnalysisTreeApp">[docs]</a><span class="k">class</span> <span class="nc">AnalysisTreeApp</span><span class="p">(</span><span class="n">QWidget</span><span class="p">):</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">to_parameters_button</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            to_parameters_button: QButton that when clicked, will open the window with the widgets</span>
+<span class="sd">            allowing the user to fill the parameters of the selected analysis</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="c1"># self.left = 10</span>
-        <span class="c1"># self.top = 10</span>
-        <span class="c1"># self.width = 600</span>
-        <span class="c1"># self.height = 240</span>
-        <span class="c1"># self.dataGroupBox = None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dataView</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">analysis_tree_model</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">created_analysis</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># used in self.doubleClickedItem()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">copied_data</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="c1"># will be initialize when the param section will have been created</span>
+        <span class="c1"># will be initialized when the param section will have been created</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">analysis_overview</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">init_ui</span><span class="p">()</span>
         <span class="n">to_parameters_button</span><span class="o">.</span><span class="n">clicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">load_arguments_parameters_section</span><span class="p">)</span>
-        <span class="c1"># self.setStyleSheet(&quot;QLineEdit { background-color: yellow }&quot;)</span>
 
-    <span class="k">def</span> <span class="nf">set_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_to_analyse</span><span class="p">,</span> <span class="n">data_format</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">analysis_tree_model</span><span class="o">.</span><span class="n">rootItem</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="n">data_to_analyse</span><span class="p">,</span> <span class="n">data_format</span><span class="p">)</span>
+<div class="viewcode-block" id="AnalysisTreeApp.set_data"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_tree_gui.AnalysisTreeApp.set_data">[docs]</a>    <span class="k">def</span> <span class="nf">set_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_to_analyse</span><span class="p">,</span> <span class="n">data_format</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Give to the tree the data that the analysis classes will be given to analyze.</span>
+<span class="sd">        Allows the tree to inactivate the analyses for which the data don&#39;t fulfill the requierements</span>
+<span class="sd">        Args:</span>
+<span class="sd">            data_to_analyse: a list of data in a given format (could be nwb or other)</span>
+<span class="sd">            data_format: format of the data, must be a string. So far only &quot;nwb&quot; is supported</span>
 
-    <span class="k">def</span> <span class="nf">doubleClickedItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+<span class="sd">        Returns: None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">analysis_tree_model</span><span class="o">.</span><span class="n">rootItem</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="n">data_to_analyse</span><span class="p">,</span> <span class="n">data_format</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AnalysisTreeApp.doubleClickedItem"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_tree_gui.AnalysisTreeApp.doubleClickedItem">[docs]</a>    <span class="k">def</span> <span class="nf">doubleClickedItem</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method called when the user double click in the tree</span>
+<span class="sd">        Args:</span>
+<span class="sd">            idx: Index of the branch clicked</span>
+
+<span class="sd">        Returns:</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">idx</span><span class="o">.</span><span class="n">isValid</span><span class="p">():</span>
             <span class="k">return</span>
-        <span class="c1"># idx instance of PyQt5.QtCore.QModelIndex</span>
+        <span class="c1"># idx is an instance of PyQt5.QtCore.QModelIndex</span>
 
         <span class="c1"># getting the TreeItem that has been double-clicked</span>
         <span class="n">tree_item</span> <span class="o">=</span> <span class="n">idx</span><span class="o">.</span><span class="n">internalPointer</span><span class="p">()</span>
@@ -548,62 +572,48 @@
             <span class="k">return</span>
 
         <span class="k">if</span> <span class="n">tree_item</span><span class="o">.</span><span class="n">cicada_analysis</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">tree_item</span><span class="o">.</span><span class="n">data_valid</span><span class="p">:</span>
-
             <span class="c1"># Copy the object so each analysis has its own object</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">copied_data</span> <span class="o">=</span> <span class="n">tree_item</span><span class="o">.</span><span class="n">cicada_analysis</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-            <span class="c1"># Assign a random id to an analysis to access it laters</span>
-            <span class="c1"># random_id = &#39;&#39;.join([choice(string.ascii_letters) for n in range(32)])</span>
             <span class="c1"># using the id of the object instead, so no chance to have a double, adding &#39;a&#39; so the variable don&#39;t start</span>
             <span class="c1"># by a numerical value</span>
             <span class="n">random_id</span> <span class="o">=</span> <span class="s2">&quot;a&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">copied_data</span><span class="p">))</span>
             <span class="c1"># Create analysis window</span>
-            <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;self.&#39;</span> <span class="o">+</span> <span class="n">random_id</span> <span class="o">+</span> <span class="s1">&#39; = AnalysisPackage(cicada_analysis=self.copied_data,&#39;</span>
-                                       <span class="s1">&#39; analysis_name=str(tree_item.item_data[0]),&#39;</span>
-                                       <span class="s1">&#39; analysis_description = str(tree_item.item_data[1]), name=random_id)&#39;</span><span class="p">)</span>
-            <span class="n">exec</span><span class="p">(</span><span class="s1">&#39;self.created_analysis.append(self.&#39;</span> <span class="o">+</span> <span class="n">random_id</span> <span class="o">+</span> <span class="s1">&#39;)&#39;</span><span class="p">)</span>
-            <span class="c1"># Add analysis overview item linked to the analysis window</span>
-            <span class="c1"># self.analysis_overview.add_analysis_overview(str(tree_item.item_data[0]), random_id, eval(&#39;self.&#39;+random_id))</span>
+            <span class="n">analysis_package</span> <span class="o">=</span> <span class="n">AnalysisPackage</span><span class="p">(</span><span class="n">cicada_analysis</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">copied_data</span><span class="p">,</span>
+                                               <span class="n">analysis_name</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">tree_item</span><span class="o">.</span><span class="n">item_data</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span>
+                                               <span class="n">name</span><span class="o">=</span><span class="n">random_id</span><span class="p">)</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">random_id</span><span class="p">,</span> <span class="n">analysis_package</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">created_analysis</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">random_id</span><span class="p">))</span>
+
             <span class="bp">self</span><span class="o">.</span><span class="n">analysis_overview</span><span class="o">.</span><span class="n">add_analysis_overview</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">copied_data</span><span class="p">,</span> <span class="n">random_id</span><span class="p">,</span>
-                                                         <span class="nb">eval</span><span class="p">(</span><span class="s1">&#39;self.&#39;</span> <span class="o">+</span> <span class="n">random_id</span><span class="p">))</span>
-            <span class="c1"># self.analysis_overview.created_analysis = self.created_analysis</span>
+                                                         <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">random_id</span><span class="p">))</span></div>
 
-    <span class="k">def</span> <span class="nf">load_arguments_parameters_section</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="AnalysisTreeApp.load_arguments_parameters_section"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_tree_gui.AnalysisTreeApp.load_arguments_parameters_section">[docs]</a>    <span class="k">def</span> <span class="nf">load_arguments_parameters_section</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Used to load the parameters section with widgets, based on the current selection in the tree.</span>
+<span class="sd">        If the selection is not on any valid tree item, nothing will happen</span>
+<span class="sd">        Returns: None</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">q_model_index</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataView</span><span class="o">.</span><span class="n">currentIndex</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">doubleClickedItem</span><span class="p">(</span><span class="n">q_model_index</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">doubleClickedItem</span><span class="p">(</span><span class="n">q_model_index</span><span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">init_ui</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="c1"># self.setWindowTitle(self.title)</span>
-        <span class="c1"># self.setGeometry(self.left, self.top, self.width, self.height)</span>
+<div class="viewcode-block" id="AnalysisTreeApp.init_ui"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_tree_gui.AnalysisTreeApp.init_ui">[docs]</a>    <span class="k">def</span> <span class="nf">init_ui</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set some of the elements used to build the tree</span>
+<span class="sd">        Returns:</span>
 
-        <span class="c1"># self.dataGroupBox = QGroupBox(&quot;&quot;)</span>
-
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">analysis_tree_model</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_tree_model</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">dataView</span> <span class="o">=</span> <span class="n">QAnalysisTreeView</span><span class="p">(</span><span class="n">tree_item</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">analysis_tree_model</span><span class="o">.</span><span class="n">rootItem</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataView</span> <span class="o">=</span> <span class="n">QAnalysisTreeView</span><span class="p">(</span><span class="n">tree_item</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">analysis_tree_model</span><span class="o">.</span><span class="n">rootItem</span><span class="p">)</span>
         <span class="c1"># self.dataView.setRootIsDecorated(False)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dataView</span><span class="o">.</span><span class="n">setAlternatingRowColors</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dataView</span><span class="o">.</span><span class="n">doubleClicked</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">doubleClickedItem</span><span class="p">)</span>
 
-        <span class="c1"># dataLayout = QHBoxLayout()</span>
         <span class="n">mainLayout</span> <span class="o">=</span> <span class="n">QVBoxLayout</span><span class="p">()</span>
         <span class="n">mainLayout</span><span class="o">.</span><span class="n">addWidget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataView</span><span class="p">)</span>
-        <span class="c1"># self.dataGroupBox.setLayout(dataLayout)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">dataView</span><span class="o">.</span><span class="n">setModel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">analysis_tree_model</span><span class="p">)</span>
-
-        <span class="c1"># work to add icon # TODO: find a way to do it with QAnalysisTreeModel QAbstractItemModel</span>
-        <span class="c1"># source_model = QtGui.QStandardItemModel()</span>
-        <span class="c1"># self.dataView.setModel(source_model)</span>
-        <span class="c1">#</span>
-        <span class="c1"># item = QtGui.QStandardItem()</span>
-        <span class="c1"># item.setData(&quot;titi&quot;, role=QtCore.Qt.UserRole)</span>
-        <span class="c1"># icon_path = &quot;cicada/gui/icons/like.svg&quot;</span>
-        <span class="c1"># # if os.path.isdir(path):</span>
-        <span class="c1"># #     icon_path = DIR_ICON_PATH</span>
-        <span class="c1"># icon = QtGui.QIcon(icon_path)</span>
-        <span class="c1"># # item.setText(&quot;toto&quot;)</span>
-        <span class="c1"># item.setIcon(icon)</span>
-        <span class="c1"># source_model.appendRow(item)</span>
 
         <span class="c1"># we expand all by default</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dataView</span><span class="o">.</span><span class="n">expandAll</span><span class="p">()</span>
@@ -617,30 +627,22 @@
         <span class="c1"># opacity_effect.setOpacity(0.1)</span>
         <span class="c1"># self.setGraphicsEffect(opacity_effect)</span>
 
-        <span class="c1"># self.setAutoFillBackground(True)</span>
-        <span class="c1"># self.setStyleSheet(</span>
-        <span class="c1">#     &quot;background-image:url(\&quot;cicada/gui/icons/rc/sky_night.jpeg\&quot;); background-position: center;&quot;)</span>
-        <span class="c1"># self.setStyleSheet(</span>
-        <span class="c1">#     &quot;background-image:url(\&quot;\&quot;); background-position: center;&quot;)</span>
-
-        <span class="c1"># palette = self.palette()</span>
-        <span class="c1"># palette.setColor(self.backgroundRole(), Qt.black)</span>
-        <span class="c1"># self.setPalette(palette)</span>
-
-
-
-        <span class="c1"># mainLayout.addWidget(self.dataGroupBox)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">setLayout</span><span class="p">(</span><span class="n">mainLayout</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div>
 
-    <span class="k">def</span> <span class="nf">create_tree_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="AnalysisTreeApp.create_tree_model"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_tree_gui.AnalysisTreeApp.create_tree_model">[docs]</a>    <span class="k">def</span> <span class="nf">create_tree_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create the tree model</span>
+<span class="sd">        Returns: the tree model, an instance of QAnalysisTreeModel</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># TODO: a system that list the Analysis Function available in the pipeline</span>
         <span class="c1">#  + a system that either read a yaml file or a dir and load automatically analysis function</span>
         <span class="c1"># TODO: don&#39;t load classed if the method get_params_for_gui return None ?</span>
         <span class="n">analysis_class_names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;CicadaCellsCount&quot;</span><span class="p">,</span> <span class="s2">&quot;CicadaFramesCount&quot;</span><span class="p">,</span>
                                 <span class="s2">&quot;CicadaHubsAnalysis&quot;</span><span class="p">,</span> <span class="s2">&quot;CicadaConnectivityGraph&quot;</span><span class="p">,</span>
-                                <span class="s2">&quot;CicadaPsthAnalysis&quot;</span><span class="p">]</span>
+                                <span class="s2">&quot;CicadaPsthAnalysis&quot;</span><span class="p">,</span> <span class="s2">&quot;CicadaCellsMapAnalysis&quot;</span><span class="p">]</span>
         <span class="n">analysis_instances</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">class_name</span> <span class="ow">in</span> <span class="n">analysis_class_names</span><span class="p">:</span>
             <span class="n">module_name</span> <span class="o">=</span> <span class="n">class_name_to_file_name</span><span class="p">(</span><span class="n">class_name</span><span class="o">=</span><span class="n">class_name</span><span class="p">)</span>
@@ -693,13 +695,15 @@
         <span class="c1"># root_tree.check_data()</span>
 
         <span class="n">model</span> <span class="o">=</span> <span class="n">QAnalysisTreeModel</span><span class="p">(</span><span class="n">tree_item</span><span class="o">=</span><span class="n">root_tree</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">model</span></div>
+        <span class="k">return</span> <span class="n">model</span></div></div>
+
 
 <div class="viewcode-block" id="fill_tree_item_with_dict"><a class="viewcode-back" href="../../../gui.html#cicada.gui.cicada_analysis_tree_gui.fill_tree_item_with_dict">[docs]</a><span class="k">def</span> <span class="nf">fill_tree_item_with_dict</span><span class="p">(</span><span class="n">root_tree</span><span class="p">,</span> <span class="n">instances_dict</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-
-<span class="sd">    :param root_tree:</span>
-<span class="sd">    :param instances_dict:</span>
+<span class="sd">    Recursive function that fills the root_tree according to data in instances_dict.</span>
+<span class="sd">    :param root_tree: instance of TreeItem</span>
+<span class="sd">    :param instances_dict: Contains instance of cicada_analysis, in a hierarchy similar to the one we want</span>
+<span class="sd">    the tree to be</span>
 <span class="sd">    :return:</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">instances_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
@@ -722,14 +726,6 @@
         <span class="k">for</span> <span class="n">analysis_instance</span> <span class="ow">in</span> <span class="n">analysis_to_add</span><span class="p">:</span>
             <span class="n">analysis_tree</span> <span class="o">=</span> <span class="n">TreeItem</span><span class="p">(</span><span class="n">cicada_analysis</span><span class="o">=</span><span class="n">analysis_instance</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="n">family_title_tree</span><span class="p">)</span>
             <span class="n">family_title_tree</span><span class="o">.</span><span class="n">append_child</span><span class="p">(</span><span class="n">analysis_tree</span><span class="p">)</span></div>
-
-    <span class="c1">#</span>
-    <span class="c1"># def add_analysis(self, model, analysis, description):</span>
-    <span class="c1">#     model.insertRow(0)</span>
-    <span class="c1">#     model.setData(model.index(0, 0), analysis)</span>
-    <span class="c1">#     model.setData(model.index(0, 1), description)</span>
-
-
 </pre></div>
 
            </div>
