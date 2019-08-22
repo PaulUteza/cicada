@@ -22,20 +22,20 @@ Contents
 ========
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
     :caption: Getting started
 
     install
 
 .. toctree::
-    :maxdepth: 2 
+    :maxdepth: 1
     :caption: Overwiew
     
     overview_intro
     overwiew_software_architecture
 
 .. toctree::
-    :maxdepth: 2 
+    :maxdepth: 1 
     :caption: Modules
     
     tutorial
