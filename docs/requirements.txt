@@ -13,5 +13,4 @@ scipy
 matplotlib
 shapely
 functools
-PySide
 PyQt5
