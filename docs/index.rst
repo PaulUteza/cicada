@@ -23,13 +23,25 @@ Contents
 
 .. toctree::
     :maxdepth: 2
+    :caption: Getting started
 
     install
+
+.. toctree::
+    :maxdepth: 2 
+    :caption: Overwiew
+    
+    overview_intro
+    overwiew_software_architecture
+
+.. toctree::
+    :maxdepth: 2 
+    :caption: Modules
+    
     tutorial
     preprocessing
     analysis
     gui
-    See on Git <https://github.com/pappyhammer/cicada>
 
 
 
