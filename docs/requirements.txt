@@ -1,1 +1,6 @@
 sphinxcontrib.images
+numpy
+qtpy
+yaml
+pynwb
+ScanImageTiffReader
