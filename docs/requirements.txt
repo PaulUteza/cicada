@@ -1,6 +1,6 @@
 sphinxcontrib.images
 numpy
 qtpy
-yaml
+PyYAML
 pynwb
 ScanImageTiffReader
