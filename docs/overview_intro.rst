@@ -28,7 +28,8 @@ Functionalities
 - We offer a Graphical User Interface (GUI) as well as a command line usage.
 - We have already implemented or aim to implement various kind of analyses such cell assemblies detection, network analyses, display functions (rasters, cells map) etc...
 - The GUI offers specifics functionalities:
-  - Subject and recorded sessions can be filtered or grouped in order to easily select the data to be analysed, and saved for future use.
+  - Subjects and recorded sessions can be filtered or grouped in order to easily select the data to be analysed, and saved for future use.
+  - Subjects and and recorded sessions' informations can be displayed and modified depending on the data format. 
   - Analyses are grouped by family. Each analysis provide a way to check the data see if they are compatible. 
   - Analyses arguments can be saved in a yaml file allowing to easily load them later. 
   - A multi-thread implementation allows multiple analysis at the same time. 
