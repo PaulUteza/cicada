@@ -5,6 +5,7 @@ python:
 before_install:
   - "pip install -U pip"
   - "python setup.py install"
+  - "cd src"
 # command to install dependencies
 install:
   - pip install -r docs/requirements.txt
