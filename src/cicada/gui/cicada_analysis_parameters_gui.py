@@ -605,8 +605,9 @@ class SliderWidget(QFrame, ParameterWidgetModel, metaclass=FinalMeta):
 class AnalysisParametersApp(QWidget):
     """Class containing the parameters widgets"""
     def __init__(self, thread_name, progress_bar, height_main_window, parent=None):
-        QWidget.__init__(self, parent=parent)
+        QWidget.__init__(self)
         self.name = thread_name
+        self.parent = parent
         self.thread_list = []
         self.progress_bar = progress_bar
         self.setFixedHeight(int(height_main_window * 0.70))
@@ -754,22 +755,15 @@ class AnalysisParametersApp(QWidget):
 
         # first we disable the button so we can launch a given analysis only once
         self.run_analysis_button.setEnabled(False)
-        # self.thread_list.append(Worker())
-        self.worker = Worker(self.name, self.cicada_analysis, self.analysis_arguments_handler)
+        self.worker = Worker(self.name, self.cicada_analysis, self.analysis_arguments_handler, self.parent)
         self.thread_list.append(self.worker)
         self.worker.updateProgress.connect(self.progress_bar.update_progress_bar)
         self.worker.updateProgress2.connect(self.progress_bar.update_progress_bar_overview)
         self.worker.start()
 
-        # p = Thread(target=self.analysis_arguments_handler.run_analysis, daemon=True)
-        # p.setName(self.name)
-        # p.start()
-
-
 class EmittingStream(QtCore.QObject):
     """Class managing the std.out redirection"""
     def __init__(self, parent=None):
-        super().__init__(parent=parent)
         self.parent = parent
         self.terminal = sys.stdout
         self.textWritten = QtCore.Signal(str)
@@ -796,7 +790,6 @@ class EmittingStream(QtCore.QObject):
 class EmittingErrStream(QtCore.QObject):
     """Class managing the std.err redirection"""
     def __init__(self, parent=None):
-        super().__init__(parent=parent)
         self.parent = parent
         self.terminal = sys.stderr
         self.errWritten = QtCore.Signal(str)
@@ -922,9 +915,7 @@ class AnalysisPackage(QWidget):
         self.text_output.setAlignment(Qt.AlignLeft)
         self.text_output.setAlignment(Qt.AlignTop)
         self.text_output.show()
-        sys.stdout = EmittingStream(self)
-        # Comment to debug, else we will get unhandled python exception
-        # sys.stderr = EmittingErrStream(self)
+
         self.scrollAreaErr = QScrollArea()
         self.scrollAreaErr.setWidgetResizable(True)
         self.scrollAreaErr.setVerticalScrollBarPolicy(Qt.ScrollBarAsNeeded)
@@ -940,7 +931,7 @@ class AnalysisPackage(QWidget):
         self.hlayout = QHBoxLayout()
 
         self.arguments_section_widget = AnalysisParametersApp(thread_name=self.name, progress_bar=self.progress_bar,
-                                                              height_main_window=height_window)
+                                                              height_main_window=height_window, parent=self)
         self.arguments_section_widget.create_widgets(cicada_analysis=cicada_analysis)
 
         self.analysis_data = AnalysisData(cicada_analysis=cicada_analysis,
@@ -1012,6 +1003,7 @@ class AnalysisPackage(QWidget):
             event (QEvent): Qt Event triggered when attempting to close the window
 
         """
+
         thread_found = False
         for thread in self.arguments_section_widget.thread_list:
             if thread.name == self.name:
@@ -1034,7 +1026,6 @@ class AnalysisPackage(QWidget):
                                     if self.name in attr:
                                         if "layout" in attr:
                                             eval('obj.layout.removeItem( obj.' + attr + ')')
-
                                         else:
                                             eval('obj.' + attr + '.setParent(None)')
                                             eval('obj.' + attr + '.deleteLater()')
@@ -1065,6 +1056,8 @@ class AnalysisPackage(QWidget):
                                 eval('obj.' + attr + '.setParent(None)')
                                 eval('obj.' + attr + '.deleteLater()')
 
+
+
 class Worker(QtCore.QThread):
     """Thread to manage multiple analysises at the same time"""
 
@@ -1072,7 +1065,7 @@ class Worker(QtCore.QThread):
     updateProgress = QtCore.Signal(float, float, float)
     updateProgress2 = QtCore.Signal(str, float, float)
 
-    def __init__(self, name, cicada_analysis, analysis_arguments_handler):
+    def __init__(self, name, cicada_analysis, analysis_arguments_handler, parent):
         """
 
         Args:
@@ -1082,6 +1075,7 @@ class Worker(QtCore.QThread):
         """
         QtCore.QThread.__init__(self)
         self.name = name
+        self.parent = parent
         self.run_state = False
         self.cicada_analysis = cicada_analysis
         self.analysis_arguments_handler = analysis_arguments_handler
@@ -1089,6 +1083,9 @@ class Worker(QtCore.QThread):
     def run(self):
         """Run the analysis"""
         self.run_state = True
+        sys.stdout = EmittingStream(self.parent)
+        # Comment to debug, else we will get unhandled python exception
+        # sys.stderr = EmittingErrStream(self.parent)
         self.analysis_arguments_handler.run_analysis()
         self.set_results_path(self.cicada_analysis.get_results_path())
         self.setProgress(self.name, new_set_value=100)
@@ -1124,7 +1121,6 @@ class Worker(QtCore.QThread):
                     exec('obj.' + self.name + '_button.result_path = "' + results_path + '"')
                     eval('obj.' + self.name + '_button.result_button.setEnabled(True)')
                 else:
-                    sys.stderr.write('NOT SET')
                     pass
 
 class ProgressBar(QProgressBar):
