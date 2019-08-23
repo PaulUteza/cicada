@@ -5,3 +5,5 @@ python:
 # command to install dependencies
 install:
   - pip install -r docs/requirements.txt
+  
+script: pytest
