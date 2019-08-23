@@ -1,13 +1,12 @@
 language: python
 python:
   - "3.7"
-  
+env: PYTHONPATH=$PYTHONPATH:$TRAVIS_BUILD_DIR/src
 before_install:
   - "pip install -U pip"
   - "python setup.py install"
-  - "cd src"
 # command to install dependencies
 install:
-  - pip install -r ../docs/requirements.txt
+  - pip install -r docs/requirements.txt
   
 script: pytest
