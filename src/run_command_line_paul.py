@@ -75,6 +75,7 @@ parser.add_argument('--no_logging', help="Don't create log files", action='store
 parser.add_argument('-q', '--quiet', help="Silence output", action='store_true')
 
 
+parameters_dict = dict()
 args = parser.parse_args()
 create_result_dir = ''
 data_to_analyse = []
@@ -89,10 +90,9 @@ for analysis in analysis_files:
             if isinstance(n, ast.ClassDef):
                 analysis_dict.update({n.name: 'cicada.analysis.' + os.path.splitext(path_leaf(file.name))[0]})
 
-
+analysis_list = [''.join(x) for x in analysis_dict.keys()]
 # Display the list of analysis
 if args.analysis_list:
-    analysis_list = [''.join(x) for x in analysis_dict.keys()]
     while '' in analysis_list:
         analysis_list.remove('')
     print("Existing analysises are : ")
@@ -105,13 +105,12 @@ if args.analysis_list:
 #   chosen analysis
 if args.parameters_file:
     if os.path.isfile(args.parameters_file) and (args.parameters_file.endswith('yaml')
-                                                or args.parameters_file.endswith('yml')):
+                                                 or args.parameters_file.endswith('yml')):
         with open(args.parameters_file, 'r') as stream:
             parameters_dict = yaml.safe_load(stream)
 
 # Create a dict with given parameters to be passed to the run analysis
 if args.parameters:
-    parameters_dict = dict()
     for param in args.parameters:
         if param is not None:
             param_split = param.split('=', 1)
@@ -189,20 +188,20 @@ else:
             class_ = getattr(module, args.analysis)
             analysis = class_()
             analysis.gui = False
+            analysis.create_results_directory(result_path)
             analysis.set_data(data_to_analyse=data_to_analyse)
             if not args.no_logging:
-                sys.stdout = Logging(args.path, quiet=args.quiet)
-                sys.stderr = ErrLogging(args.path)
-            parameters_dict.update({'results_path': result_path})
+                sys.stdout = Logging(analysis.get_results_path(), quiet=args.quiet)
+                sys.stderr = ErrLogging(analysis.get_results_path())
             analysis.run_analysis(**parameters_dict)
             if not args.no_logging:
                 sys.stdout = sys.__stdout__
                 sys.stderr = sys.__stderr__
-                try:
-                    os.rename(os.path.join(args.path, 'log.out'), os.path.join(analysis.get_results_path(), 'log.out'))
-                    os.rename(os.path.join(args.path, 'log.err'), os.path.join(analysis.get_results_path(), 'log.err'))
-                except FileNotFoundError:
-                    pass
+                # try:
+                #     os.rename(os.path.join(args.path, 'log.out'), os.path.join(analysis.get_results_path(), 'log.out'))
+                #     os.rename(os.path.join(args.path, 'log.err'), os.path.join(analysis.get_results_path(), 'log.err'))
+                # except FileNotFoundError:
+                #     pass
 
         else:
             raise AnalysisNotExisting("Analysis not found")

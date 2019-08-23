@@ -208,9 +208,11 @@ class CicadaAnalysis(ABC):
         """
         if "results_path" in kwargs:
             results_path = kwargs["results_path"]
-            self.create_results_directory(results_path)
-            self.analysis_arguments_handler.save_analysis_arguments_to_yaml_file(path_dir=self._results_path,
-                                                                                 yaml_file_name=self.name)
+            if self._results_path is None:
+                self.create_results_directory(results_path)
+
+        self.analysis_arguments_handler.save_analysis_arguments_to_yaml_file(path_dir=self._results_path,
+                                                                             yaml_file_name=self.name)
 
     def update_progressbar(self, time_started, increment_value=0, new_set_value=0):
         """
