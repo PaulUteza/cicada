@@ -8,7 +8,6 @@ import sys
 from functools import partial
 import cicada.preprocessing.utils as utils
 import yaml
-import gc
 from cicada.gui.cicada_analysis_tree_gui import AnalysisTreeApp
 from cicada.gui.cicada_analysis_overview import AnalysisOverview
 from cicada.gui.cicada_analysis_parameters_gui import AnalysisPackage
@@ -22,6 +21,7 @@ class CicadaMainWindow(QMainWindow):
         self.createActions()
         self.createMenus()
         self.object_created = []
+        self.to_close = []
         self.labels = []
         self.setWindowTitle("CICADA")
 
@@ -544,25 +544,21 @@ class CicadaMainWindow(QMainWindow):
         Close all analysises windows on main window close
         (uses Garbage Collector to get a list of them and close them, might be a better and faster way)
         """
-        # for obj in gc.get_objects():
-        #     if isinstance(obj, AnalysisPackage):
-        #         if obj.isVisible():
-        #             obj.close()
+
         self.object_created = utils.flatten(self.object_created)
-        for obj in self.object_created:
+        copied_list = self.object_created.copy()
+        for obj in copied_list:
             if isinstance(obj, AnalysisPackage):
-                if not obj.quit:
-                    event.ignore()
-                    break
-                if obj.isVisible():
-                    obj.close()
+                obj.close()
             else:
                 obj.close()
-        # for obj in gc.get_objects():
-        #     if isinstance(obj, AnalysisPackage):
-        #         if not obj.quit:
-        #             event.ignore()
-        #             break
+                self.to_close.remove(obj)
+                self.object_created.remove(obj)
+
+        if self.object_created:
+            event.ignore()
+        else:
+            self.close()
 
 
 class AllGroups(QWidget):
@@ -664,8 +660,8 @@ class MusketeersWidget(QWidget):
         to_parameters_button = QPushButton()
         to_parameters_button.setProperty("cicada", "True")
 
-        analysis_tree_app = AnalysisTreeApp(to_parameters_button=to_parameters_button)
-        self.parent.object_created.append(analysis_tree_app.created_analysis_package_object)
+        analysis_tree_app = AnalysisTreeApp(parent=parent, to_parameters_button=to_parameters_button)
+
         self.session_widget.analysis_tree = analysis_tree_app
         self.layout.addWidget(analysis_tree_app)
 

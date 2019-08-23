@@ -6,7 +6,6 @@ import numpy as np
 from qtpy import QtCore
 import sys
 from random import randint
-import gc
 from abc import ABC, abstractmethod
 from cicada.gui.cicada_analysis_overview import AnalysisOverview, AnalysisState, ResultsButton
 from qtpy.QtCore import QThread
@@ -885,7 +884,7 @@ class AnalysisData(QWidget):
 class AnalysisPackage(QWidget):
     """Widget containing the whole analysis window"""
 
-    def __init__(self, cicada_analysis, analysis_name, name, parent=None):
+    def __init__(self, cicada_analysis, analysis_name, name, main_window, parent=None):
         """
 
         Args:
@@ -893,16 +892,17 @@ class AnalysisPackage(QWidget):
             analysis_name (str): Analysis name
             name (str): Analysis ID
         """
-        QWidget.__init__(self, parent=parent)
+        QWidget.__init__(self)
         super().__init__()
         self.name = name
-        self.quit = True
+        self.parent = parent
+        self.main_window = main_window
         self.closeEvent = self.on_close
         height_window = 750
         self.resize(1000, height_window)
         # self.setFixedSize(self.size())
         self.remaining_time_label = RemainingTime()
-        self.progress_bar = ProgressBar(self.remaining_time_label)
+        self.progress_bar = ProgressBar(self.remaining_time_label, parent=self)
         self.progress_bar.setEnabled(False)
         cicada_analysis.progress_bar_analysis = self.progress_bar
         # print(cicada_analysis.analysis_arguments_handler)
@@ -1003,7 +1003,6 @@ class AnalysisPackage(QWidget):
             event (QEvent): Qt Event triggered when attempting to close the window
 
         """
-
         thread_found = False
         for thread in self.arguments_section_widget.thread_list:
             if thread.name == self.name:
@@ -1017,37 +1016,22 @@ class AnalysisPackage(QWidget):
                     self.confirm_quit.setDefaultButton(QMessageBox.No)
                     if self.confirm_quit.exec() == QMessageBox.Yes:
                         self.progress_bar.setEnabled(False)
-                        self.quit = True
-                        self.close()
+                        self.main_window.object_created.remove(self)
                         thread.terminate()
-                        for obj in gc.get_objects():
-                            if isinstance(obj, AnalysisOverview):
-                                for attr in dir(obj):
-                                    if self.name in attr:
-                                        if "layout" in attr:
-                                            eval('obj.layout.removeItem( obj.' + attr + ')')
-                                        else:
-                                            eval('obj.' + attr + '.setParent(None)')
-                                            eval('obj.' + attr + '.deleteLater()')
+                        obj = self.parent.analysis_overview
+                        for attr in dir(obj):
+                            if self.name in attr:
+                                if "layout" in attr:
+                                    eval('obj.layout.removeItem( obj.' + attr + ')')
+                                else:
+                                    eval('obj.' + attr + '.setParent(None)')
+                                    eval('obj.' + attr + '.deleteLater()')
                     else:
-                        self.quit = False
                         event.ignore()
 
                 else:
-                    self.quit = True
-                    for obj in gc.get_objects():
-                        if isinstance(obj, AnalysisOverview):
-                            for attr in dir(obj):
-                                if self.name in attr:
-                                    if "layout" in attr:
-                                        eval('obj.layout.removeItem( obj.' + attr + ')')
-                                    else:
-                                        eval('obj.' + attr + '.setParent(None)')
-                                        eval('obj.' + attr + '.deleteLater()')
-        if not thread_found:
-            self.quit = True
-            for obj in gc.get_objects():
-                if isinstance(obj, AnalysisOverview):
+                    self.main_window.object_created.remove(self)
+                    obj = self.parent.analysis_overview
                     for attr in dir(obj):
                         if self.name in attr:
                             if "layout" in attr:
@@ -1055,6 +1039,16 @@ class AnalysisPackage(QWidget):
                             else:
                                 eval('obj.' + attr + '.setParent(None)')
                                 eval('obj.' + attr + '.deleteLater()')
+        if not thread_found:
+            self.main_window.object_created.remove(self)
+            obj = self.parent.analysis_overview
+            for attr in dir(obj):
+                if self.name in attr:
+                    if "layout" in attr:
+                        eval('obj.layout.removeItem( obj.' + attr + ')')
+                    else:
+                        eval('obj.' + attr + '.setParent(None)')
+                        eval('obj.' + attr + '.deleteLater()')
 
 
 
@@ -1115,13 +1109,12 @@ class Worker(QtCore.QThread):
 
         """
         # TODO : Get rid of the garbage collector
-        for obj in gc.get_objects():
-            if isinstance(obj, AnalysisOverview):
-                if eval('obj.' + self.name + '_button.result_path') is None:
-                    exec('obj.' + self.name + '_button.result_path = "' + results_path + '"')
-                    eval('obj.' + self.name + '_button.result_button.setEnabled(True)')
-                else:
-                    pass
+        obj = self.parent.analysis_overview
+        if eval('obj.' + self.name + '_button.result_path') is None:
+            exec('obj.' + self.name + '_button.result_path = "' + results_path + '"')
+            eval('obj.' + self.name + '_button.result_button.setEnabled(True)')
+        else:
+            pass
 
 class ProgressBar(QProgressBar):
     """Class containing the progress bar of the current analysis"""
@@ -1131,8 +1124,9 @@ class ProgressBar(QProgressBar):
         Args:
             remaining_time_label: Associated analysis remaining time
         """
-        QProgressBar.__init__(self, parent=parent)
+        QProgressBar.__init__(self)
         self.setMinimum(0)
+        self.parent=parent
         self.remaining_time_label = remaining_time_label
 
     def update_progress_bar(self, time_started, increment_value=0, new_set_value=0):
@@ -1171,24 +1165,22 @@ class ProgressBar(QProgressBar):
             new_set_value (float):  Value that should be set as the current value of the progress bar
 
         """
-        # TODO : Remove Garbage collector use
-        for obj in gc.get_objects():
-            if isinstance(obj, AnalysisOverview):
-                try:
-                    eval('obj.' + name + '_progress_bar.setEnabled(True)')
-                    if new_set_value != 0:
-                        eval('obj.' + name + '_progress_bar.setValue(new_set_value)')
+        obj = self.parent.parent.analysis_overview
+        try:
+            eval('obj.' + name + '_progress_bar.setEnabled(True)')
+            if new_set_value != 0:
+                eval('obj.' + name + '_progress_bar.setValue(new_set_value)')
 
-                    if increment_value != 0:
-                        eval('obj.' + name + '_progress_bar.setValue(obj.' + name +
-                             '_progress_bar.value() + increment_value)')
+            if increment_value != 0:
+                eval('obj.' + name + '_progress_bar.setValue(obj.' + name +
+                     '_progress_bar.value() + increment_value)')
 
-                    if eval('obj.' + name + '_progress_bar.isEnabled()') and eval(
-                            'obj.' + name + '_progress_bar.value()') != 0:
-                        eval('obj.' + name + '_progress_bar.setEnabled(True)')
+            if eval('obj.' + name + '_progress_bar.isEnabled()') and eval(
+                    'obj.' + name + '_progress_bar.value()') != 0:
+                eval('obj.' + name + '_progress_bar.setEnabled(True)')
 
-                except:
-                    pass
+        except:
+            pass
 
 
 class RemainingTime(QLabel):

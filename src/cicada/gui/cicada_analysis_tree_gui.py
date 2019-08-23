@@ -334,7 +334,7 @@ class QAnalysisTreeModel(QAbstractItemModel):
 
 
 class AnalysisTreeApp(QWidget):
-    def __init__(self, to_parameters_button=None):
+    def __init__(self, parent, to_parameters_button=None):
         """
 
         Args:
@@ -344,6 +344,7 @@ class AnalysisTreeApp(QWidget):
         super().__init__()
         self.dataView = None
         self.analysis_tree_model = None
+        self.parent = parent
         self.created_analysis_package_object = []
 
         # used in self.doubleClickedItem()
@@ -396,9 +397,10 @@ class AnalysisTreeApp(QWidget):
             # Create analysis window
             analysis_package = AnalysisPackage(cicada_analysis=self.copied_data,
                                                analysis_name=str(tree_item.item_data[0]),
-                                               name=random_id)
+                                               name=random_id, main_window=self.parent, parent=self)
             setattr(self, random_id, analysis_package)
             self.created_analysis_package_object.append(analysis_package)
+            self.parent.object_created.append(analysis_package)
 
             self.analysis_overview.add_analysis_overview(self.copied_data, random_id,
                                                          getattr(self, random_id))
